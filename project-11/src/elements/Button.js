@@ -14,9 +14,12 @@ const Button = (props) => {
     backGround,
     children,
     display,
+    Btn,
+    _className,
   } = props;
 
   const styles = {
+    className: _className,
     fontSize: fontSize,
     width: width,
     minHeight: minHeight,
@@ -27,6 +30,16 @@ const Button = (props) => {
     backGround: backGround,
     display: display,
   };
+
+  if (Btn) {
+    return (
+      <>
+        <BTN type="button" {...styles} onClick={_onClick}>
+          {children}
+        </BTN>
+      </>
+    );
+  }
 
   return (
     <React.Fragment>
@@ -46,6 +59,7 @@ Button.defaultProps = {
   border: "1px solid #ffffff",
   borderRadius: "40px",
   _onClick: () => {},
+  Btn: false,
 };
 
 const DefaultBtn = styled.button`
@@ -65,6 +79,21 @@ const DefaultBtn = styled.button`
   flex-grow: 1;
   &:hover {
     background-color: #ebebeb;
+  }
+`;
+
+const BTN = styled.button`
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.6;
   }
 `;
 

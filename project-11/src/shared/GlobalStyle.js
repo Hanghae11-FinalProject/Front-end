@@ -22,6 +22,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     color: #222222;
     overflow-x: hidden;
+    font-family: 'BMJUA';
     
   }
 
@@ -29,7 +30,7 @@ const GlobalStyles = createGlobalStyle`
   --point-color: #ff8a3d;
   --main-font-color: #212529;
   --sub-font-color: #868e96;
-  --border-color: #0000000a;
+  --border-color: #dddddd;
 }
 
   ol, ul, li {
@@ -51,6 +52,7 @@ const GlobalStyles = createGlobalStyle`
     border-radius: 10px;
     background-color: #aaa;
   }
+
 `;
 
 export default GlobalStyles;
