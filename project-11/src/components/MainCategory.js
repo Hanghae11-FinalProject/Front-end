@@ -67,7 +67,7 @@ const CateBtn = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50px;
-  background-color: #ff8a3d;
+  background-color: var(--point-color);
 `;
 
 export default MainCategory;
