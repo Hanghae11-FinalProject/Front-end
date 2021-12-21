@@ -1,7 +1,8 @@
-import logo from "./logo.svg";
 import { Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/configureStore";
+
+import "swiper/css/bundle";
 
 import GlobalStyles from "./GlobalStyle";
 import Main from "../pages/Main";
