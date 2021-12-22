@@ -21,6 +21,9 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
+  button, input{
+    outline: 0;
+  }
   body {
     color: #222222;
     overflow-x: hidden;
