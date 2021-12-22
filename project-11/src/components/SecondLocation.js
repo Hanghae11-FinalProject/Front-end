@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { GrMap } from "react-icons/gr";
 
-const LocationSelectBox = () => {
+const SecondLocation = () => {
   const option = [
-    { value: "구", name: "구" },
-    { value: "강남구", name: "강남구" },
-    { value: "서초구", name: "서초구" },
-    { value: "동대문구", name: "동대문구" },
+    { value: "동", name: "동" },
+    { value: "파송송", name: "파송송" },
+    { value: "계란탁", name: "계란탁" },
   ];
 
   return (
@@ -18,7 +17,7 @@ const LocationSelectBox = () => {
             <option
               key={option.value}
               value={option.value}
-              hidden={option.value === "구" ? true : false}
+              hidden={option.value === "동" ? true : false}
             >
               {option.name}
             </option>
@@ -27,7 +26,6 @@ const LocationSelectBox = () => {
         {/* <GrMap
           style={{
             marginLeft: "-20px",
-            fill: "none",
           }}
         /> */}
       </SelectBoxWrapper>
@@ -51,4 +49,4 @@ const LocationSelect = styled.select`
   appearance: none; */
 `;
 
-export default LocationSelectBox;
+export default SecondLocation;
