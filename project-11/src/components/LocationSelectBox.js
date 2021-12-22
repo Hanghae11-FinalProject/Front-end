@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const LocationSelectBox = () => {
   const option = [
+    { value: "지역", name: "지역" },
     { value: "강남구", name: "강남구" },
     { value: "서초구", name: "서초구" },
     { value: "송파구", name: "송파구" },
@@ -12,7 +13,11 @@ const LocationSelectBox = () => {
     <React.Fragment>
       <LocationSelect>
         {option.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+            hidden={option.value === "지역" ? true : false}
+          >
             {option.name}
           </option>
         ))}

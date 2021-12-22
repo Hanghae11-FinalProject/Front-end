@@ -18,19 +18,19 @@ const Nav = () => {
           flex_justify="space-between"
         >
           <Menu>
-            <AiOutlineHome />
+            <AiOutlineHome className="icon" />
           </Menu>
           <Menu>
-            <BiSearch />
+            <BiSearch className="icon" />
           </Menu>
           <CenterMenu>
-            <BsPlusLg />
+            <BsPlusLg className="icon" />
           </CenterMenu>
           <Menu>
-            <RiWechatLine />
+            <RiWechatLine className="icon" />
           </Menu>
           <Menu>
-            <BiUser />
+            <BiUser className="icon" />
           </Menu>
         </Grid>
       </NavBox>
@@ -56,6 +56,9 @@ const NavBox = styled.div`
 const Menu = styled.div`
   width: 20%;
   font-size: 22px;
+  .icon {
+    cursor: pointer;
+  }
 `;
 
 const CenterMenu = styled.div`
@@ -64,4 +67,5 @@ const CenterMenu = styled.div`
   color: #fff;
   padding: 10px 0;
   border-radius: 30px;
+  cursor: pointer;
 `;

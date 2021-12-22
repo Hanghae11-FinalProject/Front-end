@@ -22,7 +22,6 @@ const Input = (props) => {
           }
         }}
       />
-      )
     </React.Fragment>
   );
 };

@@ -7998,6 +7998,13 @@ styled-components@^5.3.3:
     shallowequal "^1.1.0"
     supports-color "^5.5.0"
 
+styled-react-modal@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/styled-react-modal/-/styled-react-modal-2.1.0.tgz#524451deb2faba329f3a004d28733b3e6de27744"
+  integrity sha512-GgUzhU4oCCA31OFKv/rCIj0DN4FDVRirGWKH+pGsFyvlr7qxeyAsiM09J0Tss107dJ6EUhK+D7U8JzQuq06hZw==
+  dependencies:
+    prop-types "^15.7.2"
+
 stylehacks@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/stylehacks/-/stylehacks-5.0.1.tgz#323ec554198520986806388c7fdaebc38d2c06fb"

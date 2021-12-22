@@ -25,6 +25,7 @@
     "redux-thunk": "^2.4.1",
     "sass": "^1.45.1",
     "styled-components": "^5.3.3",
+    "styled-react-modal": "^2.1.0",
     "swiper": "^7.3.3",
     "web-vitals": "^2.1.0"
   },
