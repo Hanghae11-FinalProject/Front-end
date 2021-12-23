@@ -2,22 +2,35 @@ import React from "react";
 import styled from "styled-components";
 
 import LocationSelectBox from "./LocationSelectBox";
+import SecondLocation from "./SecondLocation";
+import PostCard from "./PostCard";
 
 const PostList = () => {
   return (
     <React.Fragment>
       <MainContainer>
-        <Text>전체글 - </Text>
-        <LocationSelectBox />
+        <MainHead>
+          <Text>전체글 - </Text>
+          <LocationSelectBox />
+          <SecondLocation />
+        </MainHead>
+        <PostCard />
       </MainContainer>
     </React.Fragment>
   );
 };
 
 const MainContainer = styled.div`
-  height: 600px;
+  width: 400px;
+  height: 700px;
   padding: 16px;
   margin: auto;
+  /* display: flex; */
+  /* background-color: green; */
+`;
+
+const MainHead = styled.div`
+  height: 30px;
   display: flex;
 `;
 

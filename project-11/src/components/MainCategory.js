@@ -60,6 +60,8 @@ const Slider = styled.div`
   display: flex;
   .swiper-pagination-bullet-active {
     background-color: #ff8a3d !important;
+    width: 16px !important;
+    border-radius: 4px !important;
   }
 `;
 
