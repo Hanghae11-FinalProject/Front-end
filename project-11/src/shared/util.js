@@ -12,3 +12,10 @@ export const data = {
   username: "Shiba",
   tag: ["인형", "펭수", "연세대", "귀여운"],
 };
+
+export const icons = [
+  "https://www.urbanbrush.net/web/wp-content/uploads/edd/2020/06/urbanbrush-20200615001928725725-1560x1653.jpg",
+  "https://www.urbanbrush.net/web/wp-content/uploads/edd/2020/06/urbanbrush-20200616083526566260-1560x1653.jpg",
+  "https://www.urbanbrush.net/web/wp-content/uploads/edd/2019/09/urbanbrush-20190910211651035917.png",
+  "https://i.pinimg.com/736x/77/0e/75/770e750b31ce0a5d3698e699f21ceb4e.jpg",
+];
