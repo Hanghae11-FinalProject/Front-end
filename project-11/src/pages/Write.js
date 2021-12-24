@@ -1,6 +1,15 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Pagination, Navigation } from "swiper";
+import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
+// style
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+SwiperCore.use([Pagination, Navigation]);
 
 const Write = () => {
   const [title, setTitle] = React.useState(""); // 제목
@@ -8,14 +17,16 @@ const Write = () => {
   const [category, setCategory] = React.useState(""); // 카테고리
   const [tagName, setHashtag] = React.useState(""); // 해쉬태그 onChange로 관리할 문자열
   const [hashArr, setHashArr] = React.useState([]); // 해시태그 담을 배열
-  const [images, setImages] = React.useState([]); // 이미지
+  const [images, setImages] = React.useState([]); // 이미지 aixos 통신용
+  const [preImg, setPreImg] = React.useState([]); // preview용 이미지
   const [active, setActive] = React.useState(true); // 버튼 액티브
 
   const cateOption = [
     { value: "Category", name: "Category" },
     { value: "생활용품", name: "생활용품" },
     { value: "의류", name: "의류" },
-    { value: "식재료", name: "식재료" },
+    { value: "식품", name: "식품" },
+    { value: "기타", name: "기타" },
   ];
 
   // 제목 onChange 함수
@@ -62,11 +73,35 @@ const Write = () => {
     [tagName, hashArr]
   );
 
+  // 이미지, preview이미지
+  const addImage = (e) => {
+    console.log(e.target.files);
+    const nowSelectImgList = e.target.files; // 이미지파일 리스트 (object)
+    setImages(e.target.files); // axios통신용으로 따로 한번 저장 해주고!
+
+    const nowImgURLList = [...preImg]; // 현재의 preImg 복사
+    for (let i = 0; i < nowSelectImgList.length; i++) {
+      const nowImgURL = URL.createObjectURL(nowSelectImgList[i]); // 미리보기 가능하도록 변수화
+      //URL.createObjectURL() 이 친구는 상대경로를 만들어 주는 친구이다.
+      nowImgURLList.push(nowImgURL); // 복사해놓은 preImg에 추가해주고
+    }
+    setPreImg(nowImgURLList); // 반복문이 끝난뒤 preImg 원본에 넣어준다.
+  };
+
+  // preview 이미지 삭제
+  const deletePreImg = (x) => {
+    const test = preImg.filter((item) => {
+      // preImg를 요소 하나씩 filter를 돌려 만약 내가 누른 사진의 url이면 반환되지 못하도록 함수 설계
+      if (item !== x) {
+        return item;
+      }
+    });
+    setPreImg(test);
+  };
+
   // Upload 버튼 active 함수
   const checkActive = () => {
-    title !== "" && content !== "" && hashArr !== []
-      ? setActive(false)
-      : setActive(true);
+    title !== "" && content !== "" ? setActive(false) : setActive(true);
   };
 
   return (
@@ -97,21 +132,63 @@ const Write = () => {
           </CateSelect>
         </CateArea>
         <HashTagArea className="HashWrap">
-          <CateText>#해쉬태그</CateText>
+          <CateText>#해시태그</CateText>
           <HashInputOuter className="HashInputOuter">
-            {" "}
             {/* 동적으로 생성되는 태그를 담을 div */}
             <HashInput
               className="HashInput"
               type="text"
-              defaultValue={tagName}
+              Value={tagName}
               // onChange={onChangeHashtag}
               onKeyUp={createTag}
               placeholder="태그 추가하기!"
             />
           </HashInputOuter>
         </HashTagArea>
-        <ImgArea>이미지ㅋ</ImgArea>
+        <ImgArea>
+          {images.length === 0 ? (
+            <NoImgBox>
+              <NoImg src="/static/noimage2.gif" />
+            </NoImgBox>
+          ) : (
+            // 빈 배열인 경우
+            <Slider>
+              <Swiper
+                className="Img-Preview"
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                navigation
+              >
+                {preImg.map((x, index) => {
+                  return (
+                    <SwiperSlide key={index} className="slide">
+                      <TiDelete
+                        size="25px"
+                        className="deleteBtn"
+                        onClick={() => {
+                          deletePreImg(x);
+                        }}
+                      />
+                      <Preview src={x} />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </Slider>
+          )}
+
+          <label htmlFor="input-file" className="input-Btn-Css">
+            Add your photo
+            <input
+              type="file"
+              onChange={addImage}
+              encType="multipart/form-data"
+              multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
+              id="input-file" // 커스텀 디자인을 위한 라벨링
+              className="input-Btn"
+            />
+          </label>
+        </ImgArea>
         <ContentArea>
           <ContentInput
             defaultValue={content}
@@ -121,7 +198,16 @@ const Write = () => {
             rows={10}
           ></ContentInput>
         </ContentArea>
-        <UploadBtn>업로드</UploadBtn>
+        <UploadBtn
+          className={!active ? "activeBtn" : "unActiveBtn"}
+          disabled={active}
+          onClick={() => {
+            console.log("버튼활성화댐");
+            console.log(preImg);
+          }}
+        >
+          업로드
+        </UploadBtn>
       </Container>
       <Nav />
     </React.Fragment>
@@ -136,6 +222,12 @@ const Container = styled.div`
   margin: auto;
   border-radius: 50px;
   border: 1px solid #ddd;
+  .activeBtn {
+    background-color: #fc6d3a;
+  }
+  .unActiveBtn {
+    background-color: #fedbbe;
+  }
 `;
 
 const TitleArea = styled.div`
@@ -211,7 +303,72 @@ const HashInput = styled.input`
 const ImgArea = styled.div`
   height: 210px;
   margin: 50px 15px 15px 15px;
-  background-color: white;
+  /* background-color: white; */
+
+  .input-Btn-Css {
+    margin-left: 115px;
+    padding: 6px 15px;
+    background-color: var(--point-color);
+    border-radius: 20px;
+    color: black;
+    cursor: pointer;
+  }
+
+  .input-Btn {
+    display: none;
+  }
+`;
+
+const NoImgBox = styled.div`
+  width: 300px;
+  height: 170px;
+  margin: auto;
+  margin-bottom: 10px;
+  /* background-color: green; */
+`;
+
+const NoImg = styled.img`
+  width: 220px;
+  height: 160px;
+  margin-left: 40px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+  object-fit: fill;
+`;
+
+const Slider = styled.div`
+  width: 300px;
+  height: 170px;
+  margin: auto;
+  margin-bottom: 10px;
+  .swiper-pagination-bullet-active {
+    background-color: #ff8a3d !important;
+    width: 16px !important;
+    border-radius: 4px !important;
+  }
+  .slide {
+    position: relative;
+  }
+  .swiper-button-prev {
+    //사이즈 바꾸고 싶은디..ㅠ
+  }
+  .swiper-button-next {
+    //사이즈 바꾸고 싶은디..ㅠ
+  }
+  .deleteBtn {
+    position: absolute;
+    margin-left: 240px;
+    cursor: pointer;
+  }
+`;
+
+const Preview = styled.img`
+  width: 220px;
+  height: 160px;
+  margin-left: 40px;
+  margin-bottom: 20px;
+  object-fit: fill;
 `;
 
 const ContentArea = styled.div`
@@ -228,18 +385,15 @@ const ContentInput = styled.textarea`
 `;
 
 const UploadBtn = styled.button`
-      color: black;
-      font-size: 22px;
-      width: 365px;
-      border: 1px solid #FEDBBE;
-      height: 50px;
-      border-radius: 10px;
-      background-color: #FEDBBE;
-      margin-left: 14px;
-      margin-top: 8px;
-      cursor: pointer;
-      &:hover{
-      background-color: #fc6d3a;
+  color: black;
+  font-size: 22px;
+  width: 365px;
+  border: 1px solid #fedbbe;
+  height: 50px;
+  border-radius: 10px;
+  margin-left: 14px;
+  margin-top: 8px;
+  cursor: pointer;
 `;
 
 export default Write;
