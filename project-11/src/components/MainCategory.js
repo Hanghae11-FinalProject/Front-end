@@ -55,19 +55,21 @@ const MainCategory = () => {
 
 const Slider = styled.div`
   height: 80px;
-  margin: 15px;
-  margin-top: 40px;
+  margin: 15px 0;
   display: flex;
+  .swiper-pagination.swiper-pagination-clickable {
+    display: none;
+  }
   .swiper-pagination-bullet-active {
-    background-color: #ff8a3d !important;
+    background-color: var(--point-color) !important;
     width: 16px !important;
     border-radius: 4px !important;
   }
 `;
 
 const CateBtn = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
   border-radius: 50px;
   background-color: var(--point-color);
 `;

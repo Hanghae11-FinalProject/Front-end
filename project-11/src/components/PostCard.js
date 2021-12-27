@@ -1,92 +1,158 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Grid } from "../elements";
+import { Grid, Image } from "../elements/index";
+import { RiArrowLeftRightLine } from "react-icons/ri";
+import { FiStar } from "react-icons/fi";
+import { HiOutlineChatAlt2 } from "react-icons/hi";
 
-import { PostData } from "../shared/PostTest";
-
-const PostCard = () => {
+const PostCard = ({ item }) => {
+  const [state, setState] = useState("거래중");
+  const p = item;
   return (
     <React.Fragment>
-      <PostArea>
-        {PostData.map((p, idx) => {
-          return (
-            <Grid is_flex margin={"12px 9px"}>
-              <Post>
-                <ChipDiv>
-                  <CurrentChip>{p.currentState}</CurrentChip>
-                </ChipDiv>
-                <PostImg src={p.images} alt="PostImg" />
-                <PostTitle>{p.title}</PostTitle>
-                <PostContent>{p.content}</PostContent>
-              </Post>
+      <Grid is_flex>
+        <Post>
+          <Grid is_flex flex_align="center">
+            <Image shape="circle" size="34px;">
+              icon
+            </Image>
+            <Grid padding="0 5px;">
+              <PostTitle>{p.title}</PostTitle>
+              <Grid is_flex>
+                <span>동대문구</span>
+                <span>15분전</span>
+              </Grid>
             </Grid>
-          );
-        })}
-      </PostArea>
+          </Grid>
+          <PostImg>
+            <img src={p.images} alt="PostImg" />
+          </PostImg>
+
+          <PostContent>
+            <ChipDiv>
+              <Grid _className={state === p.currentState ? "ing" : "stop"}>
+                {p.currentState}
+              </Grid>
+            </ChipDiv>
+            <Grid _className="post-content">{p.content}</Grid>
+            <Grid is_flex _className="hashtag">
+              <RiArrowLeftRightLine className="icon" />
+              <span>#음료수</span>
+              <span>#비비고</span>
+            </Grid>
+          </PostContent>
+          <Grid is_flex padding="15px 5px" _className="btn-box">
+            <Grid is_flex _className="like-btn" flex_align="center">
+              <FiStar />
+              <span>즐겨찾기</span>
+            </Grid>
+            <Grid is_flex _className="chat-btn" flex_align="center">
+              <HiOutlineChatAlt2 />
+              <span>채팅하기</span>
+            </Grid>
+          </Grid>
+        </Post>
+      </Grid>
     </React.Fragment>
   );
 };
 
-const PostArea = styled.div`
-  width: 380px;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  margin-left: -8px; // 이거 말고는 가운데로 정렬 할 방법이 없나?
+const Post = styled.div`
+  width: 100%;
+  border: 1px solid var(--border-color);
+  padding-top: 5px;
+
+  span {
+    font-size: 10px;
+    color: var(--sub-font-color);
+    margin-right: 5px;
+  }
+
+  .btn-box {
+    border-top: 1px solid var(--border-color);
+
+    .like-btn,
+    .chat-btn {
+      margin-right: 10px;
+      cursor: pointer;
+      span {
+        margin-left: 5px;
+      }
+    }
+  }
 `;
 
-const Post = styled.div`
-  width: 172px;
-  height: 280px;
-  margin: 5px auto;
-  border-radius: 16px;
-  border: 1px solid #888888;
-  background-color: #f9f1f1;
-  /* box-shadow: "5px 5px 5px rgba(255, 138, 61, 0.25)"; */
+const PostTitle = styled.p`
+  font-size: 14px;
+  font-weight: bold;
+`;
+const PostImg = styled.div`
+  width: 100%;
+  height: 130px;
+  margin-top: 10px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const PostContent = styled.p`
+  padding: 5px 5px;
+
+  .post-content {
+    margin: 10px 0;
+    font-size: 14px;
+    height: 28px;
+    overflow: hidden;
+    padding: 5px 0;
+    width: 100%;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  .hashtag {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    span {
+      padding: 3px 8px;
+      border: 1px solid var(--point-color);
+      border-radius: 16px;
+      color: var(--point-color);
+    }
+  }
 `;
 
 const ChipDiv = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 3px;
-  margin-right: 3px;
-`;
 
-const CurrentChip = styled.div`
-  width: 56px;
-  height: 22px;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 16px;
-  background-color: var(--point-color);
-`;
+  div {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    text-align: center;
+    color: #fff;
+  }
 
-const PostImg = styled.img`
-  width: 170px;
-  height: 130px;
-  object-fit: cover;
-`;
+  .ing {
+    background-color: var(--point-color);
+  }
 
-const PostTitle = styled.p`
-  font-size: 20px;
-  font-weight: bold;
-  margin: 4px 4px;
-`;
-const NickAndDate = styled.p`
-  font-size: 16px;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const PostContent = styled.p`
-  width: 168px;
-  height: 70px;
-  margin: 0px 4px;
-  overflow: hidden;
-  /* text-overflow: ellipsis; 
-  white-space: nowrap; */ // overflow ... 으로 표시할까 말까
+  .stop {
+    background-color: var(--sub-font-color);
+  }
 `;
 
 export default PostCard;

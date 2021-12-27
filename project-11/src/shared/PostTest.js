@@ -30,7 +30,7 @@ export const PostData = [
     adress: "강남구",
     images:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE0grtiKUXUtP-dqnzEiBurzqd1a7FbGyflA&usqp=CAU",
-    currentState: "예약중",
+    currentState: "거래중",
     createdAt: "2021-12-22",
   },
   {

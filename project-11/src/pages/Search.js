@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../shared/Nav";
+import PostCard from "../components/PostCard";
 import { BiSearch } from "react-icons/bi";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 import SearchHIstory from "../components/SearchHIstory";
 
+import { PostData } from "../shared/PostTest";
+
 const Search = () => {
   const preWord = JSON.parse(localStorage.getItem("recent"));
   const [recent, setRecent] = useState(preWord || []);
   const [key, setKey] = useState("");
+  const [search_data, setSearch_data] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("recent", JSON.stringify(recent));
   }, [recent]);
 
   const recommend = [
-    "shindongyup",
-    "key",
-    "taeyeon",
-    "narae",
     "nintendo",
     "pengsoo",
     "nike",
@@ -57,22 +57,37 @@ const Search = () => {
             />
             <BiSearch className="icon" />
           </Grid>
-          <SearchHIstory list={list} onRemoveKeyword={handleRemoveKeyword} />
-          <RemcommendBox>
-            <p>추천 검색어</p>
-            <Grid is_flex is_container _className="recommend-box">
-              {recommend.map((item, idx) => {
-                return (
-                  <>
-                    <Keyword key={idx}>{item}</Keyword>
-                  </>
-                );
-              })}
-            </Grid>
-          </RemcommendBox>
+          {!search_data ? (
+            <>
+              <SearchHIstory
+                list={list}
+                onRemoveKeyword={handleRemoveKeyword}
+              />
+              <RemcommendBox>
+                <p>추천 검색어</p>
+                <Grid is_flex is_container _className="recommend-box">
+                  {recommend.map((item, idx) => {
+                    return (
+                      <>
+                        <Keyword key={idx}>{item}</Keyword>
+                      </>
+                    );
+                  })}
+                </Grid>
+              </RemcommendBox>
+            </>
+          ) : (
+            <>
+              <PostList>
+                {PostData.map((item, idx) => {
+                  return <PostCard key={idx} item={item} />;
+                })}
+              </PostList>
+            </>
+          )}
         </Grid>
       </SearchList>
-      <Nav />
+      <Nav search={"search"} />
     </>
   );
 };
@@ -84,10 +99,10 @@ const SearchList = styled.div`
     height: 100vh;
     border-right: 1px solid var(--border-color);
     border-left: 1px solid var(--border-color);
-    padding-top: 20px;
+    padding: 20px 16px;
 
     .inputform {
-      width: 90%;
+      width: 100%;
       padding: 5px 10px;
       margin: 0 auto;
       border-radius: 16px;
@@ -129,4 +144,11 @@ const RemcommendBox = styled.div`
   p {
     margin: 10px 0;
   }
+`;
+
+const PostList = styled.div`
+  padding-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
 `;

@@ -153,5 +153,5 @@ const Title = styled.div`
 
 const Content = styled.div`
   padding: 16px;
-  height: 300px;
+  height: 230px;
 `;

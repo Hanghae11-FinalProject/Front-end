@@ -9,21 +9,28 @@ const LOADING = "LOADING";
 // *** 액션 생성 함수
 const getPost = createAction(GET_POST, (postList) => ({ postList }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+
 // *** 초기값
+// const initialState = {
+//   postId: null,
+//   nickname: null,
+//   title: null,
+//   content: null,
+//   address: null,
+//   images: null,
+//   currentState: null,
+//   createAt: null,
+//   paging: { start: null, next: null, size: 4 },
+//   is_loading: false,
+// };
+
 const initialState = {
-  postId: null,
-  nickname: null,
-  title: null,
-  content: null,
-  address: null,
-  images: null,
-  currentState: null,
-  createAt: null,
-  paging: { start: null, next: null, size: 4 },
+  list: [],
+  page: 0,
   is_loading: false,
 };
+
 // *** 미들웨어
-// 서울 페이지 PostList
 const getPostListDB = () => {
   return function (dispatch, getState, { history }) {
     const token = document.cookie.getItem("user_token");
