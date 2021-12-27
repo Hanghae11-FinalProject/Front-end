@@ -1,97 +1,152 @@
-import React from 'react';
-import Grid from "../elements/Grid"
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {BsPerson} from 'react-icons/bs'
-import {BsLock} from 'react-icons/bs'
+import {IoIosArrowBack} from 'react-icons/io'
+import {Grid} from '../elements';
 
 
 const Login = () => {
-    return (
-        <LoginWrap>
-            <Grid is_container='is_container'_className='wrapborder'>
-                <div className='login-wrap'>
-                    <h1>로그인</h1>
-                    <img className='login-logo' src='static/로고.png'/>
-                    <input placeholder='아이디'/>
-                    <input placeholder='비밀번호'/>
-                    <button className='loginBtn'>로그인</button>
-                    <button className='signUpBtn'>회원가입</button>
-                </div>
-            </Grid>
+  const [login_disabled, setLoginDisabled] = useState(true);
+  const [input_values, setInputValues] = useState({user_id:'', user_pw:''})
+  const [loginTrue, setLoginTrue] = useState(true)
 
-        </LoginWrap>
+  const handleChangeInput = (e) =>{
+    setInputValues({
+      ...input_values,
+      [e.target.name]: e.target.value
+    })
+  }
+  const handleClickLoginBtn = () =>{
+    setLoginDisabled(true)
+    setLoginTrue(true)
+    // setLoginDisabled(false)
+  }
+
+  const handleKeyEnter = (e) => {
+    if (e.key === 'Enter') {
+      handleClickLoginBtn()
+    }
+  }
+
+  useEffect(()=>{
+    if(input_values.user_id !== '' && input_values.user_pw !== ''){
+      setLoginDisabled(false)
+    }else{
+      setLoginDisabled(true)
+    }
+    return () =>{
+    }
+  },[input_values])
+
+
+
+    return (
+            <SignupWrap>
+                <Grid is_container='is_container' _className='grid-border'>
+                    <div className='signup-wrap'>
+                        <div className='signup-header-wrap'>
+                            <IoIosArrowBack
+                                style={{
+                                    width: "30px",
+                                    height: "30px"
+                                }}/>
+                            <text className='header-title'>로그인</text>
+                        </div>
+                        <div className='line'/>
+                        <div className='signup-input-wrap'>
+                            <text>이메일</text>
+                            <input name='user_id' onChange={handleChangeInput} onKeyUp={handleKeyEnter} placeholder='abc@email.com'/>   
+                            <text>비밀번호</text>
+                            <input naem='user_pw' onChange={handleChangeInput} onKeyUp={handleKeyEnter} type='password' placeholder='영문, 숫자 포함 8자 이상'/>
+                            {!loginTrue && <p className='alert-msg' style={{color:'red'}}>로그인 정보가 일치하지 않습니다.</p>}
+                            <button onClick={handleClickLoginBtn} disabled={login_disabled} className='sign-btn'>
+                            가입하기
+                            </button>
+                        </div>
+                    </div>
+                </Grid>
+            </SignupWrap>
     );
 };
 
 export default Login;
 
-const LoginWrap = styled.div `
-  .wrapborder{
+const SignupWrap = styled.div `
+  .grid-border{
+    width: 100%;
     min-height: 926px;
     border: 1px solid #ededed;
-  }
-  .login-wrap{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    h1{
-      padding: 20px;
-    }
-    .login-logo{
-      width: 150px;
-      height: 150px;
-      margin-bottom: 60px;
-    }
-    input{
-      background-color: #E2E2E2;
-      border: 0;
-      width: 400px;
-      height: 50px;
-      margin-bottom: 20px;
-      border-radius: 20px;
-    }
-    .loginBtn{
-      color: white;
-      width: 400px;
-      border: 0px;
-      height: 50px;
-      border-radius: 20px;
-      background-color: coral;
-      margin-bottom: 10px;
-      cursor: pointer;
-      &:hover{
-      background-color: #fc6d3a;
-    }
-    }
-    .signUpBtn{
-      color: black;
-      width: 400px;
-      border: 1px solid coral;
-      height: 50px;
-      border-radius: 20px;
-      background-color: white;
-      margin-bottom: 30px;
-      cursor: pointer;
-      &:hover{
-      background-color: #fc6d3a;
-    }
-    }
+    .signup-wrap{
+      .signup-header-wrap{
+        display: flex;
+        align-items: center;
+        margin: 20px 0 20px 0;
+        position: relative;
+        .header-title{
+          position: absolute;
+          left: 50%;
+          font-size: 25px;
+          margin-left: -42.5px;
+        }
+      }
     .line{
-      width: 100%;
-      height: 1px;
-      background-color: coral;
-      margin-bottom: 20px;
+          width: 100%;
+          height: 3px;
+          background-color: #ededed;
+          margin-bottom: 96px;
+      }
+      .signup-input-wrap{
+        display: flex;
+        flex-direction: column;
+        padding: 0 16px;
+        text{
+          margin-bottom: 4px;
+          margin-top: 32px;
+        }
+        input{
+          margin-bottom: 16px;
+          border-radius: 4px;
+          max-width: 397px;
+          height: 48px;
+          outline: none;
+          border: 1px solid #ededed;
+        }
+      } 
     }
-    text{
-      font-size: 12px;
-      margin-bottom: 20px;
-    }
-    .snsIconWrap{
+    .address-wrap{
       display: flex;
-      img{
-        width: 60px;
-        margin: 0px 20px 0px 20px;
-        cursor: pointer;
+      justify-content: space-between;
+      .select-wrap{
+        width: 191px;
+        height: 48px;
+        outline: none;
+        border: 1px solid #ededed;
+      }
+      .select-city-wrap{
+        width: 191px;
+        height: 48px;
+        outline: none;
+        border: 1px solid #ededed;
+      }
+    }
+    .sign-btn{
+      background-color: #FF626F;
+      text-align: center;
+      width: 100%;
+      max-width: 397px;
+      height: 48px;
+      border-radius: 50px;
+      color: white;
+      margin-top: 48px;
+      border: 0px;
+      cursor: pointer;
+      opacity: 0.8;
+      :disabled{
+        cursor: not-allowed; 
+        pointer-events: none;
+        background-color: gray;
+      }
+      &:hover{
+        opacity: 1;
       }
     }
   }
