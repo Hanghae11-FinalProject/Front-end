@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Nav from "../shared/Nav";
-import { icons } from "../shared/util";
 
-import { Grid, Button, Image } from "../elements/index";
-
+import { Grid, Button } from "../elements/index";
 import styled from "styled-components";
 import UserModal from "../components/UserModal";
 
@@ -43,7 +41,7 @@ const Mypage = () => {
           </Grid>
         </Grid>
       </MypageBox>
-      <Nav />
+      <Nav mypage={"mypage"} />
     </>
   );
 };

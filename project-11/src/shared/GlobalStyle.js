@@ -23,6 +23,7 @@ const GlobalStyles = createGlobalStyle`
 
   button, input{
     outline: 0;
+    font-family: 'NanumSquareRound';
   }
   body {
     color: #222222;
@@ -32,9 +33,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   :root {
-  --point-color: #ff8a3d;
+  --point-color: #FF626F;
   --main-font-color: #212529;
-  --sub-font-color: #868e96;
+  --sub-font-color: #999999;
   --border-color: #dddddd;
 }
 

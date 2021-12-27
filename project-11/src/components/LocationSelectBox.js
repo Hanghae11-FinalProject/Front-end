@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { GrMap } from "react-icons/gr";
 
 const LocationSelectBox = () => {
   const option = [
-    { value: "구", name: "구" },
+    { value: "구", name: "전체" },
     { value: "강남구", name: "강남구" },
     { value: "서초구", name: "서초구" },
     { value: "동대문구", name: "동대문구" },
@@ -13,6 +14,7 @@ const LocationSelectBox = () => {
   return (
     <React.Fragment>
       <SelectBoxWrapper>
+        <FaMapMarkerAlt className="icon" />
         <LocationSelect>
           {option.map((option) => (
             <option
@@ -37,15 +39,22 @@ const LocationSelectBox = () => {
 
 const SelectBoxWrapper = styled.div`
   display: flex;
+  align-items: center;
+
+  .icon {
+    color: var(--point-color);
+  }
 `;
 
 const LocationSelect = styled.select`
   width: 75px;
   height: 30px;
-  margin-left: 10px;
-  margin-top: -6px;
   border-radius: 6px;
+  outline: none;
+  border: 0;
+  font-family: "NanumSquareRound";
   cursor: pointer;
+  color: var(--point-color);
   /* -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none; */
