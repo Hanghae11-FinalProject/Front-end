@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
+import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 
@@ -13,9 +14,11 @@ const PostList = ({ location, category }) => {
   console.log(location, category);
   //api로 받아올 값들
   const _post_data = { location, category };
+
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
+  console.log("리덕스 저장 값 ", post_data);
   //무한 스크롤을 위한 페이지 값
   const [page, setpage] = useState(post_data.page);
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
@@ -32,13 +35,14 @@ const PostList = ({ location, category }) => {
   const getData = () => {
     let data;
     let count = page + 1;
-    axiosInstance
-      .post(`/api/category/${count}`, {
+    axios
+      .post(`http://15.164.222.25/api/category?page=${count}`, {
         categoryName: [category],
         address: [location],
       })
       .then((res) => {
         data = res.data;
+        console.log("무한 스크롤 동작해서 받아 온 값", res);
         //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 5) {
           sethasMore(false);
