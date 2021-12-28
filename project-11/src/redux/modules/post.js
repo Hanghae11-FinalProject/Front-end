@@ -17,6 +17,29 @@ const initialState = {
 };
 
 // *** 미들웨어
+
+// 게시글 작성
+const addPostDB = (title, content, category, tagName, images) => {
+  return function (dispatch, getState, { history }) {
+    const token = document.cookie; // 쿠키에서 토큰 어케가져옴?ㅋ
+
+    axios
+      .post(
+        "http://15.164.222.25/api/posts",
+        { title, content, category, tag: [{ tagName }], images: [{ images }] },
+        {
+          headers: { AUthorization: token },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log("에러에용", err);
+      });
+  };
+};
+
 const getPostAction = (post_data, count) => {
   return async (dispatch, getState, { history }) => {
     axios
@@ -55,6 +78,8 @@ export default handleActions(
 );
 
 const actionCreators = {
+
+  addPostDB,
   getPostAction,
 };
 

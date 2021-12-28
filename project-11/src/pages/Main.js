@@ -34,6 +34,7 @@ const Main = () => {
   return (
     <>
       <Container>
+
         <Grid is_container padding="16px" _className="border">
           <Header>
             <Grid _className="inner" is_container is_flex flex_align="center">
