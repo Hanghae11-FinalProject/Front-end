@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+
 import { Grid } from "../elements/index";
+
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
 
@@ -14,8 +15,8 @@ import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { RiCupFill } from "react-icons/ri";
 import { IoExtensionPuzzle } from "react-icons/io5";
 import { BiSmile } from "react-icons/bi";
-import { TiArrowSortedUp } from "react-icons/ti";
 
+import styled from "styled-components";
 // style
 import "swiper/css";
 import "swiper/css/pagination";

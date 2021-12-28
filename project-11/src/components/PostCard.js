@@ -101,7 +101,7 @@ const Post = styled.div`
       }
       span {
         margin-left: 5px;
-        font-size: 10px;
+        font-size: 12px;
         color: var(--inactive-text-color);
         margin-right: 5px;
       }
@@ -155,9 +155,9 @@ const PostContent = styled.div`
   .exchange-box {
     display: flex;
     align-items: center;
+    padding-left: 5px;
 
     .icon {
-      /* border: 1px solid red; */
       margin: 5px;
       font-size: 14px;
       font-weight: bold;
@@ -166,8 +166,8 @@ const PostContent = styled.div`
     span {
       font-size: 12px;
       color: var(--main-font-color);
-      width: 47%;
-      text-align: center;
+      /* width: 47%;
+      text-align: center; */
     }
   }
 `;
@@ -181,18 +181,18 @@ const ChipDiv = styled.div`
 
   div {
     padding: 5px 10px;
-    font-size: 10px;
+    font-size: 12px;
     border-radius: 12px;
     text-align: center;
     color: #fff;
   }
 
   .ing {
-    background-color: var(--point-color);
+    background-color: var(--main-color);
   }
 
   .stop {
-    background-color: var(--sub-font-color);
+    background-color: var(--inactive-icon-color);
   }
 `;
 
