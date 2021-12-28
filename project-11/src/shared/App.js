@@ -14,7 +14,7 @@ import Detail from "../pages/Detail";
 import Search from "../pages/Search";
 import Landing from "../pages/Landing";
 import chatting from "../pages/chatting";
-import chattingitem from "../components/chattingitem";
+import Chat from "../pages/Chat";
 
 function App() {
   return (
@@ -30,7 +30,8 @@ function App() {
         <Route path="/detail" exact component={Detail}></Route>
         <Route path="/search" exact component={Search}></Route>
         <Route path="/chatting" exact component={chatting}></Route>
-        <Route path="/chattingitem" exact component={chattingitem}></Route>
+        <Route path="/chat" exact component={Chat}></Route>
+
       </ConnectedRouter>
     </div>
   );

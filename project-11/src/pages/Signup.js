@@ -1,3 +1,4 @@
+
 import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 import {IoIosArrowBack} from 'react-icons/io'
@@ -6,6 +7,13 @@ import {useForm} from 'react-hook-form'
 import axios from 'axios';
 
 const Signup = () => {
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const password = useRef();
 
     const {register, watch, formState: {
             errors
@@ -151,49 +159,53 @@ const Signup = () => {
             </SignupWrap>
         </form>
     );
+
 };
 
 export default Signup;
 
-const SignupWrap = styled.div `
-  .grid-border{
+const SignupWrap = styled.div`
+  .grid-border {
     width: 100%;
     min-height: 926px;
     border: 1px solid #ededed;
-    .signup-wrap{
-      .signup-header-wrap{
+    .signup-wrap {
+      .signup-header-wrap {
         display: flex;
         align-items: center;
         margin: 20px 0 20px 0;
         position: relative;
-        .header-title{
+        .header-title {
           position: absolute;
           left: 50%;
           font-size: 25px;
           margin-left: -42.5px;
         }
       }
-    .line{
-          width: 100%;
-          height: 3px;
-          background-color: #ededed;
+      .line {
+        width: 100%;
+        height: 3px;
+        background-color: #ededed;
       }
-      .signup-input-wrap{
+      .signup-input-wrap {
         display: flex;
         flex-direction: column;
+
         padding: 0 16px;
-        text{
+        text {
           margin-bottom: 4px;
           margin-top: 32px;
         }
-        input{
+        input {
           margin-bottom: 16px;
           border-radius: 4px;
           width: 100%;
+
           height: 48px;
           outline: none;
           border: 1px solid #ededed;
         }
+
         .doubleinput{
           max-width: 100%;
           justify-content: space-between;
@@ -214,24 +226,24 @@ const SignupWrap = styled.div `
         }
       } 
     }
-    .address-wrap{
+    .address-wrap {
       display: flex;
       justify-content: space-between;
-      .select-wrap{
+      .select-wrap {
         width: 191px;
         height: 48px;
         outline: none;
         border: 1px solid #ededed;
       }
-      .select-city-wrap{
+      .select-city-wrap {
         width: 191px;
         height: 48px;
         outline: none;
         border: 1px solid #ededed;
       }
     }
-    .sign-btn{
-      background-color: #FF626F;
+    .sign-btn {
+      background-color: #ff626f;
       text-align: center;
       width: 100%;
       max-width: 397px;
@@ -242,14 +254,14 @@ const SignupWrap = styled.div `
       border: 0px;
       cursor: pointer;
       opacity: 0.8;
-      :disabled{
-        cursor: not-allowed; 
+      :disabled {
+        cursor: not-allowed;
         pointer-events: none;
         background-color: gray;
       }
-      &:hover{
+      &:hover {
         opacity: 1;
       }
     }
   }
-`
+`;

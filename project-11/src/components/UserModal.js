@@ -86,7 +86,7 @@ const NameInput = styled.input`
   padding: 10px 10px;
   outline: 0;
   margin-top: 50px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--help-color);
 `;
 
 const BtnBox = styled.div`
@@ -97,7 +97,7 @@ const BtnBox = styled.div`
 
 const Btn = styled.button`
   padding: 10px 15px;
-  background-color: var(--point-color);
+  background-color: var(--main-color);
   color: #fff;
   border-radius: 6px;
   margin: 0 5px;

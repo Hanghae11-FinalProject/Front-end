@@ -22,7 +22,7 @@ const Nav = (props) => {
             <MdHome
               className={props.home === "home" ? "active home" : "icon home"}
               onClick={() => {
-                history.goBack();
+                history.push("/");
               }}
             />
           </Menu>
@@ -61,11 +61,11 @@ const NavBox = styled.div`
   height: 50px;
   padding: 10px 0;
   text-align: center;
-  color: var(--sub-font-color);
+  color: var(--inactive-icon-color);
 
   position: fixed;
   bottom: 0;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--help-color);
   background-color: #fff;
   z-index: 9999;
 `;
@@ -78,7 +78,7 @@ const PlusMenu = styled.div`
     font-weight: bold;
     width: 30px;
     height: 30px;
-    background-color: var(--point-color);
+    background-color: var(--main-color);
     color: #fff;
     border-radius: 30px;
     cursor: pointer;
@@ -96,6 +96,6 @@ const Menu = styled.div`
   }
 
   .active {
-    color: var(--point-color);
+    color: var(--main-color);
   }
 `;

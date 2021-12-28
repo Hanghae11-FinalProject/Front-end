@@ -51,8 +51,8 @@ export default Mypage;
 const MypageBox = styled.div`
   .border {
     height: 100vh;
-    border-right: 1px solid var(--border-color);
-    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color);
     text-align: center;
     .menu {
       text-align: left;
@@ -63,7 +63,7 @@ const MypageBox = styled.div`
       cursor: pointer;
 
       &:hover {
-        background-color: var(--point-color);
+        background-color: var(--help-color);
         color: #fff;
       }
     }
@@ -93,7 +93,7 @@ const IconBox = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 3px solid var(--point-color);
+    border: 3px solid var(--main-color);
 
     img {
       width: 100%;

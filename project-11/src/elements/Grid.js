@@ -14,6 +14,7 @@ const Grid = (props) => {
     box_shadow,
     text_overflow,
     overFlow,
+    _onClick,
   } = props;
   const styles = {
     is_container,
@@ -26,6 +27,7 @@ const Grid = (props) => {
     box_shadow,
     text_overflow,
     overFlow,
+    onClick: _onClick,
   };
   return <GridBox {...styles}>{children}</GridBox>;
 };
