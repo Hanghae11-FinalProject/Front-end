@@ -44,7 +44,7 @@ const Header = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  border-bottom: 1px solid var(--border-color);\
+  border-bottom: 1px solid var(--border-color);
   background-color:#fff;
   z-index: 10;
   .inner {
