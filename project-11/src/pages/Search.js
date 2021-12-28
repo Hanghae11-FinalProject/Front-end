@@ -12,7 +12,8 @@ const Search = () => {
   const preWord = JSON.parse(localStorage.getItem("recent"));
   const [recent, setRecent] = useState(preWord || []);
   const [key, setKey] = useState("");
-  const [search_data, setSearch_data] = useState(null);
+  const [search_data, setSearch_data] = useState(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     localStorage.setItem("recent", JSON.stringify(recent));
@@ -31,6 +32,9 @@ const Search = () => {
     if (key && e.key === "Enter") {
       console.log(e.target.value);
       setRecent([e.target.value, ...preWord]);
+      //Axiso 자리
+      //여기에 키워드를 보내서 가지고 오면 되지 않을까~? page +
+      //가져온 값은 setSearch_data에 넣어서 그걸 뿌려주면 된다~~~
       setKey("");
     }
   };
@@ -57,6 +61,7 @@ const Search = () => {
             />
             <BiSearch className="icon" />
           </Grid>
+          {/* 검색할 데이터가 없을 경우 */}
           {!search_data ? (
             <>
               <SearchHIstory
@@ -78,6 +83,7 @@ const Search = () => {
             </>
           ) : (
             <>
+              {/* 검색한 데이터가 있을 경우 */}
               <PostList>
                 {PostData.map((item, idx) => {
                   return <PostCard key={idx} item={item} />;
@@ -97,8 +103,8 @@ export default Search;
 const SearchList = styled.div`
   .border {
     height: 100vh;
-    border-right: 1px solid var(--border-color);
-    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color);
     padding: 20px 16px;
 
     .inputform {
@@ -106,7 +112,7 @@ const SearchList = styled.div`
       padding: 5px 10px;
       margin: 0 auto;
       border-radius: 16px;
-      background-color: var(--border-color);
+      background-color: var(--help-color);
     }
 
     .recommend-box {
@@ -129,7 +135,7 @@ const InputForm = styled.input`
 
 const Keyword = styled.div`
   padding: 5px 10px;
-  background-color: var(--border-color);
+  background-color: var(--help-color);
   border-radius: 16px;
   margin: 10px 10px 0 0;
   font-size: 14px;
@@ -140,7 +146,7 @@ const Keyword = styled.div`
 `;
 
 const RemcommendBox = styled.div`
-  padding: 20px 25px;
+  padding: 20px 10px;
   p {
     margin: 10px 0;
   }

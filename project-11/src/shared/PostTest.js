@@ -2,35 +2,39 @@ export const PostData = [
   {
     PostId: "1",
     nickname: "Teemo",
-    title: "티모모자",
-    content:
-      "티모 모자 상태sss급이에오 다른 모자랑 교환하고 싶어오!ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ",
-    adress: "강남구",
+    title: "왕맛난 비비고 만두",
+    content: "비비고 만두랑 음료수랑 교환하고 싶어요!",
+    address: "동대문구",
     images:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE0grtiKUXUtP-dqnzEiBurzqd1a7FbGyflA&usqp=CAU",
+      "https://mblogthumb-phinf.pstatic.net/20160202_124/naeako_14544076307596SJg3_JPEG/20160202060724_IMG_1295_edit.JPG?type=w2",
     currentState: "거래중",
+    myItem: "비비고 만두",
+    exchangeItem: "음료수",
     createdAt: "2021-12-22",
   },
   {
     PostId: "2",
     nickname: "Teemo",
-    title: "티모모자",
+    title: "티모모자티모모자",
     content: "티모 모자 상태sss급이에오 다른 모자랑 교환하고 싶어오!",
-    adress: "강남구",
+    address: "강남구",
     images:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE0grtiKUXUtP-dqnzEiBurzqd1a7FbGyflA&usqp=CAU",
     currentState: "거래완료",
+    myItem: "티모모자티모",
+    exchangeItem: "티모모자티모",
     createdAt: "2021-12-22",
   },
   {
     PostId: "3",
     nickname: "Teemo",
-    title: "티모모자",
+    title: "하늘보리 마시고 싶으신 분",
     content: "티모 모자 상태sss급이에오 다른 모자랑 교환하고 싶어오!",
-    adress: "강남구",
-    images:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE0grtiKUXUtP-dqnzEiBurzqd1a7FbGyflA&usqp=CAU",
+    address: "강남구",
+    images: "https://img.hankyung.com/photo/201908/01.20217326.1.jpg",
     currentState: "거래중",
+    myItem: "하늘보리",
+    exchangeItem: "눈의솔",
     createdAt: "2021-12-22",
   },
   {
@@ -38,10 +42,12 @@ export const PostData = [
     nickname: "Teemo",
     title: "티모모자",
     content: "티모 모자 상태sss급이에오 다른 모자랑 교환하고 싶어오!",
-    adress: "강남구",
+    address: "강남구",
     images:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE0grtiKUXUtP-dqnzEiBurzqd1a7FbGyflA&usqp=CAU",
     currentState: "거래완료",
+    myItem: "티모모자",
+    exchangeItem: "음료수",
     createdAt: "2021-12-22",
   },
   {
@@ -49,10 +55,12 @@ export const PostData = [
     nickname: "Ramus",
     title: "람머스 구른다~",
     content: "람머스 모자에용 티모 모자 말고 다른 종류 모자랑 교환하고 싶어용",
-    adress: "서초구",
+    address: "서초구",
     images:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl-vUQ7eAOHDaPh7JY_AfSCPubJzNJbzVnRw&usqp=CAU",
     currentState: "거래완료",
+    myItem: "티모모자",
+    exchangeItem: "음료수",
     createdAt: "2021-12-21",
   },
   {
@@ -60,10 +68,12 @@ export const PostData = [
     nickname: "Ramus",
     title: "람머스 구른다~",
     content: "람머스 모자에용 티모 모자 말고 다른 종류 모자랑 교환하고 싶어용",
-    adress: "서초구",
+    address: "서초구",
     images:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl-vUQ7eAOHDaPh7JY_AfSCPubJzNJbzVnRw&usqp=CAU",
     currentState: "거래완료",
+    myItem: "티모모자",
+    exchangeItem: "음료수",
     createdAt: "2021-12-21",
   },
   {
@@ -71,10 +81,12 @@ export const PostData = [
     nickname: "Ramus",
     title: "람머스 구른다~",
     content: "람머스 모자에용 티모 모자 말고 다른 종류 모자랑 교환하고 싶어용",
-    adress: "서초구",
+    address: "서초구",
     images:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl-vUQ7eAOHDaPh7JY_AfSCPubJzNJbzVnRw&usqp=CAU",
     currentState: "거래완료",
+    myItem: "티모모자",
+    exchangeItem: "음료수",
     createdAt: "2021-12-21",
   },
 ];

@@ -32,7 +32,7 @@ const HistoryContainer = styled.div`
   padding: 20px 30px;
 `;
 const KeywordBox = styled.div`
-  padding: 20px 25px;
+  padding: 20px 10px;
   p {
     margin: 10px 0;
   }
@@ -44,7 +44,7 @@ const KeywordBox = styled.div`
 `;
 const Keyword = styled.div`
   padding: 5px 10px;
-  background-color: var(--border-color);
+  background-color: var(--help-color);
   border-radius: 16px;
   margin: 10px 10px 0 0;
   font-size: 14px;
