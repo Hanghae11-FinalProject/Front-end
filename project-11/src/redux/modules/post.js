@@ -23,6 +23,29 @@ const initialState = {
   is_loading: false,
 };
 // *** 미들웨어
+
+// 게시글 작성
+const addPostDB = (title, content, category, tagName, images) => {
+  return function (dispatch, getState, { history }) {
+    const token = document.cookie; // 쿠키에서 토큰 어케가져옴?ㅋ
+
+    axios
+      .post(
+        "/api/posts",
+        { title, content, category, tag: [{ tagName }], images: [{ images }] },
+        {
+          headers: { AUthorization: token },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log("에러에용", err);
+      });
+  };
+};
+
 // 서울 페이지 PostList
 const getPostListDB = () => {
   return function (dispatch, getState, { history }) {
@@ -75,5 +98,6 @@ export default handleActions(
 // *** 액션 생성 함수 export
 const actionCreators = {
   getPostListDB,
+  addPostDB,
 };
 export { actionCreators };
