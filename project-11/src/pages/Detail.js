@@ -68,10 +68,7 @@ const Detail = () => {
             <p className="name">{data.username}</p>
             <p className="time">{data.createdAt}</p>
           </Grid>
-          <Content>
-            펭수 인형이랑 다른 귀여운 인형 교환하실 분 찾습니다. 고양이 인형
-            대환영!
-          </Content>
+          <Content>{data.content}</Content>
           <Grid is_flex _className="tag chip">
             {data.tag.map((item, i) => {
               return (
@@ -156,5 +153,5 @@ const Title = styled.div`
 
 const Content = styled.div`
   padding: 16px;
-  height: 300px;
+  height: 230px;
 `;

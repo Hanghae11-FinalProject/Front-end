@@ -11,6 +11,8 @@ import Signup from "../pages/Signup";
 import Mypage from "../pages/Mypage";
 import Write from "../pages/Write";
 import Detail from "../pages/Detail";
+import Search from "../pages/Search";
+import Landing from "../pages/Landing";
 
 function App() {
   return (
@@ -18,11 +20,13 @@ function App() {
       <GlobalStyles />
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main}></Route>
+        <Route path="/intro" exact component={Landing}></Route>
         <Route path="/login" exact component={Login}></Route>
         <Route path="/signup" exact component={Signup}></Route>
         <Route path="/mypage" exact component={Mypage}></Route>
         <Route path="/write" exact component={Write}></Route>
         <Route path="/detail" exact component={Detail}></Route>
+        <Route path="/search" exact component={Search}></Route>
       </ConnectedRouter>
     </div>
   );

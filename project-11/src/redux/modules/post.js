@@ -1,27 +1,20 @@
 // *** 패키지 import
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-import axios from "axios";
+import { axiosInstance } from "../../shared/api";
 // *** 액션 타입
 const GET_POST = "GET_POST";
-const LOADING = "LOADING";
 
 // *** 액션 생성 함수
-const getPost = createAction(GET_POST, (postList) => ({ postList }));
-const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+const getPosts = createAction(GET_POST, (post_data) => ({ post_data }));
+
 // *** 초기값
 const initialState = {
-  postId: null,
-  nickname: null,
-  title: null,
-  content: null,
-  address: null,
-  images: null,
-  currentState: null,
-  createAt: null,
-  paging: { start: null, next: null, size: 4 },
-  is_loading: false,
+  posts: [],
+  page: 0,
+  has_next: false,
 };
+
 // *** 미들웨어
 
 // 게시글 작성
@@ -46,58 +39,46 @@ const addPostDB = (title, content, category, tagName, images) => {
   };
 };
 
-// 서울 페이지 PostList
-const getPostListDB = () => {
-  return function (dispatch, getState, { history }) {
-    const token = document.cookie.getItem("user_token");
-
-    dispatch(loading(true));
-
-    axios
-      .get("/api/posts", {
-        headers: { AUthorization: token },
+const getPostAction = (post_data, count) => {
+  return async (dispatch, getState, { history }) => {
+    axiosInstance
+      .post(`/api/category/${count}`, {
+        categoryName: post_data.category,
+        address: post_data.location,
       })
-      .then((response) => {
-        if (response.data === "") {
-          window.alert("게시물이 없습니다.");
-          return;
+      .then((res) => {
+        let is_next = null;
+        if (res.data.length < 6) {
+          is_next = false;
+        } else {
+          is_next = true;
         }
-
-        console.log("게시물 조회 성공");
-        dispatch(getPost(response.data));
-        history.replace("/");
-      })
-      .catch((err) => {
-        console.log("게시물 조회 실패", err);
+        let post_data = {
+          posts: res.data,
+          page: count + 1,
+          next: is_next,
+        };
+        dispatch(getPosts(post_data));
       });
   };
 };
 // *** 리듀서
 export default handleActions(
   {
-    [GET_POST]: (state, action) => {
-      return produce(state, (draft) => {
-        draft.postId = action.payload.postId;
-        draft.nickname = action.payload.nickname;
-        draft.title = action.payload.title;
-        draft.content = action.payload.content;
-        draft.address = action.payload.address;
-        draft.images = action.payload.images;
-        draft.currentState = action.payload.currentState;
-        draft.createAt = action.payload.createAt;
-      });
-    },
-    [LOADING]: (state, action) => {
-      return produce(state, (draft) => {
-        draft.is_loading = action.payload.is_loading;
-      });
-    },
+    [GET_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.posts.push(...action.payload.post_data.posts);
+        draft.has_next = action.payload.post_data.next;
+        draft.page = action.payload.post_data.page;
+      }),
   },
   initialState
 );
-// *** 액션 생성 함수 export
+
 const actionCreators = {
-  getPostListDB,
+
   addPostDB,
+  getPostAction,
 };
+
 export { actionCreators };

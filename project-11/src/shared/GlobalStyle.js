@@ -2,12 +2,14 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
 
-  @font-face {
-    font-family: 'BMJUA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
     font-weight: normal;
     font-style: normal;
   }
+  
 
   * {
     margin: 0;
@@ -19,18 +21,25 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
+  button, input{
+    outline: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
   body {
-    color: #222222;
+    color: var(--active-color);
     overflow-x: hidden;
-    font-family: 'BMJUA';
+    font-family: 'NanumSquareRound';
     
   }
 
   :root {
-  --point-color: #ff8a3d;
-  --main-font-color: #212529;
-  --sub-font-color: #868e96;
-  --border-color: #dddddd;
+  --main-color: #FF626F;
+  --disabled-color:#00000008;
+  --wrong-color: #FF0000;
+  --active-color: #323232;
+  --inactive-text-color: #666666;
+  --help-color: #CDCDCD;
+  --inactive-icon-color: #9A9A9A;
 }
 
   ol, ul, li {
