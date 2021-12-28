@@ -31,7 +31,7 @@ const addPostDB = (title, content, category, tagName, images) => {
 
     axios
       .post(
-        "/api/posts",
+        "http://15.164.222.25/api/posts",
         { title, content, category, tag: [{ tagName }], images: [{ images }] },
         {
           headers: { AUthorization: token },

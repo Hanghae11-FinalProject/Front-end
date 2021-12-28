@@ -23,7 +23,7 @@ const Write = (props) => {
   const [title, setTitle] = React.useState(""); // 제목
   const [content, setContent] = React.useState(""); // 내용
   const [myItem, setMyItem] = React.useState(""); // 교환할 물품
-  const [yourItem, setYourItem] = React.useState(""); // 교환받을 물품
+  const [exchangeItem, setExchangeItem] = React.useState(""); // 교환받을 물품
   const [category, setCategory] = React.useState(""); // 카테고리
   const [tagName, setHashtag] = React.useState(""); // 해쉬태그 onChange로 관리할 문자열
   const [hashArr, setHashArr] = React.useState([]); // 해시태그 담을 배열
@@ -53,6 +53,7 @@ const Write = (props) => {
   const changeContent = (e) => {
     setContent(e.target.value);
     console.log(preImg);
+    console.log(hashArr);
   };
 
   // 교환할 물품 onChange 함수
@@ -62,12 +63,17 @@ const Write = (props) => {
 
   // 교환받을 물품 onChange 함수
   const changeYourItem = (e) => {
-    setYourItem(e.target.value);
+    setExchangeItem(e.target.value);
   };
 
   // 카테고리 onChange 함수
   const changeCate = (e) => {
     setCategory(e.target.value);
+  };
+
+  // 해시태그 onChange 함수
+  const onChangeHashtag = (e) => {
+    setHashtag(e.target.value);
   };
 
   // 해시태그 onKeyup 함수
@@ -94,8 +100,6 @@ const Write = (props) => {
         console.log("엔터로 된거닝?", e.target.value);
         HashWrapInner.innerHTML = "#" + e.target.value;
         GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
-        setTest([...test, e.target.value]);
-        console.log(test);
         setHashArr((hashArr) => [...hashArr, tagName]);
         setHashtag(""); // 태그를 추가한 뒤 새로운 태그를 추가하기 위해 tagName을 다시 빈 값으로 만들어준다.
       }
@@ -128,7 +132,7 @@ const Write = (props) => {
     //   console.log("3개 끝");
     //   return;
     // }
-    setPreImg(nowImgURLList); // 반복문이 끝난뒤 preImg 원본에 넣어준다.
+    setPreImg([...nowImgURLList]); // 반복문이 끝난뒤 preImg 원본에 넣어준다.
   };
 
   // preview 이미지 삭제
@@ -147,11 +151,25 @@ const Write = (props) => {
     title !== "" &&
     content !== "" &&
     myItem !== "" &&
-    yourItem !== "" &&
+    exchangeItem !== "" &&
     category !== "" // 만약 카테고리를 맨 마지막에 선택하면 다른 인풋에서 값을 입력해야지만 활성화가 된다.
       ? setActive(false)
       : setActive(true);
-    console.log(category);
+  };
+
+  // 게시글 작성
+  const postWrite = () => {
+    dispatch(
+      postActions.addPostDB(
+        title,
+        content,
+        category,
+        tagName,
+        myItem,
+        exchangeItem,
+        images
+      )
+    );
   };
 
   return (
@@ -202,12 +220,14 @@ const Write = (props) => {
           <TradeInput
             // value={myItem}
             onChange={changeMyItem}
+            maxLength="6"
             placeholder="교환할 물품 (1개 입력)"
           ></TradeInput>
           <CenterLine />
           <TradeInput
             // value={yourItem}
             onChange={changeYourItem}
+            maxLength="6"
             placeholder="교환받을 물품 (1개 입력)"
           ></TradeInput>
         </TradeDiv>
@@ -258,6 +278,7 @@ const Write = (props) => {
             onChange={changeContent}
             onKeyUp={checkActive}
             rows={19}
+            maxLength="300"
           ></ContentInput>
         </ContentArea>
 
@@ -268,7 +289,7 @@ const Write = (props) => {
               className="HashInput"
               type="text"
               defaultValue={tagName}
-              // onChange={onChangeHashtag}
+              onChange={onChangeHashtag}
               onKeyUp={createTag}
               placeholder="# 태그 입력 (최대 5개)"
             />
@@ -299,7 +320,7 @@ const Container = styled.div`
 const MainTop = styled.div`
   height: 44px;
   margin: 8px;
-  margin-top: 49px !important;
+  /* margin-top: 49px !important; */
   border-bottom: 2px solid #eee;
   display: flex;
   justify-content: space-between;
@@ -447,12 +468,11 @@ const Preview = styled.img`
 const ContentArea = styled.div`
   height: 330px;
   margin: 16px;
-  border-bottom: 2px solid #eee;
 `;
 
 const ContentInput = styled.textarea`
   width: 24.6rem;
-  font-size: 14px;
+  font-size: 16px;
   resize: none;
   border: none;
   :focus {
@@ -463,6 +483,7 @@ const ContentInput = styled.textarea`
 const HashTagArea = styled.div`
   height: 75px;
   margin: 15px;
+  border-top: 2px solid #eee;
 `;
 
 const HashInputOuter = styled.div`
