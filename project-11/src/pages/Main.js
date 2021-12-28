@@ -190,6 +190,7 @@ const Header = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+
   border-bottom: 1px solid var(--help-color);
   background-color: #fff;
   z-index: 10;
