@@ -58,7 +58,7 @@ const PostCard = ({ item }) => {
               <span>2</span>
             </Grid>
             <Grid is_flex _className="chat-btn" flex_align="center">
-              <BsChat class Name="icon" />
+              <BsChat className="icon" />
               <span>3</span>
             </Grid>
           </Grid>

@@ -2,6 +2,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
+import axios from "axios";
 // *** 액션 타입
 const GET_POST = "GET_POST";
 
@@ -18,12 +19,13 @@ const initialState = {
 // *** 미들웨어
 const getPostAction = (post_data, count) => {
   return async (dispatch, getState, { history }) => {
-    axiosInstance
-      .post(`/api/category/${count}`, {
-        categoryName: post_data.category,
-        address: post_data.location,
+    axios
+      .post(`http://15.164.222.25/api/category?page=${count}`, {
+        categoryName: [post_data.category],
+        address: [post_data.location],
       })
       .then((res) => {
+        console.log("처음 받아오는 목록", res);
         let is_next = null;
         if (res.data.length < 6) {
           is_next = false;
