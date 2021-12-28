@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import MainCategory from "../components/MainCategory";
+// import MainCategory from "../components/MainCategory";
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
 
@@ -9,7 +9,7 @@ const Main = () => {
   return (
     <React.Fragment>
       <Container>
-        <MainCategory />
+        {/* <MainCategory /> */}
         <PostList />
       </Container>
       <Nav />

@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import LocationSelectBox from "./LocationSelectBox";
-import SecondLocation from "./SecondLocation";
 import PostCard from "./PostCard";
 
 const PostList = () => {
@@ -11,8 +9,6 @@ const PostList = () => {
       <MainContainer>
         <MainHead>
           <Text>전체글 - </Text>
-          <LocationSelectBox />
-          <SecondLocation />
         </MainHead>
         <PostCard />
       </MainContainer>
