@@ -10,7 +10,6 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 import { PostData } from "../shared/PostTest";
 
-
 const PostList = ({ location, category }) => {
   console.log(location, category);
   //api로 받아올 값들
@@ -42,7 +41,7 @@ const PostList = ({ location, category }) => {
         address: [location],
       })
       .then((res) => {
-        data = res.data;
+        data = res.data.data;
         console.log("무한 스크롤 동작해서 받아 온 값", res);
         //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 5) {
@@ -58,7 +57,6 @@ const PostList = ({ location, category }) => {
   return (
     <React.Fragment>
       <MainContainer>
-
         <InfiniteScroll
           dataLength={post_data.posts.length} //This is important field to render the next data
           next={getData}

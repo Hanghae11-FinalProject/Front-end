@@ -56,7 +56,7 @@ const getPostAction = (post_data, count) => {
           is_next = true;
         }
         let post_data = {
-          posts: res.data,
+          posts: res.data.data,
           page: count + 1,
           next: is_next,
         };
@@ -78,7 +78,6 @@ export default handleActions(
 );
 
 const actionCreators = {
-
   addPostDB,
   getPostAction,
 };

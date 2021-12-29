@@ -14,6 +14,7 @@ import Nav from "../shared/Nav";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import axios from "axios";
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -30,7 +31,11 @@ const Write = (props) => {
   const [images, setImages] = React.useState([]); // 이미지 aixos 통신용
   const [preImg, setPreImg] = React.useState([]); // preview용 이미지
   const [active, setActive] = React.useState(true); // 버튼 액티브
-  const [test, setTest] = React.useState([]);
+  const [currentState, setCurrentState] = React.useState("Proceeding");
+  const [postFiles, setPostFiles] = React.useState({
+    file: [],
+    previewURL: "",
+  });
 
   const cateOption = [
     { value: "품목 선택", name: "품목 선택" },
@@ -44,6 +49,28 @@ const Write = (props) => {
     { value: "재능교환", name: "재능교환" },
   ];
 
+  // const uploadFiles = (e) => {
+  //   e.stopPropagation();
+  //   let reader = new FileReader();
+  //   let file = e.target.files[0];
+  //   const filesInArr = Array.from(e.target.files);
+
+  //   reader.onloadend = () => {
+  //     setPostFiles({
+  //       file: filesInArr,
+  //       previewURL: reader.result,
+  //     });
+  //   };
+  //   if(file) {
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
+
+  // let profile_preview = null;
+  // if (postFiles.file !== null) {
+  //   profile_preview = postFiles.file[0]?.type.includes
+  // }
+
   // 제목 onChange 함수
   const changeTitle = (e) => {
     setTitle(e.target.value);
@@ -52,7 +79,8 @@ const Write = (props) => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    console.log(preImg);
+    console.log(images.length);
+    // console.log(preImg);
     console.log(hashArr);
   };
 
@@ -100,7 +128,8 @@ const Write = (props) => {
         console.log("엔터로 된거닝?", e.target.value);
         HashWrapInner.innerHTML = "#" + e.target.value;
         GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
-        setHashArr((hashArr) => [...hashArr, tagName]);
+        const tag = { tagName: tagName };
+        setHashArr((hashArr) => [...hashArr, tag]);
         setHashtag(""); // 태그를 추가한 뒤 새로운 태그를 추가하기 위해 tagName을 다시 빈 값으로 만들어준다.
       }
     },
@@ -137,13 +166,13 @@ const Write = (props) => {
 
   // preview 이미지 삭제
   const deletePreImg = (x) => {
-    const test = preImg.filter((item) => {
+    const deleteImg = preImg.filter((item) => {
       // preImg를 요소 하나씩 filter를 돌려 만약 내가 누른 사진의 url이면 반환되지 못하도록 함수 설계
       if (item !== x) {
         return item;
       }
     });
-    setPreImg(test);
+    setPreImg(deleteImg);
   };
 
   // Upload 버튼 active 함수
@@ -158,18 +187,44 @@ const Write = (props) => {
   };
 
   // 게시글 작성
-  const postWrite = () => {
-    dispatch(
-      postActions.addPostDB(
-        title,
-        content,
-        category,
-        tagName,
-        myItem,
-        exchangeItem,
-        images
-      )
+  const postWrite = async () => {
+    const formData = new FormData();
+    // console.log(images);
+    for (let i = 0; i < images.length; i++) {
+      formData.append("image", images[i]);
+    }
+    formData.append(
+      "data",
+      JSON.stringify({
+        title: title,
+        content: content,
+        category: category,
+        currentState: currentState,
+        // tag: [{ tagName: "아이고" }, { tagName: "이것" }],
+        tag: hashArr,
+        myItem: myItem,
+        exchangeItem: exchangeItem,
+      })
     );
+    for (let value of formData.values()) {
+      console.log(value);
+    }
+    await axios({
+      method: "post",
+      url: "http://15.164.222.25/api/posts",
+      data: formData,
+      headers: {
+        "Content-type": "multipart/form-data",
+        Authorization:
+          "BEARER eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJFWFBJUkVEX0RBVEUiOjE2NDEwMDQxNDAsImlzcyI6InNwYXJ0YSIsIlVTRVJfTkFNRSI6Imp5YmluMTIzOTZAbmF2ZXIuY29tIn0.jrvXPzZOuljjmYbGno4RRUyejV6Oowlw0AkheU5pskg",
+      },
+    })
+      .then((response) => {
+        console.log("작성성공이니~", response);
+      })
+      .catch((err) => {
+        console.log(err, "에러났니~");
+      });
   };
 
   return (
@@ -182,10 +237,7 @@ const Write = (props) => {
             style={{ padding: "6px" }}
             className={!active ? "activeBtn" : "unActiveBtn"}
             disabled={active}
-            onClick={() => {
-              console.log("버튼활성화댐");
-              console.log(preImg);
-            }}
+            onClick={postWrite}
           >
             완료
           </TopText>
