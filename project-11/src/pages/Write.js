@@ -243,73 +243,6 @@ const Write = (props) => {
                 console.log("버튼활성화댐");
                 console.log(preImg);
               }}
-          >
-            완료
-          </TopText>
-        </MainTop>
-        <TitleArea>
-          <TitleInput
-            Value={title}
-            type="text"
-            maxLength={15}
-            placeholder="제목 (15자 이하)"
-            onChange={changeTitle}
-            onKeyUp={checkActive}
-          ></TitleInput>
-        </TitleArea>
-
-        <CateArea>
-          <CateSelect defaultValue={category} onChange={changeCate}>
-            {cateOption.map((p) => (
-              <option
-                key={p.value}
-                value={p.value}
-                hidden={p.value === "품목 선택" ? true : false}
-                // className={p.value === "품목 선택" ? "basic" : "notBasic"}
-              >
-                {p.name}
-              </option>
-            ))}
-          </CateSelect>
-        </CateArea>
-
-        <TradeDiv>
-          <TradeInput
-            // value={myItem}
-            onChange={changeMyItem}
-            maxLength="6"
-            placeholder="교환할 물품 (1개 입력)"
-          ></TradeInput>
-          <CenterLine />
-          <TradeInput
-            // value={yourItem}
-            onChange={changeYourItem}
-            maxLength="6"
-            placeholder="교환받을 물품 (1개 입력)"
-          ></TradeInput>
-        </TradeDiv>
-
-        <ImgArea>
-          <label htmlFor="input-file" className="input-Btn-Css">
-            <MdOutlineCameraAlt size={30} />
-            {images.length} / 10
-            <input
-              type="file"
-              onChange={addImage}
-              // max={5}
-              encType="multipart/form-data"
-              multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
-              id="input-file" // 커스텀 디자인을 위한 라벨링
-              className="input-Btn"
-            />
-          </label>
-          <Slider>
-            <Swiper
-              className="Img-Preview"
-              spaceBetween={0}
-              slidesPerView={3}
-              pagination={{ clickable: true }}
-
             >
               완료
             </TopText>
@@ -376,22 +309,7 @@ const Write = (props) => {
                 spaceBetween={0}
                 slidesPerView={3}
                 pagination={{ clickable: true }}
-              >
-                {preImg.map((x, index) => {
-                  return (
-                    <SwiperSlide key={index} className="slide">
-                      <TiDelete
-                        size="25px"
-                        className="deleteBtn"
-                        onClick={() => {
-                          deletePreImg(x);
-                        }}
-                      />
-                      <Preview src={x} />
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
+              ></Swiper>
             </Slider>
           </ImgArea>
 
@@ -428,8 +346,8 @@ const Write = (props) => {
 
 const Container = styled.div`
   margin: 0 auto;
-  height: 100vh;
   .border {
+    height: 100vh;
     border: 1px solid var(--help-color);
     .activeBtn {
       color: var(--main-color);
@@ -528,9 +446,10 @@ const CenterLine = styled.div`
 `;
 
 const TradeInput = styled.input`
-  height: 40px;
-  /* width: 11rem; */
   width: 50%;
+  height: 40px;
+  padding-left: 10px;
+
   margin-bottom: 8px;
   border: none;
   font-size: 16px;
