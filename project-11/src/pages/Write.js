@@ -208,14 +208,18 @@ const Write = (props) => {
   return (
     <React.Fragment>
       <Container>
-        <MainTop>
-          <CgChevronLeft size="40" />
-          <TopText style={{ marginLeft: "6px" }}>글 작성하기</TopText>
-          <TopText
-            style={{ padding: "6px" }}
+
+        <Grid is_container _className="border">
+          <MainTop>
+            <CgChevronLeft size="30" />
+            <TopText style={{ marginLeft: "6px" }}>글 작성하기</TopText>
+            <TopText
+       style={{ padding: "6px" }}
             className={!active ? "activeBtn" : "unActiveBtn"}
             disabled={active}
             onClick={postWrite}
+              }}
+
           >
             완료
           </TopText>
@@ -282,6 +286,7 @@ const Write = (props) => {
               spaceBetween={0}
               slidesPerView={3}
               pagination={{ clickable: true }}
+
             >
               {preImg.map((x, index) => {
                 return (
@@ -325,6 +330,8 @@ const Write = (props) => {
             />
           </HashInputOuter>
         </HashTagArea>
+
+        </Grid>
       </Container>
       <Nav />
     </React.Fragment>
@@ -332,18 +339,20 @@ const Write = (props) => {
 };
 
 const Container = styled.div`
-  max-width: 429px;
-  min-height: 926px;
-  background-color: white;
-  margin: auto;
-  border: 1px solid black;
-  .activeBtn {
-    color: #ff626f;
-    cursor: pointer;
-  }
-  .unActiveBtn {
-    color: var(--sub-font-color);
-    cursor: pointer;
+
+  margin: 0 auto;
+  .border {
+    height: 100vh;
+    border: 1px solid var(--help-color);
+    .activeBtn {
+      color: var(--main-color);
+      cursor: pointer;
+    }
+    .unActiveBtn {
+      color: var(--disabled-color);
+      cursor: pointer;
+    }
+
   }
 `;
 
@@ -433,8 +442,11 @@ const CenterLine = styled.div`
 `;
 
 const TradeInput = styled.input`
+
+  width: 50%;
   height: 40px;
-  width: 11rem;
+  padding-left: 10px;
+
   margin-bottom: 8px;
   border: none;
   font-size: 16px;
