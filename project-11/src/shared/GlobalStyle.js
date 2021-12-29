@@ -34,7 +34,7 @@ const GlobalStyles = createGlobalStyle`
 
   :root {
   --main-color: #FF626F;
-  --disabled-color:#00000008;
+  --disabled-color:#dadada;
   --wrong-color: #FF0000;
   --active-color: #323232;
   --inactive-text-color: #666666;

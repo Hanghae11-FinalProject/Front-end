@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
+import { Grid } from "../elements/index";
 import Modal from "react-modal";
 import { actionCreators as postActions } from "../redux/modules/post";
 
@@ -175,126 +176,128 @@ const Write = (props) => {
   return (
     <React.Fragment>
       <Container>
-        <MainTop>
-          <CgChevronLeft size="40" />
-          <TopText style={{ marginLeft: "6px" }}>글 작성하기</TopText>
-          <TopText
-            style={{ padding: "6px" }}
-            className={!active ? "activeBtn" : "unActiveBtn"}
-            disabled={active}
-            onClick={() => {
-              console.log("버튼활성화댐");
-              console.log(preImg);
-            }}
-          >
-            완료
-          </TopText>
-        </MainTop>
-        <TitleArea>
-          <TitleInput
-            Value={title}
-            type="text"
-            maxLength={15}
-            placeholder="제목 (15자 이하)"
-            onChange={changeTitle}
-            onKeyUp={checkActive}
-          ></TitleInput>
-        </TitleArea>
-
-        <CateArea>
-          <CateSelect defaultValue={category} onChange={changeCate}>
-            {cateOption.map((p) => (
-              <option
-                key={p.value}
-                value={p.value}
-                hidden={p.value === "품목 선택" ? true : false}
-                // className={p.value === "품목 선택" ? "basic" : "notBasic"}
-              >
-                {p.name}
-              </option>
-            ))}
-          </CateSelect>
-        </CateArea>
-
-        <TradeDiv>
-          <TradeInput
-            // value={myItem}
-            onChange={changeMyItem}
-            maxLength="6"
-            placeholder="교환할 물품 (1개 입력)"
-          ></TradeInput>
-          <CenterLine />
-          <TradeInput
-            // value={yourItem}
-            onChange={changeYourItem}
-            maxLength="6"
-            placeholder="교환받을 물품 (1개 입력)"
-          ></TradeInput>
-        </TradeDiv>
-
-        <ImgArea>
-          <label htmlFor="input-file" className="input-Btn-Css">
-            <MdOutlineCameraAlt size={30} />
-            {images.length} / 10
-            <input
-              type="file"
-              onChange={addImage}
-              // max={5}
-              encType="multipart/form-data"
-              multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
-              id="input-file" // 커스텀 디자인을 위한 라벨링
-              className="input-Btn"
-            />
-          </label>
-          <Slider>
-            <Swiper
-              className="Img-Preview"
-              spaceBetween={0}
-              slidesPerView={3}
-              pagination={{ clickable: true }}
+        <Grid is_container _className="border">
+          <MainTop>
+            <CgChevronLeft size="30" />
+            <TopText style={{ marginLeft: "6px" }}>글 작성하기</TopText>
+            <TopText
+              style={{ padding: "6px" }}
+              className={!active ? "activeBtn" : "unActiveBtn"}
+              disabled={active}
+              onClick={() => {
+                console.log("버튼활성화댐");
+                console.log(preImg);
+              }}
             >
-              {preImg.map((x, index) => {
-                return (
-                  <SwiperSlide key={index} className="slide">
-                    <TiDelete
-                      size="25px"
-                      className="deleteBtn"
-                      onClick={() => {
-                        deletePreImg(x);
-                      }}
-                    />
-                    <Preview src={x} />
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-          </Slider>
-        </ImgArea>
-
-        <ContentArea>
-          <ContentInput
-            defaultValue={content}
-            placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
-            onChange={changeContent}
-            onKeyUp={checkActive}
-            rows={19}
-            maxLength="300"
-          ></ContentInput>
-        </ContentArea>
-
-        <HashTagArea className="HashWrap">
-          <HashInputOuter className="HashInputOuter">
-            {/* 동적으로 생성되는 태그를 담을 div */}
-            <HashInput
-              className="HashInput"
+              완료
+            </TopText>
+          </MainTop>
+          <TitleArea>
+            <TitleInput
+              Value={title}
               type="text"
-              defaultValue={tagName}
-              onChange={onChangeHashtag}
-              onKeyUp={createTag}
-              placeholder="# 태그 입력 (최대 5개)"
-            />
-          </HashInputOuter>
-        </HashTagArea>
+              maxLength={15}
+              placeholder="제목 (15자 이하)"
+              onChange={changeTitle}
+              onKeyUp={checkActive}
+            ></TitleInput>
+          </TitleArea>
+
+          <CateArea>
+            <CateSelect defaultValue={category} onChange={changeCate}>
+              {cateOption.map((p) => (
+                <option
+                  key={p.value}
+                  value={p.value}
+                  hidden={p.value === "품목 선택" ? true : false}
+                  // className={p.value === "품목 선택" ? "basic" : "notBasic"}
+                >
+                  {p.name}
+                </option>
+              ))}
+            </CateSelect>
+          </CateArea>
+
+          <TradeDiv>
+            <TradeInput
+              // value={myItem}
+              onChange={changeMyItem}
+              maxLength="6"
+              placeholder="교환할 물품 (1개 입력)"
+            ></TradeInput>
+            <CenterLine />
+            <TradeInput
+              // value={yourItem}
+              onChange={changeYourItem}
+              maxLength="6"
+              placeholder="교환받을 물품 (1개 입력)"
+            ></TradeInput>
+          </TradeDiv>
+
+          <ImgArea>
+            <label htmlFor="input-file" className="input-Btn-Css">
+              <MdOutlineCameraAlt size={30} />
+              {images.length} / 10
+              <input
+                type="file"
+                onChange={addImage}
+                // max={5}
+                encType="multipart/form-data"
+                multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
+                id="input-file" // 커스텀 디자인을 위한 라벨링
+                className="input-Btn"
+              />
+            </label>
+            <Slider>
+              <Swiper
+                className="Img-Preview"
+                spaceBetween={0}
+                slidesPerView={3}
+                pagination={{ clickable: true }}
+              >
+                {preImg.map((x, index) => {
+                  return (
+                    <SwiperSlide key={index} className="slide">
+                      <TiDelete
+                        size="25px"
+                        className="deleteBtn"
+                        onClick={() => {
+                          deletePreImg(x);
+                        }}
+                      />
+                      <Preview src={x} />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </Slider>
+          </ImgArea>
+
+          <ContentArea>
+            <ContentInput
+              defaultValue={content}
+              placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
+              onChange={changeContent}
+              onKeyUp={checkActive}
+              rows={19}
+              maxLength="300"
+            ></ContentInput>
+          </ContentArea>
+
+          <HashTagArea className="HashWrap">
+            <HashInputOuter className="HashInputOuter">
+              {/* 동적으로 생성되는 태그를 담을 div */}
+              <HashInput
+                className="HashInput"
+                type="text"
+                defaultValue={tagName}
+                onChange={onChangeHashtag}
+                onKeyUp={createTag}
+                placeholder="# 태그 입력 (최대 5개)"
+              />
+            </HashInputOuter>
+          </HashTagArea>
+        </Grid>
       </Container>
       <Nav />
     </React.Fragment>
@@ -302,26 +305,24 @@ const Write = (props) => {
 };
 
 const Container = styled.div`
-  max-width: 429px;
-  min-height: 926px;
-  background-color: white;
-  margin: auto;
-  border: 1px solid black;
-  .activeBtn {
-    color: #ff626f;
-    cursor: pointer;
-  }
-  .unActiveBtn {
-    color: var(--sub-font-color);
-    cursor: pointer;
+  margin: 0 auto;
+  height: 100vh;
+  .border {
+    border: 1px solid var(--help-color);
+    .activeBtn {
+      color: var(--main-color);
+      cursor: pointer;
+    }
+    .unActiveBtn {
+      color: var(--disabled-color);
+      cursor: pointer;
+    }
   }
 `;
 
 const MainTop = styled.div`
-  height: 44px;
-  margin: 8px;
-  /* margin-top: 49px !important; */
-  border-bottom: 2px solid #eee;
+  height: 50px;
+  border-bottom: 1px solid var(--help-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -341,19 +342,19 @@ const TitleInput = styled.input`
   height: 50px;
   font-size: 16px;
   border: none;
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid var(--help-color);
   :focus {
     outline: none;
   }
   ::placeholder {
-    color: var(--sub-font-color);
+    color: var(--help-color);
   }
 `;
 
 const CateArea = styled.div`
   display: flex;
   margin: 8px 16px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid var(--help-color);
 `;
 
 const Catediv = styled.div`
@@ -361,8 +362,8 @@ const Catediv = styled.div`
   font-size: 16px;
   border-radius: 6px;
   height: 48px;
-  border: 1px solid var(--sub-font-color);
-  color: var(--sub-font-color);
+  border: 1px solid var(--help-color);
+  color: var(--help-color);
 `;
 
 const CateSelect = styled.select`
@@ -372,11 +373,12 @@ const CateSelect = styled.select`
   border-radius: 6px;
   margin-top: 8px;
   margin-bottom: 16px;
-  color: var(--sub-font-color);
-  border: 1px solid var(--sub-font-color);
+  color: var(--help-color);
+  border: 1px solid var(--help-color);
   cursor: pointer;
   :focus {
     outline: none;
+    color: var(--active-color);
   }
   /* .basic {
     border: 1px solid #eee;
@@ -392,23 +394,27 @@ const TradeDiv = styled.div`
   align-items: center;
   margin: 8px 16px;
   height: 55px;
-  border-bottom: 2px solid #eee;
+  color: var(--help-color);
+  border-bottom: 1px solid var(--help-color);
 `;
 
 const CenterLine = styled.div`
   width: 0px;
   height: 48px;
-  border-right: 1px solid #eee;
+  border-right: 1px solid var(--help-color);
   margin-bottom: 8px;
 `;
 
 const TradeInput = styled.input`
   height: 40px;
-  width: 11rem;
+  /* width: 11rem; */
+  width: 50%;
   margin-bottom: 8px;
   border: none;
   font-size: 16px;
-  color: var(--sub-font-color);
+  ::placeholder {
+    color: var(--help-color);
+  }
   :focus {
     outline: none;
   }
@@ -418,7 +424,7 @@ const ImgArea = styled.div`
   height: 100px;
   display: flex;
   margin: 16px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid var(--help-color);
 
   .input-Btn-Css {
     display: flex;
@@ -428,9 +434,8 @@ const ImgArea = styled.div`
     width: 5rem;
     height: 5rem;
     padding: 15px;
-    border: 1px solid var(--sub-font-color);
+    border: 1px solid var(--help-color);
     border-radius: 4px;
-    color: black;
     cursor: pointer;
   }
 
@@ -443,7 +448,7 @@ const Slider = styled.div`
   width: 20rem;
 
   .swiper-pagination-bullet-active {
-    background-color: #ff8a3d !important;
+    background-color: var(--main-color) !important;
     width: 16px !important;
     border-radius: 4px !important;
   }
@@ -471,7 +476,8 @@ const ContentArea = styled.div`
 `;
 
 const ContentInput = styled.textarea`
-  width: 24.6rem;
+  /* width: 24.6rem; */
+  width: 100%;
   font-size: 16px;
   resize: none;
   border: none;
@@ -483,7 +489,7 @@ const ContentInput = styled.textarea`
 const HashTagArea = styled.div`
   height: 75px;
   margin: 15px;
-  border-top: 2px solid #eee;
+  border-top: 1px solid var(--help-color);
 `;
 
 const HashInputOuter = styled.div`
@@ -492,9 +498,9 @@ const HashInputOuter = styled.div`
   .HashWrapInner {
     margin-top: 5px;
     border-radius: 10px;
-    border: 1px solid #ff626f;
+    border: 1px solid var(--main-color);
     padding: 4px 6px;
-    color: #ff626f;
+    color: var(--main-color);
     display: flex;
     justify-content: center;
     align-items: center;
