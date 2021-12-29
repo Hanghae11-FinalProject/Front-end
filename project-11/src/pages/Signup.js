@@ -15,10 +15,7 @@ const Signup = () => {
   } = useForm();
   const password = useRef();
 
-    const {register, watch, formState: {
-            errors
-        }, handleSubmit} = useForm();
-    const password = useRef();
+    
 
     const checkemail = watch('email')
     // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
