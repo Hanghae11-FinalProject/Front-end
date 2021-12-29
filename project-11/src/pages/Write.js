@@ -201,7 +201,6 @@ const Write = (props) => {
         content: content,
         category: category,
         currentState: currentState,
-        // tag: [{ tagName: "아이고" }, { tagName: "이것" }],
         tag: hashArr,
         myItem: myItem,
         exchangeItem: exchangeItem,
@@ -239,10 +238,7 @@ const Write = (props) => {
               style={{ padding: "6px" }}
               className={!active ? "activeBtn" : "unActiveBtn"}
               disabled={active}
-              onClick={() => {
-                console.log("버튼활성화댐");
-                console.log(preImg);
-              }}
+              onClick={postWrite}
             >
               완료
             </TopText>
