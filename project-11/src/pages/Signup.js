@@ -14,11 +14,6 @@ const Signup = () => {
   } = useForm();
   const password = useRef();
 
-  // const {register, watch, formState: {
-  //         errors
-  //     }, handleSubmit} = useForm();
-  // const password = useRef();
-
   const checkemail = watch("email");
   // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
   password.current = watch("password");
@@ -71,7 +66,7 @@ const Signup = () => {
               />
               <text className="header-title">회원가입</text>
             </div>
-            <div className="line" />
+
             <div className="signup-input-wrap">
               <text>이메일</text>
               <Grid
@@ -245,26 +240,26 @@ export default Signup;
 const SignupWrap = styled.div`
   .grid-border {
     width: 100%;
-    min-height: 926px;
-    border: 1px solid #ededed;
+    height: 100vh;
+    border: 1px solid var(--help-color);
     .signup-wrap {
       .signup-header-wrap {
+        height: 50px;
+
         display: flex;
         align-items: center;
-        margin: 20px 0 20px 0;
+
         position: relative;
+        border-bottom: 1px solid var(--help-color);
+
         .header-title {
           position: absolute;
-          left: 50%;
-          font-size: 25px;
-          margin-left: -42.5px;
+          left: 45%;
+          font-size: 20px;
+          font-weight: bold;
         }
       }
-      .line {
-        width: 100%;
-        height: 3px;
-        background-color: #ededed;
-      }
+
       .signup-input-wrap {
         display: flex;
         flex-direction: column;
@@ -275,13 +270,13 @@ const SignupWrap = styled.div`
           margin-top: 32px;
         }
         input {
+          width: 100%;
+          height: 48px;
+          padding-left: 10px;
           margin-bottom: 16px;
           border-radius: 4px;
-          width: 100%;
-
-          height: 48px;
           outline: none;
-          border: 1px solid #ededed;
+          border: 1px solid var(--help-color);
         }
 
         .doubleinput {
@@ -293,7 +288,7 @@ const SignupWrap = styled.div`
         }
         .doublecheck {
           background-color: white;
-          border: 1px solid var(--sub-font-color);
+          border: 1px solid var(--inactive-text-color);
           outline: none;
           width: 70px;
           height: 48px;
@@ -310,17 +305,17 @@ const SignupWrap = styled.div`
         width: 191px;
         height: 48px;
         outline: none;
-        border: 1px solid #ededed;
+        border: 1px solid var(--help-color);
       }
       .select-city-wrap {
         width: 191px;
         height: 48px;
         outline: none;
-        border: 1px solid #ededed;
+        border: 1px solid var(--help-color);
       }
     }
     .sign-btn {
-      background-color: #ff626f;
+      background-color: var(--main-color);
       text-align: center;
       width: 100%;
       max-width: 397px;
@@ -334,7 +329,7 @@ const SignupWrap = styled.div`
       :disabled {
         cursor: not-allowed;
         pointer-events: none;
-        background-color: gray;
+        background-color: var(--disabled-color);
       }
       &:hover {
         opacity: 1;
