@@ -309,7 +309,22 @@ const Write = (props) => {
                 spaceBetween={0}
                 slidesPerView={3}
                 pagination={{ clickable: true }}
-              ></Swiper>
+              >
+                {preImg.map((x, index) => {
+                  return (
+                    <SwiperSlide key={index} className="slide">
+                      <TiDelete
+                        size="25px"
+                        className="deleteBtn"
+                        onClick={() => {
+                          deletePreImg(x);
+                        }}
+                      />
+                      <Preview src={x} />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </Slider>
           </ImgArea>
 
