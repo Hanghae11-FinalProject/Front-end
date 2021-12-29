@@ -10,12 +10,21 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 import { PostData } from "../shared/PostTest";
 
-
 const PostList = ({ location, category }) => {
-  console.log(location, category);
-  //api로 받아올 값들
-  const _post_data = { location, category };
+  //api로 넘겨줘야 할 값들
+  let curLocation = null;
+  //동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
+  //따로 조건문을 써서 값을 정해주었습니다.
+  useEffect(() => {
+    if (location === "위치 설정하기" || location === "전체") {
+      return curLocation;
+    } else {
+      return curLocation === location;
+    }
+  }, [curLocation, category]);
 
+  const _post_data = { curLocation, category };
+  console.log(_post_data);
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
@@ -42,7 +51,7 @@ const PostList = ({ location, category }) => {
         address: [location],
       })
       .then((res) => {
-        data = res.data;
+        data = res.data.data;
         console.log("무한 스크롤 동작해서 받아 온 값", res);
         //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 5) {
@@ -58,7 +67,6 @@ const PostList = ({ location, category }) => {
   return (
     <React.Fragment>
       <MainContainer>
-
         <InfiniteScroll
           dataLength={post_data.posts.length} //This is important field to render the next data
           next={getData}
