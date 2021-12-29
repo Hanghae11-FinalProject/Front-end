@@ -7,7 +7,7 @@ import axios from "axios";
 const GET_POST = "GET_POST";
 
 // *** 액션 생성 함수
-const getPosts = createAction(GET_POST, (post_data) => ({ post_data }));
+const getPosts = createAction(GET_POST, (_post_data) => ({ _post_data }));
 
 // *** 초기값
 const initialState = {
@@ -40,7 +40,9 @@ const addPostDB = (title, content, category, tagName, images) => {
   };
 };
 
+//메인 게시글 조회
 const getPostAction = (post_data, count) => {
+  console.log(post_data);
   return async (dispatch, getState, { history }) => {
     axios
       .post(`http://15.164.222.25/api/category?page=${count}`, {
@@ -55,12 +57,13 @@ const getPostAction = (post_data, count) => {
         } else {
           is_next = true;
         }
-        let post_data = {
-          posts: res.data,
+
+        let _post_data = {
+          posts: res.data.data,
           page: count + 1,
           next: is_next,
         };
-        dispatch(getPosts(post_data));
+        dispatch(getPosts(_post_data));
       });
   };
 };
@@ -69,16 +72,15 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.posts.push(...action.payload.post_data.posts);
-        draft.has_next = action.payload.post_data.next;
-        draft.page = action.payload.post_data.page;
+        draft.posts.push(action.payload._post_data.posts);
+        draft.has_next = action.payload._post_data.next;
+        draft.page = action.payload._post_data.page;
       }),
   },
   initialState
 );
 
 const actionCreators = {
-
   addPostDB,
   getPostAction,
 };

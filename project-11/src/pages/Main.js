@@ -26,7 +26,7 @@ SwiperCore.use([Pagination, Autoplay]);
 const Main = () => {
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
-  const [is_location, setIs_Location] = useState("");
+  const [is_location, setIs_Location] = useState("위치 설정하기");
   const [is_cate, setIs_Cate] = useState("");
   //지역 옵션
   const locations = ["전체", "동대문구", "마포구", "서대문구", "성북구"];
@@ -34,7 +34,6 @@ const Main = () => {
   return (
     <>
       <Container>
-
         <Grid is_container padding="16px" _className="border">
           <Header>
             <Grid _className="inner" is_container is_flex flex_align="center">
@@ -52,7 +51,11 @@ const Main = () => {
                 autoplay={{ delay: 2000 }}
               >
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("식품")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "식품" ? setIs_Cate("") : setIs_Cate("식품");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "식품" ? "active" : "default"}
                     >
@@ -62,7 +65,11 @@ const Main = () => {
                   </CateBtn>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("도서")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "도서" ? setIs_Cate("") : setIs_Cate("도서");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "도서" ? "active" : "default"}
                     >
@@ -72,7 +79,11 @@ const Main = () => {
                   </CateBtn>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("의류")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "의류" ? setIs_Cate("") : setIs_Cate("의류");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "의류" ? "active" : "default"}
                     >
@@ -82,7 +93,11 @@ const Main = () => {
                   </CateBtn>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("가구")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "가구" ? setIs_Cate("") : setIs_Cate("가구");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "가구" ? "active" : "default"}
                     >
@@ -92,7 +107,11 @@ const Main = () => {
                   </CateBtn>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("가전")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "가전" ? setIs_Cate("") : setIs_Cate("기전");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "가전" ? "active" : "default"}
                     >
@@ -102,7 +121,11 @@ const Main = () => {
                   </CateBtn>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("생활")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "생활" ? setIs_Cate("") : setIs_Cate("생활");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "생활" ? "active" : "default"}
                     >
@@ -112,7 +135,11 @@ const Main = () => {
                   </CateBtn>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("취미")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "취미" ? setIs_Cate("") : setIs_Cate("취미");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "취미" ? "active" : "default"}
                     >
@@ -122,7 +149,13 @@ const Main = () => {
                   </CateBtn>
                 </SwiperSlide>
                 <SwiperSlide>
-                  <CateBtn onClick={() => setIs_Cate("재능교환")}>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "재능교환"
+                        ? setIs_Cate("")
+                        : setIs_Cate("재능교환");
+                    }}
+                  >
                     <Grid
                       _className={is_cate === "재능교환" ? "active" : "default"}
                     >
@@ -203,6 +236,8 @@ const Header = styled.div`
       position: absolute;
       left: 0;
       text-align: center;
+
+      font-size: 20px;
       font-weight: bold;
     }
   }
