@@ -12,7 +12,7 @@ import { PostData } from "../shared/PostTest";
 
 const PostList = ({ location, category }) => {
   //api로 넘겨줘야 할 값들
-  let curLocation = null;
+  let curLocation = "";
   //동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
   //따로 조건문을 써서 값을 정해주었습니다.
   useEffect(() => {

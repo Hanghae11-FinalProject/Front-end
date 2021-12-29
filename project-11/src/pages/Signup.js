@@ -64,11 +64,11 @@ const Signup = () => {
                   height: "30px",
                 }}
               />
-              <text className="header-title">회원가입</text>
+              <span className="header-title">회원가입</span>
             </div>
 
             <div className="signup-input-wrap">
-              <text>이메일</text>
+              <span>이메일</span>
               <Grid
                 is_flex="is_flex"
                 flex_align="center"
@@ -96,7 +96,7 @@ const Signup = () => {
                   이메일 주소를 다시 확인해주세요.
                 </p>
               )}
-              <text>비밀번호</text>
+              <span>비밀번호</span>
               <input
                 type="password"
                 name="password"
@@ -106,7 +106,7 @@ const Signup = () => {
                     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                 })}
                 placeholder="영문, 숫자 포함 8자 이상"
-              />{" "}
+              />
               {errors.password && errors.password.type === "required" && (
                 <p
                   style={{
@@ -127,7 +127,7 @@ const Signup = () => {
                   8자이내로 입력해주세요
                 </p>
               )}
-              <text>비밀번호 재확인</text>
+              <span>비밀번호 재확인</span>
               <input
                 type="password"
                 name="password_confirm"
@@ -159,7 +159,7 @@ const Signup = () => {
                     비밀번호가 일치하지 않습니다.
                   </p>
                 )}
-              <text>닉네임</text>
+              <span>닉네임</span>
               <Grid
                 is_flex="is_flex"
                 flex_align="center"
@@ -198,7 +198,7 @@ const Signup = () => {
                   6자 이내로 작성해주세요
                 </p>
               )}
-              <text>주소</text>
+              <span>주소</span>
               <div className="address-wrap">
                 <select className="select-wrap">
                   <option
@@ -265,7 +265,7 @@ const SignupWrap = styled.div`
         flex-direction: column;
 
         padding: 0 16px;
-        text {
+        span {
           margin-bottom: 4px;
           margin-top: 32px;
         }

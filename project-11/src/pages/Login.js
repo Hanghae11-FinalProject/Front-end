@@ -57,17 +57,17 @@ const Login = () => {
                 height: "30px",
               }}
             />
-            <text className="header-title">로그인</text>
+            <span className="header-title">로그인</span>
           </div>
           <div className="login-input-wrap">
-            <text>이메일</text>
+            <span>이메일</span>
             <input
               name="user_id"
               onChange={handleChangeInput}
               onKeyUp={handleKeyEnter}
               placeholder="abc@email.com"
             />
-            <text>비밀번호</text>
+            <span>비밀번호</span>
             <input
               name="user_pw"
               onChange={handleChangeInput}
@@ -122,7 +122,7 @@ const LoginWrap = styled.div`
         display: flex;
         flex-direction: column;
         padding: 0 16px;
-        text {
+        span {
           margin-bottom: 4px;
           margin-top: 32px;
         }
