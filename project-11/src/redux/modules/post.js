@@ -57,6 +57,7 @@ const getPostAction = (post_data, count) => {
         } else {
           is_next = true;
         }
+
         let _post_data = {
           posts: res.data.data,
           page: count + 1,
