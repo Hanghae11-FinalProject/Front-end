@@ -1,60 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import {IoIosArrowBack} from 'react-icons/io'
-import {Grid} from '../elements';
-import axios from 'axios'
-import Chattingitem from '../components/chattingitem';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
+import { Grid } from "../elements";
+import axios from "axios";
+import Chattingitem from "../components/Chattingitem";
 
-
-const chatting = () => {
-
-
-
-    return (
-            <ChattingWrap>
-                <Grid is_container='is_container' _className='grid-border'>
-                    <div className='chatting-wrap'>
-                        <div className='chatting-header'>
-                        <div className='chatting-header-wrap'>
-                            <IoIosArrowBack
-                                style={{
-                                    width: "30px",
-                                    height: "30px"
-                                }}/>
-                            <text className='header-title'>채팅</text>
-                        </div>
-                        </div>
-                        <div className='chat-item'>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        </div>
-                    </div>
-                </Grid>
-            </ChattingWrap>
-    );
+const Chatting = () => {
+  return (
+    <ChattingWrap>
+      <Grid is_container="is_container" _className="grid-border">
+        <div className="chatting-wrap">
+          <div className="chatting-header-wrap">
+            <IoIosArrowBack
+              style={{
+                width: "30px",
+                height: "30px",
+              }}
+            />
+            <p className="header-title">채팅</p>
+          </div>
+          <div className="line" />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+          <Chattingitem />
+        </div>
+      </Grid>
+    </ChattingWrap>
+  );
 };
 
-export default chatting;
+export default Chatting;
 
-const ChattingWrap = styled.div `
-  .grid-border{
+const ChattingWrap = styled.div`
+  .grid-border {
     width: 100%;
     min-height: 926px;
     border: 1px solid #ededed;
+
     .chatting-wrap{
         .chatting-header{
             width: 100%;
@@ -84,4 +79,4 @@ const ChattingWrap = styled.div `
       }
     }
   }
-`
+`;
