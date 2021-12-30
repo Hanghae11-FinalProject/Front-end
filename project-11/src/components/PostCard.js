@@ -7,10 +7,11 @@ import { BsChat } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 
 const PostCard = ({ item }) => {
-  const [state, setState] = useState("거래중");
+  const [state, setState] = useState(
+    item.currentState === "Proceeding" ? "거래중" : "거래완료"
+  );
   const [like, setLike] = useState(false);
   const [user_id, setUser_id] = useState(false);
-  const p = item;
 
   return (
     <React.Fragment>
@@ -22,30 +23,30 @@ const PostCard = ({ item }) => {
             </Image>
             <Grid padding="5px 0px;" _className="title-box">
               <PostTitle>
-                <p>{p.title}</p>
+                <p>{item.title}</p>
               </PostTitle>
               <Grid is_flex _className="info-box">
-                <span>{p.address}</span>
-                <span>15분전</span>
+                <span>{item.address}</span>
+                <span>{item.createdAt}</span>
               </Grid>
             </Grid>
           </Grid>
           <PostImg>
             <Grid _className="imgbox">
-              <img src={p.images} alt="PostImg" />
+              <img src={item.images[0].imageUrl} alt="PostImg" />
             </Grid>
             <ChipDiv>
-              <Grid _className={state === p.currentState ? "ing" : "stop"}>
-                {p.currentState}
+              <Grid _className={state === "거래중" ? "ing" : "stop"}>
+                {state}
               </Grid>
             </ChipDiv>
           </PostImg>
 
           <PostContent>
             <Grid is_flex _className="exchange-box">
-              <span>{p.myItem}</span>
+              <span>{item.myItem}</span>
               <RiArrowLeftRightLine className="icon" />
-              <span>{p.exchangeItem}</span>
+              <span>{item.exchangeItem}</span>
             </Grid>
           </PostContent>
           <Grid is_flex padding="10px 5px" _className="btn-box">
@@ -164,7 +165,7 @@ const PostContent = styled.div`
     }
 
     span {
-      font-size: 12px;
+      font-size: 14px;
       color: var(--main-font-color);
       /* width: 47%;
       text-align: center; */

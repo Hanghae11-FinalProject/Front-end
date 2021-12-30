@@ -34,7 +34,7 @@ const Main = () => {
   return (
     <>
       <Container>
-        <Grid is_container padding="16px" _className="border">
+        <Grid is_container _className="border">
           <Header>
             <Grid _className="inner" is_container is_flex flex_align="center">
               <p>전체 글 보기</p>
@@ -45,10 +45,10 @@ const Main = () => {
             <Slider>
               <Swiper
                 className="CateBtn-Container"
-                spaceBetween={15}
-                slidesPerView={4}
+                spaceBetween={3}
+                slidesPerView={4.5}
                 pagination={{ clickable: true }}
-                autoplay={{ delay: 2000 }}
+                // autoplay={{ delay: 50000 }}
               >
                 <SwiperSlide>
                   <CateBtn
@@ -245,8 +245,11 @@ const Header = styled.div`
 
 const Slider = styled.div`
   height: 80px;
-  margin: 15px 0;
+  margin: 15px 0px;
   display: flex;
+  .swiper-slide:nth-child(1) {
+    margin-left: 12px;
+  }
   .swiper-pagination.swiper-pagination-clickable {
     display: none;
   }
@@ -313,6 +316,7 @@ const LocationBox = styled.div`
   position: relative;
   color: var(--inactive-text-color);
   margin: 20px 0;
+  padding: 16px;
   cursor: pointer;
   .icon {
     margin-right: 5px;

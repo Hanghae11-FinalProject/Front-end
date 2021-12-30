@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { history } from "../redux/configureStore";
+import { axiosInstance } from "../shared/api";
+import { setCookie } from "../shared/Cookie";
+
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
-import axios from "axios";
 
 const Login = () => {
   const [login_disabled, setLoginDisabled] = useState(true);
@@ -17,15 +20,20 @@ const Login = () => {
   };
   const handleClickLoginBtn = () => {
     console.log(input_values.user_pw);
-    axios
-      .post("http://15.164.222.25/user/login", {
+    axiosInstance
+      .post("user/login", {
         username: input_values.user_id,
         password: input_values.user_pw,
       })
       .then((response) => {
-        console.log("확인", response);
+        console.log("로그인 완료", response);
+        const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickname}userToken=${response.headers.authorization}`;
+        setCookie("OK", loginInfo);
+        history.push("/");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log("로그인 실패", error);
+      });
     setLoginDisabled(true);
     setLoginTrue(true);
     setLoginDisabled(false);
@@ -57,17 +65,17 @@ const Login = () => {
                 height: "30px",
               }}
             />
-            <text className="header-title">로그인</text>
+            <span className="header-title">로그인</span>
           </div>
           <div className="login-input-wrap">
-            <text>이메일</text>
+            <span>이메일</span>
             <input
               name="user_id"
               onChange={handleChangeInput}
               onKeyUp={handleKeyEnter}
               placeholder="abc@email.com"
             />
-            <text>비밀번호</text>
+            <span>비밀번호</span>
             <input
               name="user_pw"
               onChange={handleChangeInput}
@@ -122,7 +130,7 @@ const LoginWrap = styled.div`
         display: flex;
         flex-direction: column;
         padding: 0 16px;
-        text {
+        span {
           margin-bottom: 4px;
           margin-top: 32px;
         }
@@ -133,6 +141,7 @@ const LoginWrap = styled.div`
           height: 48px;
           outline: none;
           border: 1px solid var(--help-color);
+          padding-left: 10px;
         }
       }
     }
@@ -153,7 +162,7 @@ const LoginWrap = styled.div`
       }
     }
     .login-btn {
-      background-color: var(--inactive-color);
+      background-color: var(--main-color);
       text-align: center;
       width: 100%;
       max-width: 397px;
@@ -163,11 +172,10 @@ const LoginWrap = styled.div`
       margin-top: 48px;
       border: 0px;
       cursor: pointer;
-      opacity: 0.8;
       :disabled {
         cursor: not-allowed;
         pointer-events: none;
-        background-color: gray;
+        background-color: var(--help-color);
       }
       &:hover {
         opacity: 1;
