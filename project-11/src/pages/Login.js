@@ -11,7 +11,7 @@ const Login = () => {
   const [login_disabled, setLoginDisabled] = useState(true);
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
-  
+
   const handleChangeInput = (e) => {
     setInputValues({
       ...input_values,
@@ -27,7 +27,7 @@ const Login = () => {
       })
       .then((response) => {
         console.log("로그인 완료", response);
-        const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickname}userToken=${response.headers.authorization}`;
+        const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=${response.headers.authorization}`;
         setCookie("OK", loginInfo);
         history.push("/");
       })

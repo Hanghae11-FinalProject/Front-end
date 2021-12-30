@@ -4,7 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import {IoMdArrowDropdown} from 'react-icons/io'
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Signup = () => {
   const {
@@ -15,14 +15,12 @@ const Signup = () => {
   } = useForm();
   const password = useRef();
 
-
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("시/군/구");
   const locations = ["동대문구", "마포구", "서대문구", "성북구"];
-  
 
   const checkemail = watch("email");
-  const checknickname = watch('nickname')
+  const checknickname = watch("nickname");
   // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
   password.current = watch("password");
 
@@ -33,9 +31,8 @@ const Signup = () => {
         password: data.password,
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
-
-        address: "동대문구",
-        profileImg: 
+        address: is_location,
+        profileImg:
           "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
       .then((response) => {
@@ -46,7 +43,7 @@ const Signup = () => {
       });
   };
   const idCheck = () => {
-    console.log(checkemail)
+    console.log(checkemail);
 
     axios
       .post("http://15.164.222.25/user/idCheck", { username: checkemail })
@@ -212,47 +209,47 @@ const Signup = () => {
                   6자 이내로 작성해주세요
                 </p>
               )}
-
               <span>주소</span>
               <div className="address-wrap">
                 <div className="select-wrap">
-                  <span>서울시</span><IoMdArrowDropdown/>
+                  <span>서울시</span>
+                  <IoMdArrowDropdown />
                 </div>
 
-
-                  <LocationWrap>
-                <Grid _className={
-                is_open ? "active" : "default"
-              }>
-                  <div className="select-city-wrap" onClick={()=>{
-                  setIs_open(true);
-                }}>
-                  {is_location}<IoMdArrowDropdown/>
-                </div>
-                </Grid>
-      
-                {is_open && (
-                  <>
-                  <Grid _className='drop-location'>
-                    {locations.map((op, i)=>{
-                      return (
-                      <p
-                      className="loc-wrap"
-                      key={i}
-                      onClick={()=>{
-                        setIs_open(false);
-                        setIs_Location(op)
+                <LocationWrap>
+                  <Grid _className={is_open ? "active" : "default"}>
+                    <div
+                      className="select-city-wrap"
+                      onClick={() => {
+                        setIs_open(true);
                       }}
-                      >
-                        {op}
-                      </p> 
-                      )
-                    })}
+                    >
+                      {is_location}
+                      <IoMdArrowDropdown />
+                    </div>
                   </Grid>
-                  </>
-                )}
-                  </LocationWrap>
-                
+
+                  {is_open && (
+                    <>
+                      <Grid _className="drop-location">
+                        {locations.map((op, i) => {
+                          return (
+                            <p
+                              className="loc-wrap"
+                              key={i}
+                              onClick={() => {
+                                setIs_open(false);
+                                setIs_Location(op);
+                              }}
+                            >
+                              {op}
+                            </p>
+                          );
+                        })}
+                      </Grid>
+                    </>
+                  )}
+                </LocationWrap>
               </div>
               <button disabled={!checkemail} className="sign-btn">
                 가입하기
@@ -307,9 +304,9 @@ const SignupWrap = styled.div`
           border-radius: 4px;
           border: 1px solid var(--help-color);
         }
-        input:focus{
-              outline: 1px solid var(--main-color); 
-            }
+        input:focus {
+          outline: 1px solid var(--main-color);
+        }
 
         .doubleinput {
           max-width: 100%;
@@ -317,9 +314,9 @@ const SignupWrap = styled.div`
           input {
             width: 80%;
           }
-          input:focus{
-              outline: 1px solid var(--main-color); 
-            }
+          input:focus {
+            outline: 1px solid var(--main-color);
+          }
         }
         .doublecheck {
           background-color: white;
@@ -336,6 +333,7 @@ const SignupWrap = styled.div`
     .address-wrap {
       display: flex;
       justify-content: space-between;
+
       .select-wrap {
         width: 191px;
         height: 48px;
@@ -358,18 +356,18 @@ const SignupWrap = styled.div`
         padding: 0 10px;
         cursor: pointer;
       }
-      .drop-location{
+      .drop-location {
         width: 191px;
         height: 144px;
         border: 1px solid var(--help-color);
         border-radius: 5px;
         position: absolute;
         cursor: pointer;
-        .loc-wrap{
+        .loc-wrap {
           padding: 8px 8px;
-        &:hover {
-          background-color: var(--disabled-color);
-      }
+          &:hover {
+            background-color: var(--disabled-color);
+          }
         }
       }
     }
@@ -399,10 +397,10 @@ const SignupWrap = styled.div`
 
 const LocationWrap = styled.div`
   position: relative;
-  .default{
+  .default {
     border: 1px solid var(--disabled-color);
   }
-  .active{
+  .active {
     border: 1px solid var(--main-color);
   }
 `;
