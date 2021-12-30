@@ -6,7 +6,8 @@ const Chattingitem = () => {
     <ChattingWrap>
       <div className="chatting-item-wrap">
         <div className="profile-img">
-          <img src="/static/noimage2.gif" />
+          <img src="/static/noimage2.gif" alt="roomimg" />
+
         </div>
         <div className="chat-info">
           <div className="nickname-time-wrap">

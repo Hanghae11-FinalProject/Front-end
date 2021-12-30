@@ -14,11 +14,9 @@ const Signup = () => {
   } = useForm();
   const password = useRef();
 
-
   const checkemail = watch("email");
   // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
   password.current = watch("password");
-
 
   const onSubmit = (data) => {
     axios
@@ -28,14 +26,19 @@ const Signup = () => {
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
         address: "동대문구",
+        profileImg:
+          "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
       .then((response) => {
-        console.log("완료", response);
+        console.log("회원가입 성공", response);
+      })
+      .catch((err) => {
+        console.log("회원가입 실패", err);
       });
-
-    console.log("data", data);
   };
+
   const idCheck = (data) => {
+    console.log(data.email);
     axios
       .post("http://15.164.222.25/user/idCheck", { username: data.email })
       .then((response) => {

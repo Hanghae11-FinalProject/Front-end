@@ -8,10 +8,14 @@ import { FiStar } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 
 import { data } from "../shared/util";
+import { getCookie } from "../shared/Cookie";
 
 const Detail = () => {
   const [user_id, setUser_id] = useState(false);
   const [like, setLike] = useState(false);
+
+  const userId = getCookie("Id");
+  console.log(userId);
 
   return (
     <>

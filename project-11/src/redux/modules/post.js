@@ -42,17 +42,18 @@ const addPostDB = (title, content, category, tagName, images) => {
 
 //메인 게시글 조회
 const getPostAction = (post_data, count) => {
-  console.log(post_data);
   return async (dispatch, getState, { history }) => {
-    axios
-      .post(`http://15.164.222.25/api/category?page=${count}`, {
+    console.log("미들웨어에 넘어온 지역 ", post_data);
+    axiosInstance
+      .post(`api/category?page=${count}`, {
         categoryName: [post_data.category],
         address: [post_data.location],
       })
       .then((res) => {
-        console.log("처음 받아오는 목록", res);
+        console.log("리덕스 저장 전 목록", res.data.data, count);
         let is_next = null;
-        if (res.data.length < 6) {
+
+        if (res.data.data.length < 6) {
           is_next = false;
         } else {
           is_next = true;
@@ -72,9 +73,17 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.posts.push(action.payload._post_data.posts);
+        //카테고리를 셀렉해주기 위해서 push대신에 하지만 무한스크롤을 위해push해야함
+        draft.posts = action.payload._post_data.posts;
+
+        console.log("리듀서 페이지 값 저장", action.payload._post_data.page);
+
+        //paging 값이 있다면~ 새로운 값으로
+        if (action.payload._post_data.page) {
+          draft.page = action.payload._post_data.page;
+        }
+
         draft.has_next = action.payload._post_data.next;
-        draft.page = action.payload._post_data.page;
       }),
   },
   initialState
@@ -83,6 +92,7 @@ export default handleActions(
 const actionCreators = {
   addPostDB,
   getPostAction,
+  getPosts,
 };
 
 export { actionCreators };

@@ -8,51 +8,53 @@ import PostCard from "./PostCard";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
-import { PostData } from "../shared/PostTest";
 
 const PostList = ({ location, category }) => {
-  //api로 넘겨줘야 할 값들
-  let curLocation = "";
-  //동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
-  //따로 조건문을 써서 값을 정해주었습니다.
-  useEffect(() => {
-    if (location === "위치 설정하기" || location === "전체") {
-      return curLocation;
-    } else {
-      return curLocation === location;
-    }
-  }, [curLocation, category]);
 
-  const _post_data = { curLocation, category };
-  console.log(_post_data);
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
-  console.log("리덕스 저장 값 ", post_data);
+  console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
   //무한 스크롤을 위한 페이지 값
   const [page, setpage] = useState(post_data.page);
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
+  //api로 넘겨줘야 할 값들
+  //동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
+  //따로 조건문을 써서 값을 정해주었습니다.
+  const curLocation = () => {
+    if (location === "위치 설정하기" || location === "전체") {
+      return (location = "");
+    } else {
+      return location;
+    }
+  };
 
-  //첫 로딩시 불러오는 데이터
   useEffect(() => {
+    curLocation();
+    let _post_data = { location, category };
+    console.log("미들웨어로 넘기는 값", _post_data, page);
+    //로딩시 불러오는 데이터
+
     dispatch(postActions.getPostAction(_post_data, page));
-  }, [page]);
+  }, [location, category, page]);
 
   //scroll event
   //스크롤시 다음페이지를 보여주는 것
   const getData = () => {
     let data;
     let count = page + 1;
-    axios
-      .post(`http://15.164.222.25/api/category?page=${count}`, {
-        categoryName: [category],
-        address: [location],
+
+    axiosInstance
+      .post(`api/category?page=${count}`, {
+        categoryName: [""],
+        address: [""],
       })
       .then((res) => {
         data = res.data.data;
-        console.log("무한 스크롤 동작해서 받아 온 값", res);
+        console.log("무한 스크롤 동작해서 받아 온 값", data, count);
+
         //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 5) {
           sethasMore(false);
@@ -60,7 +62,7 @@ const PostList = ({ location, category }) => {
         } else {
           //데이터가 사이즈만큼 넘어왔을 때
           setItems([...items, ...data]);
-          setpage(count + 1);
+          setpage(count);
         }
       });
   };
@@ -72,11 +74,25 @@ const PostList = ({ location, category }) => {
           next={getData}
           hasMore={hasMore}
         >
-          <Grid _className="post-list">
-            {PostData.map((item, idx) => {
-              return <PostCard key={idx} item={item} />;
-            })}
-          </Grid>
+          {post_data.posts.length === 0 ? (
+            <>
+              <div className="empty">상품이 없답니다</div>
+            </>
+          ) : (
+            <>
+              {/* {post_data.posts.map((arr, i) => {
+                return ( */}
+              <>
+                <Grid _className="post-list">
+                  {post_data.posts.map((item, idx) => {
+                    return <PostCard key={idx} item={item} />;
+                  })}
+                </Grid>
+              </>
+              {/* );
+              })} */}
+            </>
+          )}
         </InfiniteScroll>
       </MainContainer>
     </React.Fragment>
@@ -84,12 +100,17 @@ const PostList = ({ location, category }) => {
 };
 
 const MainContainer = styled.div`
-  padding: 0 0px 60px 0px;
+  padding: 0 16px 60px 16px;
 
   .post-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .empty {
+    height: 100vh;
   }
 `;
 
