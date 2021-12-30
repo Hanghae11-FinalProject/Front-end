@@ -1,16 +1,17 @@
 export const data = {
-  title: "펭수 인형 교환하려고합니다",
-  category: "기타",
+  title: "열라면 교환합니다",
+  category: "식품",
   content:
-    "펭수 인형이랑 다른 귀여운 인형 교환하실 분찾습니다. 고양이 인형 대환영입니다",
-  createdAt: "2021-12-21",
+    "순두부 열라면 해먹고 싶어서 열라면을 샀는데 순두부가 없어서 교환하려고 합니다. 순두부 갖고 계신분 댓글 남겨주세요!!",
+  createdAt: "1일전",
   productImg: [
-    "https://mblogthumb-phinf.pstatic.net/MjAyMDAyMDdfMjg1/MDAxNTgxMDQwOTY5MTgw.iyq05Pl-UKmDuKVHwmUKNUXPCy5cvfjo4WCdXXwzN2wg.fVE8eoaWEgS-EYUanpf0ACMdEilUkdMLu6oVfnVVNXgg.JPEG.83jaehun/DSC01143.JPG?type=w800",
-    "https://images.chosun.com/resizer/835YemT16SpeUZqpJMIKTynK7lw=/464x0/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/OFALQZP2QMKNZ3WQOLILEJ7QLI.png",
+    "https://mblogthumb-phinf.pstatic.net/MjAxODEyMjZfMTY0/MDAxNTQ1ODEzNDE2Mjc5.tjyMDqfCa4n9WSivEFjEr6vara0Fspx2HsHUX4r671sg.A5syEfO5VMIed5_Anx0FO9ZijImaMv5OudPiyXjpvpUg.JPEG.maizon/SAM_9847_%EC%97%B4%EB%9D%BC%EB%A9%B4.jpg?type=w800",
+    "https://mblogthumb-phinf.pstatic.net/MjAxNjEyMDVfNDgg/MDAxNDgwOTI5NzM5MDY1.lsqZZh-wi8IC1feU-Fb-rYRGGi489OrHQmPl4GsU3QIg.QNDad2o9CDcl90IwN4-JV77k4k0k-HJE2vuV1GQ8nv8g.JPEG.tjddlscjfdl/20161125_153734.jpg?type=w800",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyR5wJUcuJUsPII_H5epfRc9IvWP36iBHTGaK5LG2JuzU1oC_D99kvxrJxXFcowl_IyBw&usqp=CAU",
   ],
-  username: "Shiba",
-  tag: ["인형", "펭수", "연세대", "귀여운"],
+  username: "맷돌이",
+  location: "동대문구",
+  tag: ["열라면", "라면", "순두부", "열라면이랑_순두부_교환해요"],
 };
 
 export const icons = [
