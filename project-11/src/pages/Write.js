@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
+import { Grid } from "../elements/index";
 import Modal from "react-modal";
 import { actionCreators as postActions } from "../redux/modules/post";
 
@@ -50,6 +51,7 @@ const Write = (props) => {
     "재능교환",
   ];
 
+
   // 모달 바깥을 click 했을 때 클릭 이벤트 발생 시키기 위한 useEffect
   React.useEffect(() => {
     document.addEventListener("click", clickCloseModal);
@@ -76,6 +78,7 @@ const Write = (props) => {
       setIs_open(true);
     }
   };
+
 
   // 제목 onChange 함수
   const changeTitle = (e) => {
@@ -248,6 +251,7 @@ const Write = (props) => {
           </TitleArea>
 
           <CateArea>
+
             <Catediv
               onClick={modalControl}
               ref={modalClose}
@@ -281,6 +285,7 @@ const Write = (props) => {
                 </Grid>
               </>
             )}
+
           </CateArea>
 
           <TradeDiv>
@@ -386,9 +391,11 @@ const Container = styled.div`
 `;
 
 const MainTop = styled.div`
+
   height: 44px;
   margin: 8px;
   border-bottom: 2px solid #eee;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -408,7 +415,7 @@ const TitleInput = styled.input`
   height: 50px;
   font-size: 16px;
   border: none;
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid var(--help-color);
   :focus {
     outline: none;
   }
@@ -421,6 +428,7 @@ const CateArea = styled.div`
   position: relative;
   color: var(--inactive-text-color);
   margin: 8px 16px;
+
   border-bottom: 1px solid #eee;
   .category-option {
     width: 25.2rem;
@@ -449,10 +457,12 @@ const CateArea = styled.div`
     color: var(--inactive-text-color);
     border: 2px solid var(--inactive-text-color);
   }
+
 `;
 
 const Catediv = styled.div`
   width: 25.2rem;
+
   height: 48px;
   padding: 0px 6px;
   font-size: 16px;
@@ -470,13 +480,14 @@ const TradeDiv = styled.div`
   align-items: center;
   margin: 8px 16px;
   height: 55px;
-  border-bottom: 2px solid #eee;
+  color: var(--help-color);
+  border-bottom: 1px solid var(--help-color);
 `;
 
 const CenterLine = styled.div`
   width: 0px;
   height: 48px;
-  border-right: 1px solid #eee;
+  border-right: 1px solid var(--help-color);
   margin-bottom: 8px;
 `;
 
@@ -488,6 +499,7 @@ const TradeInput = styled.input`
   margin-bottom: 8px;
   border: none;
   font-size: 16px;
+
   color: var(--sub-font-color);
   ::placeholder {
     color: var(--help-color);
@@ -501,7 +513,7 @@ const ImgArea = styled.div`
   height: 100px;
   display: flex;
   margin: 16px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 1px solid var(--help-color);
 
   .input-Btn-Css {
     display: flex;
@@ -511,9 +523,8 @@ const ImgArea = styled.div`
     width: 5rem;
     height: 5rem;
     padding: 15px;
-    border: 1px solid var(--sub-font-color);
+    border: 1px solid var(--help-color);
     border-radius: 4px;
-    color: black;
     cursor: pointer;
   }
 
@@ -526,7 +537,7 @@ const Slider = styled.div`
   width: 20rem;
 
   .swiper-pagination-bullet-active {
-    background-color: #ff8a3d !important;
+    background-color: var(--main-color) !important;
     width: 16px !important;
     border-radius: 4px !important;
   }
@@ -554,7 +565,8 @@ const ContentArea = styled.div`
 `;
 
 const ContentInput = styled.textarea`
-  width: 24.6rem;
+  /* width: 24.6rem; */
+  width: 100%;
   font-size: 16px;
   resize: none;
   border: none;
@@ -569,7 +581,7 @@ const ContentInput = styled.textarea`
 const HashTagArea = styled.div`
   height: 75px;
   margin: 15px;
-  border-top: 2px solid #eee;
+  border-top: 1px solid var(--help-color);
 `;
 
 const HashInputOuter = styled.div`
@@ -578,9 +590,9 @@ const HashInputOuter = styled.div`
   .HashWrapInner {
     margin-top: 5px;
     border-radius: 10px;
-    border: 1px solid #ff626f;
+    border: 1px solid var(--main-color);
     padding: 4px 6px;
-    color: #ff626f;
+    color: var(--main-color);
     display: flex;
     justify-content: center;
     align-items: center;
