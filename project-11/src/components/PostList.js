@@ -11,6 +11,8 @@ import styled from "styled-components";
 
 const PostList = ({ location, category }) => {
 
+  const _post_data = { location, category };
+  console.log(_post_data);
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
@@ -56,7 +58,7 @@ const PostList = ({ location, category }) => {
         console.log("무한 스크롤 동작해서 받아 온 값", data, count);
 
         //데이터가 사이즈보다 작을 경우
-        if (data.length === 0 || data.length < 5) {
+        if (data.length === 0) {
           sethasMore(false);
           setItems([...items, ...data]);
         } else {

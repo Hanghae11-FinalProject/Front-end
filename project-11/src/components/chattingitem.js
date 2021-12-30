@@ -1,28 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 
-const Chattingitem = () => {
-  return (
-    <ChattingWrap>
-      <div className="chatting-item-wrap">
-        <div className="profile-img">
-          <img src="/static/noimage2.gif" alt="roomimg" />
-
-        </div>
-        <div className="chat-info">
-          <div className="nickname-time-wrap">
-            <h1 className="nickname">정민경</h1>
-            <span>하루전</span>
-          </div>
-          <p>상그리아 와인 최고...</p>
-        </div>
-        <div className="chatting-cnt">2</div>
-      </div>
-    </ChattingWrap>
-  );
+const ChattingItem = () => {
+    return (
+        <ChattingWrap>
+            <div className='chatting-item-wrap'>
+                <div className='profile-img'>
+                    <img src='/static/noimage2.gif'/>
+                </div>
+                <div className='chat-info'>
+                    <div className='nickname-time-wrap'>
+                    <h1 className='nickname'>정민경</h1>
+                    <span>하루전</span>
+                    </div>
+                    <p>상그리아 와인 최고...</p>
+                </div>
+                <div className='chatting-cnt'>2</div>
+            </div>
+        </ChattingWrap>
+    );
 };
 
-export default Chattingitem;
+export default ChattingItem;
+
 
 const ChattingWrap = styled.div`
   padding: 20px;
@@ -44,34 +44,38 @@ const ChattingWrap = styled.div`
         border-radius: 50%;
         object-fit: cover;
       }
-    }
-    .chat-info {
-      width: 76%;
-      .nickname-time-wrap {
-        display: flex;
-        .nickname {
-          font-size: 17px;
-          margin-right: 10px;
+    }    
+        .chat-info{
+            width: 76%;
+            .nickname-time-wrap{
+            display: flex;
+            .nickname{
+            font-size: 17px;
+            margin-right: 10px;
+            }
+            span{
+                font-size: 12px;
+                margin-top: 4px;
+                }
+            }
+            p{
+                font-size: 15px;
+            }
         }
-        span {
-          font-size: 12px;
-          margin-top: 4px;
+        .chatting-cnt{
+            background-color: #FF626F;
+            width: 22px;
+            height: 22px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 22px;
+            border-radius: 50%;
+            text-align: center;
+
         }
       }
-      p {
-        font-size: 15px;
-      }
     }
-    .chatting-cnt {
-      background-color: #ff626f;
-      width: 22px;
-      height: 22px;
-      color: white;
-      font-size: 12px;
-      font-weight: bold;
-      line-height: 22px;
-      border-radius: 50%;
-      text-align: center;
-    }
+    
   }
 `;

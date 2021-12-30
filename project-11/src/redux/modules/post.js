@@ -73,6 +73,7 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
+
         //카테고리를 셀렉해주기 위해서 push대신에 하지만 무한스크롤을 위해push해야함
         draft.posts = action.payload._post_data.posts;
 
@@ -82,7 +83,6 @@ export default handleActions(
         if (action.payload._post_data.page) {
           draft.page = action.payload._post_data.page;
         }
-
         draft.has_next = action.payload._post_data.next;
       }),
   },
