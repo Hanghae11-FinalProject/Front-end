@@ -10,6 +10,7 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 
 const PostList = ({ location, category }) => {
+
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);

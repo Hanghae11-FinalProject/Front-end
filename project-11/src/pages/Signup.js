@@ -111,7 +111,7 @@ const Signup = () => {
                     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                 })}
                 placeholder="영문, 숫자 포함 8자 이상"
-              />{" "}
+              />
               {errors.password && errors.password.type === "required" && (
                 <p
                   style={{

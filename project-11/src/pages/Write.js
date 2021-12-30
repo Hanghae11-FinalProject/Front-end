@@ -7,6 +7,8 @@ import { Grid } from "../elements/index";
 import Modal from "react-modal";
 import { actionCreators as postActions } from "../redux/modules/post";
 
+import { Grid } from "../elements";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
 import { TiDelete } from "react-icons/ti";
@@ -26,51 +28,57 @@ const Write = (props) => {
   const [content, setContent] = React.useState(""); // 내용
   const [myItem, setMyItem] = React.useState(""); // 교환할 물품
   const [exchangeItem, setExchangeItem] = React.useState(""); // 교환받을 물품
-  const [category, setCategory] = React.useState(""); // 카테고리
+  const [category, setCategory] = React.useState("품목 선택"); // 카테고리
   const [tagName, setHashtag] = React.useState(""); // 해쉬태그 onChange로 관리할 문자열
   const [hashArr, setHashArr] = React.useState([]); // 해시태그 담을 배열
   const [images, setImages] = React.useState([]); // 이미지 aixos 통신용
   const [preImg, setPreImg] = React.useState([]); // preview용 이미지
   const [active, setActive] = React.useState(true); // 버튼 액티브
-  const [currentState, setCurrentState] = React.useState("Proceeding");
-  const [postFiles, setPostFiles] = React.useState({
-    file: [],
-    previewURL: "",
-  });
+  const [currentState, setCurrentState] = React.useState("Proceeding"); // currentState 기본값 넘겨주기
+  const [is_open, setIs_open] = React.useState(false); // 모달창 활성화/비활성화 여부
+  const modalClose = React.useRef(); // 모달 바깥 눌렀을 때 닫아줄 용도
+  // useRef 함수는 current 속성을 가지고 있는 객체를 반환하는데,
+  // 인자로 넘어온 초기값을 current속성에 할당한다. (여기선 e.target 값을 가져오는 용도)
 
   const cateOption = [
-    { value: "품목 선택", name: "품목 선택" },
-    { value: "식품", name: "식품" },
-    { value: "도서", name: "도서" },
-    { value: "의류", name: "의류" },
-    { value: "가구", name: "가구" },
-    { value: "가전", name: "가전" },
-    { value: "생활용품", name: "생활용품" },
-    { value: "취미", name: "취미" },
-    { value: "재능교환", name: "재능교환" },
+    "식품",
+    "도서",
+    "의류",
+    "가구",
+    "가전",
+    "생활용품",
+    "취미",
+    "재능교환",
   ];
 
-  // const uploadFiles = (e) => {
-  //   e.stopPropagation();
-  //   let reader = new FileReader();
-  //   let file = e.target.files[0];
-  //   const filesInArr = Array.from(e.target.files);
 
-  //   reader.onloadend = () => {
-  //     setPostFiles({
-  //       file: filesInArr,
-  //       previewURL: reader.result,
-  //     });
-  //   };
-  //   if(file) {
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
+  // 모달 바깥을 click 했을 때 클릭 이벤트 발생 시키기 위한 useEffect
+  React.useEffect(() => {
+    document.addEventListener("click", clickCloseModal);
+    return () => {
+      document.removeEventListener("click", clickCloseModal);
+    }; // 여기서 click을 쓴 이유는 mousedown은 클릭하는 순간 이벤트 발생,
+  }); // click은 클릭이 끝나는 순간 이벤트가 동작 또한 클릭을 떼는 경우도 이벤트 동작 x
 
-  // let profile_preview = null;
-  // if (postFiles.file !== null) {
-  //   profile_preview = postFiles.file[0]?.type.includes
-  // }
+  // 모달 바깥 클릭 했을 시에 발생시킬 이벤트
+  const clickCloseModal = (e) => {
+    console.log(modalClose.current(e.target));
+    if (is_open && !modalClose.current.contains(e.target)) {
+      //contains 함수는 요소가 current 안에 있는지 검사하여 Boolean값을 리턴
+      // 현재 이벤트를 실행한 부분이 modalClose.current에 포함이 되지 않으면 false, 포함되거나 동일하다면 true입니다.
+      setIs_open(false);
+    } else return;
+  };
+
+  // select box 클릭시 모달창 open / 한번 더 자기자신 클릭시 close
+  const modalControl = () => {
+    if (is_open) {
+      setIs_open(false);
+    } else {
+      setIs_open(true);
+    }
+  };
+
 
   // 제목 onChange 함수
   const changeTitle = (e) => {
@@ -93,11 +101,6 @@ const Write = (props) => {
   // 교환받을 물품 onChange 함수
   const changeYourItem = (e) => {
     setExchangeItem(e.target.value);
-  };
-
-  // 카테고리 onChange 함수
-  const changeCate = (e) => {
-    setCategory(e.target.value);
   };
 
   // 해시태그 onChange 함수
@@ -134,7 +137,6 @@ const Write = (props) => {
         setHashtag(""); // 태그를 추가한 뒤 새로운 태그를 추가하기 위해 tagName을 다시 빈 값으로 만들어준다.
       }
     },
-    // },
     [tagName, hashArr]
   );
 
@@ -142,7 +144,6 @@ const Write = (props) => {
   const addImage = (e) => {
     console.log(e.target.files);
     const nowSelectImgList = e.target.files; // 이미지파일 리스트 (object)
-    const MAX_LENGTH = 3;
 
     if (images.length !== 0) {
       setImages([...images, e.target.files]);
@@ -157,11 +158,6 @@ const Write = (props) => {
       //URL.createObjectURL() 이 친구는 상대경로를 만들어 주는 친구이다.
       nowImgURLList.push(nowImgURL); // 복사해놓은 preImg에 추가해주고
     }
-    // if (Array.from(nowSelectImgList).length > MAX_LENGTH) {
-    //   e.preventDefault();
-    //   console.log("3개 끝");
-    //   return;
-    // }
     setPreImg([...nowImgURLList]); // 반복문이 끝난뒤 preImg 원본에 넣어준다.
   };
 
@@ -255,18 +251,41 @@ const Write = (props) => {
           </TitleArea>
 
           <CateArea>
-            <CateSelect defaultValue={category} onChange={changeCate}>
-              {cateOption.map((p) => (
-                <option
-                  key={p.value}
-                  value={p.value}
-                  hidden={p.value === "품목 선택" ? true : false}
-                  // className={p.value === "품목 선택" ? "basic" : "notBasic"}
-                >
-                  {p.name}
-                </option>
-              ))}
-            </CateSelect>
+
+            <Catediv
+              onClick={modalControl}
+              ref={modalClose}
+              className={
+                is_open === false
+                  ? category === "품목 선택"
+                    ? "default"
+                    : "selected"
+                  : "active"
+              }
+            >
+              <div>{category}</div>
+              {is_open ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+            </Catediv>
+            {is_open && (
+              <>
+                <Grid _className="category-option">
+                  {cateOption.map((options, idx) => {
+                    return (
+                      <p
+                        key={idx}
+                        onClick={() => {
+                          setCategory(options);
+                          setIs_open(false);
+                        }}
+                      >
+                        {options}
+                      </p>
+                    );
+                  })}
+                </Grid>
+              </>
+            )}
+
           </CateArea>
 
           <TradeDiv>
@@ -372,8 +391,11 @@ const Container = styled.div`
 `;
 
 const MainTop = styled.div`
-  height: 50px;
-  border-bottom: 1px solid var(--help-color);
+
+  height: 44px;
+  margin: 8px;
+  border-bottom: 2px solid #eee;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -403,40 +425,53 @@ const TitleInput = styled.input`
 `;
 
 const CateArea = styled.div`
-  display: flex;
+  position: relative;
+  color: var(--inactive-text-color);
   margin: 8px 16px;
-  border-bottom: 1px solid var(--help-color);
+
+  border-bottom: 1px solid #eee;
+  .category-option {
+    width: 25.2rem;
+    height: 325px;
+    margin-top: 2px;
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid var(--disabled-color);
+    border-radius: 6px;
+    cursor: pointer;
+    p {
+      padding: 10px;
+      &:hover {
+        background-color: rgba(255, 98, 111, 0.05);
+      }
+    }
+  }
+  .default {
+    outline: 1px solid var(--disabled-color);
+    color: var(--disabled-color);
+  }
+  .active {
+    outline: 3px solid var(--main-color);
+  }
+  .selected {
+    color: var(--inactive-text-color);
+    border: 2px solid var(--inactive-text-color);
+  }
+
 `;
 
 const Catediv = styled.div`
   width: 25.2rem;
-  font-size: 16px;
-  border-radius: 6px;
-  height: 48px;
-  border: 1px solid var(--help-color);
-  color: var(--help-color);
-`;
 
-const CateSelect = styled.select`
-  width: 25.2rem;
   height: 48px;
+  padding: 0px 6px;
   font-size: 16px;
   border-radius: 6px;
-  margin-top: 8px;
-  margin-bottom: 16px;
-  color: var(--help-color);
-  border: 1px solid var(--help-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--sub-font-color);
   cursor: pointer;
-  :focus {
-    outline: none;
-    color: var(--active-color);
-  }
-  /* .basic {
-    border: 1px solid #eee;
-  }
-  .notBasic {
-    border: 1px solid black;
-  } */ // 선택했을땐 검정색으로 어케하징
 `;
 
 const TradeDiv = styled.div`
@@ -464,6 +499,8 @@ const TradeInput = styled.input`
   margin-bottom: 8px;
   border: none;
   font-size: 16px;
+
+  color: var(--sub-font-color);
   ::placeholder {
     color: var(--help-color);
   }
@@ -533,6 +570,9 @@ const ContentInput = styled.textarea`
   font-size: 16px;
   resize: none;
   border: none;
+  ::placeholder {
+    color: var(--help-color);
+  }
   :focus {
     outline: none;
   }
@@ -572,6 +612,9 @@ const HashInput = styled.input`
   border: none;
   :focus {
     outline: none;
+  }
+  ::placeholder {
+    color: var(--help-color);
   }
 `;
 

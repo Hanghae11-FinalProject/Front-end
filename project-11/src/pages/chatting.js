@@ -5,6 +5,7 @@ import { Grid } from "../elements";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 
+
 const Chatting = () => {
   return (
     <ChattingWrap>
@@ -35,6 +36,7 @@ const Chatting = () => {
         </div>
       </Grid>
       <Nav chatting={"chatting"} />
+
     </ChattingWrap>
   );
 };
@@ -68,6 +70,7 @@ const ChattingWrap = styled.div`
             font-size: 25px;
             margin-left: -22.5px;
           }
+
         }
       }
       .chat-item {
