@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const chattingitem = () => {
+const ChattingItem = () => {
     return (
         <ChattingWrap>
             <div className='chatting-item-wrap'>
@@ -11,7 +11,7 @@ const chattingitem = () => {
                 <div className='chat-info'>
                     <div className='nickname-time-wrap'>
                     <h1 className='nickname'>정민경</h1>
-                    <text>하루전</text>
+                    <span>하루전</span>
                     </div>
                     <p>상그리아 와인 최고...</p>
                 </div>
@@ -21,7 +21,7 @@ const chattingitem = () => {
     );
 };
 
-export default chattingitem;
+export default ChattingItem;
 
 const ChattingWrap = styled.div `
     padding: 20px;
@@ -52,7 +52,7 @@ const ChattingWrap = styled.div `
             font-size: 17px;
             margin-right: 10px;
             }
-            text{
+            span{
                 font-size: 12px;
                 margin-top: 4px;
                 }

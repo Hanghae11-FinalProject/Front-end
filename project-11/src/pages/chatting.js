@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import {IoIosArrowBack} from 'react-icons/io'
 import {Grid} from '../elements';
 import axios from 'axios'
-import Chattingitem from '../components/chattingitem';
+import ChattingItem from '../components/ChattingItem';
 
 
-const chatting = () => {
+const Chatting = () => {
+    const [is_open, setIs_open] = useState(false);
 
-
+    const chattings = ["채팅", "거래중", "거래완료"]
 
     return (
             <ChattingWrap>
@@ -21,26 +22,22 @@ const chatting = () => {
                                     width: "30px",
                                     height: "30px"
                                 }}/>
-                            <text className='header-title'>채팅</text>
+
+                            <p className='header-title'>채팅</p>
+                            
                         </div>
                         </div>
                         <div className='chat-item'>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
-                        <Chattingitem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
+                        <ChattingItem/>
                         </div>
                     </div>
                 </Grid>
@@ -48,7 +45,7 @@ const chatting = () => {
     );
 };
 
-export default chatting;
+export default Chatting;
 
 const ChattingWrap = styled.div `
   .grid-border{

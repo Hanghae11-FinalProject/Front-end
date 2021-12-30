@@ -72,7 +72,7 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.posts.push(action.payload._post_data.posts);
+        draft.posts.push(...action.payload._post_data.posts);
         draft.has_next = action.payload._post_data.next;
         draft.page = action.payload._post_data.page;
       }),
@@ -83,6 +83,7 @@ export default handleActions(
 const actionCreators = {
   addPostDB,
   getPostAction,
+  getPosts,
 };
 
 export { actionCreators };

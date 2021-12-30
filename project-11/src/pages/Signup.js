@@ -4,6 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import {IoMdArrowDropdown} from 'react-icons/io'
 
 const Signup = () => {
   const {
@@ -14,11 +15,14 @@ const Signup = () => {
   } = useForm();
   const password = useRef();
 
-
+  const [is_open, setIs_open] = useState(false);
+  const [is_location, setIs_Location] = useState("시/군/구");
+  const locations = ["동대문구", "마포구", "서대문구", "성북구"];
+  
   const checkemail = watch("email");
+  const checknickname = watch('nickname')
   // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
   password.current = watch("password");
-
 
   const onSubmit = (data) => {
     axios
@@ -27,28 +31,29 @@ const Signup = () => {
         password: data.password,
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
-        address: "동대문구",
+        address: is_location,
       })
       .then((response) => {
-        console.log("완료", response);
+        console.log("회원가입 완료!", response);
       });
 
     console.log("data", data);
   };
-  const idCheck = (data) => {
+  const idCheck = () => {
+    console.log(checkemail)
     axios
-      .post("http://15.164.222.25/user/idCheck", { username: data.email })
+      .post("http://15.164.222.25/user/idCheck", { username: checkemail })
       .then((response) => {
-        console.log("존재합니다", response);
+        console.log("아이디중복", response);
       });
   };
-  const nicknameCheck = (data) => {
+  const nicknameCheck = () => {
     axios
       .post("http://15.164.222.25/user/nicknameCheck", {
-        nickname: data.nickname,
+        nickname: checknickname,
       })
       .then((response) => {
-        console.log("존재합니다", response);
+        console.log("닉네임중복", response);
       });
   };
   // watch는 name의 element를 관찰한다. 관찰을 하고자할때 register을 해당 인풋에 등록해주어야 한다. validate
@@ -201,30 +206,46 @@ const Signup = () => {
                 </p>
               )}
               <text>주소</text>
+              
               <div className="address-wrap">
-                <select className="select-wrap">
-                  <option
-                    disabled="disabled"
-                    selected="selected"
-                    hidden="hidden"
-                  >
-                    시/도
-                  </option>
-                  <option>서울시</option>
-                </select>
-                <select className="select-city-wrap">
-                  <option
-                    disabled="disabled"
-                    selected="selected"
-                    hidden="hidden"
-                  >
-                    시/군/구
-                  </option>
-                  <option>동대문구</option>
-                  <option>마포구</option>
-                  <option>서대문구</option>
-                  <option>성북구</option>
-                </select>
+                <div className="select-wrap">
+                  <span>서울시</span><IoMdArrowDropdown/>
+                </div>
+
+
+                  <LocationWrap>
+                <Grid _className={
+                is_open ? "active" : "default"
+              }>
+                  <div className="select-city-wrap" onClick={()=>{
+                  setIs_open(true);
+                }}>
+                  {is_location}<IoMdArrowDropdown/>
+                </div>
+                </Grid>
+      
+                {is_open && (
+                  <>
+                  <Grid _className='drop-location'>
+                    {locations.map((op, i)=>{
+                      return (
+                      <p
+                      className="loc-wrap"
+                      key={i}
+                      onClick={()=>{
+                        setIs_open(false);
+                        setIs_Location(op)
+                      }}
+                      >
+                        {op}
+                      </p> 
+                      )
+                    })}
+                  </Grid>
+                  </>
+                )}
+                  </LocationWrap>
+                
               </div>
               <button disabled={!checkemail} className="sign-btn">
                 가입하기
@@ -277,9 +298,11 @@ const SignupWrap = styled.div`
           padding-left: 10px;
           margin-bottom: 16px;
           border-radius: 4px;
-          outline: none;
           border: 1px solid var(--help-color);
         }
+        input:focus{
+              outline: 1px solid var(--main-color); 
+            }
 
         .doubleinput {
           max-width: 100%;
@@ -287,6 +310,9 @@ const SignupWrap = styled.div`
           input {
             width: 80%;
           }
+          input:focus{
+              outline: 1px solid var(--main-color); 
+            }
         }
         .doublecheck {
           background-color: white;
@@ -308,12 +334,36 @@ const SignupWrap = styled.div`
         height: 48px;
         outline: none;
         border: 1px solid var(--help-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        cursor: pointer;
       }
       .select-city-wrap {
         width: 191px;
         height: 48px;
         outline: none;
         border: 1px solid var(--help-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        cursor: pointer;
+      }
+      .drop-location{
+        width: 191px;
+        height: 144px;
+        border: 1px solid var(--help-color);
+        border-radius: 5px;
+        position: absolute;
+        cursor: pointer;
+        .loc-wrap{
+          padding: 8px 8px;
+        &:hover {
+          background-color: var(--disabled-color);
+      }
+        }
       }
     }
     .sign-btn {
@@ -337,5 +387,15 @@ const SignupWrap = styled.div`
         opacity: 1;
       }
     }
+  }
+`;
+
+const LocationWrap = styled.div`
+  position: relative;
+  .default{
+    border: 1px solid var(--disabled-color);
+  }
+  .active{
+    border: 1px solid var(--main-color);
   }
 `;

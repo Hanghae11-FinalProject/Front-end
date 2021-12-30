@@ -23,7 +23,7 @@ const PostList = ({ location, category }) => {
     }
   }, [curLocation, category]);
 
-  const _post_data = { curLocation, category };
+  const _post_data = { location, category };
   console.log(_post_data);
   //redux 가져오기
   const dispatch = useDispatch();
@@ -54,13 +54,13 @@ const PostList = ({ location, category }) => {
         data = res.data.data;
         console.log("무한 스크롤 동작해서 받아 온 값", res);
         //데이터가 사이즈보다 작을 경우
-        if (data.length === 0 || data.length < 5) {
+        if (data.length === 0) {
           sethasMore(false);
           setItems([...items, ...data]);
         } else {
           //데이터가 사이즈만큼 넘어왔을 때
           setItems([...items, ...data]);
-          setpage(count + 1);
+          setpage(count);
         }
       });
   };

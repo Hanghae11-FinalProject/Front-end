@@ -8,7 +8,7 @@ const Login = () => {
   const [login_disabled, setLoginDisabled] = useState(true);
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
-
+  
   const handleChangeInput = (e) => {
     setInputValues({
       ...input_values,
@@ -153,7 +153,7 @@ const LoginWrap = styled.div`
       }
     }
     .login-btn {
-      background-color: var(--inactive-color);
+      background-color: var(--main-color);
       text-align: center;
       width: 100%;
       max-width: 397px;
