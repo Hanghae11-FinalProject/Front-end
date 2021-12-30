@@ -15,10 +15,12 @@ const Signup = () => {
   } = useForm();
   const password = useRef();
 
+
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("시/군/구");
   const locations = ["동대문구", "마포구", "서대문구", "성북구"];
   
+
   const checkemail = watch("email");
   const checknickname = watch('nickname')
   // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
@@ -31,16 +33,21 @@ const Signup = () => {
         password: data.password,
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
-        address: is_location,
+
+        address: "동대문구",
+        profileImg: 
+          "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
       .then((response) => {
-        console.log("회원가입 완료!", response);
+        console.log("회원가입 성공", response);
+      })
+      .catch((err) => {
+        console.log("회원가입 실패", err);
       });
-
-    console.log("data", data);
   };
   const idCheck = () => {
     console.log(checkemail)
+
     axios
       .post("http://15.164.222.25/user/idCheck", { username: checkemail })
       .then((response) => {
@@ -71,11 +78,11 @@ const Signup = () => {
                   height: "30px",
                 }}
               />
-              <text className="header-title">회원가입</text>
+              <span className="header-title">회원가입</span>
             </div>
 
             <div className="signup-input-wrap">
-              <text>이메일</text>
+              <span>이메일</span>
               <Grid
                 is_flex="is_flex"
                 flex_align="center"
@@ -103,7 +110,7 @@ const Signup = () => {
                   이메일 주소를 다시 확인해주세요.
                 </p>
               )}
-              <text>비밀번호</text>
+              <span>비밀번호</span>
               <input
                 type="password"
                 name="password"
@@ -113,7 +120,7 @@ const Signup = () => {
                     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                 })}
                 placeholder="영문, 숫자 포함 8자 이상"
-              />{" "}
+              />
               {errors.password && errors.password.type === "required" && (
                 <p
                   style={{
@@ -134,7 +141,7 @@ const Signup = () => {
                   8자이내로 입력해주세요
                 </p>
               )}
-              <text>비밀번호 재확인</text>
+              <span>비밀번호 재확인</span>
               <input
                 type="password"
                 name="password_confirm"
@@ -166,7 +173,7 @@ const Signup = () => {
                     비밀번호가 일치하지 않습니다.
                   </p>
                 )}
-              <text>닉네임</text>
+              <span>닉네임</span>
               <Grid
                 is_flex="is_flex"
                 flex_align="center"
@@ -205,8 +212,8 @@ const Signup = () => {
                   6자 이내로 작성해주세요
                 </p>
               )}
-              <text>주소</text>
-              
+
+              <span>주소</span>
               <div className="address-wrap">
                 <div className="select-wrap">
                   <span>서울시</span><IoMdArrowDropdown/>
@@ -288,7 +295,7 @@ const SignupWrap = styled.div`
         flex-direction: column;
 
         padding: 0 16px;
-        text {
+        span {
           margin-bottom: 4px;
           margin-top: 32px;
         }

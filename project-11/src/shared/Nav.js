@@ -5,6 +5,7 @@ import { MdHome } from "react-icons/md";
 import { BsChat, BsPlusLg, BsSearch } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
+import { HiOutlineChatAlt2 } from "react-icons/hi";
 
 import styled from "styled-components";
 
@@ -38,7 +39,13 @@ const Nav = (props) => {
             <BsPlusLg className="plus-icon" />
           </PlusMenu>
           <Menu>
-            <BsChat className="icon" />
+            <HiOutlineChatAlt2
+              size="24"
+              className={props.chatting === "chatting" ? "active" : "icon"}
+              onClick={() => {
+                history.push("/chatting");
+              }}
+            />
           </Menu>
           <Menu>
             <RiUserFill

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { axiosInstance } from "../shared/api";
 import Nav from "../shared/Nav";
 import PostCard from "../components/PostCard";
 import { BiSearch } from "react-icons/bi";
@@ -6,13 +7,11 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 import SearchHIstory from "../components/SearchHIstory";
 
-import { PostData } from "../shared/PostTest";
-
 const Search = () => {
   const preWord = JSON.parse(localStorage.getItem("recent"));
   const [recent, setRecent] = useState(preWord || []);
   const [key, setKey] = useState("");
-  const [search_data, setSearch_data] = useState(false);
+  const [search_data, setSearch_data] = useState([]);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -32,12 +31,22 @@ const Search = () => {
     if (key && e.key === "Enter") {
       console.log(e.target.value);
       setRecent([e.target.value, ...preWord]);
-      //Axiso 자리
-      //여기에 키워드를 보내서 가지고 오면 되지 않을까~? page +
-      //가져온 값은 setSearch_data에 넣어서 그걸 뿌려주면 된다~~~
+      //검색리스트 가져오는 api
+      axiosInstance
+        .post(`api/search`, { keyword: [key] })
+        .then((res) => {
+          console.log("검색완료", res);
+          setSearch_data(res.data.data);
+          setKey("");
+        })
+        .catch((err) => {
+          console.log("검색실패", err);
+        });
       setKey("");
     }
   };
+
+  //최근 검색어 5개 제한
   const list = recent.slice(0, 5);
 
   //검색어 삭제
@@ -62,7 +71,7 @@ const Search = () => {
             <BiSearch className="icon" />
           </Grid>
           {/* 검색할 데이터가 없을 경우 */}
-          {!search_data ? (
+          {search_data.length === 0 ? (
             <>
               <SearchHIstory
                 list={list}
@@ -85,7 +94,7 @@ const Search = () => {
             <>
               {/* 검색한 데이터가 있을 경우 */}
               <PostList>
-                {PostData.map((item, idx) => {
+                {search_data.map((item, idx) => {
                   return <PostCard key={idx} item={item} />;
                 })}
               </PostList>

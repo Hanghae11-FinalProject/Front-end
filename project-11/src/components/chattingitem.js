@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const ChattingItem = () => {
     return (
@@ -23,27 +23,28 @@ const ChattingItem = () => {
 
 export default ChattingItem;
 
-const ChattingWrap = styled.div `
-    padding: 20px;
-    max-width: 428px;
-    border-bottom: 3px solid #ededed;;
-    .chatting-item-wrap{
-        display: flex;
-        align-items: center;
-        .profile-img{
-            width: 70px;
-            height: 70px;
-            margin-right: 20px;
-            border-radius: 50%;
-            background-color: black;
-            border: 1px solid gray;
-            img{
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-        }
+
+const ChattingWrap = styled.div`
+  padding: 20px;
+  max-width: 428px;
+  border-bottom: 3px solid #ededed;
+  .chatting-item-wrap {
+    display: flex;
+    align-items: center;
+    .profile-img {
+      width: 70px;
+      height: 70px;
+      margin-right: 20px;
+      border-radius: 50%;
+      background-color: black;
+      border: 1px solid gray;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }    
         .chat-info{
             width: 76%;
             .nickname-time-wrap{
@@ -71,6 +72,10 @@ const ChattingWrap = styled.div `
             line-height: 22px;
             border-radius: 50%;
             text-align: center;
+
         }
+      }
     }
-`
+    
+  }
+`;
