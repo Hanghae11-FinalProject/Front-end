@@ -26,5 +26,4 @@ jobs:
         run: |
           cd project-11
           yarn install
-          yarn build
           CI=true yarn test
