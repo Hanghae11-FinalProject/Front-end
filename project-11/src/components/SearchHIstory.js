@@ -6,6 +6,8 @@ import styled from "styled-components";
 const SearchHIstory = ({ list, onRemoveKeyword }) => {
   const [key, setKey] = useState();
   const [search_data, setSearch_data] = useState([]);
+
+  //최근 검색어 클릭해서 가져오기
   const keywordSearch = () => {
     //검색리스트 가져오는 api
     axiosInstance
