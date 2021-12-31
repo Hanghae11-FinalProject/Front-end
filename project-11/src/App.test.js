@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import ChattingItem from "./components/chattingitem";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('check a nickname tag in ChattingItem', () => {
+  const result = render(<ChattingItem />);
+  const nicknameElement = result.container.querySelector(".nickname")
+  expect(nicknameElement.tagName).toBe("H1");
 });
