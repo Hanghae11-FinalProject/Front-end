@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { history } from "../redux/configureStore";
+import { getCookie } from "./Cookie";
 import { Grid } from "../elements";
 import { MdHome } from "react-icons/md";
-import { BsChat, BsPlusLg, BsSearch } from "react-icons/bs";
+import { BsPlusLg } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
@@ -10,6 +11,8 @@ import { HiOutlineChatAlt2 } from "react-icons/hi";
 import styled from "styled-components";
 
 const Nav = (props) => {
+  const token = getCookie("Token");
+
   return (
     <>
       <NavBox>
@@ -38,7 +41,7 @@ const Nav = (props) => {
           </Menu>
           <PlusMenu>
             <BsPlusLg
-              className="plus-icon"
+              className={!token ? "plus-icon inactive" : "plus-icon active"}
               onClick={() => {
                 history.push("/write");
               }}
@@ -91,10 +94,17 @@ const PlusMenu = styled.div`
     font-weight: bold;
     width: 30px;
     height: 30px;
-    background-color: var(--main-color);
     color: #fff;
     border-radius: 30px;
     cursor: pointer;
+  }
+
+  .inactive {
+    background-color: var(--inactive-icon-color);
+  }
+
+  .active {
+    background-color: var(--main-color);
   }
 `;
 const Menu = styled.div`

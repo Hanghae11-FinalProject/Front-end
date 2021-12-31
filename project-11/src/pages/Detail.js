@@ -3,59 +3,24 @@ import { useParams } from "react-router-dom";
 
 import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
-
-import { useParams } from "react-router-dom";
-
 import CommentList from "../components/CommentList";
-import CommentInput from "../components/CommentInput";
+
 import { axiosInstance } from "../shared/api";
-import { data } from "../shared/util";
 import { Grid } from "../elements/index";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { FreeMode, Pagination } from "swiper";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/pagination";
-
 import styled from "styled-components";
-import { axiosInstance } from "../shared/api";
 import { FiStar } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsChat } from "react-icons/bs";
 
 import { getCookie } from "../shared/Cookie";
-import post from "../redux/modules/post";
-
-// install Swiper modules
-SwiperCore.use([FreeMode, Pagination]);
 
 const Detail = () => {
   const params = useParams();
   const [user_id, setUser_id] = useState(false);
   const [PostData, setPostdata] = useState();
   const [like, setLike] = useState(false);
-
-  const params = useParams();
-
-  const userId = getCookie("Id");
-  console.log(userId);
-
-  // 포스트id로 포스트 가져오기
-  const getPostData = () => {
-    axiosInstance
-      .get(`/api/posts/${params.id}`)
-      .then((res) => {
-        console.log(res);
-        // setPostdata(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
-  useEffect(() => {
-    getPostData();
-  }, []);
-
   const [btnActive, setBtnActive] = useState(false);
   const token = getCookie("Token");
 
@@ -72,9 +37,7 @@ const Detail = () => {
 
   useEffect(() => {
     getPostData();
-    console.log("hello");
   }, []);
-
 
   return (
     <>
