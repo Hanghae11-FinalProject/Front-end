@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
-import { Grid } from "../elements/index";
-import Modal from "react-modal";
 import { actionCreators as postActions } from "../redux/modules/post";
 
 import { Grid } from "../elements";
@@ -62,7 +60,6 @@ const Write = (props) => {
 
   // 모달 바깥 클릭 했을 시에 발생시킬 이벤트
   const clickCloseModal = (e) => {
-    console.log(modalClose.current(e.target));
     if (is_open && !modalClose.current.contains(e.target)) {
       //contains 함수는 요소가 current 안에 있는지 검사하여 Boolean값을 리턴
       // 현재 이벤트를 실행한 부분이 modalClose.current에 포함이 되지 않으면 false, 포함되거나 동일하다면 true입니다.

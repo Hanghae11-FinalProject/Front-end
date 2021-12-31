@@ -26,7 +26,7 @@ SwiperCore.use([Pagination, Autoplay]);
 const Main = () => {
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
-  const [is_location, setIs_Location] = useState("");
+  const [is_location, setIs_Location] = useState("위치 설정하기");
   const [is_cate, setIs_Cate] = useState("");
   //지역 옵션
   const locations = ["전체", "동대문구", "마포구", "서대문구", "성북구"];
