@@ -5,9 +5,12 @@ import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowReturnRight } from "react-icons/bs";
 
-const Reply = ({ name }) => {
+const Reply = ({ reply }) => {
   const [btn, setBtn] = useState(false);
-  const urname = name;
+
+  const replyData = reply;
+
+  console.log(replyData);
   return (
     <>
       <ReplyBox>
@@ -17,7 +20,7 @@ const Reply = ({ name }) => {
             <Grid is_flex flex_align="center" _className="user">
               <Profile></Profile>
               <p>
-                맷돌이 <span className="chip">작성자</span>
+                {replyData.nickname} <span className="chip">작성자</span>
               </p>
               <Grid _className="modal-menu">
                 <BiDotsVerticalRounded
@@ -33,7 +36,7 @@ const Reply = ({ name }) => {
                 </Grid>
               </Grid>
             </Grid>
-            <Comment>1개면 충분할 것 같아요</Comment>
+            <Comment>{replyData.content}</Comment>
             <Grid is_flex flex_align="center">
               <span>12.29</span>
               <span>20분전</span>
@@ -42,7 +45,7 @@ const Reply = ({ name }) => {
         </Grid>
       </ReplyBox>
       {/* 코멘트 인풋창 */}
-      {btn && <CommentInput name={urname} />}
+      {/* {btn && <CommentInput name={urname} />} */}
     </>
   );
 };

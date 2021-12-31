@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { Grid, Image } from "../elements/index";
 import { RiArrowLeftRightLine } from "react-icons/ri";
@@ -13,10 +14,14 @@ const PostCard = ({ item }) => {
   const [like, setLike] = useState(false);
   const [user_id, setUser_id] = useState(false);
 
+  const MoveToDetail = () => {
+    history.push(`/detail/${item.postId}`);
+  };
+
   return (
     <React.Fragment>
       <Grid is_flex>
-        <Post>
+        <Post onClick={MoveToDetail}>
           <Grid is_flex flex_align="center">
             <Image shape="circle" size="34px;">
               icon

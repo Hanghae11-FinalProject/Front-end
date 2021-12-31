@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
 
@@ -6,9 +8,15 @@ import { useParams } from "react-router-dom";
 
 import CommentList from "../components/CommentList";
 import CommentInput from "../components/CommentInput";
-
+import { axiosInstance } from "../shared/api";
 import { data } from "../shared/util";
 import { Grid } from "../elements/index";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { FreeMode, Pagination } from "swiper";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
 
 import styled from "styled-components";
 import { axiosInstance } from "../shared/api";
@@ -18,9 +26,15 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsChat } from "react-icons/bs";
 
 import { getCookie } from "../shared/Cookie";
+import post from "../redux/modules/post";
+
+// install Swiper modules
+SwiperCore.use([FreeMode, Pagination]);
 
 const Detail = () => {
+  const params = useParams();
   const [user_id, setUser_id] = useState(false);
+  const [PostData, setPostdata] = useState();
   const [like, setLike] = useState(false);
 
   const params = useParams();
@@ -43,93 +57,129 @@ const Detail = () => {
   }, []);
 
   const [btnActive, setBtnActive] = useState(false);
+  const token = getCookie("Token");
+
+  // 포스트id로 포스트 가져오기
+  const getPostData = async () => {
+    try {
+      const res = await axiosInstance.get(`/api/posts/${params.id}`);
+      console.log(res);
+      setPostdata(res.data);
+    } catch (err) {
+      console.log("상세 페이지 조회 실패", err);
+    }
+  };
+
+  useEffect(() => {
+    getPostData();
+    console.log("hello");
+  }, []);
+
 
   return (
     <>
-      <DetailBox>
-        <Grid is_container padding="16px" _className="border">
-          {/* header */}
-          <Header>
-            <Grid _className="inner" is_container is_flex flex_align="center">
-              <p>자세히 보기</p>
-            </Grid>
-          </Header>
-          {/* 카테고리 라이크버튼  */}
-          <Grid is_flex flex_align="center" flex_justify="space-between">
-            <Cate className="chip">
-              <span>{data.category}</span>
-              <span>{data.location}</span>
-            </Cate>
-          </Grid>
-          {/* 작성자 인포 */}
-          <Grid
-            is_flex
-            flex_align="center"
-            flex_justify="space-between"
-            _className="user-info"
-          >
-            <Profile>
-              <img
-                src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2020/06/urbanbrush-20200615000825087215.jpg"
-                alt="profile"
-              />
-            </Profile>
-            <UserInfo>
-              <p className="name">{data.username}</p>
-              <p className="time">{data.createdAt}</p>
-            </UserInfo>
-            <Grid _className="modal-menu">
-              <BiDotsVerticalRounded
-                className="icon"
-                onClick={() => setBtnActive(true)}
-              />
+      {!PostData ? (
+        <></>
+      ) : (
+        <>
+          <DetailBox key={PostData.postId}>
+            <Grid is_container _className="border">
+              {/* header */}
+              <Header>
+                <Grid
+                  _className="inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <p>자세히 보기</p>
+                </Grid>
+              </Header>
+              {/* 카테고리 라이크버튼  */}
               <Grid
-                _className={btnActive ? "inner-menu active" : "inner-menu"}
-                _onClick={() => setBtnActive(false)}
+                is_flex
+                flex_align="center"
+                flex_justify="space-between"
+                padding="0 16px"
               >
-                <li>채팅하기</li>
-                <li>공유하기</li>
-                <li>신고하기</li>
+                <Cate className="chip">
+                  <span>{PostData.categoryName}</span>
+                  <span>{PostData.address}</span>
+                </Cate>
               </Grid>
+              {/* 작성자 인포 */}
+              <Grid
+                is_flex
+                flex_align="center"
+                flex_justify="space-between"
+                _className="user-info"
+                padding="0 16px"
+              >
+                <Profile>
+                  <img src={PostData.profileImg} alt="profile" />
+                </Profile>
+                <UserInfo>
+                  <p className="name">{PostData.nickname}</p>
+                  <p className="time">{PostData.createdAt}</p>
+                </UserInfo>
+                <Grid _className="modal-menu">
+                  <BiDotsVerticalRounded
+                    className="icon"
+                    onClick={() => setBtnActive(true)}
+                  />
+                  <Grid
+                    _className={btnActive ? "inner-menu active" : "inner-menu"}
+                    _onClick={() => setBtnActive(false)}
+                  >
+                    <li>채팅하기</li>
+                    <li>공유하기</li>
+                    <li>신고하기</li>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              {/* 컨텐츠 시작 */}
+              <Grid padding="0 16px">
+                <Title>
+                  <h2>{PostData.title}</h2>
+                </Title>
+                <Content>{PostData.content}</Content>
+                {/* 상품 이미지 슬라이더 */}
+                <ProductImg img={PostData.images} />
+                {/* 해시태그 */}
+                <Grid is_flex _className="tag">
+                  {PostData.tags.map((tag, i) => {
+                    return (
+                      <>
+                        <span key={tag.id}>#{tag.tagName}</span>
+                      </>
+                    );
+                  })}
+                </Grid>
+                {/* 라이크버튼  */}
+                <Grid is_flex _className="btn-box">
+                  <Grid is_flex _className="like-btn" flex_align="center">
+                    {like && user_id ? (
+                      <FaStar className="icon active" />
+                    ) : (
+                      <FiStar className="icon" />
+                    )}
+                    <span>즐겨찾기 {PostData.bookMarks.length}</span>
+                  </Grid>
+                  <Grid is_flex _className="chat-btn" flex_align="center">
+                    <BsChat className="icon" />
+                    <span>댓글 {PostData.comments.length}</span>
+                  </Grid>
+                </Grid>
+              </Grid>
+              {PostData.comments.map((comment, i) => {
+                return <CommentList key={comment.id} comment={comment} />;
+              })}
             </Grid>
-          </Grid>
-          {/* 컨텐츠 시작 */}
-          <Title>
-            <h2>{data.title}</h2>
-          </Title>
-          <Content>{data.content}</Content>
-          {/* 상품 이미지 슬라이더 */}
-          <ProductImg img={data.productImg} />
-          {/* 해시태그 */}
-          <Grid is_flex _className="tag">
-            {data.tag.map((item, i) => {
-              return (
-                <>
-                  <span key={i}>#{item}</span>
-                </>
-              );
-            })}
-          </Grid>
-          {/* 라이크버튼  */}
-          <Grid is_flex _className="btn-box">
-            <Grid is_flex _className="like-btn" flex_align="center">
-              {like && user_id ? (
-                <FaStar className="icon active" />
-              ) : (
-                <FiStar className="icon" />
-              )}
-              <span>즐겨찾기</span>
-            </Grid>
-            <Grid is_flex _className="chat-btn" flex_align="center">
-              <BsChat className="icon" />
-              <span>댓글 5</span>
-            </Grid>
-          </Grid>
-          <CommentList />
-        </Grid>
-      </DetailBox>
-      {/* 코멘트 인풋창 */}
-      <CommentInput />
+          </DetailBox>
+        </>
+      )}
+
       <Nav />
     </>
   );
@@ -137,7 +187,8 @@ const Detail = () => {
 
 export default Detail;
 const DetailBox = styled.div`
-  padding-bottom: 150px;
+  padding-bottom: 60px;
+
   .border {
     height: 100vh;
     padding-top: 60px;
@@ -145,17 +196,17 @@ const DetailBox = styled.div`
     border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color);
   }
-  .like-btn,
+  /* .like-btn,
   .dislike-btn {
     border: 0;
     outline: 0;
     background-color: transparent;
-    width: 40px;
+    width: 60px;
     color: var(--main-color);
     .icon {
       font-size: 22px;
     }
-  }
+  } */
 
   .user-info {
     padding-bottom: 15px;
@@ -231,7 +282,7 @@ const DetailBox = styled.div`
     padding: 15px 5px;
     margin: 20px 0;
     .like-btn {
-      width: 90px;
+      width: 100px;
     }
     .like-btn,
     .chat-btn {
@@ -321,4 +372,46 @@ const Title = styled.div`
 const Content = styled.div`
   max-height: 100px;
   margin-bottom: 20px;
+`;
+
+// 이미지 슬라이더
+const ProductImgBox = styled.div`
+  margin: 10px 0;
+
+  /* swiper */
+  .swiper {
+    width: 100%;
+    height: 150px;
+    border-radius: 4px;
+  }
+
+  .swiper-slide {
+    text-align: center;
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .swiper-pagination.swiper-pagination-clickable {
+    display: none;
+  }
 `;
