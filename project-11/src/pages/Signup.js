@@ -31,10 +31,7 @@ const Signup = () => {
         password: data.password,
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
-
         address: "동대문구",
-        profileImg:
-          "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
       .then((response) => {
         console.log("회원가입 성공", response);

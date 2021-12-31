@@ -199,17 +199,18 @@ const MainTop = styled.div`
   margin: 8px;
   border-bottom: 2px solid #eee;
   display: flex;
+  justify-content: center;
   align-items: center;
   position: relative;
   .icon {
+    position: absolute;
+    left: 0;
     cursor: pointer;
   }
 `;
 
 const TopText = styled.p`
   font-size: 20px;
-  position: absolute;
-  left: 33.3%;
 `;
 
 const AddressBox = styled.div`

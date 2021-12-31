@@ -3,6 +3,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
 import axios from "axios";
+import { getCookie } from "../../shared/Cookie";
 // *** 액션 타입
 const GET_POST = "GET_POST";
 
@@ -68,12 +69,31 @@ const getPostAction = (post_data, count) => {
       });
   };
 };
+
+const getMyPosts = () => {
+  return (dispatch, getState, { history }) => {
+    const token = getCookie("Token");
+    console.log(token);
+
+    axiosInstance
+      .get(`/api/myposts`, {
+        headers: {
+          AUthorization: token,
+        },
+      })
+      .then((res) => {
+        console.log("성공쓰~", res);
+      })
+      .catch((err) => {
+        console.log("에러네용", err);
+      });
+  };
+};
 // *** 리듀서
 export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-
         //카테고리를 셀렉해주기 위해서 push대신에 하지만 무한스크롤을 위해push해야함
         draft.posts = action.payload._post_data.posts;
 
@@ -93,6 +113,7 @@ const actionCreators = {
   addPostDB,
   getPostAction,
   getPosts,
+  getMyPosts,
 };
 
 export { actionCreators };
