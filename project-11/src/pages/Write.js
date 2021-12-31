@@ -4,10 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
 import { Grid } from "../elements/index";
-import Modal from "react-modal";
 import { actionCreators as postActions } from "../redux/modules/post";
 
-import { Grid } from "../elements";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
@@ -51,7 +49,6 @@ const Write = (props) => {
     "재능교환",
   ];
 
-
   // 모달 바깥을 click 했을 때 클릭 이벤트 발생 시키기 위한 useEffect
   React.useEffect(() => {
     document.addEventListener("click", clickCloseModal);
@@ -62,7 +59,6 @@ const Write = (props) => {
 
   // 모달 바깥 클릭 했을 시에 발생시킬 이벤트
   const clickCloseModal = (e) => {
-    console.log(modalClose.current(e.target));
     if (is_open && !modalClose.current.contains(e.target)) {
       //contains 함수는 요소가 current 안에 있는지 검사하여 Boolean값을 리턴
       // 현재 이벤트를 실행한 부분이 modalClose.current에 포함이 되지 않으면 false, 포함되거나 동일하다면 true입니다.
@@ -78,7 +74,6 @@ const Write = (props) => {
       setIs_open(true);
     }
   };
-
 
   // 제목 onChange 함수
   const changeTitle = (e) => {
@@ -251,7 +246,6 @@ const Write = (props) => {
           </TitleArea>
 
           <CateArea>
-
             <Catediv
               onClick={modalControl}
               ref={modalClose}
@@ -285,7 +279,6 @@ const Write = (props) => {
                 </Grid>
               </>
             )}
-
           </CateArea>
 
           <TradeDiv>
@@ -391,7 +384,6 @@ const Container = styled.div`
 `;
 
 const MainTop = styled.div`
-
   height: 44px;
   margin: 8px;
   border-bottom: 2px solid #eee;
@@ -457,7 +449,6 @@ const CateArea = styled.div`
     color: var(--inactive-text-color);
     border: 2px solid var(--inactive-text-color);
   }
-
 `;
 
 const Catediv = styled.div`

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Nav from "../shared/Nav";
+import { history } from "../redux/configureStore";
 
 import { Grid, Button } from "../elements/index";
 import styled from "styled-components";
@@ -32,8 +33,23 @@ const Mypage = () => {
           </UserInfo>
           <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
           <Grid padding="30px 0;">
-            <Grid _className="menu">내가 쓴 글</Grid>
-            <Grid _className="menu"> 즐겨찾기</Grid>
+            <Grid
+              _className="menu"
+              _onClick={() => {
+                history.push("/mypost");
+              }}
+            >
+              내가 쓴 글
+            </Grid>
+            <Grid
+              _className="menu"
+              _onClick={() => {
+                history.push("/favorite");
+              }}
+            >
+              {" "}
+              즐겨찾기
+            </Grid>
             <hr />
             <Grid _className="menu">계정</Grid>
             <Grid _className="menu">앱 설정</Grid>

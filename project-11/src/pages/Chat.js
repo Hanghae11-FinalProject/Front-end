@@ -2,41 +2,35 @@ import React, { useState } from "react";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 import { FaLocationArrow } from "react-icons/fa";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
+let sockjs = new SockJS("http://13.125.145.191/webSocket");
+let stompClient = Stomp.over(sockjs);
+let List = [];
 const Chat = () => {
   const [currentMes, setCurrentMes] = useState("");
-  const [messageList, setMessageList] = useState([
-    {
-      username: "min",
-      content: "hello",
-      time: "12:55",
-      img: "http://pds.joins.com/news/component/htmlphoto_mmdata/201701/12/htm_2017011210251641338.jpg",
-    },
-    {
-      username: "joo",
-      content: "hi",
-      time: "12:56",
-      img: "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
-    },
-    {
-      username: "min",
-      content: "how r u?",
-      time: "12:55",
-      img: "http://pds.joins.com/news/component/htmlphoto_mmdata/201701/12/htm_2017011210251641338.jpg",
-    },
-    {
-      username: "joo",
-      content: "fine",
-      time: "12:56",
-      img: "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
-    },
-  ]);
-  const username = "min";
+  const [messageList, setMessageList] = useState([]);
 
-  const sendMessage = (e) => {
-    //chat info
-    console.log(e.target.value);
-    setCurrentMes(e.target.value);
+  React.useEffect(() => {
+    stompClient.connect({}, () => {
+      stompClient.send("/pub/join", {}, JSON.stringify("room1"));
+      stompClient.subscribe(`/sub/room1`, (data) => {
+        console.log(JSON);
+        const onMessage = JSON.parse(data.body).data;
+
+        setMessageList((messageList) => messageList.concat(onMessage));
+      });
+    });
+  }, []);
+
+  // setSearches(searches => searches.concat(query))
+  const sendMessage = () => {
+    const box = {
+      data: currentMes,
+      roomId: "room1",
+    };
+    stompClient.send("/pub/message", {}, JSON.stringify(box));
   };
   return (
     <>
@@ -49,22 +43,23 @@ const Chat = () => {
           </Header>
           <ChatBox>
             {messageList.map((message, idx) => {
+              console.log(message);
               return (
                 <>
                   <div
                     key={idx}
                     className="message"
-                    id={username === message.username ? "me" : "you"}
+                    // id={username === message.username ? "me" : "you"}
                   >
                     <Grid is_flex _className="chat-line">
                       <Grid _className="profileimg">
-                        <img src={message.img} alt="profile" />
+                        {/* <img src={message.img} alt="profile" /> */}
                       </Grid>
                       <Grid>
-                        <div className="chat-mes">{message.content}</div>
+                        <div className="chat-mes">{message}</div>
                         <Grid is_flex _className="chat-info">
-                          <span>{message.time}</span>
-                          <span>{message.username}</span>
+                          {/* <span>{message.time}</span> */}
+                          {/* <span>{message.username}</span> */}
                         </Grid>
                       </Grid>
                     </Grid>
@@ -83,7 +78,7 @@ const Chat = () => {
                     e.key === "Enter" && sendMessage(e);
                   }}
                 />
-                <button className="chat-btn">
+                <button className="chat-btn" onClick={sendMessage}>
                   <FaLocationArrow />
                 </button>
               </Grid>
@@ -151,6 +146,7 @@ const ChatBox = styled.div`
   .chat-mes {
     padding: 8px 10px;
     border-radius: 12px;
+    color: black;
   }
 
   .chat-info {

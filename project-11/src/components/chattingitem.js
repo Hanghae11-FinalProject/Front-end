@@ -2,27 +2,26 @@ import React from "react";
 import styled from "styled-components";
 
 const ChattingItem = () => {
-    return (
-        <ChattingWrap>
-            <div className='chatting-item-wrap'>
-                <div className='profile-img'>
-                    <img src='/static/noimage2.gif'/>
-                </div>
-                <div className='chat-info'>
-                    <div className='nickname-time-wrap'>
-                    <h1 className='nickname'>정민경</h1>
-                    <span>하루전</span>
-                    </div>
-                    <p>상그리아 와인 최고...</p>
-                </div>
-                <div className='chatting-cnt'>2</div>
-            </div>
-        </ChattingWrap>
-    );
+  return (
+    <ChattingWrap>
+      <div className="chatting-item-wrap">
+        <div className="profile-img">
+          <img src="/static/noimage2.gif" alt="room img" />
+        </div>
+        <div className="chat-info">
+          <div className="nickname-time-wrap">
+            <h1 className="nickname">정민경</h1>
+            <span>하루전</span>
+          </div>
+          <p>상그리아 와인 최고...</p>
+        </div>
+        <div className="chatting-cnt">2</div>
+      </div>
+    </ChattingWrap>
+  );
 };
 
 export default ChattingItem;
-
 
 const ChattingWrap = styled.div`
   padding: 20px;
