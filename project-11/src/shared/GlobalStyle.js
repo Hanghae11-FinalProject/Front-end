@@ -29,17 +29,21 @@ const GlobalStyles = createGlobalStyle`
     color: var(--active-color);
     overflow-x: hidden;
     font-family: 'NanumSquareRound';
+    /* font-family: 'Noto Sans KR', sans-serif; */
+
     
   }
 
   :root {
   --main-color: #FF626F;
+  --main-light-color :rgba(255, 98, 111, 0.05);
   --disabled-color:#dadada;
   --wrong-color: #FF0000;
   --active-color: #323232;
   --inactive-text-color: #666666;
   --help-color: #CDCDCD;
   --inactive-icon-color: #9A9A9A;
+  --light-color: #F3F3F3 ;
 }
 
   ol, ul, li {

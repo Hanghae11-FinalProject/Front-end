@@ -31,8 +31,8 @@ const Signup = () => {
         password: data.password,
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
+        address: is_location,
 
-        address: "동대문구",
         profileImg:
           "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
@@ -334,6 +334,7 @@ const SignupWrap = styled.div`
     .address-wrap {
       display: flex;
       justify-content: space-between;
+
       .select-wrap {
         width: 191px;
         height: 48px;
