@@ -22,7 +22,6 @@ const Detail = () => {
   const [PostData, setPostdata] = useState();
   const [like, setLike] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
-
   const token = getCookie("Token");
 
   // 포스트id로 포스트 가져오기
