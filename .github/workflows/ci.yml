@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Merge
+        uses: devmasx/merge-branch@master
+        with:
+          from_branch: uat
+          target_branch: develop
+      - name: Set up node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Run a test
+        run: |
+          cd project-11
+          yarn install
+          CI=true yarn test

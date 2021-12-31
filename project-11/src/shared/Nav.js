@@ -37,7 +37,12 @@ const Nav = (props) => {
             />
           </Menu>
           <PlusMenu>
-            <BsPlusLg className="plus-icon" />
+            <BsPlusLg
+              className="plus-icon"
+              onClick={() => {
+                history.push("/write");
+              }}
+            />
           </PlusMenu>
           <Menu>
             <HiOutlineChatAlt2

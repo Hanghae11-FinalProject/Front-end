@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
+import { Grid } from "../elements/index";
 import { actionCreators as postActions } from "../redux/modules/post";
 
-import { Grid } from "../elements";
+import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
@@ -207,7 +208,7 @@ const Write = (props) => {
       headers: {
         "Content-type": "multipart/form-data",
         Authorization:
-          "BEARER eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJFWFBJUkVEX0RBVEUiOjE2NDEwMDQxNDAsImlzcyI6InNwYXJ0YSIsIlVTRVJfTkFNRSI6Imp5YmluMTIzOTZAbmF2ZXIuY29tIn0.jrvXPzZOuljjmYbGno4RRUyejV6Oowlw0AkheU5pskg",
+          "BEARER eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJFWFBJUkVEX0RBVEUiOjE2NDExODc5NTYsImlzcyI6InNwYXJ0YSIsIlVTRVJfTkFNRSI6InRlc3RAdGVzdC5uZXQifQ.1ZO2sVfI4LRre9iwUV8tC-3bd71-c0DueDVTwaHduhg",
       },
     })
       .then((response) => {
