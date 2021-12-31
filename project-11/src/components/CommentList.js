@@ -6,16 +6,26 @@ import Reply from "./Reply";
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
-const CommentList = () => {
+const CommentList = ({ comment }) => {
+  const [name, setName] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
-  const username = "min";
+
+  const commentData = comment;
+  console.log(commentData);
+
   return (
     <>
-      <CommentBox>
-        <Grid is_container _className="comment-box">
+      <CommentBox key={commentData.id}>
+        <Grid
+          is_container
+          _className="comment-box"
+          _onClick={() => {
+            setName(true);
+          }}
+        >
           <Grid is_flex flex_align="center" _className="user">
             <Profile></Profile>
-            <p>{username}</p>
+            <p>{commentData.nickname}</p>
             <Grid _className="modal-menu">
               <BiDotsVerticalRounded
                 className="icon"
@@ -25,20 +35,41 @@ const CommentList = () => {
                 _className={btnActive ? "inner-menu active" : "inner-menu"}
                 _onClick={() => setBtnActive(false)}
               >
-                <li>댓글달기</li>
+                <li
+                  onClick={() => {
+                    setName(true);
+                  }}
+                >
+                  댓글달기
+                </li>
                 <li>채팅하기</li>
                 <li>신고하기</li>
               </Grid>
             </Grid>
           </Grid>
-          <Comment>저 순두부를 갖고 있어요! 몇 개 필요하신가요?</Comment>
+          <Comment>{commentData.content}</Comment>
           <Grid is_flex flex_align="center">
             <span>12.29</span>
             <span>25분전</span>
           </Grid>
-          <Reply name={username} />
+          {commentData.children ? (
+            <>
+              {commentData.children.map((reply, idx) => {
+                return (
+                  <>
+                    <Reply reply={reply} key={reply.id} />
+                  </>
+                );
+              })}
+            </>
+          ) : (
+            <></>
+          )}
         </Grid>
       </CommentBox>
+      {/* 코멘트 인풋창 */}
+      {/* comment list가 없을 때는 디폴트 input이 뜨고 comment list가 있을때는 name이 붙는 인풋으로 */}
+      {name ? <CommentInput name={commentData.nickname} /> : <CommentInput />}
     </>
   );
 };
@@ -47,6 +78,7 @@ export default CommentList;
 
 const CommentBox = styled.div`
   font-size: 14px;
+  padding: 0 16px;
 
   .comment-box {
     .user {

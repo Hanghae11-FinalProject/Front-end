@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { IoPaperPlane } from "react-icons/io5";
 
 const CommentInput = ({ name }) => {
-  console.log(name);
   return (
     <>
       <CommentInputBox>
@@ -16,6 +15,15 @@ const CommentInput = ({ name }) => {
             flex_align="center"
             _className="comment-box"
           >
+            {name ? (
+              <input
+                tpye="texy"
+                placeholder={`@${name}님에게 답글을 입력해주세요`}
+              />
+            ) : (
+              <input tpye="texy" placeholder="댓글을 입력해주세요" />
+            )}
+
             <IoPaperPlane className="add-btn" />
           </Grid>
         </Grid>
@@ -28,14 +36,14 @@ export default CommentInput;
 
 // 코멘트 인풋
 const CommentInputBox = styled.div`
-  position: fixed;
-  bottom: 50px;
-  width: 100%;
-  background-color: #fff;
-  padding: 5px 0px;
-
   .out-box {
-    padding: 5px 16px;
+    position: fixed;
+    bottom: 50px;
+    width: 100%;
+    background-color: #fff;
+    border: 0px solid red;
+    padding: 10px 16px;
+    box-sizing: border-box;
 
     .comment-box {
       margin: 0 auto;

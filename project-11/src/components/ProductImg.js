@@ -10,7 +10,8 @@ import styled from "styled-components";
 // install Swiper modules
 SwiperCore.use([FreeMode, Pagination]);
 
-const ProductImg = (props) => {
+const ProductImg = ({ img }) => {
+  console.log(img);
   return (
     <ProductImgBox>
       <Swiper
@@ -22,10 +23,10 @@ const ProductImg = (props) => {
         }}
         className="mySwiper"
       >
-        {props.img.map((url, i) => {
+        {img.map((url, i) => {
           return (
-            <SwiperSlide key={i}>
-              <img src={url} alt="product" />
+            <SwiperSlide key={url.id}>
+              <img src={url.imageUrl} alt="product" />
             </SwiperSlide>
           );
         })}
