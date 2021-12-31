@@ -28,7 +28,8 @@ const Nav = (props) => {
             />
           </Menu>
           <Menu>
-            <BsSearch
+            <BiSearch
+              size="24"
               className={props.search === "search" ? "active" : "icon"}
               onClick={() => {
                 history.push("/search");
