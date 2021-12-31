@@ -33,7 +33,7 @@ function App() {
         <Route path="/favorite" exact component={Favorite}></Route>
         <Route path="/mypost" exact component={MyPost}></Route>
         <Route path="/write" exact component={Write}></Route>
-        <Route path="/detail" exact component={Detail}></Route>
+        <Route path="/detail/:id" exact component={Detail}></Route>
         <Route path="/search" exact component={Search}></Route>
         <Route path="/chatting" exact component={Chatting}></Route>
         <Route path="/chat" exact component={Chat}></Route>

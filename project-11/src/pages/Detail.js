@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
+
+import { useParams } from "react-router-dom";
+
 import CommentList from "../components/CommentList";
 import CommentInput from "../components/CommentInput";
 
@@ -8,6 +11,7 @@ import { data } from "../shared/util";
 import { Grid } from "../elements/index";
 
 import styled from "styled-components";
+import { axiosInstance } from "../shared/api";
 import { FiStar } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -18,7 +22,28 @@ import { getCookie } from "../shared/Cookie";
 const Detail = () => {
   const [user_id, setUser_id] = useState(false);
   const [like, setLike] = useState(false);
+
+  const params = useParams();
+
+  const userId = getCookie("Id");
+  console.log(userId);
+
+  // 포스트id로 포스트 가져오기
+  const getPostData = () => {
+    axiosInstance
+      .get(`/api/posts/${params.id}`)
+      .then((res) => {
+        console.log(res);
+        // setPostdata(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getPostData();
+  }, []);
+
   const [btnActive, setBtnActive] = useState(false);
+
   return (
     <>
       <DetailBox>
