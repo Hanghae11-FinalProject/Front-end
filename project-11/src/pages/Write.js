@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
+import { Grid } from "../elements/index";
 import { actionCreators as postActions } from "../redux/modules/post";
 
-import { Grid } from "../elements";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";

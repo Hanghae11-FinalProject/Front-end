@@ -32,6 +32,7 @@ const Signup = () => {
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
         address: is_location,
+
         profileImg:
           "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
