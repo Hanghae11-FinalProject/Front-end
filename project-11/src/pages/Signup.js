@@ -16,7 +16,6 @@ const Signup = () => {
   } = useForm();
   const password = useRef();
 
-
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("시/군/구");
   const locations = ["동대문구", "마포구", "서대문구", "성북구"];
@@ -34,6 +33,7 @@ const Signup = () => {
   const checknickname = watch('nickname')
   const checkpw = watch('password')
   const checkpwconfirm = watch('password_confirm')
+
 
   // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
   password.current = watch("password");
@@ -304,11 +304,30 @@ const Signup = () => {
                       </p> 
                       )
                     })}
+
                   </Grid>
-                  </>
-                )}
-                  </LocationWrap>
-                
+
+                  {is_open && (
+                    <>
+                      <Grid _className="drop-location">
+                        {locations.map((op, i) => {
+                          return (
+                            <p
+                              className="loc-wrap"
+                              key={i}
+                              onClick={() => {
+                                setIs_open(false);
+                                setIs_Location(op);
+                              }}
+                            >
+                              {op}
+                            </p>
+                          );
+                        })}
+                      </Grid>
+                    </>
+                  )}
+                </LocationWrap>
               </div>
               <button  disabled={active} className="sign-btn" >
                 가입하기
@@ -369,15 +388,16 @@ const SignupWrap = styled.div`
         input:focus{
               outline: 1px solid var(--main-color); 
             }
+
         .doubleinput {
           max-width: 100%;
           justify-content: space-between;
           input {
             width: 80%;
           }
-          input:focus{
-              outline: 1px solid var(--main-color); 
-            }
+          input:focus {
+            outline: 1px solid var(--main-color);
+          }
         }
         .doublecheck {
           background-color: white;
@@ -394,6 +414,7 @@ const SignupWrap = styled.div`
     .address-wrap {
       display: flex;
       justify-content: space-between;
+
       .select-wrap {
         width: 191px;
         height: 48px;
@@ -419,18 +440,18 @@ const SignupWrap = styled.div`
         padding: 0 10px;
         cursor: pointer;
       }
-      .drop-location{
+      .drop-location {
         width: 191px;
         height: 144px;
         border: 1px solid var(--help-color);
         border-radius: 5px;
         position: absolute;
         cursor: pointer;
-        .loc-wrap{
+        .loc-wrap {
           padding: 8px 8px;
-        &:hover {
-          background-color: var(--disabled-color);
-      }
+          &:hover {
+            background-color: var(--disabled-color);
+          }
         }
       }
     }
@@ -459,10 +480,10 @@ const SignupWrap = styled.div`
 `;
 const LocationWrap = styled.div`
   position: relative;
-  .default{
+  .default {
     border: 1px solid var(--disabled-color);
   }
-  .active{
+  .active {
     border: 1px solid var(--main-color);
   }
 `;

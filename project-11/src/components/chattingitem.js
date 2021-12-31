@@ -23,6 +23,7 @@ const ChattingItem = () => {
 
 export default ChattingItem;
 
+
 const ChattingWrap = styled.div `
 padding: 20px;
 max-width: 428px;

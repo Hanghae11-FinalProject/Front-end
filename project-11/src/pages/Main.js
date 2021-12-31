@@ -109,7 +109,7 @@ const Main = () => {
                 <SwiperSlide>
                   <CateBtn
                     onClick={() => {
-                      is_cate === "가전" ? setIs_Cate("") : setIs_Cate("기전");
+                      is_cate === "가전" ? setIs_Cate("") : setIs_Cate("가전");
                     }}
                   >
                     <Grid

@@ -28,7 +28,8 @@ const Nav = (props) => {
             />
           </Menu>
           <Menu>
-            <BsSearch
+            <BiSearch
+              size="24"
               className={props.search === "search" ? "active" : "icon"}
               onClick={() => {
                 history.push("/search");
@@ -36,7 +37,12 @@ const Nav = (props) => {
             />
           </Menu>
           <PlusMenu>
-            <BsPlusLg className="plus-icon" />
+            <BsPlusLg
+              className="plus-icon"
+              onClick={() => {
+                history.push("/write");
+              }}
+            />
           </PlusMenu>
           <Menu>
             <HiOutlineChatAlt2

@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
+import { Grid } from "../elements/index";
 import { actionCreators as postActions } from "../redux/modules/post";
 
-import { Grid } from "../elements";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
@@ -49,7 +49,6 @@ const Write = (props) => {
     "재능교환",
   ];
 
-
   // 모달 바깥을 click 했을 때 클릭 이벤트 발생 시키기 위한 useEffect
   React.useEffect(() => {
     document.addEventListener("click", clickCloseModal);
@@ -75,7 +74,6 @@ const Write = (props) => {
       setIs_open(true);
     }
   };
-
 
   // 제목 onChange 함수
   const changeTitle = (e) => {
@@ -248,7 +246,6 @@ const Write = (props) => {
           </TitleArea>
 
           <CateArea>
-
             <Catediv
               onClick={modalControl}
               ref={modalClose}
@@ -282,7 +279,6 @@ const Write = (props) => {
                 </Grid>
               </>
             )}
-
           </CateArea>
 
           <TradeDiv>
@@ -388,7 +384,6 @@ const Container = styled.div`
 `;
 
 const MainTop = styled.div`
-
   height: 44px;
   margin: 8px;
   border-bottom: 2px solid #eee;
@@ -454,7 +449,6 @@ const CateArea = styled.div`
     color: var(--inactive-text-color);
     border: 2px solid var(--inactive-text-color);
   }
-
 `;
 
 const Catediv = styled.div`
