@@ -1,13 +1,65 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
-
+import { BiDotsVerticalRounded } from "react-icons/bi";
 
 const Chatting = () => {
+  const [is_open, setIs_open] = useState(false);
+
+  const [optionOne, setOptionOne] = useState(false);
+  const [optionTwo, setOptionTwo] = useState(false);
+  const [optionThree, setOptionThree] = useState(false);
+
+  const OptionOneControl = () => {
+    setOptionTwo(false);
+    setOptionThree(false);
+    if (optionOne) {
+      setOptionOne(false);
+    } else {
+      setOptionOne(true);
+    }
+  };
+
+  const OptionTwoControl = () => {
+    setOptionOne(false);
+    setOptionThree(false);
+    if (optionTwo) {
+      setOptionTwo(false);
+    } else {
+      setOptionTwo(true);
+    }
+  };
+
+  const OptionThreeControl = () => {
+    setOptionTwo(false);
+    setOptionOne(false);
+    if (optionThree) {
+      setOptionThree(false);
+    } else {
+      setOptionThree(true);
+    }
+  };
+
+  const ModalControl = () => {
+    if (is_open) {
+      setIs_open(false);
+      document.body.style.cssText = `
+      position: none; 
+      overflow-y: none;
+      width: 100%;
+      `;
+    } else {
+      setIs_open(true);
+      document.body.style.cssText = `
+      position: fixed; 
+      overflow-y: scroll;
+      width: 100%;
+      `;
+    }
+  };
   return (
     <ChattingWrap>
       <Grid is_container="is_container" _className="grid-border">
@@ -20,7 +72,55 @@ const Chatting = () => {
                   height: "30px",
                 }}
               />
-              <p className="header-title">채팅</p>
+              <p className="header-title">전체</p>
+              <Grid>
+                <div className="ct-wrap">
+                  <BiDotsVerticalRounded
+                    onClick={ModalControl}
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                    }}
+                    className="point-icon"
+                  />
+                </div>
+              </Grid>
+
+              {is_open && (
+                <>
+                  <Grid _className="drop-chat">
+                    <p
+                      className={optionOne ? "active" : "unactive"}
+                      onClick={() => {
+                        OptionOneControl();
+                        ModalControl();
+                      }}
+                    >
+                      전체
+                    </p>
+
+                    <p
+                      className={optionTwo ? "active" : "unactive"}
+                      onClick={() => {
+                        ModalControl();
+                        OptionTwoControl();
+                      }}
+                    >
+                      거래중
+                    </p>
+
+                    <p
+                      className={optionThree ? "active" : "unactive"}
+                      onClick={() => {
+                        ModalControl();
+                        OptionThreeControl();
+                      }}
+                    >
+                      거래완료
+                    </p>
+                  </Grid>
+                </>
+              )}
             </div>
           </div>
           <div className="chat-item">
@@ -37,7 +137,6 @@ const Chatting = () => {
         </div>
       </Grid>
       <Nav chatting={"chatting"} />
-
     </ChattingWrap>
   );
 };
@@ -62,21 +161,46 @@ const ChattingWrap = styled.div`
         .chatting-header-wrap {
           display: flex;
           align-items: center;
-          position: relative;
+          justify-content: space-between;
           max-width: 429px;
           margin: 0 auto;
+          position: relative;
           .header-title {
-            position: absolute;
-            left: 50%;
-            font-size: 25px;
-            margin-left: -22.5px;
+            font-size: 20px;
           }
-
+          .drop-chat {
+            height: 207px;
+            width: 303px;
+            border-radius: 24px;
+            background-color: white;
+            position: absolute;
+            top: 30vh;
+            left: 15%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+            cursor: pointer;
+            .active {
+              padding: 8px 8px;
+              font-size: 16px;
+              margin-top: 25px;
+              color: var(--main-color);
+            }
+            .unactive {
+              padding: 8px 8px;
+              font-size: 16px;
+              margin-top: 25px;
+            }
+          }
+          .point-icon {
+            cursor: pointer;
+          }
         }
       }
-      .chat-item {
-        margin-top: 50px;
-      }
+    }
+    .chat-item {
+      margin-top: 50px;
     }
   }
 `;

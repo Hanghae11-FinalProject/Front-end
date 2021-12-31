@@ -7,8 +7,7 @@ import Stomp from "stompjs";
 
 let sockjs = new SockJS("http://13.125.145.191/webSocket");
 let stompClient = Stomp.over(sockjs);
-
-
+let List = [];
 const Chat = () => {
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);

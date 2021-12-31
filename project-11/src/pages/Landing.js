@@ -2,6 +2,7 @@ import React from "react";
 
 import { Grid, Button } from "../elements/index";
 import styled from "styled-components";
+import { history } from "../redux/configureStore";
 
 const Landing = () => {
   return (
@@ -10,8 +11,20 @@ const Landing = () => {
         <Grid is_container padding="16px" _className="intro-box">
           <Grid _className="intro-anime">how to use this service</Grid>
           <BTN>
-            <Button>로그인</Button>
-            <Button>회원가입</Button>
+            <Button
+              _onClick={() => {
+                history.push("/login");
+              }}
+            >
+              로그인
+            </Button>
+            <Button
+              _onClick={() => {
+                history.push("/signup");
+              }}
+            >
+              회원가입
+            </Button>
             <Button>kakakoTalk</Button>
             <Button>Google</Button>
           </BTN>

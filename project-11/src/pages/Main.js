@@ -212,6 +212,7 @@ const Main = () => {
 const Container = styled.div`
   margin: 0 auto;
   .border {
+    height: 100vh;
     padding-top: 50px;
     border: 1px solid var(--help-color);
   }

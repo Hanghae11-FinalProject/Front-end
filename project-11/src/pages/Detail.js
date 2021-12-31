@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
 import CommentList from "../components/CommentList";
-import CommentInput from "../components/CommentInput";
-import { axiosInstance } from "../shared/api";
-import { data } from "../shared/util";
-import { Grid } from "../elements/index";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { FreeMode, Pagination } from "swiper";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/pagination";
+import { axiosInstance } from "../shared/api";
+import { Grid } from "../elements/index";
 
 import styled from "styled-components";
 import { FiStar } from "react-icons/fi";
@@ -21,10 +15,6 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsChat } from "react-icons/bs";
 
 import { getCookie } from "../shared/Cookie";
-import post from "../redux/modules/post";
-
-// install Swiper modules
-SwiperCore.use([FreeMode, Pagination]);
 
 const Detail = () => {
   const params = useParams();
@@ -32,6 +22,7 @@ const Detail = () => {
   const [PostData, setPostdata] = useState();
   const [like, setLike] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
+
   const token = getCookie("Token");
 
   // 포스트id로 포스트 가져오기
@@ -47,7 +38,6 @@ const Detail = () => {
 
   useEffect(() => {
     getPostData();
-    console.log("hello");
   }, []);
 
   return (
