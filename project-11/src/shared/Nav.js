@@ -43,7 +43,12 @@ const Nav = (props) => {
             <BsPlusLg
               className={!token ? "plus-icon inactive" : "plus-icon active"}
               onClick={() => {
-                history.push("/write");
+                if (!token) {
+                  window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                  history.push("/login");
+                } else {
+                  history.push("/write");
+                }
               }}
             />
           </PlusMenu>
@@ -52,7 +57,12 @@ const Nav = (props) => {
               size="24"
               className={props.chatting === "chatting" ? "active" : "icon"}
               onClick={() => {
-                history.push("/chatting");
+                if (!token) {
+                  window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                  history.push("/login");
+                } else {
+                  history.push("/chatting");
+                }
               }}
             />
           </Menu>
@@ -60,7 +70,12 @@ const Nav = (props) => {
             <RiUserFill
               className={props.mypage === "mypage" ? "active" : "icon"}
               onClick={() => {
-                history.push("/mypage");
+                if (!token) {
+                  window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                  history.push("/login");
+                } else {
+                  history.push("/mypage");
+                }
               }}
             />
           </Menu>

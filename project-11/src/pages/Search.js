@@ -21,10 +21,10 @@ const Search = () => {
   const getTrendKeyword = () => {
     //인기검색어 가져오는 api
     axiosInstance
-      .post(`api/search/rank`)
+      .get(`api/search/rank`)
       .then((res) => {
         console.log("인기검색어", res);
-        setRecommend(res.data);
+        setRecommend(res.data.searchRankList);
       })
       .catch((err) => {
         console.log("인기검색어 조회 실패", err);
@@ -72,6 +72,10 @@ const Search = () => {
     getTrendKeyword();
   }, [recent]);
 
+  //인기 검색어 나누기
+  const recommendkeywordTop = recommend.slice(0, 5);
+  const recommendkeywordBottom = recommend.slice(5, 10);
+
   return (
     <>
       <SearchList>
@@ -114,21 +118,47 @@ const Search = () => {
                 <>
                   <RemcommendBox>
                     <Title>인기 검색어</Title>
-                    <Grid is_container _className="recommend-box">
-                      {recommend.map((item, idx) => {
-                        return (
-                          <>
-                            <Grid is_flex _className="recommend-list">
-                              <p
-                                className={idx < 3 ? "hot-keyword" : "default"}
+                    <Grid is_flex>
+                      <Grid is_container _className="recommend-box">
+                        {recommendkeywordTop.map((item, idx) => {
+                          return (
+                            <>
+                              <Grid is_flex _className="recommend-list">
+                                <p
+                                  className={
+                                    idx < 3 ? "hot-keyword" : "default"
+                                  }
+                                >
+                                  {idx + 1}
+                                </p>
+                                <Keyword key={idx}>{item}</Keyword>
+                              </Grid>
+                            </>
+                          );
+                        })}
+                      </Grid>
+                      <Grid is_container _className="recommend-box">
+                        {recommendkeywordBottom.map((item, idx) => {
+                          return (
+                            <>
+                              <Grid
+                                is_flex
+                                _className="recommend-list"
+                                key={idx}
                               >
-                                {idx + 1}
-                              </p>
-                              <Keyword key={idx}>{item}</Keyword>
-                            </Grid>
-                          </>
-                        );
-                      })}
+                                <p
+                                  className={
+                                    idx < 0 ? "hot-keyword" : "default"
+                                  }
+                                >
+                                  {idx + 6}
+                                </p>
+                                <Keyword key={idx}>{item}</Keyword>
+                              </Grid>
+                            </>
+                          );
+                        })}
+                      </Grid>
                     </Grid>
                   </RemcommendBox>
                 </>
@@ -181,14 +211,12 @@ const SearchList = styled.div`
     }
 
     .recommend-box {
+      width: 100%;
       .recommend-list {
-        display: flex;
-        flex-wrap: wrap;
-        border-bottom: 1px solid var(--help-color);
-        padding: 10px 0;
+        width: 100%;
 
         p {
-          width: 60px;
+          width: 50px;
           text-align: center;
         }
 
