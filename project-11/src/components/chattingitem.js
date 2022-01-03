@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-
+import { history } from "../redux/configureStore";
+   
 const ChattingItem = () => {
     return (
         <ChattingWrap>
@@ -28,6 +29,7 @@ const ChattingWrap = styled.div `
 padding: 20px;
 max-width: 428px;
 border-bottom: 3px solid #ededed;
+cursor: pointer;
 .chatting-item-wrap {
     display: flex;
     align-items: center;

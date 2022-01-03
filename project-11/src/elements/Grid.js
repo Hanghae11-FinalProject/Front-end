@@ -15,6 +15,7 @@ const Grid = (props) => {
     text_overflow,
     overFlow,
     _onClick,
+    _width,
   } = props;
   const styles = {
     is_container,
@@ -28,6 +29,7 @@ const Grid = (props) => {
     text_overflow,
     overFlow,
     onClick: _onClick,
+    _width,
   };
   return <GridBox {...styles}>{children}</GridBox>;
 };
@@ -43,6 +45,7 @@ Grid.defaultProps = {
   box_shadow: false,
   text_overflow: false,
   overFlow: false,
+  _width: false,
 };
 const GridBox = styled.div`
   ${(props) => props.padding && `padding:   ${props.padding};`}
@@ -54,6 +57,7 @@ const GridBox = styled.div`
   ${(props) => props.box_shadow && `box-shadow: ${props.box_shadow};`}
   ${(props) => props.overFlow && `overflow: ${props.overFlow};`}
   ${(props) => props.text_overflow && `text-overflow : ${props.text_overflow}`}
+  ${(props) => props.width && `width : ${props.width}`}
 `;
 
 export default Grid;

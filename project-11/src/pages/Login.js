@@ -33,7 +33,7 @@ const Login = () => {
         history.push("/");
       })
       .catch((error) => {
-        console.log("로그인 실패", error);
+        window.alert('뭐가 틀렸는지 한번 더 생각해보세요', error)
       });
     setLoginDisabled(true);
     setLoginTrue(true);

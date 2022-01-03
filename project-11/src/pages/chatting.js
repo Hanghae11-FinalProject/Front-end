@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
@@ -8,11 +8,13 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 
 const Chatting = () => {
-  const [is_open, setIs_open] = useState(false);
+  
 
+  const [is_open, setIs_open] = useState(false);
   const [optionOne, setOptionOne] = useState(false)
   const [optionTwo, setOptionTwo] = useState(false)
   const [optionThree, setOptionThree] = useState(false)
+
 
   
    const OptionOneControl = () =>{
@@ -77,7 +79,7 @@ const Chatting = () => {
               <p className="header-title">전체</p>
                 <Grid>
                   <div className="ct-wrap">
-                  <BiDotsVerticalRounded  
+                  <BiDotsVerticalRounded                   
                   onClick={ModalControl}
                   style={{
                   width: "25px",
@@ -86,10 +88,12 @@ const Chatting = () => {
                 </div>
                 </Grid>
       
+
                 {is_open && (
                   <>
-                  <Grid _className='drop-chat'>
-                  <p                    
+                  <div className="modal-back"></div>
+                  <Grid _className='drop-chat' >
+                  <p               
                     className={optionOne ? "active" : "unactive"}
                     onClick={()=>{
                       OptionOneControl()
@@ -164,6 +168,14 @@ const ChattingWrap = styled.div`
           position: relative;
           .header-title {
             font-size: 20px;
+          }
+          .modal-back{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.25);
           }
           .drop-chat{
             height: 207px;

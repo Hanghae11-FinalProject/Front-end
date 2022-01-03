@@ -2,6 +2,9 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
+
+
+
 // *** 액션 타입
 const LOGIN = "user/LOGIN";
 // *** 액션 생성 함수
@@ -26,6 +29,8 @@ const registerDB = (userId, pw, pw_check, email) => {
   // }
 };
 // *** 미들웨어
+
+
 // *** 리듀서
 export default handleActions(
   {

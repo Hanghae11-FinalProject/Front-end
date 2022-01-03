@@ -303,32 +303,13 @@ const Signup = () => {
                         {op}
                       </p> 
                       )
-                    })}
-
-                  </Grid>
-
-                  {is_open && (
-                    <>
-                      <Grid _className="drop-location">
-                        {locations.map((op, i) => {
-                          return (
-                            <p
-                              className="loc-wrap"
-                              key={i}
-                              onClick={() => {
-                                setIs_open(false);
-                                setIs_Location(op);
-                              }}
-                            >
-                              {op}
-                            </p>
-                          );
-                        })}
+                    })}                  
                       </Grid>
                     </>
                   )}
                 </LocationWrap>
-              </div>
+                </div>
+                      
               <button  disabled={active} className="sign-btn" >
                 가입하기
               </button>
