@@ -4,33 +4,37 @@ import { Grid } from "../elements";
 import { FiStar } from "react-icons/fi";
 import { BsChat } from "react-icons/bs";
 
-const MyPostCard = () => {
+const MyPostCard = (my_List) => {
+  const myList = my_List.my_List;
+
   return (
     <PostDiv>
       <div className="top-side">
         <ChipDiv>
-          <Grid _className="ing">거래중</Grid>
+          <Grid _className="ing">
+            {myList.currentState === "Proceeding" ? "거래중" : "거래완료"}
+          </Grid>
         </ChipDiv>
         <div className="time-Location">
-          <p>12/29 · 동대문구</p>
+          <p>
+            {myList.createdAt} · {myList.address}
+          </p>
         </div>
       </div>
       <div className="title-box">
-        <h1 className="title">제목입니당</h1>
+        <h1 className="title">{myList.title}</h1>
       </div>
       <div className="contents-box">
-        <p className="contents">
-          내용입니당당당당당당당당당당당당당당당당당당당당당당당당당당당당당당
-        </p>
+        <p className="contents">{myList.content}</p>
       </div>
       <Grid is_flex padding="10px 5px" _className="btn-box">
         <Grid is_flex _className="like-btn" flex_align="center">
           <FiStar className="icon" />
-          <span>2</span>
+          <span>{myList.bookmarkCnt}</span>
         </Grid>
         <Grid is_flex _className="chat-btn" flex_align="center">
           <BsChat className="icon" />
-          <span>3</span>
+          <span>{myList.commentCnt}</span>
         </Grid>
       </Grid>
     </PostDiv>

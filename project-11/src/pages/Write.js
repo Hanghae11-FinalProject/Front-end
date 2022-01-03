@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
 import { actionCreators as postActions } from "../redux/modules/post";
-
+import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
@@ -23,6 +23,7 @@ SwiperCore.use([Pagination, Navigation]);
 
 const Write = (props) => {
   const dispatch = useDispatch();
+
   const token = getCookie("Token");
 
   const [title, setTitle] = React.useState(""); // 제목
