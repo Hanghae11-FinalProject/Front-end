@@ -1,7 +1,81 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { history } from "../redux/configureStore";
+import { axiosInstance } from "../shared/api";
+import Nav from "../shared/Nav";
+import FavoriteItem from "../components/FavoriteItem";
+import {getCookie} from '../shared/Cookie'
+
+import styled from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
+import { Grid } from "../elements";
+
 
 const Favorite = () => {
-  return <div></div>;
+  
+  const token = getCookie('Token')
+
+  const getFavorite = () => {
+    axiosInstance.get('/api/bookmark',{headers:{Authorization: token}}).then((response)=>{
+        console.log(response)
+    })
+  }
+  useEffect(()=>{
+    getFavorite()
+  },[])
+
+  return (
+    <FavoriteWrap>
+      <Grid is_container="is_container" _className="grid-border">
+        <div className="Favorite-wrap">
+          <div className="Favorite-header-wrap">
+            <IoIosArrowBack
+              style={{
+                width: "30px",
+                height: "30px",
+              }}
+            />
+            <span className="header-title">즐겨찾기</span>
+          </div>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+              <FavoriteItem/>
+        </div>
+      </Grid>
+      <Nav/>
+    </FavoriteWrap>
+  );
 };
 
 export default Favorite;
+
+const FavoriteWrap = styled.div`
+  .grid-border {
+    width: 100%;
+    border: 1px solid var(--help-color);
+    .Favorite-wrap {
+      .Favorite-header-wrap {
+        height: 50px;
+
+        display: flex;
+        align-items: center;
+
+        position: relative;
+        border-bottom: 1px solid var(--help-color);
+        .header-title {
+          position: absolute;
+          left: 42.5%;
+          font-size: 20px;
+          font-weight: bold;
+        }
+      }
+
+    }
+  }
+`;

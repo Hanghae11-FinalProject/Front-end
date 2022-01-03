@@ -8,8 +8,11 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { useHistory } from "react-router-dom";
 
 const InputAdd = () => {
+  
   const history = useHistory();
   const modalClose = React.useRef();
+  // disabled 활성화 여부
+  const [active, setActive] = React.useState(true);
 
   const [is_Open, setIs_Open] = React.useState(false);
   const [is_city, setIs_city] = React.useState("시/도");
@@ -53,14 +56,25 @@ const InputAdd = () => {
     } else return;
   };
 
+  // disabled 체크
+  const checkActive = () => {
+    is_location !== "시/군/구"
+      ? setActive(false)
+      : setActive(true);
+  };
+
+  React.useEffect(()=> {
+    checkActive()
+  },[is_location])
+
   // 주소 입력 완료!
   const signUp = () => {
     axiosInstance
-      .post("user/address", {})
+      .post("user/address", { address: is_location })
       .then((res) => {
         console.log("주소입력 완료", res);
 
-        history.push("/");
+        // history.push("/");
       })
       .catch((err) => {
         console.log("주소입력 실패", err);
@@ -149,7 +163,7 @@ const InputAdd = () => {
             </LocationWrap>
             {/* </div> */}
           </AddressBox>
-          <button className="sign-btn" onClick={signUp}>
+          <button className="sign-btn" disabled={active} onClick={signUp}>
             가입하기
           </button>
         </Grid>
@@ -252,7 +266,7 @@ const AddressBox = styled.div`
     border: 1px solid var(--help-color);
     border-radius: 5px;
     position: absolute;
-    top: -18vh;
+    top: -14vh;
     background-color: #fff;
     cursor: pointer;
 
