@@ -51,7 +51,7 @@ const getPostAction = (post_data, count) => {
         address: [post_data.location],
       })
       .then((res) => {
-        console.log("리덕스 저장 전 목록", res.data.data, count);
+        console.log("리덕스 저장 전 목록", res.data, count);
         let is_next = null;
 
         if (res.data.data.length < 6) {

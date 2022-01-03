@@ -241,8 +241,8 @@ const Write = (props) => {
             <TitleInput
               Value={title}
               type="text"
-              maxLength={15}
-              placeholder="제목 (15자 이하)"
+              maxLength={20}
+              placeholder="제목 (20자 이하)"
               onChange={changeTitle}
               onKeyUp={checkActive}
             ></TitleInput>

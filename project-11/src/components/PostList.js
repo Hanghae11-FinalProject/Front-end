@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
-import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 

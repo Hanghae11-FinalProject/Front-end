@@ -1,27 +1,57 @@
 import React, { useState } from "react";
+import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements";
+import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
 import CommentInput from "./CommentInput";
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowReturnRight } from "react-icons/bs";
 
-const Reply = ({ reply }) => {
+const Reply = ({ reply, postid, postuser }) => {
+  const token = getCookie("Token");
+  const curUserId = getCookie("Id");
+  const [is_login, setIs_login] = useState(token ? true : false);
+  const [name, setName] = useState();
   const [btn, setBtn] = useState(false);
-
   const replyData = reply;
 
-  console.log(replyData);
+  //댓글 쓰기
+  const writeRely = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/login");
+    }
+    setName(replyData.nickname);
+  };
+
+  //댓글 삭제
+  const deleteComment = () => {
+    axiosInstance
+      .delete(`/api/comments/${replyData.id}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => console.log("delete reply sucess", res))
+      .catch((err) => console.log("delete reply fail", err));
+  };
   return (
     <>
-      <ReplyBox>
+      <ReplyBox key={replyData.id}>
         <Grid is_flex is_container>
           <BsArrowReturnRight className="arrow" />
           <Grid _className="reply-box">
             <Grid is_flex flex_align="center" _className="user">
               <Profile></Profile>
-              <p>
-                {replyData.nickname} <span className="chip">작성자</span>
-              </p>
+              {replyData.nickname === postuser ? (
+                <p>
+                  {replyData.nickname} <span className="chip">작성자</span>
+                </p>
+              ) : (
+                <p>{replyData.nickname}</p>
+              )}
+
               <Grid _className="modal-menu">
                 <BiDotsVerticalRounded
                   className="icon"
@@ -31,21 +61,40 @@ const Reply = ({ reply }) => {
                   _className={btn ? "inner-menu active" : "inner-menu"}
                   _onClick={() => setBtn(false)}
                 >
-                  <li>수정하기</li>
-                  <li>삭제하기</li>
+                  {is_login && curUserId === replyData.userId ? (
+                    <>
+                      <li onClick={deleteComment}>삭제하기</li>
+                    </>
+                  ) : (
+                    <>
+                      <li onClick={writeRely}>댓글달기</li>
+                      <li>채팅하기</li>
+                      <li onClick={deleteComment}>신고하기</li>
+                    </>
+                  )}
                 </Grid>
               </Grid>
             </Grid>
             <Comment>{replyData.content}</Comment>
-            <Grid is_flex flex_align="center">
-              <span>12.29</span>
-              <span>20분전</span>
+            <Grid>
+              <span>{replyData.createAt}</span>
             </Grid>
           </Grid>
         </Grid>
       </ReplyBox>
       {/* 코멘트 인풋창 */}
-      {/* {btn && <CommentInput name={urname} />} */}
+      {/* comment list가 없을 때는 디폴트 input이 뜨고 comment list가 있을때는 name이 붙는 인풋으로 */}
+      {name ? (
+        <CommentInput
+          name={replyData.nickname}
+          postid={postid}
+          commentid={replyData.id}
+        />
+      ) : (
+        <>
+          <CommentInput postid={postid} />
+        </>
+      )}
     </>
   );
 };
