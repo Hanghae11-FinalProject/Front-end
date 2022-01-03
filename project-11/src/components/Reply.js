@@ -3,7 +3,7 @@ import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
-import CommentInput from "./CommentInput";
+
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowReturnRight } from "react-icons/bs";
@@ -12,18 +12,8 @@ const Reply = ({ reply, postid, postuser }) => {
   const token = getCookie("Token");
   const curUserId = getCookie("Id");
   const [is_login, setIs_login] = useState(token ? true : false);
-  const [name, setName] = useState();
   const [btn, setBtn] = useState(false);
   const replyData = reply;
-
-  //댓글 쓰기
-  const writeRely = () => {
-    if (!token) {
-      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
-    }
-    setName(replyData.nickname);
-  };
 
   //댓글 삭제
   const deleteComment = () => {
@@ -67,9 +57,8 @@ const Reply = ({ reply, postid, postuser }) => {
                     </>
                   ) : (
                     <>
-                      <li onClick={writeRely}>댓글달기</li>
                       <li>채팅하기</li>
-                      <li onClick={deleteComment}>신고하기</li>
+                      <li>신고하기</li>
                     </>
                   )}
                 </Grid>
@@ -82,19 +71,6 @@ const Reply = ({ reply, postid, postuser }) => {
           </Grid>
         </Grid>
       </ReplyBox>
-      {/* 코멘트 인풋창 */}
-      {/* comment list가 없을 때는 디폴트 input이 뜨고 comment list가 있을때는 name이 붙는 인풋으로 */}
-      {name ? (
-        <CommentInput
-          name={replyData.nickname}
-          postid={postid}
-          commentid={replyData.id}
-        />
-      ) : (
-        <>
-          <CommentInput postid={postid} />
-        </>
-      )}
     </>
   );
 };

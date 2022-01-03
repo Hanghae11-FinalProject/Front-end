@@ -12,7 +12,12 @@ const CommentInput = ({ name, postid, commentid }) => {
   const [Newcomment, setNewComment] = useState();
   const [replyId, setReplyId] = useState(commentid);
   const id = postid;
-
+  // console.log(
+  //   "대댓글을 위한 값들 이름,포스트아이디, 댓글아이디",
+  //   name,
+  //   postid,
+  //   commentid
+  // );
   //댓글 쓰기
   const writeComment = (e) => {
     if (!token) {
