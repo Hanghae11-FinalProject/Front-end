@@ -22,7 +22,7 @@ const initialState = {
 // 게시글 작성
 const addPostDB = (title, content, category, tagName, images) => {
   return function (dispatch, getState, { history }) {
-    const token = document.cookie; // 쿠키에서 토큰 어케가져옴?ㅋ
+    const token = getCookie("Token");
 
     axios
       .post(
@@ -70,25 +70,6 @@ const getPostAction = (post_data, count) => {
   };
 };
 
-const getMyPosts = () => {
-  return (dispatch, getState, { history }) => {
-    const token = getCookie("Token");
-    console.log(token);
-
-    axiosInstance
-      .get(`/api/myposts`, {
-        headers: {
-          AUthorization: token,
-        },
-      })
-      .then((res) => {
-        console.log("성공쓰~", res);
-      })
-      .catch((err) => {
-        console.log("에러네용", err);
-      });
-  };
-};
 // *** 리듀서
 export default handleActions(
   {
@@ -113,7 +94,6 @@ const actionCreators = {
   addPostDB,
   getPostAction,
   getPosts,
-  getMyPosts,
 };
 
 export { actionCreators };

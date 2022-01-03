@@ -1,18 +1,38 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { actionCreators as postActions } from "../redux/modules/post";
 
+import { getCookie } from "../shared/Cookie";
+import { axiosInstance } from "../shared/api";
 import { CgChevronLeft } from "react-icons/cg";
 import { Grid } from "../elements";
 import Nav from "../shared/Nav";
 import MyPostCard from "../components/MyPostCard";
-import { useDispatch } from "react-redux";
 
 const MyPost = () => {
-  const dispatch = useDispatch();
+  const token = getCookie("Token");
+
+  const [my_List, setMy_List] = React.useState([]);
+
   useEffect(() => {
-    dispatch(postActions.getMyPosts());
+    axiosInstance
+      .get(`/api/myposts`, {
+        headers: {
+          AUthorization: token,
+        },
+      })
+      .then((res) => {
+        console.log("성공쓰~", res);
+        console.log(res.data);
+        setMy_List(res.data);
+      })
+      .catch((err) => {
+        console.log("에러네용", err);
+      });
   }, []);
+  useEffect(() => {
+    console.log(my_List);
+  }, [my_List]);
+
   return (
     <>
       <MyPostBox>
@@ -21,8 +41,10 @@ const MyPost = () => {
             <CgChevronLeft size="30" className="icon" />
             <TopText style={{ marginLeft: "6px" }}>내가 작성한 글</TopText>
           </MainTop>
-          <MyPostCard />
-          <MyPostCard />
+          {my_List &&
+            my_List.map((my_List, idx) => {
+              return <MyPostCard key={idx} my_List={my_List} />;
+            })}
         </Grid>
       </MyPostBox>
       <Nav />
