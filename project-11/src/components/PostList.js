@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
-import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 
@@ -10,7 +9,6 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 
 const PostList = ({ location, category }) => {
-
   const _post_data = { location, category };
   console.log(_post_data);
   //redux 가져오기
@@ -50,8 +48,8 @@ const PostList = ({ location, category }) => {
 
     axiosInstance
       .post(`api/category?page=${count}`, {
-        categoryName: [""],
-        address: [""],
+        categoryName: [_post_data.category],
+        address: [_post_data.location],
       })
       .then((res) => {
         data = res.data.data;
@@ -82,17 +80,11 @@ const PostList = ({ location, category }) => {
             </>
           ) : (
             <>
-              {/* {post_data.posts.map((arr, i) => {
-                return ( */}
-              <>
-                <Grid _className="post-list">
-                  {post_data.posts.map((item, idx) => {
-                    return <PostCard key={idx} item={item} />;
-                  })}
-                </Grid>
-              </>
-              {/* );
-              })} */}
+              <Grid _className="post-list">
+                {post_data.posts.map((item, idx) => {
+                  return <PostCard key={item.id} item={item} />;
+                })}
+              </Grid>
             </>
           )}
         </InfiniteScroll>

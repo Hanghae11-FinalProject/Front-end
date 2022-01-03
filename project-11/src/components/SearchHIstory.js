@@ -6,6 +6,8 @@ import styled from "styled-components";
 const SearchHIstory = ({ list, onRemoveKeyword }) => {
   const [key, setKey] = useState();
   const [search_data, setSearch_data] = useState([]);
+
+  //최근 검색어 클릭해서 가져오기
   const keywordSearch = () => {
     //검색리스트 가져오는 api
     axiosInstance
@@ -25,7 +27,7 @@ const SearchHIstory = ({ list, onRemoveKeyword }) => {
   return (
     <KeywordBox>
       <p>최근 검색어</p>
-      <Grid is_flex _className="recommend-box">
+      <Grid is_flex _className="recent-keyword-box">
         {list.map((item, i) => {
           return (
             <>
@@ -54,11 +56,12 @@ const HistoryContainer = styled.div`
 `;
 const KeywordBox = styled.div`
   padding: 20px 16px;
+
   p {
     margin: 10px 0;
   }
 
-  .recommend-box {
+  .recent-keyword-box {
     display: flex;
     flex-wrap: wrap;
   }

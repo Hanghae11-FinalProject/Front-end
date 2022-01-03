@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { history } from "../redux/configureStore";
@@ -22,7 +23,7 @@ SwiperCore.use([Pagination, Navigation]);
 
 const Write = (props) => {
   const dispatch = useDispatch();
-  // const history = useHistory();
+
   const token = getCookie("Token");
 
   const [title, setTitle] = React.useState(""); // 제목

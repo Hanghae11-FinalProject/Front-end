@@ -372,6 +372,7 @@ const SignupWrap = styled.div`
         input:focus {
           outline: 1px solid var(--main-color);
         }
+
         .doubleinput {
           max-width: 100%;
           justify-content: space-between;
