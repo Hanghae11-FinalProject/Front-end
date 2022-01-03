@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getCookie } from "../shared/Cookie";
+import { axiosInstance } from "../shared/api";
+import { Grid } from "../elements/index";
+import { history } from "../redux/configureStore";
+import axios from "axios";
+
 import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
 import CommentList from "../components/CommentList";
-import CommentInput from "../components/CommentInput";
-
-import { data } from "../shared/util";
-import { Grid } from "../elements/index";
 
 import styled from "styled-components";
 import { FiStar } from "react-icons/fi";
@@ -13,98 +16,247 @@ import { FaStar } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsChat } from "react-icons/bs";
 
-import { getCookie } from "../shared/Cookie";
+import CommentInput from "../components/CommentInput";
 
 const Detail = () => {
+  const token = getCookie("Token");
+  const curUserName = getCookie("Name");
+  const curUserId = getCookie("Id");
+  const params = useParams();
+  const [is_loading, setIs_loading] = useState(false);
   const [user_id, setUser_id] = useState(false);
-  const [like, setLike] = useState(false);
+  const [PostData, setPostdata] = useState();
+  const [bookmark, setBookmark] = useState();
+
   const [btnActive, setBtnActive] = useState(false);
+
+  //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
+  const has_bookmarks = () => {
+    setIs_loading(true);
+    if (PostData.bookMarks.length > 0) {
+      const bookmarkState = PostData.bookMarks.filter((user) => {
+        return user.userId === Number(curUserId);
+      });
+
+      if (bookmarkState.length === 1) {
+        setBookmark(true);
+        setIs_loading(false);
+      }
+    }
+  };
+
+  // 포스트id로 포스트 가져오기
+  const getPostData = async () => {
+    try {
+      setIs_loading(true);
+      const res = await axiosInstance.get(`/api/posts/${params.id}`);
+      console.log("상세 페이지 조회 성공", res);
+      console.log("reply", res.data.comments);
+      setPostdata(res.data);
+    } catch (err) {
+      console.log("상세 페이지 조회 실패", err);
+    }
+    setIs_loading(false);
+  };
+
+  //포스트 삭제하기
+  const deletePost = () => {
+    axiosInstance
+      .delete(`api/posts/${params.id}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        history.push("/");
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //즐겨찾기 버튼
+  const addBookmark = () => {
+    console.log(token);
+
+    setBookmark(true);
+    axios
+      .post(
+        `http://15.164.222.25/api/bookmark/${params.id}`,
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => console.log("즐겨찾기 보내기 성공", res))
+      .catch((err) => console.log(err));
+  };
+
+  //즐겨찾기 버튼 취소
+  const cancelBookmark = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/login");
+    }
+    setBookmark(false);
+    axiosInstance
+      .delete(`api/bookmark/${params.id}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => console.log("즐겨찾기 취소 성공", res))
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getPostData();
+
+    return () => setIs_loading(false);
+  }, []);
+
+  console.log("data-comment", PostData);
   return (
     <>
-      <DetailBox>
-        <Grid is_container padding="16px" _className="border">
-          {/* header */}
-          <Header>
-            <Grid _className="inner" is_container is_flex flex_align="center">
-              <p>자세히 보기</p>
-            </Grid>
-          </Header>
-          {/* 카테고리 라이크버튼  */}
-          <Grid is_flex flex_align="center" flex_justify="space-between">
-            <Cate className="chip">
-              <span>{data.category}</span>
-              <span>{data.location}</span>
-            </Cate>
-          </Grid>
-          {/* 작성자 인포 */}
-          <Grid
-            is_flex
-            flex_align="center"
-            flex_justify="space-between"
-            _className="user-info"
-          >
-            <Profile>
-              <img
-                src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2020/06/urbanbrush-20200615000825087215.jpg"
-                alt="profile"
-              />
-            </Profile>
-            <UserInfo>
-              <p className="name">{data.username}</p>
-              <p className="time">{data.createdAt}</p>
-            </UserInfo>
-            <Grid _className="modal-menu">
-              <BiDotsVerticalRounded
-                className="icon"
-                onClick={() => setBtnActive(true)}
-              />
+      {!PostData ? (
+        <></>
+      ) : (
+        <>
+          <DetailBox key={PostData.postId}>
+            <Grid is_container _className="border">
+              {/* header */}
+              <Header>
+                <Grid
+                  _className="inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <p>자세히 보기</p>
+                </Grid>
+              </Header>
+              {/* 카테고리 라이크버튼  */}
               <Grid
-                _className={btnActive ? "inner-menu active" : "inner-menu"}
-                _onClick={() => setBtnActive(false)}
+                is_flex
+                flex_align="center"
+                flex_justify="space-between"
+                padding="0 16px"
               >
-                <li>채팅하기</li>
-                <li>공유하기</li>
-                <li>신고하기</li>
+                <Cate className="chip">
+                  <span>{PostData.categoryName}</span>
+                  <span>{PostData.address}</span>
+                </Cate>
               </Grid>
+              {/* 작성자 인포 */}
+              <Grid
+                is_flex
+                flex_align="center"
+                flex_justify="space-between"
+                _className="user-info"
+                padding="0 16px"
+              >
+                <Profile>
+                  <img src={PostData.profileImg} alt="profile" />
+                </Profile>
+                <UserInfo>
+                  <p className="name">{PostData.nickname}</p>
+                  <p className="time">{PostData.createdAt}</p>
+                </UserInfo>
+                <Grid _className="modal-menu">
+                  <BiDotsVerticalRounded
+                    className="icon"
+                    onClick={() => setBtnActive(true)}
+                  />
+                  {curUserName === PostData.nickname ? (
+                    <>
+                      <Grid
+                        _className={
+                          btnActive ? "inner-menu active" : "inner-menu"
+                        }
+                        _onClick={() => setBtnActive(false)}
+                      >
+                        <li>수정하기</li>
+                        <li>거래완료로 변경하기</li>
+                        <li>공유하기</li>
+                        <li onClick={deletePost}>삭제하기</li>
+                      </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Grid
+                        _className={
+                          btnActive ? "inner-menu active" : "inner-menu"
+                        }
+                        _onClick={() => setBtnActive(false)}
+                      >
+                        <li onClick={addBookmark}>공유하기</li>
+                        <li>신고하기</li>
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
+              </Grid>
+
+              {/* 컨텐츠 시작 */}
+              <Grid padding="0 16px">
+                <Title>
+                  <h2>{PostData.title}</h2>
+                </Title>
+                <Content>{PostData.content}</Content>
+                {/* 상품 이미지 슬라이더 */}
+                <ProductImg img={PostData.images} />
+                {/* 해시태그 */}
+                <Grid is_flex _className="tag">
+                  {PostData.tags.map((tag, i) => {
+                    return (
+                      <>
+                        <span key={tag.id}>#{tag.tagName}</span>
+                      </>
+                    );
+                  })}
+                </Grid>
+                {/* 라이크버튼  */}
+                <Grid is_flex _className="btn-box">
+                  <Grid is_flex _className="like-btn" flex_align="center">
+                    {bookmark ? (
+                      <FaStar
+                        className="icon bookmark-active"
+                        onClick={cancelBookmark}
+                      />
+                    ) : (
+                      <FiStar className="icon" />
+                    )}
+                    <span>즐겨찾기 {PostData.bookMarks.length}</span>
+                  </Grid>
+                  <Grid is_flex _className="chat-btn" flex_align="center">
+                    <BsChat className="icon" />
+                    <span>댓글 {PostData.comments.length}</span>
+                  </Grid>
+                </Grid>
+              </Grid>
+              {/* 댓글 리스트 */}
+              {/* {PostData.comments.map((comment, i) => {
+                return (
+                  <CommentList
+                    key={comment.id}
+                    comment={comment}
+                    postid={params.id}
+                    postuser={PostData.nickname}
+                  />
+                );
+              })} */}
             </Grid>
-          </Grid>
-          {/* 컨텐츠 시작 */}
-          <Title>
-            <h2>{data.title}</h2>
-          </Title>
-          <Content>{data.content}</Content>
-          {/* 상품 이미지 슬라이더 */}
-          <ProductImg img={data.productImg} />
-          {/* 해시태그 */}
-          <Grid is_flex _className="tag">
-            {data.tag.map((item, i) => {
-              return (
-                <>
-                  <span key={i}>#{item}</span>
-                </>
-              );
-            })}
-          </Grid>
-          {/* 라이크버튼  */}
-          <Grid is_flex _className="btn-box">
-            <Grid is_flex _className="like-btn" flex_align="center">
-              {like && user_id ? (
-                <FaStar className="icon active" />
-              ) : (
-                <FiStar className="icon" />
-              )}
-              <span>즐겨찾기</span>
-            </Grid>
-            <Grid is_flex _className="chat-btn" flex_align="center">
-              <BsChat className="icon" />
-              <span>댓글 5</span>
-            </Grid>
-          </Grid>
-          <CommentList />
-        </Grid>
-      </DetailBox>
-      {/* 코멘트 인풋창 */}
-      <CommentInput />
+            {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
+            {PostData.comments.length === 0 && (
+              <Grid is_container>
+                <CommentInput postid={params.id} />
+              </Grid>
+            )}
+          </DetailBox>
+        </>
+      )}
+
       <Nav />
     </>
   );
@@ -112,24 +264,12 @@ const Detail = () => {
 
 export default Detail;
 const DetailBox = styled.div`
-  padding-bottom: 150px;
-  .border {
-    height: 100vh;
-    padding-top: 60px;
+  padding-bottom: 100px;
 
+  .border {
+    padding-top: 60px;
     border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color);
-  }
-  .like-btn,
-  .dislike-btn {
-    border: 0;
-    outline: 0;
-    background-color: transparent;
-    width: 40px;
-    color: var(--main-color);
-    .icon {
-      font-size: 22px;
-    }
   }
 
   .user-info {
@@ -161,7 +301,7 @@ const DetailBox = styled.div`
         position: absolute;
         top: 20px;
         right: -5px;
-        width: 150px;
+        width: 170px;
 
         background-color: #fff;
         border: 1px solid var(--help-color);
@@ -206,7 +346,7 @@ const DetailBox = styled.div`
     padding: 15px 5px;
     margin: 20px 0;
     .like-btn {
-      width: 90px;
+      width: 100px;
     }
     .like-btn,
     .chat-btn {
@@ -224,6 +364,9 @@ const DetailBox = styled.div`
         font-size: 14px;
         color: var(--inactive-text-color);
         margin-right: 5px;
+      }
+      .bookmark-active {
+        color: var(--main-color);
       }
     }
   }
@@ -289,7 +432,7 @@ const Title = styled.div`
   margin: 20px 0;
 
   h2 {
-    font-size: 24px;
+    font-size: 20px;
   }
 `;
 

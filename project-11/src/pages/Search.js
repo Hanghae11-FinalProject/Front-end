@@ -15,19 +15,21 @@ const Search = () => {
   const [key, setKey] = useState("");
   const [search_data, setSearch_data] = useState([]);
   const [page, setPage] = useState(1);
+  const [recommend, setRecommend] = useState([]);
+  const [postcnt, setPostcnt] = useState(0);
 
-  useEffect(() => {
-    localStorage.setItem("recent", JSON.stringify(recent));
-  }, [recent]);
-
-  const recommend = [
-    "nintendo",
-    "pengsoo",
-    "nike",
-    "nintendo",
-    "pengsoo",
-    "nike",
-  ];
+  const getTrendKeyword = () => {
+    //인기검색어 가져오는 api
+    axiosInstance
+      .get(`api/search/rank`)
+      .then((res) => {
+        console.log("인기검색어", res);
+        setRecommend(res.data.searchRankList);
+      })
+      .catch((err) => {
+        console.log("인기검색어 조회 실패", err);
+      });
+  };
 
   const handlekeyup = (e) => {
     if (key && e.key === "Enter") {
@@ -38,13 +40,18 @@ const Search = () => {
         .post(`api/search`, { keyword: [key] })
         .then((res) => {
           console.log("검색완료", res);
-          setSearch_data(res.data.data);
+          setSearch_data(res.data.data.posts);
+          setPostcnt(res.data.data.postCnt);
           setKey("");
         })
         .catch((err) => {
           console.log("검색실패", err);
         });
       setKey("");
+    }
+
+    if (!key) {
+      setSearch_data([]);
     }
   };
 
@@ -59,6 +66,15 @@ const Search = () => {
     });
     setRecent(nextKeyword);
   };
+
+  useEffect(() => {
+    localStorage.setItem("recent", JSON.stringify(recent));
+    getTrendKeyword();
+  }, [recent]);
+
+  //인기 검색어 나누기
+  const recommendkeywordTop = recommend.slice(0, 5);
+  const recommendkeywordBottom = recommend.slice(5, 10);
 
   return (
     <>
@@ -76,14 +92,14 @@ const Search = () => {
               <p>검색</p>
             </Grid>
             <Grid
-              _className="inputform"
+              _className="input-form"
               is_container
               is_flex
               flex_align="center"
             >
               <InputForm
                 type="text"
-                onKeyPress={handlekeyup}
+                onKeyUp={handlekeyup}
                 onChange={(e) => setKey(e.target.value)}
               />
               <BiSearch className="search-icon" />
@@ -98,29 +114,68 @@ const Search = () => {
                 onRemoveKeyword={handleRemoveKeyword}
               />
 
-              <RemcommendBox>
-                <Title>인기 검색어</Title>
-                <Grid is_container _className="recommend-box">
-                  {recommend.map((item, idx) => {
-                    return (
-                      <>
-                        <Grid is_flex _className="recommend-list">
-                          <p className={idx < 3 ? "hot-keyword" : "default"}>
-                            {idx + 1}
-                          </p>
-                          <Keyword key={idx}>{item}</Keyword>
-                        </Grid>
-                      </>
-                    );
-                  })}
-                </Grid>
-              </RemcommendBox>
+              {recommend ? (
+                <>
+                  <RemcommendBox>
+                    <Title>인기 검색어</Title>
+                    <Grid is_flex>
+                      <Grid is_container _className="recommend-box">
+                        {recommendkeywordTop.map((item, idx) => {
+                          return (
+                            <>
+                              <Grid is_flex _className="recommend-list">
+                                <p
+                                  className={
+                                    idx < 3 ? "hot-keyword" : "default"
+                                  }
+                                >
+                                  {idx + 1}
+                                </p>
+                                <Keyword key={idx}>{item}</Keyword>
+                              </Grid>
+                            </>
+                          );
+                        })}
+                      </Grid>
+                      <Grid is_container _className="recommend-box">
+                        {recommendkeywordBottom.map((item, idx) => {
+                          return (
+                            <>
+                              <Grid
+                                is_flex
+                                _className="recommend-list"
+                                key={idx}
+                              >
+                                <p
+                                  className={
+                                    idx < 0 ? "hot-keyword" : "default"
+                                  }
+                                >
+                                  {idx + 6}
+                                </p>
+                                <Keyword key={idx}>{item}</Keyword>
+                              </Grid>
+                            </>
+                          );
+                        })}
+                      </Grid>
+                    </Grid>
+                  </RemcommendBox>
+                </>
+              ) : (
+                <>
+                  <RemcommendBox>
+                    <Title>인기 검색어</Title>
+                    <EmptyBox>인기 검색어가 없습니다</EmptyBox>
+                  </RemcommendBox>
+                </>
+              )}
             </>
           ) : (
             <>
               {/* 검색한 데이터가 있을 경우 */}
               <Grid is_container padding="30px 16px 0 16px">
-                <Result>검색 결과 총 10건</Result>
+                <Result>검색 결과 총 {postcnt}건</Result>
                 <PostList>
                   {search_data.map((item, idx) => {
                     return <PostCard key={idx} item={item} />;
@@ -145,23 +200,23 @@ const SearchList = styled.div`
     border-left: 1px solid var(--help-color);
     padding: 90px 0px 20px 0px;
 
-    .inputform {
+    .input-form {
       width: 98%;
       padding: 10px 10px;
       margin: 0px auto;
       background-color: #fff;
       border-bottom: 1px solid var(--help-color);
+      border-right: 1px solid var(--help-color);
+      border-left: 1px solid var(--help-color);
     }
 
     .recommend-box {
+      width: 100%;
       .recommend-list {
-        display: flex;
-        flex-wrap: wrap;
-        border-bottom: 1px solid var(--help-color);
-        padding: 10px 0;
+        width: 100%;
 
         p {
-          width: 60px;
+          width: 50px;
           text-align: center;
         }
 
@@ -245,3 +300,8 @@ const PostList = styled.div`
 `;
 
 const Result = styled.div``;
+const EmptyBox = styled.div`
+  width: 100%;
+  padding: 50px 0;
+  text-align: center;
+`;

@@ -14,7 +14,7 @@ const getCookie = (type) => {
     .split("user")
     .filter((parts) => parts.indexOf(`${type}=`) > -1)[0];
   if (value) {
-    value = value.split(`${type}=`)[1];
+    value = value.split(`${type}=`)[1].split(";")[0];
     return value;
   } else {
     return undefined;

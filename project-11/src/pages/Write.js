@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
 import { actionCreators as postActions } from "../redux/modules/post";
-
+import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
@@ -21,6 +23,8 @@ SwiperCore.use([Pagination, Navigation]);
 
 const Write = (props) => {
   const dispatch = useDispatch();
+
+  const token = getCookie("Token");
 
   const [title, setTitle] = React.useState(""); // 제목
   const [content, setContent] = React.useState(""); // 내용
@@ -206,12 +210,12 @@ const Write = (props) => {
       data: formData,
       headers: {
         "Content-type": "multipart/form-data",
-        Authorization:
-          "BEARER eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJFWFBJUkVEX0RBVEUiOjE2NDEwMDQxNDAsImlzcyI6InNwYXJ0YSIsIlVTRVJfTkFNRSI6Imp5YmluMTIzOTZAbmF2ZXIuY29tIn0.jrvXPzZOuljjmYbGno4RRUyejV6Oowlw0AkheU5pskg",
+        Authorization: token,
       },
     })
       .then((response) => {
         console.log("작성성공이니~", response);
+        history.push("/");
       })
       .catch((err) => {
         console.log(err, "에러났니~");
@@ -238,8 +242,8 @@ const Write = (props) => {
             <TitleInput
               Value={title}
               type="text"
-              maxLength={15}
-              placeholder="제목 (15자 이하)"
+              maxLength={20}
+              placeholder="제목 (20자 이하)"
               onChange={changeTitle}
               onKeyUp={checkActive}
             ></TitleInput>

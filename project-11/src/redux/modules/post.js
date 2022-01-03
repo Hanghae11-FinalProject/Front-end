@@ -3,6 +3,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
 import axios from "axios";
+import { getCookie } from "../../shared/Cookie";
 // *** 액션 타입
 const GET_POST = "GET_POST";
 
@@ -21,7 +22,7 @@ const initialState = {
 // 게시글 작성
 const addPostDB = (title, content, category, tagName, images) => {
   return function (dispatch, getState, { history }) {
-    const token = document.cookie; // 쿠키에서 토큰 어케가져옴?ㅋ
+    const token = getCookie("Token");
 
     axios
       .post(
@@ -50,7 +51,7 @@ const getPostAction = (post_data, count) => {
         address: [post_data.location],
       })
       .then((res) => {
-        console.log("리덕스 저장 전 목록", res.data.data, count);
+        console.log("리덕스 저장 전 목록", res.data, count);
         let is_next = null;
 
         if (res.data.data.length < 6) {
@@ -68,12 +69,12 @@ const getPostAction = (post_data, count) => {
       });
   };
 };
+
 // *** 리듀서
 export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-
         //카테고리를 셀렉해주기 위해서 push대신에 하지만 무한스크롤을 위해push해야함
         draft.posts = action.payload._post_data.posts;
 

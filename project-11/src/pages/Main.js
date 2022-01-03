@@ -29,7 +29,13 @@ const Main = () => {
   const [is_location, setIs_Location] = useState("위치 설정하기");
   const [is_cate, setIs_Cate] = useState("");
   //지역 옵션
-  const locations = ["전체", "동대문구", "마포구", "서대문구", "성북구"];
+  const locations = [
+    { id: 1, locationName: "전체" },
+    { id: 2, locationName: "동대문구" },
+    { id: 3, locationName: "마포구" },
+    { id: 4, locationName: "서대문구" },
+    { id: 5, locationName: "성북구" },
+  ];
 
   return (
     <>
@@ -45,7 +51,7 @@ const Main = () => {
             <Slider>
               <Swiper
                 className="CateBtn-Container"
-                spaceBetween={3}
+                spaceBetween={20}
                 slidesPerView={4.5}
                 pagination={{ clickable: true }}
                 // autoplay={{ delay: 50000 }}
@@ -187,13 +193,13 @@ const Main = () => {
                   {locations.map((loc, i) => {
                     return (
                       <p
-                        key={i}
+                        key={loc.id}
                         onClick={() => {
-                          setIs_Location(loc);
+                          setIs_Location(loc.locationName);
                           setIs_open(false);
                         }}
                       >
-                        {loc}
+                        {loc.locationName}
                       </p>
                     );
                   })}
@@ -212,6 +218,7 @@ const Main = () => {
 const Container = styled.div`
   margin: 0 auto;
   .border {
+    /* height: 100vh; */
     padding-top: 50px;
     border: 1px solid var(--help-color);
   }
@@ -266,12 +273,11 @@ const CateBtn = styled.div`
   height: 80px;
   border-radius: 50%;
   border: 1px solid var(--disabled-color);
-
   .default {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 1px solid var(--disabled-color);
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -279,13 +285,13 @@ const CateBtn = styled.div`
     cursor: pointer;
     .icon {
       font-size: 32px;
-      color: var(--inactive-icon-color);
+      color: var(--inactive-text-color);
     }
 
     p {
       font-size: 12px;
       margin-top: 5px;
-      color: var(--inactive-icon-color);
+      color: var(--inactive-text-color);
     }
   }
 
@@ -310,6 +316,19 @@ const CateBtn = styled.div`
       color: #fff;
     }
   }
+
+  .inactive {
+    .icon {
+      color: var(--help-color);
+      font-size: 32px;
+    }
+
+    p {
+      font-size: 12px;
+      margin-top: 5px;
+      color: var(--help-color);
+    }
+  }
 `;
 
 const LocationBox = styled.div`
@@ -329,8 +348,8 @@ const LocationBox = styled.div`
   .location-option {
     width: 140px;
     position: absolute;
-    top: 30px;
-    left: 10px;
+    top: 45px;
+    left: 25px;
     color: var(--active-color);
     background-color: #ffffff;
     border: 1px solid var(--disabled-color);
@@ -342,7 +361,7 @@ const LocationBox = styled.div`
       padding: 10px 10px;
 
       &:hover {
-        background-color: var(--disabled-color);
+        background-color: var(--main-light-color);
       }
     }
   }

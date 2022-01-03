@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { Grid, Image } from "../elements/index";
 import { RiArrowLeftRightLine } from "react-icons/ri";
@@ -13,10 +14,14 @@ const PostCard = ({ item }) => {
   const [like, setLike] = useState(false);
   const [user_id, setUser_id] = useState(false);
 
+  const MoveToDetail = () => {
+    history.push(`/detail/${item.postId}`);
+  };
+
   return (
     <React.Fragment>
       <Grid is_flex>
-        <Post>
+        <Post onClick={MoveToDetail}>
           <Grid is_flex flex_align="center">
             <Image shape="circle" size="34px;">
               icon
@@ -25,9 +30,9 @@ const PostCard = ({ item }) => {
               <PostTitle>
                 <p>{item.title}</p>
               </PostTitle>
-              <Grid is_flex _className="info-box">
-                <span>{item.address}</span>
-                <span>{item.createdAt}</span>
+              <Grid is_flex flex_align="center" _className="info-box">
+                <p>{item.address}</p>
+                <p>{item.createdAt}</p>
               </Grid>
             </Grid>
           </Grid>
@@ -44,7 +49,7 @@ const PostCard = ({ item }) => {
 
           <PostContent>
             <Grid is_flex _className="exchange-box">
-              <span>{item.myItem}</span>
+              {/* <span>{item.myItem}</span> */}
               <RiArrowLeftRightLine className="icon" />
               <span>{item.exchangeItem}</span>
             </Grid>
@@ -56,11 +61,11 @@ const PostCard = ({ item }) => {
               ) : (
                 <FiStar className="icon" />
               )}
-              <span>2</span>
+              <span>{item.bookmarkCnt}</span>
             </Grid>
             <Grid is_flex _className="chat-btn" flex_align="center">
               <BsChat className="icon" />
-              <span>3</span>
+              <span>{item.commentCnt}</span>
             </Grid>
           </Grid>
         </Post>
@@ -76,10 +81,13 @@ const Post = styled.div`
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   .info-box {
-    span {
+    p {
+      height: 25px;
+      line-height: 25px;
       font-size: 12px;
       color: var(--help-color);
       margin-right: 5px;
+      display: block;
     }
   }
 
@@ -162,6 +170,7 @@ const PostContent = styled.div`
       margin: 5px;
       font-size: 14px;
       font-weight: bold;
+      /* color: var(--main-color); */
     }
 
     span {
