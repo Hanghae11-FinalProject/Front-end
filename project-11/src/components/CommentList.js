@@ -16,9 +16,8 @@ const CommentList = ({ comment, postid, postuser }) => {
   const [is_login, setIs_login] = useState(token ? true : false);
   const [name, setName] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
-
   const commentData = comment;
-  console.log("코멘트 부모 리스트", commentData.userId, curUserId);
+
   //대댓글 쓰기
   const writeComment = () => {
     if (!token) {
@@ -82,7 +81,7 @@ const CommentList = ({ comment, postid, postuser }) => {
             <span>{commentData.createAt}</span>
           </Grid>
           {/* 부모 댓글에 속해 있는 자식 댓글들 */}
-          {/* {commentData.children ? (
+          {commentData.children ? (
             <>
               {commentData.children.map((reply, idx) => {
                 return (
@@ -91,7 +90,7 @@ const CommentList = ({ comment, postid, postuser }) => {
                       postid={postid}
                       reply={reply}
                       key={reply.id}
-                      // postuser={postuser}
+                      postuser={postuser}
                     />
                   </>
                 );
@@ -99,7 +98,7 @@ const CommentList = ({ comment, postid, postuser }) => {
             </>
           ) : (
             <></>
-          )} */}
+          )}
         </Grid>
       </CommentBox>
       {/* 코멘트 인풋창 */}
@@ -108,6 +107,7 @@ const CommentList = ({ comment, postid, postuser }) => {
         <CommentInput
           name={commentData.nickname}
           postid={postid}
+          // parent id
           commentid={commentData.id}
         />
       ) : (

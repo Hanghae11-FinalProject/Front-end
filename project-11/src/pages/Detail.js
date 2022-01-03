@@ -4,7 +4,6 @@ import { getCookie } from "../shared/Cookie";
 import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements/index";
 import { history } from "../redux/configureStore";
-import axios from "axios";
 
 import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
@@ -24,26 +23,15 @@ const Detail = () => {
   const curUserId = getCookie("Id");
   const params = useParams();
   const [is_loading, setIs_loading] = useState(false);
-  const [user_id, setUser_id] = useState(false);
+
   const [PostData, setPostdata] = useState();
+
+  const [user_id, setUser_id] = useState(false);
   const [bookmark, setBookmark] = useState();
+  const [bm, setCheckBm] = useState([]);
+  const [bmCnt, setBmCnt] = useState();
 
   const [btnActive, setBtnActive] = useState(false);
-
-  //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
-  const has_bookmarks = () => {
-    setIs_loading(true);
-    if (PostData.bookMarks.length > 0) {
-      const bookmarkState = PostData.bookMarks.filter((user) => {
-        return user.userId === Number(curUserId);
-      });
-
-      if (bookmarkState.length === 1) {
-        setBookmark(true);
-        setIs_loading(false);
-      }
-    }
-  };
 
   // 포스트id로 포스트 가져오기
   const getPostData = async () => {
@@ -51,12 +39,12 @@ const Detail = () => {
       setIs_loading(true);
       const res = await axiosInstance.get(`/api/posts/${params.id}`);
       console.log("상세 페이지 조회 성공", res);
-      console.log("reply", res.data.comments);
       setPostdata(res.data);
+      setCheckBm(res.data.bookMarks);
+      setBmCnt(res.data.bookMarkCount);
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
-    setIs_loading(false);
   };
 
   //포스트 삭제하기
@@ -74,14 +62,33 @@ const Detail = () => {
       .catch((err) => console.log(err));
   };
 
+  //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
+  const has_bookmarks = () => {
+    if (bm.length > 0) {
+      const bookmarkState = bm.filter((user) => {
+        return user.userId === Number(curUserId);
+      });
+      console.log("좋아요버튼 유무", bookmarkState);
+      if (bookmarkState.length === 1) {
+        setUser_id(true);
+        setBookmark(true);
+        console.log("좋아요버튼 유유유", user_id, bookmark);
+      }
+    }
+  };
+
   //즐겨찾기 버튼
   const addBookmark = () => {
-    console.log(token);
-
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/login");
+    }
+    setBmCnt(bmCnt + 1);
     setBookmark(true);
-    axios
+    setUser_id(true);
+    axiosInstance
       .post(
-        `http://15.164.222.25/api/bookmark/${params.id}`,
+        `/api/bookmark/${params.id}`,
         {},
         {
           headers: {
@@ -99,7 +106,9 @@ const Detail = () => {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
       history.push("/login");
     }
+    setBmCnt(bmCnt - 1);
     setBookmark(false);
+    setUser_id(false);
     axiosInstance
       .delete(`api/bookmark/${params.id}`, {
         headers: {
@@ -110,13 +119,30 @@ const Detail = () => {
       .catch((err) => console.log(err));
   };
 
+  //거래완료버튼
+  const completeExchange = () => {
+    axiosInstance
+      .post(
+        `api/posts/${params.id}`,
+        { currentState: "complete" },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => console.log("거래완료 버튼 성공", res))
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getPostData();
-
-    return () => setIs_loading(false);
   }, []);
 
-  console.log("data-comment", PostData);
+  useEffect(() => {
+    has_bookmarks();
+  }, [bm]);
+
   return (
     <>
       {!PostData ? (
@@ -133,7 +159,7 @@ const Detail = () => {
                   is_flex
                   flex_align="center"
                 >
-                  <p>자세히 보기</p>
+                  <p>{user_id ? "true" : "false"}</p>
                 </Grid>
               </Header>
               {/* 카테고리 라이크버튼  */}
@@ -177,7 +203,7 @@ const Detail = () => {
                         _onClick={() => setBtnActive(false)}
                       >
                         <li>수정하기</li>
-                        <li>거래완료로 변경하기</li>
+                        <li onClick={completeExchange}>거래완료로 변경하기</li>
                         <li>공유하기</li>
                         <li onClick={deletePost}>삭제하기</li>
                       </Grid>
@@ -190,7 +216,8 @@ const Detail = () => {
                         }
                         _onClick={() => setBtnActive(false)}
                       >
-                        <li onClick={addBookmark}>공유하기</li>
+                        <li>채팅하기</li>
+                        <li>공유하기</li>
                         <li>신고하기</li>
                       </Grid>
                     </>
@@ -219,24 +246,24 @@ const Detail = () => {
                 {/* 라이크버튼  */}
                 <Grid is_flex _className="btn-box">
                   <Grid is_flex _className="like-btn" flex_align="center">
-                    {bookmark ? (
+                    {user_id ? (
                       <FaStar
                         className="icon bookmark-active"
                         onClick={cancelBookmark}
                       />
                     ) : (
-                      <FiStar className="icon" />
+                      <FiStar className="icon" onClick={addBookmark} />
                     )}
-                    <span>즐겨찾기 {PostData.bookMarks.length}</span>
+                    <span>즐겨찾기 {bmCnt}</span>
                   </Grid>
                   <Grid is_flex _className="chat-btn" flex_align="center">
                     <BsChat className="icon" />
-                    <span>댓글 {PostData.comments.length}</span>
+                    <span>댓글 {PostData.commentCount}</span>
                   </Grid>
                 </Grid>
               </Grid>
               {/* 댓글 리스트 */}
-              {/* {PostData.comments.map((comment, i) => {
+              {PostData.comments.map((comment, i) => {
                 return (
                   <CommentList
                     key={comment.id}
@@ -245,7 +272,7 @@ const Detail = () => {
                     postuser={PostData.nickname}
                   />
                 );
-              })} */}
+              })}
             </Grid>
             {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
             {PostData.comments.length === 0 && (
