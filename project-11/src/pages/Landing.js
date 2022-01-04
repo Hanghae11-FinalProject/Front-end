@@ -36,7 +36,7 @@ const Landing = () => {
               회원가입
             </Button>
             <Button _onClick={ClikKakao}>kakakoTalk</Button>
-            <Button>Google</Button>
+            <Button>Naver</Button>
           </BTN>
         </Grid>
       </Intro>

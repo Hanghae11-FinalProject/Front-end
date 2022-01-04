@@ -13,10 +13,15 @@ import { Grid } from "../elements";
 const Favorite = () => {
   
   const token = getCookie('Token')
+  const userid = getCookie('Name')
+  console.log(userid)
+
+  const [favorite_list,setFavoriteList] = useState([])
 
   const getFavorite = () => {
     axiosInstance.get('/api/bookmark',{headers:{Authorization: token}}).then((response)=>{
-        console.log(response)
+        console.log(response.data.data)
+        setFavoriteList(response.data.data)
     })
   }
   useEffect(()=>{
@@ -36,16 +41,13 @@ const Favorite = () => {
             />
             <span className="header-title">즐겨찾기</span>
           </div>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
-              <FavoriteItem/>
+          {
+            favorite_list.map((fv, idx)=>{
+              return(
+              <FavoriteItem key={fv.postId} {...fv}/>
+              )
+            })
+          }
         </div>
       </Grid>
       <Nav/>

@@ -4,18 +4,23 @@ import {Grid} from '../elements';
 import {HiOutlineChatAlt2} from "react-icons/hi";
 import {history} from '../redux/configureStore';
 
-const FavoriteItem = () => {
+
+
+
+const FavoriteItem = (props) => {
+
+    
     return (
         <FavoriteWrap>
             <Grid is_container='is_container' _className='itembox'>
                 <div className='deal-title'>
-                    <div className='img-wrap'><img src='static/noimage2.gif'/></div>
+                    <div className='img-wrap'><img src={props.image}/></div>
                     <div className='deal-content'>
                         <div className='deal-chip'>
-                            <p>거래중</p>
+                           {props.currentState ==='Proceeding'? <p>거래중</p> : <p style={{background:'var(--help-color)'}}>거래완료</p>} 
                         </div>
-                        <span>새해 복 교환해요</span>
-                        <span className='date-city'>12/29ㆍ동대문구</span>
+                        <span>{props.title}</span>
+                        <span className='date-city'>{props.createdAt}ㆍ{props.address}</span>
                     </div>
                     <div className='icon-wrap'>
                         <HiOutlineChatAlt2 className='ms-icon'/>
@@ -74,6 +79,11 @@ const FavoriteWrap = styled.div `
             span{
                 font-size: 18px;
                 margin-top: 5px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
             }
         }
             .icon-wrap{
