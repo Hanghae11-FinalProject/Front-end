@@ -7,6 +7,7 @@ import { BsPlusLg } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
+import Permit from "./Permit";
 
 import styled from "styled-components";
 
@@ -43,12 +44,12 @@ const Nav = (props) => {
             <BsPlusLg
               className={!token ? "plus-icon inactive" : "plus-icon active"}
               onClick={() => {
-                if (!token) {
-                  window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-                  history.push("/login");
-                } else {
+                // if (!token) {
+                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                //   history.push("/login");
+                // } else {
                   history.push("/write");
-                }
+                // }
               }}
             />
           </PlusMenu>
@@ -57,12 +58,12 @@ const Nav = (props) => {
               size="24"
               className={props.chatting === "chatting" ? "active" : "icon"}
               onClick={() => {
-                if (!token) {
-                  window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-                  history.push("/login");
-                } else {
+                // if (!token) {
+                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                //   history.push("/login");
+                // } else {
                   history.push("/chatting");
-                }
+                // }
               }}
             />
           </Menu>
@@ -70,12 +71,12 @@ const Nav = (props) => {
             <RiUserFill
               className={props.mypage === "mypage" ? "active" : "icon"}
               onClick={() => {
-                if (!token) {
-                  window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-                  history.push("/login");
-                } else {
+                // if (!token) {
+                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                //   history.push("/login");
+                // } else {
                   history.push("/mypage");
-                }
+                // }
               }}
             />
           </Menu>
