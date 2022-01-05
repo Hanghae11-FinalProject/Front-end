@@ -4,6 +4,7 @@ import { axiosInstance } from "../shared/api";
 import Nav from "../shared/Nav";
 import FavoriteItem from "../components/FavoriteItem";
 import {getCookie} from '../shared/Cookie'
+import FvLoginCk from '../components/FvLoginCk'
 
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
@@ -41,13 +42,19 @@ const Favorite = () => {
             />
             <span className="header-title">즐겨찾기</span>
           </div>
+          
           {
+            favorite_list.length == 0 ? 
+          <FvLoginCk/>
+          :
             favorite_list.map((fv, idx)=>{
               return(
               <FavoriteItem key={fv.postId} {...fv}/>
               )
             })
+            
           }
+          
         </div>
       </Grid>
       <Nav/>

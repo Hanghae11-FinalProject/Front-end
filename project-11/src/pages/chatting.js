@@ -7,6 +7,7 @@ import { Grid } from "../elements";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 
@@ -204,19 +205,18 @@ const ChattingWrap = styled.div`
             left: 15%;
             display: flex;
             flex-direction: column;
+            justify-content: space-evenly;
             align-items: center;
             filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
             cursor: pointer;
             .active {
               padding: 8px 8px;
               font-size: 16px;
-              margin-top: 25px;
               color: var(--main-color);
             }
             .unactive {
               padding: 8px 8px;
               font-size: 16px;
-              margin-top: 25px;
             }
           }
           .point-icon {
