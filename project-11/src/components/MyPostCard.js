@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { Grid } from "../elements";
 import { FiStar } from "react-icons/fi";
 import { BsChat } from "react-icons/bs";
-import { history } from "../redux/configureStore";
 
 const MyPostCard = (my_List) => {
   const myList = my_List.my_List;

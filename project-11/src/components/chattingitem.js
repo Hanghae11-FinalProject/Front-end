@@ -25,17 +25,21 @@ const ChattingItem = (p) => {
           </div>
           <p>{p.roomData.lastMessage.content}</p>
         </div>
-        <div className="chatting-cnt">
+        <div
+          className={
+            p.roomData.lastMessage.notReadingMessageCount
+              ? "chatting-cnt"
+              : "cnt-zero"
+          }
+        >
           {p.roomData.lastMessage.notReadingMessageCount}
         </div>
       </div>
     </ChattingWrap>
   );
-
 };
 
 export default ChattingItem;
-
 
 const ChattingWrap = styled.div`
   padding: 20px;
@@ -86,6 +90,11 @@ const ChattingWrap = styled.div`
       line-height: 22px;
       border-radius: 50%;
       text-align: center;
+    }
+    .cnt-zero {
+      background-color: #fff;
+      width: 22px;
+      height: 22px;
     }
   }
 `;
