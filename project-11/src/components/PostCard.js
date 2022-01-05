@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
 import styled from "styled-components";
 import { Grid, Image } from "../elements/index";
 import { RiArrowLeftRightLine } from "react-icons/ri";
@@ -8,15 +9,41 @@ import { BsChat } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 
 const PostCard = ({ item }) => {
+  const curUserId = getCookie("Id");
   const [state, setState] = useState(
     item.currentState === "Proceeding" ? "거래중" : "거래완료"
   );
+
+  console.log(item);
   const [like, setLike] = useState(false);
   const [user_id, setUser_id] = useState(false);
+  const [bookmark, setBookmark] = useState(item.bookMarks);
+  const [checkBm, setCheckBm] = useState();
 
   const MoveToDetail = () => {
     history.push(`/detail/${item.postId}`);
   };
+
+  console.log(bookmark);
+
+  //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
+  const has_bookmarks = () => {
+    if (bookmark.length > 0) {
+      const bookmarkState = bookmark.filter((user) => {
+        return user.userId === Number(curUserId);
+      });
+      console.log("좋아요버튼 유무", bookmarkState);
+      if (bookmarkState.length === 1) {
+        setUser_id(true);
+        setCheckBm(true);
+        console.log("좋아요버튼 유유유", user_id, bookmark);
+      }
+    }
+  };
+
+  useEffect(() => {
+    has_bookmarks();
+  }, [item]);
 
   return (
     <React.Fragment>
@@ -56,8 +83,8 @@ const PostCard = ({ item }) => {
           </PostContent>
           <Grid is_flex padding="10px 5px" _className="btn-box">
             <Grid is_flex _className="like-btn" flex_align="center">
-              {like && user_id ? (
-                <FaStar className="icon active" />
+              {user_id ? (
+                <FaStar className="icon bookmark-active" />
               ) : (
                 <FiStar className="icon" />
               )}
@@ -113,6 +140,10 @@ const Post = styled.div`
         font-size: 12px;
         color: var(--inactive-text-color);
         margin-right: 5px;
+      }
+
+      .bookmark-active {
+        color: var(--main-color);
       }
     }
   }

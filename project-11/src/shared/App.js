@@ -19,6 +19,7 @@ import Chat from "../pages/Chat";
 import Favorite from "../pages/Favorite";
 import MyPost from "../pages/MyPost";
 import EditPost from "../pages/EditPost";
+import OAuthRedirect from "../components/OAuthRedirect";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/search" exact component={Search}></Route>
         <Route path="/chatting" exact component={Chatting}></Route>
         <Route path="/chat" exact component={Chat}></Route>
+        <Route path="/oauth/callback/kakao" exact component={OAuthRedirect}></Route>
       </ConnectedRouter>
     </div>
   );

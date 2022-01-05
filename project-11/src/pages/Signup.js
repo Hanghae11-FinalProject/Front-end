@@ -278,42 +278,43 @@ const Signup = () => {
                   <IoMdArrowDropdown />
                 </div>
 
-                <LocationWrap>
-                  <Grid _className={is_open ? "active" : "default"}>
-                    <div
-                      className="select-city-wrap"
-                      onClick={() => {
-                        setIs_open(true);
-                      }}
-                    >
-                      {is_location}
-                      <IoMdArrowDropdown />
-                    </div>
-                  </Grid>
 
-                  {is_open && (
-                    <>
-                      <Grid _className="drop-location">
-                        {locations.map((op, i) => {
-                          return (
-                            <p
-                              className="loc-wrap"
-                              key={i}
-                              onClick={() => {
-                                setIs_open(false);
-                                setIs_Location(op);
-                              }}
-                            >
-                              {op}
-                            </p>
-                          );
-                        })}
+
+                  <LocationWrap>
+                <Grid _className={
+                is_open ? "active" : "default"
+              }>
+                  <div className="select-city-wrap" onClick={()=>{
+                  setIs_open(true);
+                }}>
+                  {is_location}<IoMdArrowDropdown/>
+                </div>
+                </Grid>
+      
+                {is_open && (
+                  <>
+                  <Grid _className='drop-location'>
+                    {locations.map((op, i)=>{
+                   
+                      return (
+                      <p
+                      className="loc-wrap"
+                      key={i}
+                      onClick={() => {     
+                        setIs_open(false);
+                        setIs_Location(op)}}
+                      >
+                        {op}
+                      </p> 
+                      )
+                    })}                  
+
                       </Grid>
                     </>
                   )}
                 </LocationWrap>
-              </div>
-              <button disabled={active} className="sign-btn">
+                </div>                    
+              <button  disabled={active} className="sign-btn" >
                 가입하기
               </button>
             </div>

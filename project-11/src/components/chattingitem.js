@@ -31,9 +31,11 @@ const ChattingItem = (p) => {
       </div>
     </ChattingWrap>
   );
+
 };
 
 export default ChattingItem;
+
 
 const ChattingWrap = styled.div`
   padding: 20px;

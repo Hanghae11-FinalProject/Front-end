@@ -3,9 +3,19 @@ import React from "react";
 import { Grid, Button } from "../elements/index";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
+import { KAKAO_AUTH_URL } from "../shared/OAuth";
 
 const Landing = () => {
-  return (
+
+  
+
+
+
+  const ClikKakao = ()=>{
+    window.location.href=KAKAO_AUTH_URL
+  }
+
+  return ( 
     <>
       <Intro>
         <Grid is_container padding="16px" _className="intro-box">
@@ -25,8 +35,8 @@ const Landing = () => {
             >
               회원가입
             </Button>
-            <Button>kakakoTalk</Button>
-            <Button>Google</Button>
+            <Button _onClick={ClikKakao}>kakakoTalk</Button>
+            <Button>Naver</Button>
           </BTN>
         </Grid>
       </Intro>
@@ -61,8 +71,8 @@ const BTN = styled.div`
   }
 
   button:nth-child(1) {
-    background-color: var(--point-color);
-    color: #fff;
+    background-color: #fff;
+    color: var(--point-color);
   }
   button:nth-child(2) {
     background-color: #fff;

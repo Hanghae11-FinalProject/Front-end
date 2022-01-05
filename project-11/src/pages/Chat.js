@@ -25,6 +25,7 @@ const Chat = (data) => {
   React.useEffect(() => {
     stompClient.connect({}, () => {
       stompClient.send("/pub/join", {}, JSON.stringify("room1"));
+
       stompClient.subscribe(`/sub/${roomName}`, (data) => {
         // console.log(data);
         const onMessage = JSON.parse(data.body);

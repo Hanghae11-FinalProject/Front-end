@@ -6,15 +6,28 @@ import axios from "axios";
 import { getCookie } from "../../shared/Cookie";
 // *** 액션 타입
 const GET_POST = "GET_POST";
+const GET_ONEPOST = "GET_ONEPOST";
+const ADD_COMMENT = "ADD_COMMENT";
+const ADD_CHILDCOMMENT = "ADD_CHILDCOMMENT";
+const DEL_COMMENT = "DEL_COMMENT";
 
 // *** 액션 생성 함수
 const getPosts = createAction(GET_POST, (_post_data) => ({ _post_data }));
+const getOnePost = createAction(GET_ONEPOST, (data) => ({ data }));
+const addComment = createAction(ADD_COMMENT, (comment) => ({ comment }));
+const addChildComment = createAction(ADD_CHILDCOMMENT, (comment) => ({
+  comment,
+}));
+const delComment = createAction(DEL_COMMENT, (commentid) => ({ commentid }));
 
 // *** 초기값
 const initialState = {
   posts: [],
   page: 0,
   has_next: false,
+  comments: [],
+  children: [],
+  commentCnt: "",
 };
 
 // *** 미들웨어
@@ -70,6 +83,101 @@ const getPostAction = (post_data, count) => {
   };
 };
 
+//게시글 하나만 가져오기
+const get_Comment = (postid) => {
+  return (dispatch, getState, { history }) => {
+    axiosInstance
+      .get(`/api/posts/${postid}`)
+      .then((res) => {
+        console.log("redux detail ", res.data.comments);
+        const _data = res.data.comments;
+        dispatch(getOnePost(_data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+//게시글 상세 페이지 댓글 쓰기
+const add_comment = (id, replyId, Newcomment) => {
+  return function (dispatch, getState, { history }) {
+    const token = getCookie("Token");
+
+    axiosInstance
+      .post(
+        `/api/comments/`,
+        {
+          postId: id,
+          parentId: replyId,
+          content: Newcomment,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("댓글 쓰기 성공", res);
+        dispatch(addComment(res));
+      })
+      .catch((err) => {
+        console.log("댓글 쓰기 실패", err);
+      });
+  };
+};
+
+//게시글 상세 페이지 대댓글 쓰기
+const add_childcomment = (id, replyId, Newcomment) => {
+  return function (dispatch, getState, { history }) {
+    const token = getCookie("Token");
+
+    axiosInstance
+      .post(
+        `/api/comments/`,
+        {
+          postId: id,
+          parentId: replyId,
+          content: Newcomment,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("댓글 쓰기 성공", res);
+        dispatch(addChildComment(res));
+      })
+      .catch((err) => {
+        console.log("댓글 쓰기 실패", err);
+      });
+  };
+};
+
+//게시글 상세 페이지 댓글 삭제
+const del_comment = (commentid) => {
+  return function (dispatch, getState, { history }) {
+    const token = getCookie("Token");
+
+    axiosInstance
+      .delete(`/api/comments/${commentid}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        //삭제되는 댓글 정보를 받는다.
+        console.log("delete sucess", res);
+        //받아오는 정보중 id값만을 이용한다
+        dispatch(delComment(res.data));
+      })
+      .catch((err) => console.log("delete fail", err));
+  };
+};
+
 // *** 리듀서
 export default handleActions(
   {
@@ -86,7 +194,38 @@ export default handleActions(
         }
         draft.has_next = action.payload._post_data.next;
       }),
+
+    [GET_ONEPOST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.comments = action.payload.data;
+        draft.children = action.payload.data[0].children;
+        draft.commentCnt = action.payload.data.length;
+      }),
+
+    [ADD_COMMENT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.comments.push(action.payload.comment.data);
+      }),
+
+    [ADD_CHILDCOMMENT]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(draft.children, "children");
+        draft.children.push(action.payload.comment.data);
+      }),
+
+    [DEL_COMMENT]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("action payload", action.payload.commentid);
+        console.log("draft.comments", draft.comments);
+
+        const newComment = draft.comments.filter(
+          (co, id) => co.id !== action.payload.commentid
+        );
+        console.log(newComment, "newcomment");
+        draft.comments = [...newComment];
+      }),
   },
+
   initialState
 );
 
@@ -94,6 +233,10 @@ const actionCreators = {
   addPostDB,
   getPostAction,
   getPosts,
+  get_Comment,
+  add_comment,
+  del_comment,
+  add_childcomment,
 };
 
 export { actionCreators };

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
+
 
 const Chatting = () => {
   const token = getCookie("Token");
@@ -79,6 +81,7 @@ const Chatting = () => {
     }
   };
   return (
+    <Permit>
     <ChattingWrap>
       <Grid is_container="is_container" _className="grid-border">
         <div className="chatting-wrap">
@@ -110,6 +113,7 @@ const Chatting = () => {
 
               {is_open && (
                 <>
+                  <div className="modal-back"></div>
                   <Grid _className="drop-chat">
                     <p
                       className={optionOne ? "active" : "unactive"}
@@ -154,6 +158,7 @@ const Chatting = () => {
       </Grid>
       <Nav chatting={"chatting"} />
     </ChattingWrap>
+    </Permit>
   );
 };
 
@@ -183,6 +188,14 @@ const ChattingWrap = styled.div`
           position: relative;
           .header-title {
             font-size: 20px;
+          }
+          .modal-back {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.25);
           }
           .drop-chat {
             height: 207px;

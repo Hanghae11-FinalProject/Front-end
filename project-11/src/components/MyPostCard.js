@@ -1,4 +1,5 @@
 import React from "react";
+import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { Grid } from "../elements";
 import { FiStar } from "react-icons/fi";
@@ -53,6 +54,7 @@ const PostDiv = styled.div`
   cursor: pointer;
   /* background-color: green; */
   border-bottom: 2px solid #eee;
+  cursor: pointer;
   .top-side {
     display: flex;
     justify-content: space-between;

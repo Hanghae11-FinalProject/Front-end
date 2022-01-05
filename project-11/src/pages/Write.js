@@ -13,6 +13,8 @@ import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
+import Permit from "../shared/Permit";
+
 // style
 import "swiper/css";
 import "swiper/css/pagination";
@@ -243,6 +245,7 @@ const Write = () => {
   };
 
   return (
+    <Permit>
     <React.Fragment>
       <Container>
         <Grid is_container _className="border">
@@ -393,8 +396,9 @@ const Write = () => {
           </HashTagArea>
         </Grid>
       </Container>
-      <Nav />
+      <Nav write={"write"} />
     </React.Fragment>
+    </Permit>
   );
 };
 
@@ -588,6 +592,7 @@ const ContentInput = styled.textarea`
   width: 100%;
   font-size: 16px;
   resize: none;
+  font-family: "NanumSquareRound";
   border: none;
   ::placeholder {
     color: var(--help-color);
