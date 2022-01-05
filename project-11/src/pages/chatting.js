@@ -6,10 +6,8 @@ import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Permit from "../shared/Permit";
-
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-
 
 const Chatting = () => {
   const token = getCookie("Token");
@@ -83,82 +81,82 @@ const Chatting = () => {
   };
   return (
     <Permit>
-    <ChattingWrap>
-      <Grid is_container="is_container" _className="grid-border">
-        <div className="chatting-wrap">
-          <div className="chatting-header">
-            <div className="chatting-header-wrap">
-              <IoIosArrowBack
-                style={{
-                  width: "30px",
-                  height: "30px",
-                }}
-              />
-              {/* <input
+      <ChattingWrap>
+        <Grid is_container="is_container" _className="grid-border">
+          <div className="chatting-wrap">
+            <div className="chatting-header">
+              <div className="chatting-header-wrap">
+                <IoIosArrowBack
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                  }}
+                />
+                {/* <input
                 onChange={test}
                 style={{ width: "30px", height: "30px" }}
               /> */}
-              <p className="header-title">전체</p>
-              <Grid>
-                <div className="ct-wrap">
-                  <BiDotsVerticalRounded
-                    onClick={ModalControl}
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                    }}
-                    className="point-icon"
-                  />
-                </div>
-              </Grid>
-
-              {is_open && (
-                <>
-                  <div className="modal-back"></div>
-                  <Grid _className="drop-chat">
-                    <p
-                      className={optionOne ? "active" : "unactive"}
-                      onClick={() => {
-                        OptionOneControl();
-                        ModalControl();
+                <p className="header-title">전체</p>
+                <Grid>
+                  <div className="ct-wrap">
+                    <BiDotsVerticalRounded
+                      onClick={ModalControl}
+                      style={{
+                        width: "25px",
+                        height: "25px",
                       }}
-                    >
-                      전체
-                    </p>
+                      className="point-icon"
+                    />
+                  </div>
+                </Grid>
 
-                    <p
-                      className={optionTwo ? "active" : "unactive"}
-                      onClick={() => {
-                        ModalControl();
-                        OptionTwoControl();
-                      }}
-                    >
-                      거래중
-                    </p>
+                {is_open && (
+                  <>
+                    <div className="modal-back"></div>
+                    <Grid _className="drop-chat">
+                      <p
+                        className={optionOne ? "active" : "unactive"}
+                        onClick={() => {
+                          OptionOneControl();
+                          ModalControl();
+                        }}
+                      >
+                        전체
+                      </p>
 
-                    <p
-                      className={optionThree ? "active" : "unactive"}
-                      onClick={() => {
-                        ModalControl();
-                        OptionThreeControl();
-                      }}
-                    >
-                      거래완료
-                    </p>
-                  </Grid>
-                </>
-              )}
+                      <p
+                        className={optionTwo ? "active" : "unactive"}
+                        onClick={() => {
+                          ModalControl();
+                          OptionTwoControl();
+                        }}
+                      >
+                        거래중
+                      </p>
+
+                      <p
+                        className={optionThree ? "active" : "unactive"}
+                        onClick={() => {
+                          ModalControl();
+                          OptionThreeControl();
+                        }}
+                      >
+                        거래완료
+                      </p>
+                    </Grid>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="chat-item">
+              {rooms.map((p, idx) => {
+                return <Chattingitem roomData={p} key={idx} />;
+              })}
             </div>
           </div>
-          <div className="chat-item">
-            {rooms.map((p, idx) => {
-              return <Chattingitem roomData={p} key={idx} />;
-            })}
-          </div>
-        </div>
-      </Grid>
-      <Nav chatting={"chatting"} />
-    </ChattingWrap>
+        </Grid>
+        <Nav chatting={"chatting"} />
+      </ChattingWrap>
     </Permit>
   );
 };
@@ -208,19 +206,18 @@ const ChattingWrap = styled.div`
             left: 15%;
             display: flex;
             flex-direction: column;
+            justify-content: space-evenly;
             align-items: center;
             filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
             cursor: pointer;
             .active {
               padding: 8px 8px;
               font-size: 16px;
-              margin-top: 25px;
               color: var(--main-color);
             }
             .unactive {
               padding: 8px 8px;
               font-size: 16px;
-              margin-top: 25px;
             }
           }
           .point-icon {
