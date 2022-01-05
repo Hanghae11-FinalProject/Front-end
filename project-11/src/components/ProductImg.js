@@ -11,7 +11,7 @@ import styled from "styled-components";
 SwiperCore.use([FreeMode, Pagination]);
 
 const ProductImg = ({ img }) => {
-  console.log(img);
+  // console.log(img);
   return (
     <ProductImgBox>
       <Swiper

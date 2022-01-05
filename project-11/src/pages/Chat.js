@@ -4,34 +4,46 @@ import styled from "styled-components";
 import { FaLocationArrow } from "react-icons/fa";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { getCookie } from "../shared/Cookie";
+import MyChat from "../components/MyChat";
+import NotMyChat from "../components/NotMyChat";
 
-let sockjs = new SockJS("http://13.125.145.191/webSocket");
+let sockjs = new SockJS("http://15.164.222.25:8080/webSocket");
 let stompClient = Stomp.over(sockjs);
 let List = [];
-const Chat = () => {
+
+const Chat = (data) => {
+  const myUserId = getCookie("Id");
+
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
+  // console.log(myUserId);
+  const roomName = data.location.state.roomName;
+  const sender = data.location.state.sender;
+  // console.log(sender.profileImg);
 
   React.useEffect(() => {
     stompClient.connect({}, () => {
       stompClient.send("/pub/join", {}, JSON.stringify("room1"));
-      stompClient.subscribe(`/sub/room1`, (data) => {
-        console.log(JSON);
-        const onMessage = JSON.parse(data.body).data;
-
+      stompClient.subscribe(`/sub/${roomName}`, (data) => {
+        // console.log(data);
+        const onMessage = JSON.parse(data.body);
         setMessageList((messageList) => messageList.concat(onMessage));
+        // console.log(messageList);
       });
     });
-  }, []);
+  }, []); // setSearches(searches => searches.concat(query))
 
-  // setSearches(searches => searches.concat(query))
   const sendMessage = () => {
     const box = {
-      data: currentMes,
-      roomId: "room1",
+      type: "Talk", //타입
+      message: currentMes, //메세지
+      roomName: roomName, //채팅방넘버
+      senderId: myUserId, // 내 userId
     };
     stompClient.send("/pub/message", {}, JSON.stringify(box));
   };
+
   return (
     <>
       <Container>
@@ -43,30 +55,16 @@ const Chat = () => {
           </Header>
           <ChatBox>
             {messageList.map((message, idx) => {
-              console.log(message);
-              return (
-                <>
-                  <div
-                    key={idx}
-                    className="message"
-                    // id={username === message.username ? "me" : "you"}
-                  >
-                    <Grid is_flex _className="chat-line">
-                      <Grid _className="profileimg">
-                        {/* <img src={message.img} alt="profile" /> */}
-                      </Grid>
-                      <Grid>
-                        <div className="chat-mes">{message}</div>
-                        <Grid is_flex _className="chat-info">
-                          {/* <span>{message.time}</span> */}
-                          {/* <span>{message.username}</span> */}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </div>
-                </>
-              );
+              console.log(message.senderId, parseInt(myUserId));
+              if (parseInt(myUserId) === message.senderId) {
+                console.log("dd");
+                return <MyChat key={idx} data={message} />;
+              } else {
+                console.log("ss");
+                return <NotMyChat key={idx} data={message} />;
+              }
             })}
+
             <ChatInput>
               <Grid is_flex _className="input-inner">
                 <input
@@ -146,7 +144,7 @@ const ChatBox = styled.div`
   .chat-mes {
     padding: 8px 10px;
     border-radius: 12px;
-    color: black;
+    /* color: black; */
   }
 
   .chat-info {
@@ -157,7 +155,7 @@ const ChatBox = styled.div`
   }
   #you .chat-mes {
     background-color: var(--main-color);
-    color: #fff;
+    /* color: #fff; */
   }
 
   #me .chat-line {

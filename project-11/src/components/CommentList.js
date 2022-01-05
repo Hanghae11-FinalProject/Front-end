@@ -18,7 +18,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const [btnActive, setBtnActive] = useState(false);
 
   const commentData = comment;
-  console.log("코멘트 부모 리스트", commentData.userId, curUserId);
+  // console.log("코멘트 부모 리스트", commentData.userId, curUserId);
   //대댓글 쓰기
   const writeComment = () => {
     if (!token) {
