@@ -10,7 +10,7 @@ let stompClient = Stomp.over(sockjs);
 let List = [];
 const Chat = () => {
   const [currentMes, setCurrentMes] = useState("");
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useState(["hello"]);
 
   React.useEffect(() => {
     stompClient.connect({}, () => {
@@ -37,6 +37,7 @@ const Chat = () => {
     };
     stompClient.send("/pub/message", {}, JSON.stringify(box));
   };
+
   return (
     <>
       <Container>
@@ -57,15 +58,10 @@ const Chat = () => {
                     // id={username === message.username ? "me" : "you"}
                   >
                     <Grid is_flex _className="chat-line">
-                      <Grid _className="profileimg">
-                        {/* <img src={message.img} alt="profile" /> */}
-                      </Grid>
+                      <Grid _className="profileimg"></Grid>
                       <Grid>
                         <div className="chat-mes">{message}</div>
-                        <Grid is_flex _className="chat-info">
-                          {/* <span>{message.time}</span> */}
-                          {/* <span>{message.username}</span> */}
-                        </Grid>
+                        <Grid is_flex _className="chat-info"></Grid>
                       </Grid>
                     </Grid>
                   </div>

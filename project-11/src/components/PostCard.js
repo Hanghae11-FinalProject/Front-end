@@ -14,8 +14,6 @@ const PostCard = ({ item }) => {
     item.currentState === "Proceeding" ? "거래중" : "거래완료"
   );
 
-  console.log(item);
-  const [like, setLike] = useState(false);
   const [user_id, setUser_id] = useState(false);
   const [bookmark, setBookmark] = useState(item.bookMarks);
   const [checkBm, setCheckBm] = useState();
@@ -24,19 +22,16 @@ const PostCard = ({ item }) => {
     history.push(`/detail/${item.postId}`);
   };
 
-  console.log(bookmark);
-
   //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
   const has_bookmarks = () => {
     if (bookmark.length > 0) {
       const bookmarkState = bookmark.filter((user) => {
         return user.userId === Number(curUserId);
       });
-      console.log("좋아요버튼 유무", bookmarkState);
+
       if (bookmarkState.length === 1) {
         setUser_id(true);
         setCheckBm(true);
-        console.log("좋아요버튼 유유유", user_id, bookmark);
       }
     }
   };

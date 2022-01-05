@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { Grid } from "../elements/index";
 
 import PostList from "../components/PostList";
@@ -7,6 +6,7 @@ import Nav from "../shared/Nav";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Autoplay } from "swiper";
+
 import { ImSpoonKnife } from "react-icons/im";
 import { MdMenuBook } from "react-icons/md";
 import { GiHanger } from "react-icons/gi";
