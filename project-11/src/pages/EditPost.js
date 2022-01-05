@@ -13,8 +13,6 @@ import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
-import Permit from "../shared/Permit";
-
 // style
 import "swiper/css";
 import "swiper/css/pagination";
@@ -23,9 +21,14 @@ import axios from "axios";
 
 SwiperCore.use([Pagination, Navigation]);
 
-const Write = () => {
+const EditPost = (items) => {
   const dispatch = useDispatch();
   const token = getCookie("Token"); // 토큰 가져오기
+
+  const editItems = items.location.state.items; // 수정하기 용 Data
+  const postId = editItems.postId;
+  const is_edit = postId ? true : false;
+  // console.log(editItems.images);
 
   const [title, setTitle] = React.useState(""); // 제목
   const [content, setContent] = React.useState(""); // 내용
@@ -36,6 +39,7 @@ const Write = () => {
   const [hashArr, setHashArr] = React.useState([]); // 해시태그 담을 배열
   const [images, setImages] = React.useState([]); // 이미지 aixos 통신용
   const [preImg, setPreImg] = React.useState([]); // preview용 이미지
+  const [deleteEditImg, setDeleteEditImg] = React.useState([]); // 따로 수정하기할때 보내줄 url 저장소
   const [active, setActive] = React.useState(true); // 버튼 액티브
   const [currentState, setCurrentState] = React.useState("Proceeding"); // currentState 기본값 넘겨주기
   const [is_open, setIs_open] = React.useState(false); // 모달창 활성화/비활성화 여부
@@ -89,8 +93,9 @@ const Write = () => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    console.log(images);
-    console.log(preImg);
+    console.log(deleteEditImg); // 뺄거
+    console.log(images); // 새로 보낼거
+    console.log(preImg); // 프리뷰 둘다있음
   };
 
   // 교환할 물품 onChange 함수
@@ -107,6 +112,32 @@ const Write = () => {
   const onChangeHashtag = (e) => {
     setHashtag(e.target.value);
   };
+
+  // 수정하기 image preview 및 해시태그 불러오기
+  React.useEffect(() => {
+    let editPre = [];
+    if (is_edit) {
+      setCategory(editItems.categoryName);
+      for (let i = 0; i < editItems.images.length; i++) {
+        editPre.push(editItems.images[i].imageUrl);
+      }
+      setPreImg(editPre); // preview에 저장
+    }
+    // const GetHashContent = document.querySelector(".HashInputOuter"); //HashInputOuter클라스에서 입력하는 요소를 불러온다!
+    // const HashWrapInner = document.createElement("div"); // div 만들기
+    // HashWrapInner.className = "HashWrapInner";
+
+    // let editTag = [];
+    // if (is_edit) {
+    //   for (let i = 0; i < editItems.tags.length; i++) {
+    //     const tags = { tagName: editItems.tags[i].tagName };
+    //     HashWrapInner.innerHTML = "#" + editItems.tags[i].tagName;
+    //     GetHashContent?.appendChild(HashWrapInner);
+    //     editTag.push(tags);
+    //   } // console.log(hashArr); < 넣어지는거 확인함
+    //   setHashArr(...editTag);
+    // }
+  }, []);
 
   // 해시태그 onKeyup 함수
   const createTag = useCallback(
@@ -140,8 +171,9 @@ const Write = () => {
     [tagName, hashArr]
   );
 
-  // 이미지, preview이미지
+  // 이미지, preview이미지 추가
   const addImage = (e) => {
+    // console.log(e.target.files);
     const nowSelectImgList = e.target.files; // 이미지파일 리스트 (object)
 
     if (images.length !== 0) {
@@ -150,7 +182,9 @@ const Write = () => {
       // !!!*** 이미지를 추가한 뒤 중간에 또 추가하면 갯수가 리셋되는거
       setImages(e.target.files); // axios통신용으로 따로 한번 저장 해주고!
     }
+    // console.log(images);
     const nowImgURLList = [...preImg]; // 현재의 preImg 복사
+
     for (let i = 0; i < nowSelectImgList.length; i++) {
       const nowImgURL = URL.createObjectURL(nowSelectImgList[i]); // 미리보기 가능하도록 변수화
       //URL.createObjectURL() 이 친구는 상대경로를 만들어 주는 친구이다.
@@ -159,9 +193,19 @@ const Write = () => {
     setPreImg([...nowImgURLList]); // 반복문이 끝난뒤 preImg 원본에 넣어준다.
   };
 
-  // 이미지파일 및 미리보기 삭제
-  let forImages = [...images]; // state의 불변성 유지 때문에 images를 복사
+  // preview 이미지 삭제
+  let deletedUrl = []; // 백에 보내줄 url을 담아줄 빈 배열
+  let forImages = [...images];
   const deleteImages = (x) => {
+    const deletePreImg = preImg.filter((item) => {
+      // preImg를 요소 하나씩 filter를 돌려 만약 내가 누른 사진의 url이면 반환되지 못하도록 함수 설계
+      if (item !== x) {
+        return item;
+      }
+    });
+    setPreImg(deletePreImg); // preview에서 빼주기
+
+    // 수정전의 이미지 파일을 제외하고
     let idxLocation = ""; // 지우는 미리보기 이미지의 위치를 저장해주기 위한 변수
     for (let i = 0; i < preImg.length; i++) {
       if (preImg[i] === x) {
@@ -169,23 +213,22 @@ const Write = () => {
       }
     }
     let imgLocation = forImages[idxLocation]; // 복사한 images배열에서의 지울 파일 위치 지정
-    console.log(imgLocation);
+    console.log(imgLocation); // <이게 안찍힘
     const deleteImg = forImages.filter((y) => {
       if (y !== imgLocation) {
         return y;
       }
     });
     // filter함수로 지울 파일만 제외하여 배열 재생성 후 setimages
-    setImages(deleteImg);
-    // forImages.splice(idxLocation, 1);
 
-    const deletePreImg = preImg.filter((item) => {
-      // preImg를 요소 하나씩 filter를 돌려 만약 내가 누른 사진의 url이면 반환되지 못하도록 함수 설계
-      if (item !== x) {
-        return item;
-      }
-    });
-    setPreImg(deletePreImg);
+    // 기존 이미지는 뺄 Url만 따로 담아서 DB에 보내주자 (이렇게 보내기로 함)
+    if (x.indexOf("pingpong-bucket") !== -1) {
+      deletedUrl.push(...deletedUrl, x);
+      const Img = { imageUrl: deletedUrl[0] };
+      setDeleteEditImg([...deleteEditImg, Img]);
+    } else {
+      setImages(deleteImg);
+    }
   };
 
   // Upload 버튼 active 함수
@@ -204,8 +247,8 @@ const Write = () => {
     checkActive();
   }, [category]);
 
-  // 게시글 작성
-  const postWrite = async () => {
+  // 수정하기
+  const editPost = async () => {
     const formData = new FormData();
     // console.log(images);
     for (let i = 0; i < images.length; i++) {
@@ -221,14 +264,15 @@ const Write = () => {
         tag: hashArr,
         myItem: myItem,
         exchangeItem: exchangeItem,
+        images: deleteEditImg,
       })
     );
     for (let value of formData.values()) {
       console.log(value);
     }
     await axios({
-      method: "post",
-      url: "http://15.164.222.25/api/posts",
+      method: "put",
+      url: `http://15.164.222.25/api/posts/${postId}`,
       data: formData,
       headers: {
         "Content-type": "multipart/form-data",
@@ -236,8 +280,8 @@ const Write = () => {
       },
     })
       .then((response) => {
-        console.log("작성성공이니~", response);
-        history.push("/");
+        console.log("수정 완료", response);
+        // history.push(`/detail/${postId}`);
       })
       .catch((err) => {
         console.log(err, "에러났니~");
@@ -245,7 +289,6 @@ const Write = () => {
   };
 
   return (
-    <Permit>
     <React.Fragment>
       <Container>
         <Grid is_container _className="border">
@@ -257,19 +300,19 @@ const Write = () => {
                 history.goBack();
               }}
             />
-            <TopText style={{ marginLeft: "6px" }}>글 작성하기</TopText>
+            <TopText style={{ marginLeft: "6px" }}>글 수정하기</TopText>
             <TopText
               style={{ padding: "6px" }}
-              className={!active ? "activeBtn" : "unActiveBtn"}
+              className={active ? "activeBtn" : "unActiveBtn"}
               disabled={active}
-              onClick={postWrite}
+              onClick={editPost}
             >
               완료
             </TopText>
           </MainTop>
           <TitleArea>
             <TitleInput
-              // value={editItems.title}
+              defaultValue={editItems.title}
               type="text"
               maxLength={20}
               placeholder="제목 (20자 이하)"
@@ -282,14 +325,8 @@ const Write = () => {
             <Catediv
               onClick={modalControl}
               ref={modalClose}
-              // value={editItems.categoryName}
-              className={
-                is_open === false
-                  ? category === "품목 선택"
-                    ? "default"
-                    : "selected"
-                  : "active"
-              }
+              value={editItems.categoryName}
+              className={is_edit && is_open ? "active" : "selected"}
             >
               <div>{category}</div>
               {is_open ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
@@ -317,14 +354,14 @@ const Write = () => {
 
           <TradeDiv>
             <TradeInput
-              // value={editItems.myItem}
+              defaultValue={editItems.myItem}
               onChange={changeMyItem}
               maxLength="10"
               placeholder="교환할 물품 (1개 입력)"
             ></TradeInput>
             <CenterLine />
             <TradeInput
-              // value={editItems.exchangeItem}
+              defaultValue={editItems.exchangeItem}
               onChange={changeYourItem}
               maxLength="10"
               placeholder="교환받을 물품 (1개 입력)"
@@ -338,7 +375,6 @@ const Write = () => {
               <input
                 type="file"
                 onChange={addImage}
-                // max={5}
                 encType="multipart/form-data"
                 multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
                 id="input-file" // 커스텀 디자인을 위한 라벨링
@@ -372,7 +408,7 @@ const Write = () => {
 
           <ContentArea>
             <ContentInput
-              // value={editItems.content}
+              defaultValue={editItems.content}
               placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
               onChange={changeContent}
               onKeyUp={checkActive}
@@ -396,9 +432,8 @@ const Write = () => {
           </HashTagArea>
         </Grid>
       </Container>
-      <Nav write={"write"} />
+      <Nav />
     </React.Fragment>
-    </Permit>
   );
 };
 
@@ -592,7 +627,6 @@ const ContentInput = styled.textarea`
   width: 100%;
   font-size: 16px;
   resize: none;
-  font-family: "NanumSquareRound";
   border: none;
   ::placeholder {
     color: var(--help-color);
@@ -642,4 +676,4 @@ const HashInput = styled.input`
   }
 `;
 
-export default Write;
+export default EditPost;

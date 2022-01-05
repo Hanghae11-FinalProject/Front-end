@@ -23,6 +23,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const commentData = comment;
 
   //댓글 쓰기
+
   const writeComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");

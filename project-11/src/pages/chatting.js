@@ -5,13 +5,33 @@ import { Grid } from "../elements";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import Permit from "../shared/Permit";
+
+import { axiosInstance } from "../shared/api";
+import { getCookie } from "../shared/Cookie";
+
 
 const Chatting = () => {
+  const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);
+  const [rooms, setRooms] = useState([]);
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
+
+  React.useEffect(() => {
+    axiosInstance
+      .get(`/api/room`, { headers: { Authorization: token } })
+      .then((res) => {
+        console.log(res);
+        setRooms(res.data);
+      })
+      .catch((err) => {
+        console.log(err, "에러");
+      });
+  }, []);
+  // const test = () => {
+  //   console.log(rooms);
+  // };
 
   const OptionOneControl = () => {
     setOptionTwo(false);
@@ -73,6 +93,10 @@ const Chatting = () => {
                   height: "30px",
                 }}
               />
+              {/* <input
+                onChange={test}
+                style={{ width: "30px", height: "30px" }}
+              /> */}
               <p className="header-title">전체</p>
               <Grid>
                 <div className="ct-wrap">
@@ -126,15 +150,9 @@ const Chatting = () => {
             </div>
           </div>
           <div className="chat-item">
-            <Chattingitem />
-            <Chattingitem />
-            <Chattingitem />
-            <Chattingitem />
-            <Chattingitem />
-            <Chattingitem />
-            <Chattingitem />
-            <Chattingitem />
-            <Chattingitem />
+            {rooms.map((p, idx) => {
+              return <Chattingitem roomData={p} key={idx} />;
+            })}
           </div>
         </div>
       </Grid>

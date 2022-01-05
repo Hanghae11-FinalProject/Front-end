@@ -27,17 +27,17 @@ const Detail = () => {
   const dispatch = useDispatch();
   const [is_loading, setIs_loading] = useState(false);
 
+  const [items, setItems] = useState(); // 지우면 안대용~ for Write page
   const [user_id, setUser_id] = useState(false);
-
   const comments = useSelector((state) => state.post.comments);
 
   //게시글 전체 데이터 저장
   const [PostData, setPostdata] = useState();
 
   //arr type
-  const [bm, setCheckBm] = useState([]);
   const [bmCnt, setBmCnt] = useState();
   const [bookmark, setBookmark] = useState();
+  const [bm, setCheckBm] = useState([]);
 
   const [btnActive, setBtnActive] = useState(false);
 
@@ -48,8 +48,10 @@ const Detail = () => {
       const res = await axiosInstance.get(`/api/posts/${params.id}`);
       console.log("상세 페이지 조회 성공", res);
       setPostdata(res.data);
+
       setCheckBm(res.data.bookMarks);
       setBmCnt(res.data.bookMarkCount);
+
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
@@ -92,6 +94,7 @@ const Detail = () => {
       history.push("/login");
     }
 
+
     if (curUserName === PostData.nickname) {
       window.alert("자신의 게시물은 즐겨찾기를 누르실 수 없어요😀");
     } else {
@@ -112,7 +115,6 @@ const Detail = () => {
         .catch((err) => console.log(err));
     }
   };
-
   //즐겨찾기 버튼 취소
   const cancelBookmark = () => {
     if (!token) {
@@ -149,6 +151,24 @@ const Detail = () => {
       .catch((err) => console.log(err));
   };
 
+  const goChat = () => {
+    axiosInstance
+      .post(
+        `/api/room`,
+        {
+          postId: PostData.postId,
+          toUserId: PostData.userId,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((res) => {
+        console.log(res, "성공");
+      })
+      .catch((err) => {
+        console.log(err, "에러");
+      });
+  };
+
   //버튼메뉴 클릭이벤트
   const Clickbtn = () => {
     if (btnActive) {
@@ -170,6 +190,7 @@ const Detail = () => {
     dispatch(postActions.get_Comment(params.id));
   }, []);
 
+
   return (
     <>
       {!PostData ? (
@@ -186,7 +207,7 @@ const Detail = () => {
                   is_flex
                   flex_align="center"
                 >
-                  <p>자세히 보기</p>
+                  <p>{user_id ? "true" : "false"}</p>
                 </Grid>
               </Header>
               {/* 카테고리 라이크버튼  */}
@@ -229,7 +250,16 @@ const Detail = () => {
                         }
                         _onClick={Clickbtn}
                       >
-                        <li>수정하기</li>
+                        <li
+                          onClick={() => {
+                            history.push({
+                              pathname: `/write/${PostData.postId}`,
+                              state: { items: items },
+                            });
+                          }}
+                        >
+                          수정하기
+                        </li>
                         <li onClick={completeExchange}>거래완료로 변경하기</li>
                         <li>공유하기</li>
                         <li onClick={deletePost}>삭제하기</li>
@@ -243,7 +273,7 @@ const Detail = () => {
                         }
                         _onClick={Clickbtn}
                       >
-                        <li>채팅하기</li>
+                        <li onClick={goChat}>채팅하기</li>
                         <li>공유하기</li>
                         <li>신고하기</li>
                       </Grid>
@@ -273,6 +303,7 @@ const Detail = () => {
                 {/* 라이크버튼  */}
                 <Grid is_flex _className="btn-box">
                   <Grid is_flex _className="like-btn" flex_align="center">
+
                     {user_id ? (
                       <FaStar
                         className="icon bookmark-active"
@@ -281,6 +312,7 @@ const Detail = () => {
                     ) : (
                       <FiStar className="icon" onClick={addBookmark} />
                     )}
+
                     <span>즐겨찾기 {bmCnt}</span>
                   </Grid>
                   <Grid is_flex _className="chat-btn" flex_align="center">
@@ -290,6 +322,7 @@ const Detail = () => {
                 </Grid>
               </Grid>
               {/* 댓글 리스트 */}
+
 
               {comments.map((comment, i) => {
                 return (

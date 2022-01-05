@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid } from '../elements';
 import { history } from '../redux/configureStore';
+import Nav from '../shared/Nav';
 
 const LoginCheck = () => {
     return (
-        <Grid is_container='is_container'>
+        
         <LoginCkWrap>
-            <div className="modal-back"></div>
+            <Grid is_container='container' _className='border'>
+
             <div className='modal-wrap'>
             <div className='icon-wrap'>
             <img src='/static/핑이 기본.png'/>
@@ -15,74 +17,59 @@ const LoginCheck = () => {
             <img src='/static/핑이 행복.png'/>
             </div>
             <div className='title'>
+            <p>서비스를 이용하려면</p>
             <p>먼저 로그인이 필요해요!</p>
             </div>
-            <hr className='line'/>
             <div className='subtitle'>
                <span onClick={()=>{history.push('/login')}}>로그인하러 가기</span> 
             </div>
             </div>
+                <Nav/>
+            </Grid>
         </LoginCkWrap>
-        </Grid>
+        
     );
 };
 
 export default LoginCheck;
 
 const LoginCkWrap = styled.div`
-position: relative;
-.modal-wrap{
+.border{
+    border: 1px solid var(--help-color);
+    height: 100vh;
     display: flex;
-    align-items: center;
-    flex-direction: column;
     justify-content: center;
+    align-items: center;
+.modal-wrap{
     text-align: center;
-    width: 260px;
-    height: 194px;
-    border-radius: 20px;
-    background-color: white;
-    margin: 0 auto;
-    position: absolute;
-    top: 100%;
-    left: 0%;
-    transform: translate(25%, 150%);
+    width: 100%;
     .icon-wrap{
-        max-width: 92px;
-        height: 50px;
-        margin-bottom: 16px;
+        margin-bottom: 40px;
         img{
-            width: 30px;
-                height: 30px;
+            width: 63px;
+            height: 63px;
             }
         }
         .title{
+            margin-bottom: 80px;
             p{
-                margin-bottom: 16px;
-                font-size: 16px;
+                font-size: 24px;
                 font-weight: bold;
             }
-        }
-        .line{
-            width: 100%;
-            border: 0.5px solid var(--help-color);
-            margin-bottom: 16px;
         }
         .subtitle{
+            line-height: 48px;
+            width: 90%;
+            height: 48px;
+            border-radius: 50px;
+            background-color: var(--main-color);
+            margin: 0 auto;
             span{
                 cursor: pointer;
-                font-size: 16px;
-                font-weight: bold;
-                color: var(--main-color);
+                font-size: 16px; 
+                color: white;
             }
         }
-    }
-    .modal-back{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.25);
-    }
-    
-    `
+    }    
+}
+`

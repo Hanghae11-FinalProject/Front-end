@@ -18,6 +18,7 @@ import Chatting from "../pages/Chatting";
 import Chat from "../pages/Chat";
 import Favorite from "../pages/Favorite";
 import MyPost from "../pages/MyPost";
+import EditPost from "../pages/EditPost";
 import OAuthRedirect from "../components/OAuthRedirect";
 
 function App() {
@@ -34,7 +35,7 @@ function App() {
         <Route path="/favorite" exact component={Favorite}></Route>
         <Route path="/mypost" exact component={MyPost}></Route>
         <Route path="/write" exact component={Write}></Route>
-        <Route path="/write/:id" exact component={Write} />
+        <Route path="/write/:id" exact component={EditPost} />
         <Route path="/detail/:id" exact component={Detail}></Route>
         <Route path="/search" exact component={Search}></Route>
         <Route path="/chatting" exact component={Chatting}></Route>
