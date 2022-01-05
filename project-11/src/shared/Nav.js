@@ -7,7 +7,6 @@ import { BsPlusLg } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
-
 import styled from "styled-components";
 
 const Nav = (props) => {
@@ -41,7 +40,11 @@ const Nav = (props) => {
           </Menu>
           <PlusMenu>
             <BsPlusLg
-              className={!token ? "plus-icon inactive" : "plus-icon active"}
+              className={
+                props.write !== "write"
+                  ? "plus-icon inactive"
+                  : "plus-icon active"
+              }
               onClick={() => {
                 if (!token) {
                   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");

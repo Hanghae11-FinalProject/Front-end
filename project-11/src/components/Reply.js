@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements";
 import { history } from "../redux/configureStore";
@@ -10,22 +12,28 @@ import { BsArrowReturnRight } from "react-icons/bs";
 
 const Reply = ({ reply, postid, postuser }) => {
   const token = getCookie("Token");
-  const curUserId = getCookie("Id");
+  const curUserName = getCookie("Name");
+  const dispatch = useDispatch();
   const [is_login, setIs_login] = useState(token ? true : false);
   const [btn, setBtn] = useState(false);
   const replyData = reply;
 
   //댓글 삭제
   const deleteComment = () => {
-    axiosInstance
-      .delete(`/api/comments/${replyData.id}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => console.log("delete reply sucess", res))
-      .catch((err) => console.log("delete reply fail", err));
+    let ok = window.confirm("정말 삭제하시겠어요?");
+    if (ok) {
+      dispatch(postActions.del_comment(replyData.id));
+    }
   };
+
+  const Clickbtn = () => {
+    if (btn) {
+      setBtn(false);
+    } else {
+      setBtn(true);
+    }
+  };
+
   return (
     <>
       <ReplyBox key={replyData.id}>
@@ -44,28 +52,27 @@ const Reply = ({ reply, postid, postuser }) => {
 
               <Grid _className="modal-menu">
                 <BiDotsVerticalRounded
-                  className="icon"
-                  onClick={() => setBtn(true)}
+                  className={btn ? "btn-icon" : "btn-inactive-icon"}
+                  onClick={Clickbtn}
                 />
                 <Grid
                   _className={btn ? "inner-menu active" : "inner-menu"}
-                  _onClick={() => setBtn(false)}
+                  _onClick={Clickbtn}
                 >
-                  {is_login && curUserId === replyData.userId ? (
+                  {is_login && curUserName === replyData.nickname ? (
                     <>
                       <li onClick={deleteComment}>삭제하기</li>
                     </>
                   ) : (
                     <>
                       <li>채팅하기</li>
-                      <li>신고하기</li>
                     </>
                   )}
                 </Grid>
               </Grid>
             </Grid>
             <Comment>{replyData.content}</Comment>
-            <Grid>
+            <Grid padding="5px 0">
               <span>{replyData.createAt}</span>
             </Grid>
           </Grid>
@@ -79,7 +86,6 @@ export default Reply;
 
 const ReplyBox = styled.div`
   margin: 10px 0;
-
   font-size: 14px;
 
   .arrow {
@@ -97,7 +103,7 @@ const ReplyBox = styled.div`
     //글 작성자 인포부분
     .user {
       height: 30px;
-      margin: 5px 0;
+      margin: 0px 0;
 
       p {
         width: 85%;
@@ -118,10 +124,22 @@ const ReplyBox = styled.div`
       .modal-menu {
         position: relative;
 
+        .btn-icon {
+          font-size: 20px;
+          cursor: pointer;
+          color: var(--active-color);
+        }
+
+        .btn-inactive-icon {
+          font-size: 20px;
+          cursor: pointer;
+          color: var(--inactive-icon-color);
+        }
+
         .inner-menu {
           position: absolute;
           right: -5px;
-          top: -70px;
+          top: 20px;
           width: 150px;
 
           background-color: #fff;

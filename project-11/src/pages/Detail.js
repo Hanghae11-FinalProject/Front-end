@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 import { getCookie } from "../shared/Cookie";
 import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements/index";
@@ -22,14 +24,20 @@ const Detail = () => {
   const curUserName = getCookie("Name");
   const curUserId = getCookie("Id");
   const params = useParams();
+  const dispatch = useDispatch();
   const [is_loading, setIs_loading] = useState(false);
 
+  const [user_id, setUser_id] = useState(false);
+
+  const comments = useSelector((state) => state.post.comments);
+
+  //게시글 전체 데이터 저장
   const [PostData, setPostdata] = useState();
 
-  const [user_id, setUser_id] = useState(false);
-  const [bookmark, setBookmark] = useState();
+  //arr type
   const [bm, setCheckBm] = useState([]);
   const [bmCnt, setBmCnt] = useState();
+  const [bookmark, setBookmark] = useState();
 
   const [btnActive, setBtnActive] = useState(false);
 
@@ -83,21 +91,26 @@ const Detail = () => {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
       history.push("/login");
     }
-    setBmCnt(bmCnt + 1);
-    setBookmark(true);
-    setUser_id(true);
-    axiosInstance
-      .post(
-        `/api/bookmark/${params.id}`,
-        {},
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      )
-      .then((res) => console.log("즐겨찾기 보내기 성공", res))
-      .catch((err) => console.log(err));
+
+    if (curUserName === PostData.nickname) {
+      window.alert("자신의 게시물은 즐겨찾기를 누르실 수 없어요😀");
+    } else {
+      setBmCnt(bmCnt + 1);
+      setBookmark(true);
+      setUser_id(true);
+      axiosInstance
+        .post(
+          `/api/bookmark/${params.id}`,
+          {},
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
+        .then((res) => console.log("즐겨찾기 보내기 성공", res))
+        .catch((err) => console.log(err));
+    }
   };
 
   //즐겨찾기 버튼 취소
@@ -121,10 +134,11 @@ const Detail = () => {
 
   //거래완료버튼
   const completeExchange = () => {
+    console.log(params.id);
     axiosInstance
-      .post(
-        `api/posts/${params.id}`,
-        { currentState: "complete" },
+      .put(
+        `api/currentstate/${params.id}`,
+        { currentState: "Complete" },
         {
           headers: {
             Authorization: token,
@@ -135,6 +149,15 @@ const Detail = () => {
       .catch((err) => console.log(err));
   };
 
+  //버튼메뉴 클릭이벤트
+  const Clickbtn = () => {
+    if (btnActive) {
+      setBtnActive(false);
+    } else {
+      setBtnActive(true);
+    }
+  };
+
   useEffect(() => {
     getPostData();
   }, []);
@@ -142,6 +165,10 @@ const Detail = () => {
   useEffect(() => {
     has_bookmarks();
   }, [bm]);
+
+  useEffect(() => {
+    dispatch(postActions.get_Comment(params.id));
+  }, []);
 
   return (
     <>
@@ -159,7 +186,7 @@ const Detail = () => {
                   is_flex
                   flex_align="center"
                 >
-                  <p>{user_id ? "true" : "false"}</p>
+                  <p>자세히 보기</p>
                 </Grid>
               </Header>
               {/* 카테고리 라이크버튼  */}
@@ -191,8 +218,8 @@ const Detail = () => {
                 </UserInfo>
                 <Grid _className="modal-menu">
                   <BiDotsVerticalRounded
-                    className="icon"
-                    onClick={() => setBtnActive(true)}
+                    className={btnActive ? "icon" : "inactive-icon"}
+                    onClick={Clickbtn}
                   />
                   {curUserName === PostData.nickname ? (
                     <>
@@ -200,7 +227,7 @@ const Detail = () => {
                         _className={
                           btnActive ? "inner-menu active" : "inner-menu"
                         }
-                        _onClick={() => setBtnActive(false)}
+                        _onClick={Clickbtn}
                       >
                         <li>수정하기</li>
                         <li onClick={completeExchange}>거래완료로 변경하기</li>
@@ -214,7 +241,7 @@ const Detail = () => {
                         _className={
                           btnActive ? "inner-menu active" : "inner-menu"
                         }
-                        _onClick={() => setBtnActive(false)}
+                        _onClick={Clickbtn}
                       >
                         <li>채팅하기</li>
                         <li>공유하기</li>
@@ -263,7 +290,8 @@ const Detail = () => {
                 </Grid>
               </Grid>
               {/* 댓글 리스트 */}
-              {PostData.comments.map((comment, i) => {
+
+              {comments.map((comment, i) => {
                 return (
                   <CommentList
                     key={comment.id}
@@ -291,7 +319,7 @@ const Detail = () => {
 
 export default Detail;
 const DetailBox = styled.div`
-  padding-bottom: 100px;
+  padding-bottom: 150px;
 
   .border {
     padding-top: 60px;
@@ -322,6 +350,13 @@ const DetailBox = styled.div`
       .icon {
         font-size: 20px;
         cursor: pointer;
+        color: var(--active-color);
+      }
+
+      .inactive-icon {
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--inactive-icon-color);
       }
 
       .inner-menu {
