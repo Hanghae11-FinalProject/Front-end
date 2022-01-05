@@ -5,6 +5,7 @@ import { Grid } from "../elements";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import Permit from "../shared/Permit";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
