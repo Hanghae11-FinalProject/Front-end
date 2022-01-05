@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 import { FaLocationArrow } from "react-icons/fa";
@@ -13,16 +13,14 @@ let stompClient = Stomp.over(sockjs);
 let List = [];
 
 const Chat = (data) => {
+  const scrollRef = useRef();
   const myUserId = getCookie("Id");
-
   const [currentMes, setCurrentMes] = useState("");
-
   const [messageList, setMessageList] = useState([]);
   // console.log(myUserId);
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
   // console.log(sender.profileImg);
-
 
   React.useEffect(() => {
     stompClient.connect({}, () => {
@@ -45,7 +43,18 @@ const Chat = (data) => {
       senderId: myUserId, // 내 userId
     };
     stompClient.send("/pub/message", {}, JSON.stringify(box));
+    setCurrentMes("");
   };
+
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messageList]);
 
   return (
     <>
@@ -56,18 +65,16 @@ const Chat = (data) => {
               <p>Joo</p>
             </Grid>
           </Header>
-          <ChatBox>
+          <ChatBox ref={scrollRef}>
             {messageList.map((message, idx) => {
-
-              console.log(message.senderId, parseInt(myUserId));
+              // console.log(message.senderId, parseInt(myUserId));
               if (parseInt(myUserId) === message.senderId) {
-                console.log("dd");
+                // console.log("dd");
                 return <MyChat key={idx} data={message} />;
               } else {
-                console.log("ss");
+                // console.log("ss");
                 return <NotMyChat key={idx} data={message} />;
               }
-
             })}
 
             <ChatInput>
@@ -75,7 +82,7 @@ const Chat = (data) => {
                 <input
                   type="text"
                   value={currentMes}
-                  placeholder="hey.."
+                  placeholder="메세지를 입력하세요."
                   onChange={(e) => setCurrentMes(e.target.value)}
                   onKeyPress={(e) => {
                     e.key === "Enter" && sendMessage(e);
@@ -129,7 +136,13 @@ const Header = styled.div`
 
 const ChatBox = styled.div`
   padding: 0 16px;
-
+  max-height: 85vh;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   .message {
     margin: 15px 0;
   }
@@ -165,7 +178,6 @@ const ChatBox = styled.div`
 
   #me .chat-line {
     display: flex;
-
     justify-content: end;
   }
 
