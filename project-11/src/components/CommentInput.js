@@ -122,13 +122,13 @@ const CommentInputBox = styled.div`
     position: fixed;
     bottom: 50px;
     width: 100%;
+    max-width: 426px;
     background-color: #fff;
-    border: 0px solid red;
     padding: 10px 16px;
     box-sizing: border-box;
 
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
 
     .reply-name {
       padding-bottom: 10px;

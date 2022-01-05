@@ -3,6 +3,7 @@ import { axiosInstance } from "../shared/api";
 import Nav from "../shared/Nav";
 import SearchHIstory from "../components/SearchHIstory";
 import PostCard from "../components/PostCard";
+import { getCookie } from "../shared/Cookie";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
@@ -10,6 +11,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { BiSearch } from "react-icons/bi";
 
 const Search = () => {
+  const token = getCookie("Token");
   const preWord = JSON.parse(localStorage.getItem("recent"));
   const [recent, setRecent] = useState(preWord || []);
   const [key, setKey] = useState("");
@@ -81,17 +83,46 @@ const Search = () => {
       <SearchList>
         <Grid is_container _className="border">
           {/* header */}
-          <Header>
-            <Grid _className="inner" is_container is_flex flex_align="center">
-              <IoIosArrowBack
-                style={{
-                  width: "30px",
-                  height: "30px",
-                }}
-              />
-              <p>검색</p>
-            </Grid>
-          </Header>
+          {token ? (
+            <>
+              <Header>
+                <Grid
+                  _className="inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <IoIosArrowBack
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                    }}
+                  />
+                  <p>검색</p>
+                </Grid>
+              </Header>
+            </>
+          ) : (
+            <>
+              <Header>
+                <Grid
+                  _className="logout-inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <IoIosArrowBack
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                    }}
+                  />
+                  <p>검색</p>
+                  <button>로그인</button>
+                </Grid>
+              </Header>
+            </>
+          )}
 
           <SearchInput>
             <Grid
@@ -186,9 +217,9 @@ const Search = () => {
               </Grid>
             </>
           )}
+          <Nav search={"search"} />
         </Grid>
       </SearchList>
-      <Nav search={"search"} />
     </>
   );
 };
@@ -246,9 +277,9 @@ const Header = styled.div`
   .inner {
     height: 50px;
     margin: 0 auto;
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
     border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color);
-    border-bottom: 1px solid var(--help-color);
 
     p {
       width: 100%;
@@ -258,6 +289,37 @@ const Header = styled.div`
 
       font-size: 20px;
       font-weight: bold;
+    }
+  }
+
+  .logout-inner {
+    height: 50px;
+    margin: 0 auto;
+    border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color);
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      text-align: center;
+
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      border: 0;
+      color: var(--main-color);
+      outline: none;
+      background-color: transparent;
+      font-size: 16px;
+      margin-right: 16px;
+      cursor: pointer;
+      z-index: 9;
     }
   }
 `;
