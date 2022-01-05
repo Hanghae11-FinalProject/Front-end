@@ -16,11 +16,13 @@ const Chat = (data) => {
   const myUserId = getCookie("Id");
 
   const [currentMes, setCurrentMes] = useState("");
+
   const [messageList, setMessageList] = useState([]);
   // console.log(myUserId);
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
   // console.log(sender.profileImg);
+
 
   React.useEffect(() => {
     stompClient.connect({}, () => {
@@ -56,6 +58,7 @@ const Chat = (data) => {
           </Header>
           <ChatBox>
             {messageList.map((message, idx) => {
+
               console.log(message.senderId, parseInt(myUserId));
               if (parseInt(myUserId) === message.senderId) {
                 console.log("dd");
@@ -64,6 +67,7 @@ const Chat = (data) => {
                 console.log("ss");
                 return <NotMyChat key={idx} data={message} />;
               }
+
             })}
 
             <ChatInput>
