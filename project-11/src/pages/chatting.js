@@ -5,6 +5,7 @@ import { Grid } from "../elements";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import Permit from "../shared/Permit";
 
 const Chatting = () => {
   const [is_open, setIs_open] = useState(false);
@@ -60,6 +61,7 @@ const Chatting = () => {
     }
   };
   return (
+    <Permit>
     <ChattingWrap>
       <Grid is_container="is_container" _className="grid-border">
         <div className="chatting-wrap">
@@ -138,6 +140,7 @@ const Chatting = () => {
       </Grid>
       <Nav chatting={"chatting"} />
     </ChattingWrap>
+    </Permit>
   );
 };
 

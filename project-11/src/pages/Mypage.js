@@ -5,18 +5,25 @@ import { history } from "../redux/configureStore";
 import { Grid, Button } from "../elements/index";
 import styled from "styled-components";
 import UserModal from "../components/UserModal";
-import {MdLock,MdFeedback,MdPersonRemoveAlt1} from 'react-icons/md'
-import {BsQuestionCircleFill,BsArrowRightSquare} from 'react-icons/bs'
+import {MdLock,MdFeedback,MdPersonRemoveAlt1,MdExitToApp} from 'react-icons/md'
+import {BsQuestionCircleFill} from 'react-icons/bs'
 import {IoIosArrowForward,IoMdSettings} from 'react-icons/io'
+import {deleteCookie} from '../shared/Cookie'
+import Permit from "../shared/Permit";
+
 
 const Mypage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [name, setName] = useState("Shiba");
 
+  
+  
+
   const handleClose = () => {
     setModalOpen(false);
   };
   return (
+    <Permit>
     <>
       <MypageBox>
         <Grid is_container padding="16px" _className="border">
@@ -62,27 +69,27 @@ const Mypage = () => {
 
           <ul className="icon-wrap">
             <li>
-              <p><MdLock style={{width:'24px',height:'24px',marginBottom:'16px'}}/></p>
+              <p><MdLock style={{width:'24px',height:'24px',marginBottom:'16px',cursor:'pointer'}}/></p>
               <span>계정</span>
             </li>
             <li>
-              <p><IoMdSettings style={{width:'24px',height:'24px',marginBottom:'16px'}}/></p>
+              <p><IoMdSettings style={{width:'24px',height:'24px',marginBottom:'16px',cursor:'pointer'}}/></p>
               <span>앱 설정</span>
             </li>
             <li>
-              <p><BsQuestionCircleFill style={{width:'24px',height:'24px',marginBottom:'16px'}}/></p>
+              <p><BsQuestionCircleFill style={{width:'24px',height:'24px',marginBottom:'16px',cursor:'pointer'}}/></p>
               <span>이용안내</span>
             </li>
             <li>
-              <p><MdFeedback style={{width:'24px',height:'24px',marginBottom:'16px'}}/></p>
+              <p><MdFeedback style={{width:'24px',height:'24px',marginBottom:'16px',cursor:'pointer'}}/></p>
               <span>피드백</span>
             </li>
-            <li>
-              <p><BsArrowRightSquare style={{width:'24px',height:'24px',marginBottom:'16px'}}/></p>
+            <li onClick={()=>{deleteCookie('OK'); window.alert('로그아웃 되었습니다.'); history.push('/intro'); }}>
+              <p><MdExitToApp style={{width:'24px',height:'24px',marginBottom:'16px',cursor:'pointer'}}/></p>
               <span>로그아웃</span>
             </li>
             <li>
-              <p><MdPersonRemoveAlt1 style={{width:'24px',height:'24px',marginBottom:'16px'}}/></p>
+              <p><MdPersonRemoveAlt1 onClick={()=>{window.alert('응 못나가')}} style={{width:'24px',height:'24px',marginBottom:'16px',cursor:'pointer'}}/></p>
               <span>회원탈퇴</span>
             </li>
           </ul>
@@ -91,6 +98,7 @@ const Mypage = () => {
       </MypageBox>
       <Nav mypage={"mypage"} />
     </>
+    </Permit>
   );
 };
 
@@ -128,6 +136,7 @@ const MypageBox = styled.div`
       margin-bottom: 32px;
       text-align: center;
       width: 25%;
+      cursor: pointer;
     }
   }
 `;

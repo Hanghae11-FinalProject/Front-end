@@ -12,6 +12,8 @@ import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
+import Permit from "../shared/Permit";
+
 // style
 import "swiper/css";
 import "swiper/css/pagination";
@@ -222,6 +224,7 @@ const Write = (props) => {
   };
 
   return (
+    <Permit>
     <React.Fragment>
       <Container>
         <Grid is_container _className="border">
@@ -367,6 +370,7 @@ const Write = (props) => {
       </Container>
       <Nav write={"write"} />
     </React.Fragment>
+    </Permit>
   );
 };
 
