@@ -12,7 +12,7 @@ const GlobalStyles = createGlobalStyle`
   
 
   * {
-    margin: 0;
+    margin: 0; 
     padding: 0;
     box-sizing: border-box;
   }
@@ -28,8 +28,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     color: var(--active-color);
     overflow-x: hidden;
-    font-family: 'NanumSquareRound';
-    /* font-family: 'Noto Sans KR', sans-serif; */
+    font-family: 'Noto Sans KR', sans-serif; 
 
     
   }

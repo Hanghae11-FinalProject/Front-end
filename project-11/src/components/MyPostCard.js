@@ -1,4 +1,5 @@
 import React from "react";
+import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { Grid } from "../elements";
 import { FiStar } from "react-icons/fi";
@@ -8,7 +9,11 @@ const MyPostCard = (my_List) => {
   const myList = my_List.my_List;
 
   return (
-    <PostDiv>
+    <PostDiv
+      onClick={() => {
+        history.push(`/detail/${myList.postId}`);
+      }}
+    >
       <div className="top-side">
         <ChipDiv>
           <Grid _className="ing">
@@ -46,6 +51,7 @@ const PostDiv = styled.div`
   margin: 0 16px;
   /* background-color: green; */
   border-bottom: 2px solid #eee;
+  cursor: pointer;
   .top-side {
     display: flex;
     justify-content: space-between;

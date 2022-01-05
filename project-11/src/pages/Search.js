@@ -91,6 +91,9 @@ const Search = () => {
               />
               <p>검색</p>
             </Grid>
+          </Header>
+
+          <SearchInput>
             <Grid
               _className="input-form"
               is_container
@@ -104,8 +107,7 @@ const Search = () => {
               />
               <BiSearch className="search-icon" />
             </Grid>
-          </Header>
-
+          </SearchInput>
           {/* 검색할 데이터가 없을 경우 */}
           {search_data.length === 0 ? (
             <>
@@ -198,16 +200,14 @@ const SearchList = styled.div`
     height: 100vh;
     border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color);
-    padding: 90px 0px 20px 0px;
+
+    padding: 60px 0px 10px 0px;
 
     .input-form {
       width: 98%;
       padding: 10px 10px;
       margin: 0px auto;
       background-color: #fff;
-      border-bottom: 1px solid var(--help-color);
-      border-right: 1px solid var(--help-color);
-      border-left: 1px solid var(--help-color);
     }
 
     .recommend-box {
@@ -248,6 +248,7 @@ const Header = styled.div`
     margin: 0 auto;
     border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color);
+    border-bottom: 1px solid var(--help-color);
 
     p {
       width: 100%;
@@ -260,6 +261,8 @@ const Header = styled.div`
     }
   }
 `;
+
+const SearchInput = styled.div``;
 const InputForm = styled.input`
   width: 95%;
   padding: 8px 10px;

@@ -15,6 +15,7 @@ import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { RiCupFill } from "react-icons/ri";
 import { IoExtensionPuzzle } from "react-icons/io5";
 import { BiSmile } from "react-icons/bi";
+import { BsThreeDots } from "react-icons/bs";
 
 import styled from "styled-components";
 // style
@@ -51,7 +52,7 @@ const Main = () => {
             <Slider>
               <Swiper
                 className="CateBtn-Container"
-                spaceBetween={20}
+                spaceBetween={10}
                 slidesPerView={4.5}
                 pagination={{ clickable: true }}
                 // autoplay={{ delay: 50000 }}
@@ -167,6 +168,20 @@ const Main = () => {
                     >
                       <BiSmile className="icon" />
                       <p>재능교환</p>
+                    </Grid>
+                  </CateBtn>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "기타" ? setIs_Cate("") : setIs_Cate("기타");
+                    }}
+                  >
+                    <Grid
+                      _className={is_cate === "기타" ? "active" : "default"}
+                    >
+                      <BsThreeDots className="icon" />
+                      <p>기타</p>
                     </Grid>
                   </CateBtn>
                 </SwiperSlide>

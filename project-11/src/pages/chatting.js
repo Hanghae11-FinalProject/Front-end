@@ -2,69 +2,64 @@ import React, { useState, useEffect, useRef, Fragment } from "react";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
-import Chattingitem from "../components/ChattingItem";
+import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Permit from "../shared/Permit";
 
-
 const Chatting = () => {
-  
-
   const [is_open, setIs_open] = useState(false);
-  const [optionOne, setOptionOne] = useState(false)
-  const [optionTwo, setOptionTwo] = useState(false)
-  const [optionThree, setOptionThree] = useState(false)
+  const [optionOne, setOptionOne] = useState(false);
+  const [optionTwo, setOptionTwo] = useState(false);
+  const [optionThree, setOptionThree] = useState(false);
 
+  const OptionOneControl = () => {
+    setOptionTwo(false);
+    setOptionThree(false);
+    if (optionOne) {
+      setOptionOne(false);
+    } else {
+      setOptionOne(true);
+    }
+  };
 
-  
-   const OptionOneControl = () =>{
-    setOptionTwo(false)
-    setOptionThree(false)
-     if(optionOne){
-       setOptionOne(false)
-     }else{
-       setOptionOne(true)
-     }
-   }
-  
-   const OptionTwoControl = () =>{
-    setOptionOne(false)
-    setOptionThree(false)
-     if(optionTwo){
-       setOptionTwo(false)
-     }else{
-       setOptionTwo(true)
-     }
-   }
-  
-   const OptionThreeControl = () =>{
-    setOptionTwo(false)
-    setOptionOne(false)
-     if(optionThree){
-       setOptionThree(false)
-     }else{
-       setOptionThree(true)
-     }
-   }
-  
-  const ModalControl = () =>{
-    if(is_open){
-      setIs_open(false)
+  const OptionTwoControl = () => {
+    setOptionOne(false);
+    setOptionThree(false);
+    if (optionTwo) {
+      setOptionTwo(false);
+    } else {
+      setOptionTwo(true);
+    }
+  };
+
+  const OptionThreeControl = () => {
+    setOptionTwo(false);
+    setOptionOne(false);
+    if (optionThree) {
+      setOptionThree(false);
+    } else {
+      setOptionThree(true);
+    }
+  };
+
+  const ModalControl = () => {
+    if (is_open) {
+      setIs_open(false);
       document.body.style.cssText = `
       position: none; 
       overflow-y: none;
       width: 100%;
       `;
-    }else{
-      setIs_open(true)
+    } else {
+      setIs_open(true);
       document.body.style.cssText = `
       position: fixed; 
       overflow-y: scroll;
       width: 100%;
       `;
     }
-  }
+  };
   return (
     <Permit>
     <ChattingWrap>
@@ -79,51 +74,56 @@ const Chatting = () => {
                 }}
               />
               <p className="header-title">전체</p>
-                <Grid>
-                  <div className="ct-wrap">
-                  <BiDotsVerticalRounded                   
-                  onClick={ModalControl}
-                  style={{
-                  width: "25px",
-                  height: "25px",
-                }} className="point-icon"/>
+              <Grid>
+                <div className="ct-wrap">
+                  <BiDotsVerticalRounded
+                    onClick={ModalControl}
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                    }}
+                    className="point-icon"
+                  />
                 </div>
-                </Grid>
-      
+              </Grid>
 
-                {is_open && (
-                  <>
+              {is_open && (
+                <>
                   <div className="modal-back"></div>
-                  <Grid _className='drop-chat' >
-                  <p               
-                    className={optionOne ? "active" : "unactive"}
-                    onClick={()=>{
-                      OptionOneControl()
-                      ModalControl()
-                    }}>
-                        전체
-                  </p>
+                  <Grid _className="drop-chat">
+                    <p
+                      className={optionOne ? "active" : "unactive"}
+                      onClick={() => {
+                        OptionOneControl();
+                        ModalControl();
+                      }}
+                    >
+                      전체
+                    </p>
 
-                  <p
-                    className={optionTwo ? "active" : "unactive"}
-                    onClick={()=>{
-                    ModalControl()
-                    OptionTwoControl()}}>
-                        거래중
-                  </p> 
+                    <p
+                      className={optionTwo ? "active" : "unactive"}
+                      onClick={() => {
+                        ModalControl();
+                        OptionTwoControl();
+                      }}
+                    >
+                      거래중
+                    </p>
 
-                  <p
-                    className={optionThree ? "active" : "unactive"}
-                    onClick={()=>{
-                      ModalControl()
-                      OptionThreeControl()}}>
-                        거래완료
-                  </p>  
+                    <p
+                      className={optionThree ? "active" : "unactive"}
+                      onClick={() => {
+                        ModalControl();
+                        OptionThreeControl();
+                      }}
+                    >
+                      거래완료
+                    </p>
                   </Grid>
-                  </>
-                )}
+                </>
+              )}
             </div>
-
           </div>
           <div className="chat-item">
             <Chattingitem />
@@ -139,7 +139,6 @@ const Chatting = () => {
         </div>
       </Grid>
       <Nav chatting={"chatting"} />
-
     </ChattingWrap>
     </Permit>
   );
@@ -172,7 +171,7 @@ const ChattingWrap = styled.div`
           .header-title {
             font-size: 20px;
           }
-          .modal-back{
+          .modal-back {
             position: fixed;
             top: 0;
             left: 0;
@@ -180,7 +179,7 @@ const ChattingWrap = styled.div`
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.25);
           }
-          .drop-chat{
+          .drop-chat {
             height: 207px;
             width: 303px;
             border-radius: 24px;
@@ -193,26 +192,26 @@ const ChattingWrap = styled.div`
             align-items: center;
             filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
             cursor: pointer;
-            .active{
+            .active {
               padding: 8px 8px;
               font-size: 16px;
               margin-top: 25px;
               color: var(--main-color);
             }
-            .unactive{
+            .unactive {
               padding: 8px 8px;
               font-size: 16px;
               margin-top: 25px;
             }
-            }
-            .point-icon{
-              cursor: pointer;
-            }
+          }
+          .point-icon {
+            cursor: pointer;
+          }
         }
-        }
-      }
-      .chat-item {
-        margin-top: 50px;
       }
     }
+    .chat-item {
+      margin-top: 50px;
+    }
+  }
 `;

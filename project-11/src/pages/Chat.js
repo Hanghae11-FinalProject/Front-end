@@ -5,7 +5,7 @@ import { FaLocationArrow } from "react-icons/fa";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-let sockjs = new SockJS("http://13.125.145.191/webSocket");
+let sockjs = new SockJS("http://15.164.222.25:8080/webSocket");
 let stompClient = Stomp.over(sockjs);
 let List = [];
 const Chat = () => {
@@ -18,7 +18,6 @@ const Chat = () => {
       stompClient.subscribe(`/sub/room1`, (data) => {
         console.log(JSON);
         const onMessage = JSON.parse(data.body).data;
-
         setMessageList((messageList) => messageList.concat(onMessage));
       });
     });
@@ -27,8 +26,14 @@ const Chat = () => {
   // setSearches(searches => searches.concat(query))
   const sendMessage = () => {
     const box = {
-      data: currentMes,
-      roomId: "room1",
+      //타입
+      type: "Talk",
+      //메세지
+      message: currentMes,
+      //채팅방넘버
+      roomName: "room1",
+      //닉네임
+      sender: "겨울이",
     };
     stompClient.send("/pub/message", {}, JSON.stringify(box));
   };

@@ -291,14 +291,14 @@ const Write = (props) => {
             <TradeInput
               // value={myItem}
               onChange={changeMyItem}
-              maxLength="6"
+              maxLength="10"
               placeholder="교환할 물품 (1개 입력)"
             ></TradeInput>
             <CenterLine />
             <TradeInput
               // value={yourItem}
               onChange={changeYourItem}
-              maxLength="6"
+              maxLength="10"
               placeholder="교환받을 물품 (1개 입력)"
             ></TradeInput>
           </TradeDiv>
@@ -306,7 +306,7 @@ const Write = (props) => {
           <ImgArea>
             <label htmlFor="input-file" className="input-Btn-Css">
               <MdOutlineCameraAlt size={30} />
-              {images.length} / 10
+              {images.length} / 5
               <input
                 type="file"
                 onChange={addImage}
@@ -368,7 +368,7 @@ const Write = (props) => {
           </HashTagArea>
         </Grid>
       </Container>
-      <Nav />
+      <Nav write={"write"} />
     </React.Fragment>
     </Permit>
   );
@@ -567,6 +567,7 @@ const ContentInput = styled.textarea`
   width: 100%;
   font-size: 16px;
   resize: none;
+  font-family: "NanumSquareRound";
   border: none;
   ::placeholder {
     color: var(--help-color);

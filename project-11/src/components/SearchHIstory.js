@@ -7,20 +7,6 @@ const SearchHIstory = ({ list, onRemoveKeyword }) => {
   const [key, setKey] = useState();
   const [search_data, setSearch_data] = useState([]);
 
-  //최근 검색어 클릭해서 가져오기
-  const keywordSearch = () => {
-    //검색리스트 가져오는 api
-    axiosInstance
-      .post(`api/search`, { keyword: [key] })
-      .then((res) => {
-        console.log("검색완료", res);
-        setSearch_data(res.data.data);
-        setKey("");
-      })
-      .catch((err) => {
-        console.log("검색실패", err);
-      });
-  };
   if (list.length === 0) {
     return <HistoryContainer>최근 검색된 기록이 없습니다.</HistoryContainer>;
   }
@@ -55,7 +41,7 @@ const HistoryContainer = styled.div`
   padding: 40px 16px;
 `;
 const KeywordBox = styled.div`
-  padding: 20px 16px;
+  padding: 10px 16px 30px 16px;
 
   p {
     margin: 10px 0;
