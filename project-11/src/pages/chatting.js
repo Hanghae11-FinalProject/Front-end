@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
-import styled from "styled-components";
-import { IoIosArrowBack } from "react-icons/io";
-import { Grid } from "../elements";
+import React, { useState } from "react";
+import Permit from "../shared/Permit";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
+import { Grid } from "../elements";
+
+import styled from "styled-components";
+import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import Permit from "../shared/Permit";
+
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 
@@ -28,9 +30,6 @@ const Chatting = () => {
         console.log(err, "에러");
       });
   }, []);
-  // const test = () => {
-  //   console.log(rooms);
-  // };
 
   const OptionOneControl = () => {
     setOptionTwo(false);

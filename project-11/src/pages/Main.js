@@ -3,6 +3,7 @@ import { Grid } from "../elements/index";
 
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
+import { getCookie } from "../shared/Cookie";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Autoplay } from "swiper";
@@ -25,6 +26,7 @@ import "swiper/css/pagination";
 SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
+  const token = getCookie("Token");
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
@@ -42,11 +44,34 @@ const Main = () => {
     <>
       <Container>
         <Grid is_container _className="border">
-          <Header>
-            <Grid _className="inner" is_container is_flex flex_align="center">
-              <p>전체 글 보기</p>
-            </Grid>
-          </Header>
+          {token ? (
+            <>
+              <Header>
+                <Grid
+                  _className="inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <p>전체 글 보기</p>
+                </Grid>
+              </Header>
+            </>
+          ) : (
+            <>
+              <Header>
+                <Grid
+                  _className="logout-inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <p>전체 글 보기</p>
+                  <button>로그인</button>
+                </Grid>
+              </Header>
+            </>
+          )}
 
           <Category>
             <Slider>
@@ -223,15 +248,16 @@ const Main = () => {
             )}
           </LocationBox>
           <PostList location={is_location} category={is_cate} />
+          <Nav home={"home"} />
         </Grid>
       </Container>
-      <Nav home={"home"} />
     </>
   );
 };
 
 const Container = styled.div`
   margin: 0 auto;
+
   .border {
     /* height: 100vh; */
     padding-top: 50px;
@@ -241,13 +267,14 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
+  max-width: 426px;
   height: 50px;
   position: fixed;
   top: 0;
-  left: 0;
 
-  border-bottom: 1px solid var(--help-color);
+  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
   .inner {
     height: 50px;
@@ -261,6 +288,32 @@ const Header = styled.div`
 
       font-size: 20px;
       font-weight: bold;
+    }
+  }
+
+  .logout-inner {
+    height: 50px;
+    line-height: 50px;
+
+    p {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      text-align: center;
+
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      margin-left: 85%;
+      border: 0;
+      color: var(--main-color);
+      outline: none;
+      background-color: transparent;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 9;
     }
   }
 `;

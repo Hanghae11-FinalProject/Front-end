@@ -21,8 +21,8 @@ export default Image;
 
 Image.defaultProps = {
   shape: "circle",
-  src: "https://www.urbanbrush.net/web/wp-content/uploads/edd/2020/06/urbanbrush-20200615000825087215.jpg",
-  size: 50,
+  src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc5sXof%2FbtrpQSjrN1i%2FK5lwGk9FVONRvTksAYvyJ1%2Fimg.png",
+  size: 34,
   direction: "center",
   cursor: "pointer",
 };

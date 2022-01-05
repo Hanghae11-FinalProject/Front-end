@@ -40,7 +40,11 @@ function App() {
         <Route path="/search" exact component={Search}></Route>
         <Route path="/chatting" exact component={Chatting}></Route>
         <Route path="/chat" exact component={Chat}></Route>
-        <Route path="/oauth/callback/kakao" exact component={OAuthRedirect}></Route>
+        <Route
+          path="/oauth/callback/kakao"
+          exact
+          component={OAuthRedirect}
+        ></Route>
       </ConnectedRouter>
     </div>
   );

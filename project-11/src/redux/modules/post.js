@@ -2,7 +2,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
-import axios from "axios";
 import { getCookie } from "../../shared/Cookie";
 // *** 액션 타입
 const GET_POST = "GET_POST";
@@ -32,36 +31,14 @@ const initialState = {
 
 // *** 미들웨어
 
-// 게시글 작성
-const addPostDB = (title, content, category, tagName, images) => {
-  return function (dispatch, getState, { history }) {
-    const token = getCookie("Token");
-
-    axios
-      .post(
-        "http://15.164.222.25/api/posts",
-        { title, content, category, tag: [{ tagName }], images: [{ images }] },
-        {
-          headers: { AUthorization: token },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log("에러에용", err);
-      });
-  };
-};
-
 //메인 게시글 조회
-const getPostAction = (post_data, count) => {
+const getPostAction = (area, cate, count) => {
   return async (dispatch, getState, { history }) => {
     // console.log("미들웨어에 넘어온 지역 ", post_data);
     axiosInstance
       .post(`api/category?page=${count}`, {
-        categoryName: [post_data.category],
-        address: [post_data.location],
+        categoryName: [cate],
+        address: [area],
       })
       .then((res) => {
         console.log("리듀스 저장 전 목록", res.data, count);
@@ -188,7 +165,20 @@ export default handleActions(
 
         console.log("리듀서 페이지 값 저장", action.payload._post_data.page);
 
-        draft.page = action.payload._post_data.page;
+        //한개만 가져오는 것과 중복된 리스트내용 지워주기
+        draft.posts = draft.posts.reduce((acc, cur) => {
+          if (acc.findIndex((a) => a.postId === cur.postId) === -1) {
+            return [...acc, cur];
+          } else {
+            acc[acc.findIndex((a) => a.postId === cur.postId)] = cur;
+            return acc;
+          }
+        }, []);
+
+        if (action.payload._post_data.page) {
+          draft.page = action.payload._post_data.page;
+        }
+
         draft.has_next = action.payload._post_data.next;
       }),
 
@@ -227,7 +217,6 @@ export default handleActions(
 );
 
 const actionCreators = {
-  addPostDB,
   getPostAction,
   getPosts,
   get_Comment,
