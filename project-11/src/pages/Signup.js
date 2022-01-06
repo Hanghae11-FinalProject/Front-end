@@ -29,6 +29,7 @@ const Signup = () => {
   const [actId, setActId] = useState(false);
   const [actNic, setActNic] = useState(false);
 
+
   const checkemail = watch("email");
   const checknickname = watch("nickname");
   const checkpw = watch("password");
