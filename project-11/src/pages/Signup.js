@@ -64,8 +64,8 @@ const Signup = () => {
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
         address: is_location,
-        profileImg:
-          "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
+        // profileImg:
+        //   "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
       .then((response) => {
         console.log(response);
@@ -330,13 +330,15 @@ const SignupWrap = styled.div`
     width: 100%;
     height: 100vh;
     border: 1px solid var(--help-color);
+
     .signup-wrap {
       .signup-header-wrap {
         height: 50px;
         display: flex;
         align-items: center;
         position: relative;
-        border-bottom: 1px solid var(--help-color);
+        /* border-bottom: 1px solid var(--help-color); */
+        box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
         .header-title {
           position: absolute;
           left: 40%;
@@ -358,13 +360,13 @@ const SignupWrap = styled.div`
         }
         span {
           margin-bottom: 4px;
-          margin-top: 32px;
+          margin-top: 25px;
         }
         input {
           width: 100%;
           height: 48px;
           padding-left: 10px;
-          margin-bottom: 16px;
+          margin-bottom: 5px;
           border-radius: 4px;
           border: 1px solid var(--help-color);
         }
@@ -423,14 +425,26 @@ const SignupWrap = styled.div`
         cursor: pointer;
       }
       .drop-location {
-        width: 191px;
-        height: 144px;
+        width: 192px;
+        /* height: 144px; */
         border: 1px solid var(--help-color);
         border-radius: 5px;
         position: absolute;
         cursor: pointer;
+        z-index: 5;
+
+        p:first-child {
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
+        p:last-child {
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
         .loc-wrap {
           padding: 8px 8px;
+          background-color: #fff;
+
           &:hover {
             background-color: var(--disabled-color);
           }

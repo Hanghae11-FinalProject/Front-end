@@ -85,67 +85,54 @@ const Chatting = () => {
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
-                <IoIosArrowBack
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                  }}
-                />
-                {/* <input
-                onChange={test}
-                style={{ width: "30px", height: "30px" }}
-              /> */}
-                <p className="header-title">전체</p>
-                <Grid>
-                  <div className="ct-wrap">
-                    <BiDotsVerticalRounded
-                      onClick={ModalControl}
-                      style={{
-                        width: "25px",
-                        height: "25px",
-                      }}
-                      className="point-icon"
-                    />
-                  </div>
+                <p className="header-title">채팅</p>
+                <Grid _className="ct-wrap">
+                  <BiDotsVerticalRounded
+                    onClick={ModalControl}
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                    }}
+                    className="point-icon"
+                  />
                 </Grid>
-
-                {is_open && (
-                  <>
-                    <div className="modal-back"></div>
-                    <Grid _className="drop-chat">
-                      <p
-                        className={optionOne ? "active" : "unactive"}
-                        onClick={() => {
-                          OptionOneControl();
-                          ModalControl();
-                        }}
-                      >
-                        전체
-                      </p>
-
-                      <p
-                        className={optionTwo ? "active" : "unactive"}
-                        onClick={() => {
-                          ModalControl();
-                          OptionTwoControl();
-                        }}
-                      >
-                        거래중
-                      </p>
-
-                      <p
-                        className={optionThree ? "active" : "unactive"}
-                        onClick={() => {
-                          ModalControl();
-                          OptionThreeControl();
-                        }}
-                      >
-                        거래완료
-                      </p>
-                    </Grid>
-                  </>
-                )}
               </div>
+              {is_open && (
+                <>
+                  <div className="modal-back"></div>
+                  <Grid _className="drop-chat">
+                    <p
+                      className={optionOne ? "active" : "unactive"}
+                      onClick={() => {
+                        OptionOneControl();
+                        ModalControl();
+                      }}
+                    >
+                      전체
+                    </p>
+
+                    <p
+                      className={optionTwo ? "active" : "unactive"}
+                      onClick={() => {
+                        ModalControl();
+                        OptionTwoControl();
+                      }}
+                    >
+                      거래중
+                    </p>
+
+                    <p
+                      className={optionThree ? "active" : "unactive"}
+                      onClick={() => {
+                        ModalControl();
+                        OptionThreeControl();
+                      }}
+                    >
+                      거래완료
+                    </p>
+                  </Grid>
+                </>
+              )}
             </div>
             <div className="chat-item">
               {rooms.map((p, idx) => {
@@ -153,8 +140,8 @@ const Chatting = () => {
               })}
             </div>
           </div>
+          <Nav chatting={"chatting"} />
         </Grid>
-        <Nav chatting={"chatting"} />
       </ChattingWrap>
     </Permit>
   );
@@ -165,62 +152,82 @@ export default Chatting;
 const ChattingWrap = styled.div`
   .grid-border {
     width: 100%;
-    min-height: 926px;
-    border: 1px solid #ededed;
+    height: 100vh;
+    /* min-height: 926px; */
+    border: 1px solid var(--help-color);
+    position: relative;
+
     .chatting-wrap {
       .chatting-header {
         width: 100%;
+        max-width: 426px;
         height: 50px;
         background-color: white;
-        border-bottom: 3px solid #ededed;
+        box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+
         position: fixed;
         top: 0;
-        left: 0;
-        z-index: 50;
+        z-index: 10;
+
         .chatting-header-wrap {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+          height: 50px;
+          line-height: 50px;
           max-width: 429px;
           margin: 0 auto;
           position: relative;
+
           .header-title {
-            font-size: 20px;
-          }
-          .modal-back {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.25);
-          }
-          .drop-chat {
-            height: 207px;
-            width: 303px;
-            border-radius: 24px;
-            background-color: white;
+            width: 88%;
+            padding-left: 45%;
             position: absolute;
-            top: 30vh;
-            left: 15%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-            align-items: center;
-            filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+            left: 0;
+
+            font-size: 20px;
+            font-weight: bold;
+          }
+
+          .ct-wrap {
+            width: 30px;
+            padding-top: 5px;
+            margin-left: 92%;
             cursor: pointer;
-            .active {
-              padding: 8px 8px;
-              font-size: 16px;
-              color: var(--main-color);
-            }
-            .unactive {
-              padding: 8px 8px;
-              font-size: 16px;
+
+            .point-icon {
             }
           }
-          .point-icon {
-            cursor: pointer;
+        }
+
+        .modal-back {
+          position: absolute;
+          top: 50px;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background-color: rgba(0, 0, 0, 0.25);
+        }
+        .drop-chat {
+          height: 207px;
+          width: 303px;
+          border-radius: 24px;
+          background-color: white;
+          position: absolute;
+          top: 110%;
+          left: 50%;
+          transform: translate(-50%, 110%);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: center;
+          filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+          cursor: pointer;
+          .active {
+            padding: 8px 8px;
+            font-size: 16px;
+            color: var(--main-color);
+          }
+          .unactive {
+            padding: 8px 8px;
+            font-size: 16px;
           }
         }
       }

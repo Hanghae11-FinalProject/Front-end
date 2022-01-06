@@ -32,7 +32,7 @@ const Login = () => {
         history.push("/");
       })
       .catch((error) => {
-        window.alert('뭐가 틀렸는지 한번 더 생각해보세요', error)
+        window.alert("뭐가 틀렸는지 한번 더 생각해보세요", error);
       });
     setLoginDisabled(true);
     setLoginTrue(true);
@@ -117,7 +117,8 @@ const LoginWrap = styled.div`
         align-items: center;
 
         position: relative;
-        border-bottom: 1px solid var(--help-color);
+        /* border-bottom: 1px solid var(--help-color); */
+        box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
         .header-title {
           position: absolute;
           left: 45%;

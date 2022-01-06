@@ -44,17 +44,17 @@ const Search = () => {
           console.log("검색완료", res);
           setSearch_data(res.data.data.posts);
           setPostcnt(res.data.data.postCnt);
-          setKey("");
+          // setKey("");
         })
         .catch((err) => {
           console.log("검색실패", err);
         });
-      setKey("");
+      // setKey("");
     }
 
-    if (!key) {
-      setSearch_data([]);
-    }
+    // if (!key) {
+    //   setSearch_data([]);
+    // }
   };
 
   //최근 검색어 5개 제한
@@ -139,71 +139,64 @@ const Search = () => {
               <BiSearch className="search-icon" />
             </Grid>
           </SearchInput>
+          <Grid
+            _className={key.length > 0 ? "display-inactive" : "display-active"}
+          >
+            <SearchHIstory list={list} onRemoveKeyword={handleRemoveKeyword} />
+
+            {recommend ? (
+              <>
+                <RemcommendBox>
+                  <Title>인기 검색어</Title>
+                  <Grid is_flex>
+                    <Grid is_container _className="recommend-box">
+                      {recommendkeywordTop.map((item, idx) => {
+                        return (
+                          <>
+                            <Grid is_flex _className="recommend-list">
+                              <p
+                                className={idx < 3 ? "hot-keyword" : "default"}
+                              >
+                                {idx + 1}
+                              </p>
+                              <Keyword key={idx}>{item}</Keyword>
+                            </Grid>
+                          </>
+                        );
+                      })}
+                    </Grid>
+                    <Grid is_container _className="recommend-box">
+                      {recommendkeywordBottom.map((item, idx) => {
+                        return (
+                          <>
+                            <Grid is_flex _className="recommend-list" key={idx}>
+                              <p
+                                className={idx < 0 ? "hot-keyword" : "default"}
+                              >
+                                {idx + 6}
+                              </p>
+                              <Keyword key={idx}>{item}</Keyword>
+                            </Grid>
+                          </>
+                        );
+                      })}
+                    </Grid>
+                  </Grid>
+                </RemcommendBox>
+              </>
+            ) : (
+              <>
+                <RemcommendBox>
+                  <Title>인기 검색어</Title>
+                  <EmptyBox>인기 검색어가 없습니다</EmptyBox>
+                </RemcommendBox>
+              </>
+            )}
+          </Grid>
+
           {/* 검색할 데이터가 없을 경우 */}
           {search_data.length === 0 ? (
-            <>
-              <SearchHIstory
-                list={list}
-                onRemoveKeyword={handleRemoveKeyword}
-              />
-
-              {recommend ? (
-                <>
-                  <RemcommendBox>
-                    <Title>인기 검색어</Title>
-                    <Grid is_flex>
-                      <Grid is_container _className="recommend-box">
-                        {recommendkeywordTop.map((item, idx) => {
-                          return (
-                            <>
-                              <Grid is_flex _className="recommend-list">
-                                <p
-                                  className={
-                                    idx < 3 ? "hot-keyword" : "default"
-                                  }
-                                >
-                                  {idx + 1}
-                                </p>
-                                <Keyword key={idx}>{item}</Keyword>
-                              </Grid>
-                            </>
-                          );
-                        })}
-                      </Grid>
-                      <Grid is_container _className="recommend-box">
-                        {recommendkeywordBottom.map((item, idx) => {
-                          return (
-                            <>
-                              <Grid
-                                is_flex
-                                _className="recommend-list"
-                                key={idx}
-                              >
-                                <p
-                                  className={
-                                    idx < 0 ? "hot-keyword" : "default"
-                                  }
-                                >
-                                  {idx + 6}
-                                </p>
-                                <Keyword key={idx}>{item}</Keyword>
-                              </Grid>
-                            </>
-                          );
-                        })}
-                      </Grid>
-                    </Grid>
-                  </RemcommendBox>
-                </>
-              ) : (
-                <>
-                  <RemcommendBox>
-                    <Title>인기 검색어</Title>
-                    <EmptyBox>인기 검색어가 없습니다</EmptyBox>
-                  </RemcommendBox>
-                </>
-              )}
-            </>
+            <>검색 결과가 없습니다</>
           ) : (
             <>
               {/* 검색한 데이터가 있을 경우 */}
@@ -260,6 +253,14 @@ const SearchList = styled.div`
     .search-icon {
       font-size: 26px;
       color: var(--main-color);
+    }
+
+    .display-active {
+      display: block;
+    }
+
+    .display-inactive {
+      display: none;
     }
   }
 `;

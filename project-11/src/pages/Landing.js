@@ -6,16 +6,11 @@ import { history } from "../redux/configureStore";
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
 
 const Landing = () => {
+  const ClikKakao = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
 
-  
-
-
-
-  const ClikKakao = ()=>{
-    window.location.href=KAKAO_AUTH_URL
-  }
-
-  return ( 
+  return (
     <>
       <Intro>
         <Grid is_container padding="16px" _className="intro-box">
