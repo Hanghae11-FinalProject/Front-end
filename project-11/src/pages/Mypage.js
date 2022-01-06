@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "../shared/Nav";
 import { history } from "../redux/configureStore";
 
@@ -13,12 +13,35 @@ import {
 } from "react-icons/md";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import { IoIosArrowForward, IoMdSettings } from "react-icons/io";
-import { deleteCookie } from "../shared/Cookie";
+import { deleteCookie, getCookie } from "../shared/Cookie";
 import Permit from "../shared/Permit";
+import { axiosInstance } from "../shared/api";
 
 const Mypage = () => {
+  const token = getCookie("Token");
   const [modalOpen, setModalOpen] = useState(false);
-  const [name, setName] = useState("Shiba");
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+
+  const editUserName = (x) => {
+    setUserName(x);
+  };
+
+  useEffect(() => {
+    editUserName();
+  }, [userName]);
+
+  useEffect(() => {
+    axiosInstance
+      .get("/api/userInfos", { headers: { Authorization: token } })
+      .then((response) => {
+        setName(response.data.nickname);
+        setUserName(response.data.username);
+        setProfileImg(response.data.profileImg);
+        console.log(response.data.profileImg);
+      });
+  }, []);
 
   const handleClose = () => {
     setModalOpen(false);
@@ -27,26 +50,23 @@ const Mypage = () => {
     <Permit>
       <>
         <MypageBox>
-          <Grid is_container _className="border">
-            <Header>
-              <Grid _className="inner" is_container is_flex flex_align="center">
-                <p>마이 페이지</p>
-              </Grid>
-            </Header>
+          <Grid is_container padding="16px" _className="border">
             <UserInfo>
               <IconBox>
                 <Grid _className="icon-img">
-                  <img
-                    src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2020/06/urbanbrush-20200615000825087215.jpg"
-                    alt="icon"
-                  />
+                  <img src={profileImg} alt="icon" />
                 </Grid>
                 <div className="profile">
                   <p className="profile-name">{name}</p>
-                  <p className="profile-email">siba@naver.com</p>
+                  <p className="profile-email">{userName}</p>
                 </div>
               </IconBox>
-              <Button Btn _className="btn" _onClick={() => setModalOpen(true)}>
+              <Button
+                Btn
+                _className="btn"
+                editUserName={editUserName}
+                _onClick={() => setModalOpen(true)}
+              >
                 <p>프로필 수정</p>
               </Button>
             </UserInfo>
@@ -164,9 +184,9 @@ const Mypage = () => {
                 <span>회원탈퇴</span>
               </li>
             </ul>
-            <Nav mypage={"mypage"} />
           </Grid>
         </MypageBox>
+        <Nav mypage={"mypage"} />
       </>
     </Permit>
   );
@@ -182,21 +202,17 @@ const MypageBox = styled.div`
     text-align: center;
     .menu-wrap {
       margin-bottom: 20px;
-      padding: 30px 16px;
       .menu {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 15px;
         margin: 5px 0;
-
         border-radius: 6px;
-        box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-          rgba(17, 17, 26, 0.1) 0px 0px 8px;
-        /* border: 1px solid var(--help-color); */
+        border: 1px solid var(--help-color);
         cursor: pointer;
         &:hover {
-          background-color: var(--main-color);
+          background-color: var(--help-color);
           color: #fff;
         }
       }
@@ -211,43 +227,10 @@ const MypageBox = styled.div`
       text-align: center;
       width: 25%;
       cursor: pointer;
-
-      span {
-        font-size: 14px;
-      }
     }
   }
 `;
-
-const Header = styled.div`
-  width: 100%;
-  max-width: 426px;
-  height: 50px;
-  position: fixed;
-  top: 0;
-
-  /* border-bottom: 1px solid var(--help-color); */
-  background-color: #fff;
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  .inner {
-    height: 50px;
-    margin: 0 auto;
-
-    p {
-      width: 100%;
-      position: absolute;
-      left: 0;
-      text-align: center;
-
-      font-size: 20px;
-      font-weight: bold;
-    }
-  }
-`;
-
 const UserInfo = styled.div`
-  padding: 30px 16px 0 16px;
   .btn {
     background-color: white;
     border: 1px solid var(--main-color);
@@ -265,14 +248,17 @@ const IconBox = styled.div`
   display: flex;
   align-items: center;
   .icon-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 70px;
     height: 70px;
     border-radius: 50%;
     margin-right: 15px;
-    border: 3px solid var(--main-color);
+    background-color: red;
     img {
-      width: 100%;
-      height: 100%;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
     }
   }

@@ -3,6 +3,8 @@ import Permit from "../shared/Permit";
 import Chattingitem from "../components/Chattingitem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
@@ -12,12 +14,38 @@ import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 
 const Chatting = () => {
+  let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
+  let stompClient = Stomp.over(sockjs);
+
+  const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
+  const [newMsgData, setNewMsgData] = useState("");
+  const [test, setTest] = useState(true);
+
+  const testOne = () => {
+    setTest(false);
+  };
+  React.useEffect(() => {
+    setTest(true);
+  }, [test]);
+
+  React.useEffect(() => {
+    console.log(newMsgData);
+    console.log(rooms);
+    let data = rooms;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].roomName === newMsgData.roomName) {
+        data[i].notReadingMessageCount = data[i].notReadingMessageCount + 1;
+        data[i].lastMessage.content = newMsgData.message;
+      }
+    }
+    setRooms(data);
+  }, [newMsgData]);
 
   React.useEffect(() => {
     axiosInstance
@@ -29,6 +57,14 @@ const Chatting = () => {
       .catch((err) => {
         console.log(err, "에러");
       });
+    stompClient.connect({}, () => {
+      stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
+      // console.log(myUserId);
+      stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+        const onMessage = JSON.parse(data.body);
+        setNewMsgData(onMessage);
+      });
+    });
   }, []);
 
   const OptionOneControl = () => {
@@ -136,7 +172,9 @@ const Chatting = () => {
             </div>
             <div className="chat-item">
               {rooms.map((p, idx) => {
-                return <Chattingitem roomData={p} key={idx} />;
+                return (
+                  <Chattingitem testOne={testOne} roomData={p} key={idx} />
+                );
               })}
             </div>
           </div>

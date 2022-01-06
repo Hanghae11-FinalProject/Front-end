@@ -28,10 +28,10 @@ const MyPostCard = (my_List) => {
         </div>
       </div>
       <div className="title-box">
-        <h1 className="title">{myList.title}</h1>
+        <h1 className="title">{myList.title ? myList.title : <br />}</h1>
       </div>
       <div className="contents-box">
-        <p className="contents">{myList.content}</p>
+        <p className="contents">{myList.content ? myList.content : <br />}</p>
       </div>
       <Grid is_flex padding="10px 5px" _className="btn-box">
         <Grid is_flex _className="like-btn" flex_align="center">
@@ -88,6 +88,7 @@ const PostDiv = styled.div`
   }
 
   .btn-box {
+    margin-top: -4px;
     padding-left: 15px;
     font-size: 10px;
     .like-btn,
