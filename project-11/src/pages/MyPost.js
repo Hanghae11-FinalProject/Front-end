@@ -4,10 +4,11 @@ import styled from "styled-components";
 
 import { getCookie } from "../shared/Cookie";
 import { axiosInstance } from "../shared/api";
-import { CgChevronLeft } from "react-icons/cg";
+import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
 import Nav from "../shared/Nav";
 import MyPostCard from "../components/MyPostCard";
+import MpLoginCk from "../components/MpLoginCk";
 
 const MyPost = () => {
   const token = getCookie("Token");
@@ -39,13 +40,18 @@ const MyPost = () => {
       <MyPostBox>
         <Grid is_container _className="border">
           <MainTop>
-            <CgChevronLeft size="30" className="icon" />
+            <IoIosArrowBack size="30" className="icon" />
             <TopText style={{ marginLeft: "6px" }}>내가 작성한 글</TopText>
           </MainTop>
-          {my_List &&
-            my_List.map((my_List, idx) => {
-              return <MyPostCard key={idx} my_List={my_List} />;
-            })}
+          <div className="post-box">
+            {my_List.length === 0 ? (
+              <MpLoginCk />
+            ) : (
+              my_List.map((my_List, idx) => {
+                return <MyPostCard key={idx} my_List={my_List} />;
+              })
+            )}
+          </div>
         </Grid>
       </MyPostBox>
       <Nav />
@@ -55,10 +61,18 @@ const MyPost = () => {
 
 const MyPostBox = styled.div`
   .border {
-    height: 100vh;
     border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color);
     text-align: center;
+  }
+  .post-box {
+    height: 833px;
+    overflow-y: auto;
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+    ::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    }
   }
 `;
 

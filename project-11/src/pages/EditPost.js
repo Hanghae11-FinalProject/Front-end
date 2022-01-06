@@ -29,6 +29,7 @@ const EditPost = (items) => {
   const postId = editItems.postId;
   const is_edit = postId ? true : false;
   // console.log(editItems.images);
+  console.log(editItems);
 
   const [title, setTitle] = React.useState(""); // 제목
   const [content, setContent] = React.useState(""); // 내용
@@ -40,6 +41,7 @@ const EditPost = (items) => {
   const [images, setImages] = React.useState([]); // 이미지 aixos 통신용
   const [preImg, setPreImg] = React.useState([]); // preview용 이미지
   const [deleteEditImg, setDeleteEditImg] = React.useState([]); // 따로 수정하기할때 보내줄 url 저장소
+  const [compare, setCompare] = React.useState([]); // 이미지, preview 두개 state 위치 비교를 위한 state
   const [active, setActive] = React.useState(true); // 버튼 액티브
   const [currentState, setCurrentState] = React.useState("Proceeding"); // currentState 기본값 넘겨주기
   const [is_open, setIs_open] = React.useState(false); // 모달창 활성화/비활성화 여부
@@ -93,9 +95,9 @@ const EditPost = (items) => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    console.log(deleteEditImg); // 뺄거
-    console.log(images); // 새로 보낼거
-    console.log(preImg); // 프리뷰 둘다있음
+    console.log(myItem);
+    console.log(exchangeItem);
+    console.log(title);
   };
 
   // 교환할 물품 onChange 함수
@@ -113,16 +115,20 @@ const EditPost = (items) => {
     setHashtag(e.target.value);
   };
 
-  // 수정하기 image preview 및 해시태그 불러오기
+  // 수정하기 image preview 및 데이터 불러오기
   React.useEffect(() => {
     let editPre = [];
-    if (is_edit) {
-      setCategory(editItems.categoryName);
-      for (let i = 0; i < editItems.images.length; i++) {
-        editPre.push(editItems.images[i].imageUrl);
-      }
-      setPreImg(editPre); // preview에 저장
+    for (let i = 0; i < editItems.images.length; i++) {
+      editPre.push(editItems.images[i].imageUrl);
     }
+    setPreImg(editPre); // preview에 저장
+    setCompare(editPre); // 비교용 배열에도 저장
+    setTitle(editItems.title);
+    setContent(editItems.content);
+    setMyItem(editItems.myItem);
+    setExchangeItem(editItems.exchangeItem);
+    setCategory(editItems.categoryName);
+
     // const GetHashContent = document.querySelector(".HashInputOuter"); //HashInputOuter클라스에서 입력하는 요소를 불러온다!
     // const HashWrapInner = document.createElement("div"); // div 만들기
     // HashWrapInner.className = "HashWrapInner";
@@ -193,7 +199,7 @@ const EditPost = (items) => {
     setPreImg([...nowImgURLList]); // 반복문이 끝난뒤 preImg 원본에 넣어준다.
   };
 
-  // preview 이미지 삭제
+  // 이미지 파일, 기존 이미지url 추출 및 preview 이미지 삭제
   let deletedUrl = []; // 백에 보내줄 url을 담아줄 빈 배열
   let forImages = [...images];
   const deleteImages = (x) => {
@@ -212,8 +218,8 @@ const EditPost = (items) => {
         idxLocation = i;
       }
     }
-    let imgLocation = forImages[idxLocation]; // 복사한 images배열에서의 지울 파일 위치 지정
-    console.log(imgLocation); // <이게 안찍힘
+    console.log(idxLocation - compare.length); // 위치 비교를 위한 배열의 길이만큼 빼준다
+    let imgLocation = forImages[idxLocation - compare.length]; // 복사한 images배열에서의 지울 파일 위치 지정
     const deleteImg = forImages.filter((y) => {
       if (y !== imgLocation) {
         return y;
@@ -226,6 +232,12 @@ const EditPost = (items) => {
       deletedUrl.push(...deletedUrl, x);
       const Img = { imageUrl: deletedUrl[0] };
       setDeleteEditImg([...deleteEditImg, Img]);
+      const deleteCompare = compare.filter((z) => {
+        if (z !== x) {
+          return z;
+        }
+      });
+      setCompare(deleteCompare); // 프리뷰 사진을 먼저 지우고 다시 추가한 사진을 지울 경우 compare의 길이가 그대로 남아있으면 안되니 같이 빼준다.
     } else {
       setImages(deleteImg);
     }
@@ -247,10 +259,14 @@ const EditPost = (items) => {
     checkActive();
   }, [category]);
 
+  // 수정 페이지 처음 들어올때 액티브 함수 실행
+  React.useEffect(() => {
+    checkActive();
+  }, []);
+
   // 수정하기
   const editPost = async () => {
     const formData = new FormData();
-    // console.log(images);
     for (let i = 0; i < images.length; i++) {
       formData.append("image", images[i]);
     }
@@ -261,9 +277,9 @@ const EditPost = (items) => {
         content: content,
         category: category,
         currentState: currentState,
-        tag: hashArr,
         myItem: myItem,
         exchangeItem: exchangeItem,
+        tag: hashArr,
         images: deleteEditImg,
       })
     );
@@ -272,16 +288,15 @@ const EditPost = (items) => {
     }
     await axios({
       method: "put",
-      url: `http://15.164.222.25/api/posts/${postId}`,
+      url: `http://13.125.250.43/api/posts/${postId}`,
       data: formData,
       headers: {
-        "Content-type": "multipart/form-data",
         Authorization: token,
       },
     })
       .then((response) => {
         console.log("수정 완료", response);
-        // history.push(`/detail/${postId}`);
+        history.push(`/detail/${postId}`);
       })
       .catch((err) => {
         console.log(err, "에러났니~");

@@ -48,7 +48,7 @@ const Detail = () => {
       const res = await axiosInstance.get(`/api/posts/${params.id}`);
       console.log("상세 페이지 조회 성공", res);
       setPostdata(res.data);
-
+      setItems(res.data);
       setCheckBm(res.data.bookMarks);
       setBmCnt(res.data.bookMarkCount);
     } catch (err) {

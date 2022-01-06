@@ -8,7 +8,6 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { useHistory } from "react-router-dom";
 
 const InputAdd = () => {
-  
   const history = useHistory();
   const modalClose = React.useRef();
   // disabled 활성화 여부
@@ -58,14 +57,12 @@ const InputAdd = () => {
 
   // disabled 체크
   const checkActive = () => {
-    is_location !== "시/군/구"
-      ? setActive(false)
-      : setActive(true);
+    is_location !== "시/군/구" ? setActive(false) : setActive(true);
   };
 
-  React.useEffect(()=> {
-    checkActive()
-  },[is_location])
+  React.useEffect(() => {
+    checkActive();
+  }, [is_location]);
 
   // 주소 입력 완료!
   const signUp = () => {
@@ -74,7 +71,7 @@ const InputAdd = () => {
       .then((res) => {
         console.log("주소입력 완료", res);
 
-        // history.push("/");
+        history.push("/");
       })
       .catch((err) => {
         console.log("주소입력 실패", err);
@@ -262,11 +259,11 @@ const AddressBox = styled.div`
 
   .drop-location {
     width: 12rem;
-    height: 144px;
+    height: 162px;
     border: 1px solid var(--help-color);
     border-radius: 5px;
     position: absolute;
-    top: -14vh;
+    top: -17.5vh;
     background-color: #fff;
     cursor: pointer;
 

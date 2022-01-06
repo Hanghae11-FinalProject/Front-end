@@ -8,16 +8,18 @@ import { getCookie } from "../shared/Cookie";
 import MyChat from "../components/MyChat";
 import NotMyChat from "../components/NotMyChat";
 
-let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
-let stompClient = Stomp.over(sockjs);
 let List = [];
 
 const Chat = (data) => {
+  let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
+  let stompClient = Stomp.over(sockjs);
+
   const scrollRef = useRef();
   const myUserId = getCookie("Id");
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
-  // console.log(myUserId);
+
+  const receiverId = data.location.state.sender.userId;
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
   // console.log(sender.profileImg);
@@ -36,11 +38,13 @@ const Chat = (data) => {
   }, []); // setSearches(searches => searches.concat(query))
 
   const sendMessage = () => {
+    console.log(receiverId);
     const box = {
       type: "Talk", //타입
       message: currentMes, //메세지
       roomName: roomName, //채팅방넘버
       senderId: myUserId, // 내 userId
+      receiverId: receiverId, // 상대방 userId
     };
     stompClient.send("/pub/message", {}, JSON.stringify(box));
     setCurrentMes("");

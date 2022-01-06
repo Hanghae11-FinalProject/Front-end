@@ -7,6 +7,7 @@ import { getCookie } from "../shared/Cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions} from "../redux/modules/post";
 
+
 import styled from "styled-components";
 
 const UserModal = (props) => {
@@ -48,6 +49,7 @@ const UserModal = (props) => {
     onCancel()
   }
   
+
   // 닉네임 중복확인
   const nicknameCheck = () => {
     let RegNick = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{2,10}$/;
@@ -58,6 +60,7 @@ const UserModal = (props) => {
       return;
     } else {
       console.log(check, "유효성 통과");
+
       axiosInstance
         .post("/user/nicknameCheck", {
           nickname: editName,
@@ -74,7 +77,6 @@ const UserModal = (props) => {
         });
     }
   };
-
 
 
   const handleClose = () => {
@@ -142,6 +144,7 @@ const UserModal = (props) => {
               <IconTitleWrap>
                 <p className="icontitle">프로필 아이콘</p>
               </IconTitleWrap>
+
         </div>
         <ExtraIcon>
           {icons.map((item, i) => {
@@ -162,6 +165,7 @@ const UserModal = (props) => {
         
         <BtnBox>
           <Btn onClick={EditProfile} disabled={active}>완료</Btn>
+
           <Btn onClick={handleClose}>닫기</Btn>
         </BtnBox>
       </ReactModal>
@@ -192,7 +196,7 @@ const TitleWrap = styled.div`
     font-weight: bold;
     display: flex;
   }
-`
+`;
 
 const BtnBox = styled.div`
   width: 50%;

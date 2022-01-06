@@ -4,7 +4,7 @@ import { Grid } from "../elements";
 import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
 
-const LoginCheck = () => {
+const MpLoginCk = () => {
   return (
     <LoginCkWrap>
       <Grid is_container="container" _className="border">
@@ -15,16 +15,15 @@ const LoginCheck = () => {
             <img src="/static/핑이 행복.png" />
           </div>
           <div className="title">
-            <p>서비스를 이용하려면</p>
-            <p>먼저 로그인이 필요해요!</p>
+            <p>작성한 글이 없어요</p>
           </div>
           <div className="subtitle">
             <span
               onClick={() => {
-                history.push("/login");
+                history.push("/write");
               }}
             >
-              로그인하러 가기
+              게시물 쓰러가기!
             </span>
           </div>
         </div>
@@ -34,12 +33,12 @@ const LoginCheck = () => {
   );
 };
 
-export default LoginCheck;
+export default MpLoginCk;
 
 const LoginCkWrap = styled.div`
   .border {
-    border: 1px solid var(--help-color);
-    height: 100vh;
+    /* border: 1px solid var(--help-color); */
+    height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;

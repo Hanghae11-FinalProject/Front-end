@@ -93,7 +93,7 @@ export default Nav;
 
 const NavBox = styled.div`
   width: 100%;
-  max-width: 427px;
+  max-width: 426px;
   height: 50px;
   padding: 10px 0;
   text-align: center;
@@ -102,7 +102,8 @@ const NavBox = styled.div`
   position: fixed;
   bottom: 0;
   border-top: 1px solid var(--help-color);
-  border-right: 1px solid var(--help-color);
+  /* border-right: 1px solid var(--help-color);
+  border-left: 1px solid var(--help-color); */
 
   background-color: #fff;
   z-index: 9999;
