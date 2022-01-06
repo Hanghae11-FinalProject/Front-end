@@ -48,10 +48,9 @@ const Detail = () => {
       const res = await axiosInstance.get(`/api/posts/${params.id}`);
       console.log("상세 페이지 조회 성공", res);
       setPostdata(res.data);
-
+      setItems(res.data);
       setCheckBm(res.data.bookMarks);
       setBmCnt(res.data.bookMarkCount);
-
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
@@ -93,7 +92,6 @@ const Detail = () => {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
       history.push("/login");
     }
-
 
     if (curUserName === PostData.nickname) {
       window.alert("자신의 게시물은 즐겨찾기를 누르실 수 없어요😀");
@@ -189,7 +187,6 @@ const Detail = () => {
   useEffect(() => {
     dispatch(postActions.get_Comment(params.id));
   }, []);
-
 
   return (
     <>
@@ -303,7 +300,6 @@ const Detail = () => {
                 {/* 라이크버튼  */}
                 <Grid is_flex _className="btn-box">
                   <Grid is_flex _className="like-btn" flex_align="center">
-
                     {user_id ? (
                       <FaStar
                         className="icon bookmark-active"
@@ -322,7 +318,6 @@ const Detail = () => {
                 </Grid>
               </Grid>
               {/* 댓글 리스트 */}
-
 
               {comments.map((comment, i) => {
                 return (

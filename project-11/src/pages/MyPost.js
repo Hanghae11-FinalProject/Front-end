@@ -8,6 +8,7 @@ import { CgChevronLeft } from "react-icons/cg";
 import { Grid } from "../elements";
 import Nav from "../shared/Nav";
 import MyPostCard from "../components/MyPostCard";
+import MpLoginCk from "../components/MpLoginCk";
 
 const MyPost = () => {
   const token = getCookie("Token");
@@ -42,10 +43,13 @@ const MyPost = () => {
             <CgChevronLeft size="30" className="icon" />
             <TopText style={{ marginLeft: "6px" }}>내가 작성한 글</TopText>
           </MainTop>
-          {my_List &&
+          {my_List.length === 0 ? (
+            <MpLoginCk />
+          ) : (
             my_List.map((my_List, idx) => {
               return <MyPostCard key={idx} my_List={my_List} />;
-            })}
+            })
+          )}
         </Grid>
       </MyPostBox>
       <Nav />

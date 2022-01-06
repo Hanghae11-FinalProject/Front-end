@@ -424,10 +424,11 @@ const SignupWrap = styled.div`
       }
       .drop-location {
         width: 191px;
-        height: 144px;
+        height: 162px;
         border: 1px solid var(--help-color);
         border-radius: 5px;
         position: absolute;
+        z-index: 10;
         cursor: pointer;
         .loc-wrap {
           padding: 8px 8px;

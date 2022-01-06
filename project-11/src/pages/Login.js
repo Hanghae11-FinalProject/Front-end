@@ -32,7 +32,7 @@ const Login = () => {
         history.push("/");
       })
       .catch((error) => {
-        window.alert('뭐가 틀렸는지 한번 더 생각해보세요', error)
+        window.alert("뭐가 틀렸는지 한번 더 생각해보세요", error);
       });
     setLoginDisabled(true);
     setLoginTrue(true);
