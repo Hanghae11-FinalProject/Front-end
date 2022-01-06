@@ -8,7 +8,7 @@ import { getCookie } from "../shared/Cookie";
 import MyChat from "../components/MyChat";
 import NotMyChat from "../components/NotMyChat";
 
-let sockjs = new SockJS("http://15.164.222.25:8080/webSocket");
+let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
 let stompClient = Stomp.over(sockjs);
 let List = [];
 

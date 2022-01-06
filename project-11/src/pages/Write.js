@@ -90,8 +90,6 @@ const Write = () => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    console.log(images);
-    console.log(preImg);
   };
 
   // 교환할 물품 onChange 함수
@@ -229,7 +227,7 @@ const Write = () => {
     }
     await axios({
       method: "post",
-      url: "http://15.164.222.25/api/posts",
+      url: "http://13.125.250.43/api/posts",
       data: formData,
       headers: {
         "Content-type": "multipart/form-data",
@@ -251,6 +249,7 @@ const Write = () => {
         <Container>
           <Grid is_container _className="border">
             <MainTop>
+
               <IoIosArrowBack
                 cursor={"pointer"}
                 size="30"
@@ -343,6 +342,7 @@ const Write = () => {
             <ImgArea>
               <label htmlFor="input-file" className="input-Btn-Css">
                 <MdOutlineCameraAlt size={30} />
+
                 {preImg.length} / 5
                 <input
                   type="file"
@@ -403,6 +403,7 @@ const Write = () => {
                 />
               </HashInputOuter>
             </HashTagArea>
+
             <Nav write={"write"} />
           </Grid>
         </Container>
@@ -599,6 +600,7 @@ const Preview = styled.img`
 const ContentArea = styled.div`
   height: 330px;
   margin: 16px;
+  /* border-bottom: 1px solid var(--help-color); */
 `;
 
 const ContentInput = styled.textarea`
@@ -619,6 +621,7 @@ const ContentInput = styled.textarea`
 const HashTagArea = styled.div`
   height: 75px;
   margin: 15px;
+  margin-top: 50px;
   border-top: 1px solid var(--help-color);
 `;
 
