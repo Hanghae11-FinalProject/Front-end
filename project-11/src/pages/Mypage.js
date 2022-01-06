@@ -5,73 +5,62 @@ import { history } from "../redux/configureStore";
 import { Grid, Button } from "../elements/index";
 import styled from "styled-components";
 import UserModal from "../components/UserModal";
-import {
-  MdLock,
-  MdFeedback,
-  MdPersonRemoveAlt1,
-  MdExitToApp,
-} from "react-icons/md";
-import { BsQuestionCircleFill } from "react-icons/bs";
-import { IoIosArrowForward, IoMdSettings } from "react-icons/io";
-import { deleteCookie, getCookie } from "../shared/Cookie";
+import {MdLock,MdFeedback,MdPersonRemoveAlt1,MdExitToApp} from 'react-icons/md'
+import {BsQuestionCircleFill} from 'react-icons/bs'
+import {IoIosArrowForward,IoMdSettings} from 'react-icons/io'
+import {deleteCookie, getCookie} from '../shared/Cookie'
 import Permit from "../shared/Permit";
 import { axiosInstance } from "../shared/api";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions} from "../redux/modules/post";
+
+// useSelector 리덕스에서 저장한 데이터에 접근하기 위하여 사용한다.
+// initialstate에 profile에 넣어둔 데이터 
 
 const Mypage = () => {
-  const token = getCookie("Token");
+  const token = getCookie('Token')
   const [modalOpen, setModalOpen] = useState(false);
   const [name, setName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [profileImg, setProfileImg] = useState("");
 
-  const editUserName = (x) => {
-    setUserName(x);
-  };
+  const dispatch = useDispatch();
+  const userProfile = useSelector((state)=>state.post.profile); // initatilstate에서 데이터를 가져오는 방법
+  console.log(userProfile)
 
-  useEffect(() => {
-    editUserName();
-  }, [userName]);
+  useEffect(()=>{
+    dispatch(postActions.getProfileDB())
+  },[])
+  
+  
 
-  useEffect(() => {
-    axiosInstance
-      .get("/api/userInfos", { headers: { Authorization: token } })
-      .then((response) => {
-        setName(response.data.nickname);
-        setUserName(response.data.username);
-        setProfileImg(response.data.profileImg);
-        console.log(response.data.profileImg);
-      });
-  }, []);
 
   const handleClose = () => {
     setModalOpen(false);
   };
   return (
     <Permit>
-      <>
-        <MypageBox>
-          <Grid is_container padding="16px" _className="border">
-            <UserInfo>
-              <IconBox>
-                <Grid _className="icon-img">
-                  <img src={profileImg} alt="icon" />
-                </Grid>
-                <div className="profile">
-                  <p className="profile-name">{name}</p>
-                  <p className="profile-email">{userName}</p>
-                </div>
-              </IconBox>
-              <Button
-                Btn
-                _className="btn"
-                editUserName={editUserName}
-                _onClick={() => setModalOpen(true)}
-              >
-                <p>프로필 수정</p>
-              </Button>
-            </UserInfo>
+    <>
+      <MypageBox>
+        <Grid is_container padding="16px" _className="border">
+          <UserInfo>
+            <IconBox>
+              <Grid _className="icon-img">
+                <img
+                  src={userProfile.profileImg}
+                  alt="icon"
+                />     
+              </Grid>
+              <div className="profile">
+                <p className="profile-name">{userProfile.nickname}</p>
+                <p className="profile-email">{userProfile.username}</p>
+                </div>         
+            </IconBox>
+            <Button Btn _className="btn" _onClick={() => setModalOpen(true)}>
+              <p>프로필 수정</p>
+            </Button>
+          </UserInfo>
 
-            <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
+          <UserModal isOpen={modalOpen} onCancel={handleClose} name={name}  />
+
 
             <Grid _className="menu-wrap" padding="30px 0;">
               <Grid
@@ -255,7 +244,8 @@ const IconBox = styled.div`
     height: 70px;
     border-radius: 50%;
     margin-right: 15px;
-    background-color: red;
+    background-color: #FFD8D8;
+
     img {
       width: 60px;
       height: 60px;

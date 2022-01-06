@@ -3,12 +3,17 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
 import { getCookie } from "../../shared/Cookie";
+
+
+
 // *** 액션 타입
 const GET_POST = "GET_POST";
 const GET_ONEPOST = "GET_ONEPOST";
 const ADD_COMMENT = "ADD_COMMENT";
 const ADD_CHILDCOMMENT = "ADD_CHILDCOMMENT";
 const DEL_COMMENT = "DEL_COMMENT";
+const EDIT_PROFILE = "EDIT_PROFILE";
+const GET_PROFILE = "GET_PROFILE";
 
 // *** 액션 생성 함수
 const getPosts = createAction(GET_POST, (_post_data) => ({ _post_data }));
@@ -18,6 +23,9 @@ const addChildComment = createAction(ADD_CHILDCOMMENT, (comment) => ({
   comment,
 }));
 const delComment = createAction(DEL_COMMENT, (commentid) => ({ commentid }));
+// 프로필 수정
+const getProfile = createAction(GET_PROFILE, (profile)=>({ profile }))
+const editProfile = createAction(EDIT_PROFILE, (edit)=>({ edit }));
 
 // *** 초기값
 const initialState = {
@@ -27,9 +35,51 @@ const initialState = {
   comments: [],
   children: [],
   commentCnt: "",
+  profile:[],
 };
 
 // *** 미들웨어
+
+//프로필 수정
+const getProfileDB= () =>{
+  return async(dispatch, getState,{history})=>{
+    const token = getCookie("Token")
+    await axiosInstance.get('/api/userInfos',{headers:{Authorization: token }})
+    .then((response)=>{
+      console.log(response)
+      dispatch(getProfile(response.data))
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+}
+
+// axiosInstance.put('/api/userInfos',
+//     {nickname:editName,profileImg:img},
+//     {headers:{Authorization: token }})
+//     .then((response)=>{
+//       console.log('프로필 수정',response)
+//     })
+
+// 프로필 수정2
+const editProfileDB = (img, nickname, username) => {
+  return async(dispatch, getState, {history})=>{
+    const token = getCookie("Token")
+    await axiosInstance.put('/api/userInfos',
+        {nickname:nickname,profileImg:img, username:username},
+        {headers:{Authorization: token }})
+        .then((response)=>{
+          console.log(response)
+          dispatch(editProfile({nickname:nickname, profileImg:img, username:username}))
+        }).catch((err)=>{
+          console.log(err);
+        })
+  }
+}
+// get 형식 그대로 백에다가 수정된 데이터 요청하기 
+
+
+
 
 //메인 게시글 조회
 const getPostAction = (area, cate, count) => {
@@ -211,8 +261,19 @@ export default handleActions(
         console.log(newComment, "newcomment");
         draft.comments = [...newComment];
       }),
-  },
+    [GET_PROFILE]: (state, action) =>
+    // draft는 initailstate 저장소 위치 지정 
+    produce(state,(draft)=>{
+    // action.payload는 위에서 전달하는 데이터가 들어있다. dispatch 부분
+      draft.profile = action.payload.profile
+      console.log(action.payload.profile)
+    }),  
 
+    [EDIT_PROFILE]: (state, action) =>
+    produce(state,(draft)=>{
+      draft.profile = action.payload.edit
+    }),  
+  },
   initialState
 );
 
@@ -223,6 +284,8 @@ const actionCreators = {
   add_comment,
   del_comment,
   add_childcomment,
+  getProfileDB,
+  editProfileDB,
 };
 
 export { actionCreators };

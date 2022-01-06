@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Permit from "../shared/Permit";
-import Chattingitem from "../components/Chattingitem";
+import Chattingitem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
 import SockJS from "sockjs-client";
