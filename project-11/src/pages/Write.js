@@ -249,7 +249,6 @@ const Write = () => {
         <Container>
           <Grid is_container _className="border">
             <MainTop>
-
               <IoIosArrowBack
                 cursor={"pointer"}
                 size="30"
@@ -342,7 +341,6 @@ const Write = () => {
             <ImgArea>
               <label htmlFor="input-file" className="input-Btn-Css">
                 <MdOutlineCameraAlt size={30} />
-
                 {preImg.length} / 5
                 <input
                   type="file"

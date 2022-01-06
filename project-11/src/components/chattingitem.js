@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 
 const ChattingItem = (p) => {
-  const data = p;
-  console.log(data);
+  React.useEffect(() => {
+    p.testOne();
+  }, [p]);
 
   const goChat = () => {
     history.push({
       pathname: `/chat`,
-      state: { roomName: data.roomData.roomName, sender: data.roomData.user },
+      state: { roomName: p.roomData.roomName, sender: p.roomData.user },
     });
   };
   return (
@@ -27,12 +28,12 @@ const ChattingItem = (p) => {
         </div>
         <div
           className={
-            p.roomData.lastMessage.notReadingMessageCount
-              ? "chatting-cnt"
-              : "cnt-zero"
+            p.roomData.notReadingMessageCount ? "chatting-cnt" : "cnt-zero"
           }
         >
-          {p.roomData.lastMessage.notReadingMessageCount}
+          {p.roomData.notReadingMessageCount !== 0
+            ? p.roomData.notReadingMessageCount
+            : ""}
         </div>
       </div>
     </ChattingWrap>

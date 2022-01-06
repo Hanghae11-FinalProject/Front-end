@@ -20,6 +20,7 @@ import Favorite from "../pages/Favorite";
 import MyPost from "../pages/MyPost";
 import EditPost from "../pages/EditPost";
 import OAuthRedirect from "../components/OAuthRedirect";
+import TestMain from "../pages/Testmain";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           exact
           component={OAuthRedirect}
         ></Route>
+        <Route path="/test" exact component={TestMain}></Route>
       </ConnectedRouter>
     </div>
   );
