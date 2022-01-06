@@ -11,6 +11,7 @@ import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
+import { IoIosArrowBack } from "react-icons/io";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
 import Permit from "../shared/Permit";
@@ -248,16 +249,25 @@ const Write = () => {
         <Container>
           <Grid is_container _className="border">
             <MainTop>
-              <CgChevronLeft
+
+              <IoIosArrowBack
                 cursor={"pointer"}
                 size="30"
                 onClick={() => {
                   history.goBack();
                 }}
               />
-              <TopText style={{ marginLeft: "6px" }}>글 작성하기</TopText>
               <TopText
-                style={{ padding: "6px" }}
+                style={{
+                  marginLeft: "6px",
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                글 작성하기
+              </TopText>
+              <TopText
+                style={{ padding: "6px", fontSize: "16px" }}
                 className={!active ? "activeBtn" : "unActiveBtn"}
                 disabled={active}
                 onClick={postWrite}
@@ -332,7 +342,8 @@ const Write = () => {
             <ImgArea>
               <label htmlFor="input-file" className="input-Btn-Css">
                 <MdOutlineCameraAlt size={30} />
-                {preImg.length} / 10
+
+                {preImg.length} / 5
                 <input
                   type="file"
                   onChange={addImage}
@@ -392,9 +403,10 @@ const Write = () => {
                 />
               </HashInputOuter>
             </HashTagArea>
+
+            <Nav write={"write"} />
           </Grid>
         </Container>
-        <Nav write={"write"} />
       </React.Fragment>
     </Permit>
   );
@@ -417,9 +429,9 @@ const Container = styled.div`
 `;
 
 const MainTop = styled.div`
-  height: 44px;
-  margin: 8px;
-  border-bottom: 2px solid #eee;
+  height: 50px;
+
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
 
   display: flex;
   justify-content: space-between;
@@ -454,14 +466,16 @@ const CateArea = styled.div`
   z-index: 2;
   color: var(--inactive-text-color);
   margin: 8px 16px;
-
   border-bottom: 1px solid #eee;
+
   .category-option {
-    width: 25.2rem;
-    height: 398px;
+    width: 100%;
+    max-width: 25.2rem;
+    height: 361px;
     margin-top: 2px;
     position: absolute;
     background-color: #ffffff;
+
     border: 1px solid var(--disabled-color);
     border-radius: 6px;
     cursor: pointer;
@@ -486,7 +500,8 @@ const CateArea = styled.div`
 `;
 
 const Catediv = styled.div`
-  width: 25.2rem;
+  width: 100%;
+  max-width: 429px;
   height: 48px;
   padding: 0px 6px;
   font-size: 16px;
@@ -496,6 +511,8 @@ const Catediv = styled.div`
   align-items: center;
   color: var(--sub-font-color);
   cursor: pointer;
+
+  margin: 10px 0;
 `;
 
 const TradeDiv = styled.div`

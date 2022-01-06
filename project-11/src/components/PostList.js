@@ -16,6 +16,8 @@ const PostList = ({ location, category }) => {
   console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
   //무한 스크롤을 위한 페이지 값
   const [page, setpage] = useState(post_data.page);
+  const [area, setarea] = useState(location);
+  const [cate, setcate] = useState(category);
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
@@ -24,20 +26,21 @@ const PostList = ({ location, category }) => {
   //따로 조건문을 써서 값을 정해주었습니다.
   const curLocation = () => {
     if (location === "위치 설정하기" || location === "전체") {
-      return (location = "");
+      return setarea("");
     } else {
-      return location;
+      return setarea(location);
     }
   };
 
   useEffect(() => {
     curLocation();
-    let _post_data = { location, category };
+    console.log("지역, 카테고리", area, category);
+    let _post_data = { area, cate };
     // console.log("미들웨어로 넘기는 값", _post_data, page);
     //로딩시 불러오는 데이터
 
-    dispatch(postActions.getPostAction(_post_data, page));
-  }, [location, category, page]);
+    dispatch(postActions.getPostAction(area, cate, page));
+  }, [area, category, page]);
 
   //scroll event
   //스크롤시 다음페이지를 보여주는 것

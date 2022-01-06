@@ -10,14 +10,14 @@ import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
 import CommentList from "../components/CommentList";
+import CommentInput from "../components/CommentInput";
 
 import styled from "styled-components";
 import { FiStar } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsChat } from "react-icons/bs";
-
-import CommentInput from "../components/CommentInput";
+import { IoIosArrowBack } from "react-icons/io";
 
 const Detail = () => {
   const token = getCookie("Token");
@@ -197,16 +197,47 @@ const Detail = () => {
           <DetailBox key={PostData.postId}>
             <Grid is_container _className="border">
               {/* header */}
-              <Header>
-                <Grid
-                  _className="inner"
-                  is_container
-                  is_flex
-                  flex_align="center"
-                >
-                  <p>{user_id ? "true" : "false"}</p>
-                </Grid>
-              </Header>
+              {token ? (
+                <>
+                  <Header>
+                    <Grid
+                      _className="inner"
+                      is_container
+                      is_flex
+                      flex_align="center"
+                    >
+                      <IoIosArrowBack
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                        }}
+                      />
+                      <p>자세히 보기</p>
+                    </Grid>
+                  </Header>
+                </>
+              ) : (
+                <>
+                  <Header>
+                    <Grid
+                      _className="logout-inner"
+                      is_container
+                      is_flex
+                      flex_align="center"
+                    >
+                      <IoIosArrowBack
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                        }}
+                      />
+                      <p>자세히 보기</p>
+                      <button>로그인</button>
+                    </Grid>
+                  </Header>
+                </>
+              )}
+
               {/* 카테고리 라이크버튼  */}
               <Grid
                 is_flex
@@ -225,7 +256,6 @@ const Detail = () => {
                 flex_align="center"
                 flex_justify="space-between"
                 _className="user-info"
-                padding="0 16px"
               >
                 <Profile>
                   <img src={PostData.profileImg} alt="profile" />
@@ -329,18 +359,18 @@ const Detail = () => {
                   />
                 );
               })}
+
+              {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
+              {PostData.comments.length === 0 && (
+                <Grid is_container>
+                  <CommentInput postid={params.id} />
+                </Grid>
+              )}
+              <Nav />
             </Grid>
-            {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
-            {PostData.comments.length === 0 && (
-              <Grid is_container>
-                <CommentInput postid={params.id} />
-              </Grid>
-            )}
           </DetailBox>
         </>
       )}
-
-      <Nav />
     </>
   );
 };
@@ -356,6 +386,8 @@ const DetailBox = styled.div`
   }
 
   .user-info {
+    width: 94%;
+    margin: 0 auto;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--help-color);
     .name {
@@ -465,13 +497,14 @@ const DetailBox = styled.div`
 // 헤더
 const Header = styled.div`
   width: 100%;
+  max-width: 426px;
   height: 50px;
   position: fixed;
   top: 0;
-  left: 0;
 
-  border-bottom: 1px solid var(--help-color);
+  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
   .inner {
     height: 50px;
@@ -485,6 +518,36 @@ const Header = styled.div`
 
       font-size: 20px;
       font-weight: bold;
+    }
+  }
+
+  .logout-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 50px;
+    margin: 0 auto;
+
+    p {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      text-align: center;
+
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      border: 0;
+      color: var(--main-color);
+      outline: none;
+      background-color: transparent;
+      font-size: 16px;
+      margin-right: 16px;
+      cursor: pointer;
+      z-index: 9;
     }
   }
 `;

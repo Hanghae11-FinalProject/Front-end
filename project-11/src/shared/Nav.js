@@ -10,12 +10,9 @@ import { HiOutlineChatAlt2 } from "react-icons/hi";
 
 import Permit from "./Permit";
 
-
 import styled from "styled-components";
 
 const Nav = (props) => {
-  const token = getCookie("Token");
-
   return (
     <>
       <NavBox>
@@ -54,7 +51,7 @@ const Nav = (props) => {
                 //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
                 //   history.push("/login");
                 // } else {
-                  history.push("/write");
+                history.push("/write");
                 // }
               }}
             />
@@ -68,7 +65,7 @@ const Nav = (props) => {
                 //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
                 //   history.push("/login");
                 // } else {
-                  history.push("/chatting");
+                history.push("/chatting");
                 // }
               }}
             />
@@ -81,7 +78,7 @@ const Nav = (props) => {
                 //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
                 //   history.push("/login");
                 // } else {
-                  history.push("/mypage");
+                history.push("/mypage");
                 // }
               }}
             />
@@ -96,6 +93,7 @@ export default Nav;
 
 const NavBox = styled.div`
   width: 100%;
+  max-width: 426px;
   height: 50px;
   padding: 10px 0;
   text-align: center;
@@ -104,6 +102,9 @@ const NavBox = styled.div`
   position: fixed;
   bottom: 0;
   border-top: 1px solid var(--help-color);
+  /* border-right: 1px solid var(--help-color);
+  border-left: 1px solid var(--help-color); */
+
   background-color: #fff;
   z-index: 9999;
 `;

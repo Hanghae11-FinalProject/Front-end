@@ -44,10 +44,13 @@ const PostCard = ({ item }) => {
     <React.Fragment>
       <Grid is_flex>
         <Post onClick={MoveToDetail}>
-          <Grid is_flex flex_align="center">
-            <Image shape="circle" size="34px;">
-              icon
-            </Image>
+          <Grid is_flex flex_align="center" _className="userBox">
+            <ProfileImg>
+              <img
+                src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc5sXof%2FbtrpQSjrN1i%2FK5lwGk9FVONRvTksAYvyJ1%2Fimg.png"
+                alt="profile"
+              />
+            </ProfileImg>
             <Grid padding="5px 0px;" _className="title-box">
               <PostTitle>
                 <p>{item.title}</p>
@@ -97,11 +100,20 @@ const PostCard = ({ item }) => {
 };
 
 const Post = styled.div`
-  width: 100%;
-  border: 1px solid var(--help-color);
+  width: 98%;
+  /* border: 1px solid var(--help-color); */
   padding-top: 5px;
   border-radius: 10px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  margin-left: 1%;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+    rgba(17, 17, 26, 0.1) 0px 0px 8px;
+
+  .userBox {
+    padding-left: 16px;
+  }
+
   .info-box {
     p {
       height: 25px;
@@ -117,8 +129,10 @@ const Post = styled.div`
     width: 100%;
   }
   .btn-box {
-    border-top: 1px solid var(--help-color);
-    padding-left: 15px;
+    width: 90%;
+    margin: 0 auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+
     font-size: 10px;
     .like-btn,
     .chat-btn {
@@ -141,6 +155,19 @@ const Post = styled.div`
         color: var(--main-color);
       }
     }
+  }
+`;
+
+const ProfileImg = styled.div`
+  width: 45px;
+  height: 35px;
+  background-color: var(--main-color);
+  border-radius: 50%;
+  margin-right: 10px;
+  text-align: center;
+  img {
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -216,9 +243,11 @@ const ChipDiv = styled.div`
   justify-content: flex-end;
 
   div {
-    padding: 5px 10px;
+    width: 60px;
     font-size: 12px;
-    border-radius: 12px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 9px;
     text-align: center;
     color: #fff;
   }
