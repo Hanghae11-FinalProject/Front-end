@@ -1,16 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
 
 const ChattingItem = (p) => {
+  const myUserId = getCookie("Id");
   React.useEffect(() => {
     p.testOne();
   }, [p]);
+  // console.log(p.stomp);
 
   const goChat = () => {
+    p.stomp.unsubscribe(`/sub/${myUserId}`);
+    p.stompClient.disconnect();
     history.push({
       pathname: `/chat`,
-      state: { roomName: p.roomData.roomName, sender: p.roomData.user },
+      state: {
+        roomName: p.roomData.roomName,
+        sender: p.roomData.user,
+        postId: p.roomData.postId,
+      },
     });
   };
   return (

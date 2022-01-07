@@ -29,7 +29,6 @@ const Signup = () => {
   const [actId, setActId] = useState(false);
   const [actNic, setActNic] = useState(false);
 
-
   const checkemail = watch("email");
   const checknickname = watch("nickname");
   const checkpw = watch("password");
@@ -175,6 +174,10 @@ const Signup = () => {
                 style={{
                   width: "30px",
                   height: "30px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  history.push("/intro");
                 }}
               />
               <span className="header-title">회원가입</span>
