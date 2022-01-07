@@ -46,10 +46,16 @@ const Main = () => {
     { id: 5, locationName: "성북구" },
   ];
 
-  // useEffect(() => {
-  //   console.log("location", is_location, is_cate, post_page);
-  //   dispatch(postActions.getPostAction(is_location, is_cate, 1));
-  // }, [is_location, is_cate, 1]);
+  //여기서 지역구를 보내야 받아진다
+  useEffect(() => {
+    console.log(
+      "메인페이지에서 리덕스로 보내는 값",
+      is_location,
+      is_cate,
+      post_page
+    );
+    dispatch(postActions.getPostAction(is_location, is_cate, post_page));
+  }, [is_location, is_cate]);
 
   return (
     <>
@@ -258,7 +264,11 @@ const Main = () => {
               </>
             )}
           </LocationBox>
-          <PostList location={is_location} category={is_cate} />
+          <PostList
+            location={is_location}
+            category={is_cate}
+            curpage={post_page}
+          />
           <Nav home={"home"} />
         </Grid>
       </Container>

@@ -41,7 +41,12 @@ const Mypage = () => {
     <Permit>
       <>
         <MypageBox>
-          <Grid is_container padding="16px" _className="border">
+          <Grid is_container _className="border">
+            <Header>
+              <Grid _className="inner" is_container is_flex flex_align="center">
+                <p>마이 페이지</p>
+              </Grid>
+            </Header>
             <UserInfo>
               <IconBox>
                 <Grid _className="icon-img">
@@ -59,7 +64,7 @@ const Mypage = () => {
 
             <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
 
-            <Grid _className="menu-wrap" padding="30px 0;">
+            <Grid _className="menu-wrap" padding="30px 16px;">
               <Grid
                 _className="menu"
                 _onClick={() => {
@@ -170,9 +175,9 @@ const Mypage = () => {
                 <span>회원탈퇴</span>
               </li>
             </ul>
+            <Nav mypage={"mypage"} />
           </Grid>
         </MypageBox>
-        <Nav mypage={"mypage"} />
       </>
     </Permit>
   );
@@ -187,6 +192,8 @@ const MypageBox = styled.div`
     border-left: 1px solid var(--help-color); */
     text-align: center;
     background-color: #fff;
+    padding-top: 30px;
+
     .menu-wrap {
       margin-bottom: 20px;
       .menu {
@@ -218,7 +225,6 @@ const MypageBox = styled.div`
   }
 `;
 
-
 const Header = styled.div`
   width: 100%;
   max-width: 428px;
@@ -246,8 +252,8 @@ const Header = styled.div`
   }
 `;
 
-
 const UserInfo = styled.div`
+  padding: 0 16px;
   .btn {
     background-color: white;
     border: 1px solid var(--main-color);

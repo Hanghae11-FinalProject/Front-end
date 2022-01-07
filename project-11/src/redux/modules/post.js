@@ -4,8 +4,6 @@ import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
 import { getCookie } from "../../shared/Cookie";
 
-
-
 // *** 액션 타입
 const GET_POST = "GET_POST";
 const GET_ONEPOST = "GET_ONEPOST";
@@ -26,8 +24,8 @@ const addChildComment = createAction(ADD_CHILDCOMMENT, (comment) => ({
 }));
 const delComment = createAction(DEL_COMMENT, (commentid) => ({ commentid }));
 // 프로필 수정
-const getProfile = createAction(GET_PROFILE, (profile)=>({ profile }))
-const editProfile = createAction(EDIT_PROFILE, (edit)=>({ edit }));
+const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
+const editProfile = createAction(EDIT_PROFILE, (edit) => ({ edit }));
 
 // *** 초기값
 const initialState = {
@@ -41,25 +39,26 @@ const initialState = {
   location: "",
   category: "",
 
-  profile:[],
-
+  profile: [],
 };
 
 // *** 미들웨어
 
 //프로필 수정
-const getProfileDB= () =>{
-  return async(dispatch, getState,{history})=>{
-    const token = getCookie("Token")
-    await axiosInstance.get('/api/userInfos',{headers:{Authorization: token }})
-    .then((response)=>{
-      console.log(response)
-      dispatch(getProfile(response.data))
-    }).catch((err)=>{
-      console.log(err)
-    })
-  }
-}
+const getProfileDB = () => {
+  return async (dispatch, getState, { history }) => {
+    const token = getCookie("Token");
+    await axiosInstance
+      .get("/api/userInfos", { headers: { Authorization: token } })
+      .then((response) => {
+        console.log(response);
+        dispatch(getProfile(response.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
 
 // axiosInstance.put('/api/userInfos',
 //     {nickname:editName,profileImg:img},
@@ -70,35 +69,42 @@ const getProfileDB= () =>{
 
 // 프로필 수정2
 const editProfileDB = (img, nickname, username) => {
-  return async(dispatch, getState, {history})=>{
-    const token = getCookie("Token")
-    await axiosInstance.put('/api/userInfos',
-        {nickname:nickname,profileImg:img, username:username},
-        {headers:{Authorization: token }})
-        .then((response)=>{
-          console.log(response)
-          dispatch(editProfile({nickname:nickname, profileImg:img, username:username}))
-        }).catch((err)=>{
-          console.log(err);
-        })
-  }
-}
-// get 형식 그대로 백에다가 수정된 데이터 요청하기 
-
-
-
+  return async (dispatch, getState, { history }) => {
+    const token = getCookie("Token");
+    await axiosInstance
+      .put(
+        "/api/userInfos",
+        { nickname: nickname, profileImg: img, username: username },
+        { headers: { Authorization: token } }
+      )
+      .then((response) => {
+        console.log(response);
+        dispatch(
+          editProfile({
+            nickname: nickname,
+            profileImg: img,
+            username: username,
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+// get 형식 그대로 백에다가 수정된 데이터 요청하기
 
 //메인 게시글 조회
 const getPostAction = (area, cate, count) => {
   return async (dispatch, getState, { history }) => {
-    console.log("미들웨어에 넘어온 값 ", area);
+    console.log("미들웨어에 넘어온 값 (장소,카테,페이지) ", area, cate, count);
     axiosInstance
       .post(`api/category?page=${count}`, {
         categoryName: [cate],
         address: [area],
       })
       .then((res) => {
-        console.log("리듀스 저장 전 목록", res.data, count);
+        console.log("통신 후 리듀스 저장 전 목록", res.data, count);
         let is_next = null;
 
         if (res.data.data.length < 5) {
@@ -237,15 +243,14 @@ export default handleActions(
         draft.posts.push(...action.payload._post_data.posts);
 
         //새 값을 받아서 기존의 값에 더해서 중복된 아이들 지워내고 배열에 넣어주기
-        // if (draft.location === "동대문") {
-        //   let arrStr = JSON.stringify(action.payload._post_data.posts);
-        //   const newArr = draft.posts.filter((el, idx) => {
-        //     return arrStr.includes(JSON.stringify(el));
-        //   });
-        //   console.log("걸러진 배열", newArr);
 
-        //   draft.posts.push(...newArr);
-        // }
+        // let arrStr = JSON.stringify(action.payload._post_data.posts);
+        // const newArr = draft.posts.filter((el, idx) => {
+        //   return arrStr.includes(JSON.stringify(el));
+        // });
+        // console.log("걸러진 배열", newArr);
+
+        // draft.posts.push(...newArr);
 
         if (action.payload._post_data.page) {
           draft.page = action.payload._post_data.page;
@@ -287,17 +292,17 @@ export default handleActions(
         draft.post.comments = [...newComment];
       }),
     [GET_PROFILE]: (state, action) =>
-    // draft는 initailstate 저장소 위치 지정 
-    produce(state,(draft)=>{
-    // action.payload는 위에서 전달하는 데이터가 들어있다. dispatch 부분
-      draft.profile = action.payload.profile
-      console.log(action.payload.profile)
-    }),  
+      // draft는 initailstate 저장소 위치 지정
+      produce(state, (draft) => {
+        // action.payload는 위에서 전달하는 데이터가 들어있다. dispatch 부분
+        draft.profile = action.payload.profile;
+        console.log(action.payload.profile);
+      }),
 
     [EDIT_PROFILE]: (state, action) =>
-    produce(state,(draft)=>{
-      draft.profile = action.payload.edit
-    }),  
+      produce(state, (draft) => {
+        draft.profile = action.payload.edit;
+      }),
   },
   initialState
 );
@@ -312,7 +317,6 @@ const actionCreators = {
   get_onepost,
   getProfileDB,
   editProfileDB,
-
 };
 
 export { actionCreators };

@@ -12,7 +12,6 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-import axios from "axios";
 
 const Chatting = () => {
   let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");

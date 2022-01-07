@@ -41,8 +41,7 @@ const MyPost = () => {
       <MyPostBox>
         <Grid is_container _className="border">
           <MainTop>
-
-            <CgChevronLeft
+            <IoIosArrowBack
               size="30"
               className="icon"
               onClick={() => history.goBack()}
@@ -66,8 +65,7 @@ const MyPost = () => {
               })
             )}
           </div>
- <Nav mypage={"mypage"} />
-
+          <Nav mypage={"mypage"} />
         </Grid>
       </MyPostBox>
     </>
@@ -76,12 +74,10 @@ const MyPost = () => {
 
 const MyPostBox = styled.div`
   .border {
-
     height: 100vh;
     /* border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color); */
     background: #fff;
-
     text-align: center;
   }
   .post-box {
