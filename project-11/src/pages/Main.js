@@ -392,6 +392,7 @@ const CateBtn = styled.div`
     align-items: center;
     cursor: pointer;
     background-color: var(--main-color);
+    animation: 0.6s ease-in-out loadEffect3;
     .icon {
       color: #fff;
       font-size: 32px;
@@ -402,7 +403,24 @@ const CateBtn = styled.div`
       margin-top: 5px;
       color: #fff;
     }
-  }
+  }@keyframes loadEffect3 {
+    0%{
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    65%{
+        opacity: 0.65;
+        transform: scale(1.01);
+    }
+    85%{
+        opacity: 0.85;
+        transform: scale(0.97);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
   .inactive {
     .icon {
@@ -430,7 +448,25 @@ const LocationBox = styled.div`
 
   .active {
     color: var(--main-color);
-  }
+    animation: 0.6s ease-in-out loadEffect3;
+  }@keyframes loadEffect3 {
+    0%{
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    65%{
+        opacity: 0.65;
+        transform: scale(1.01);
+    }
+    85%{
+        opacity: 0.85;
+        transform: scale(0.97);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
   .location-option {
     width: 140px;

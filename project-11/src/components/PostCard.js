@@ -165,7 +165,6 @@ const Post = styled.div`
 const ProfileImg = styled.div`
   width: 45px;
   height: 35px;
-  background-color: var(--main-color);
   border-radius: 50%;
   margin-right: 10px;
   text-align: center;
