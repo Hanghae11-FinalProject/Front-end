@@ -16,16 +16,13 @@ const UserModal = (props) => {
 
   const username = useSelector((state) => state.post.profile.username);
 
-  
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
   const token = getCookie("Token");
 
-  const [iconCilck, setIconClick] = useState(false)
-  
- 
+  const [iconCilck, setIconClick] = useState(false);
 
   const CheckActive = () => {
     editName !== name && editName !== ""
@@ -150,14 +147,13 @@ const UserModal = (props) => {
         <ExtraIcon>
           {icons.map((item, i) => {
             return (
-              <Grid       
-              >
+              <Grid>
                 <Image
                   size="50"
                   shape="circle"
                   src={item}
                   key={i}
-                  _className='icon'       
+                  _className="icon"
                   _onClick={() => {
                     setImg(item);
                   }}
@@ -184,24 +180,23 @@ export default UserModal;
 const ExtraIcon = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  .icon{
+  .icon {
     cursor: pointer;
     animation: 0.6s ease-in-out loadEffect2;
-  }@keyframes loadEffect2 {
-    0%{
-        opacity: 0;
-        transform: translateX(-30px);
+  }
+  @keyframes loadEffect2 {
+    0% {
+      opacity: 0;
+      transform: translateX(-30px);
     }
-    50%{
-        opacity: 0.5;
-        transform: translateX(30px);
+    50% {
+      opacity: 0.5;
+      transform: translateX(30px);
     }
-    100%{
-        opacity: 1;
-        transform: translateX(0px);
+    100% {
+      opacity: 1;
+      transform: translateX(0px);
     }
-}
-  
   }
 `;
 
@@ -273,14 +268,16 @@ const IconTitleWrap = styled.div`
 `;
 
 const ModalWrap = styled.div`
-.mount1{ animation: 0.7s ease-in-out loadEffect1; }
+  .mount1 {
+    animation: 0.7s ease-in-out loadEffect1;
+  }
 
-@keyframes loadEffect1 {
-    0%{
-        opacity: 0;
+  @keyframes loadEffect1 {
+    0% {
+      opacity: 0;
     }
-    100%{
-        opacity: 1;
+    100% {
+      opacity: 1;
     }
-}
-`
+  }
+`;

@@ -12,6 +12,7 @@ import ProductImg from "../components/ProductImg";
 import CommentList from "../components/CommentList";
 import CommentInput from "../components/CommentInput";
 import Spinner from "../components/Spinner";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 import styled from "styled-components";
 import { FiStar } from "react-icons/fi";
@@ -197,205 +198,199 @@ const Detail = () => {
   return (
     <>
       {!PostData ? (
-        <></>
+        <>
+          <Spin>
+            <ScaleLoader height="50" width="10" color="#FF626F" radius="8" />
+          </Spin>
+        </>
       ) : (
         <>
-          {!is_loading ? (
-            <>
-              <Spinner />
-            </>
-          ) : (
-            <>
-              <DetailBox key={PostData.postId}>
-                <Grid is_container _className="border">
-                  {/* header */}
-                  {token ? (
-                    <>
-                      <Header>
-                        <Grid
-                          _className="inner"
-                          is_container
-                          is_flex
-                          flex_align="center"
-                        >
-                          <IoIosArrowBack
-                            style={{
-                              width: "30px",
-                              height: "30px",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => history.goBack()}
-                          />
-                          <p>자세히 보기</p>
-                        </Grid>
-                      </Header>
-                    </>
-                  ) : (
-                    <>
-                      <Header>
-                        <Grid
-                          _className="logout-inner"
-                          is_container
-                          is_flex
-                          flex_align="center"
-                        >
-                          <IoIosArrowBack
-                            style={{
-                              width: "30px",
-                              height: "30px",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => history.goBack()}
-                          />
-                          <p>자세히 보기</p>
-                          <button onClick={() => history.push("/intro")}>
-                            로그인
-                          </button>
-                        </Grid>
-                      </Header>
-                    </>
-                  )}
-
-                  {/* 카테고리 */}
-                  <Grid
-                    is_flex
-                    flex_align="center"
-                    flex_justify="space-between"
-                    padding="0 16px"
-                  >
-                    <Cate className="chip">
-                      <span>{PostData.categoryName}</span>
-                      <span>{PostData.address}</span>
-                    </Cate>
-                  </Grid>
-                  {/* 작성자 인포 */}
-                  <Grid
-                    is_flex
-                    flex_align="center"
-                    flex_justify="space-between"
-                    _className="user-info"
-                  >
-                    <Profile>
-                      <img src={PostData.profileImg} alt="profile" />
-                    </Profile>
-                    <UserInfo>
-                      <p className="name">{PostData.nickname}</p>
-                      <p className="time">{PostData.createdAt}</p>
-                    </UserInfo>
-                    <Grid _className="modal-menu">
-                      <BiDotsVerticalRounded
-                        className={btnActive ? "icon" : "inactive-icon"}
-                        onClick={Clickbtn}
+          <DetailBox key={PostData.postId}>
+            <Grid is_container _className="border">
+              {/* header */}
+              {token ? (
+                <>
+                  <Header>
+                    <Grid
+                      _className="inner"
+                      is_container
+                      is_flex
+                      flex_align="center"
+                    >
+                      <IoIosArrowBack
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => history.goBack()}
                       />
-                      {Number(curUserId) === PostData.userId ? (
-                        <>
-                          <Grid
-                            _className={
-                              btnActive ? "inner-menu active" : "inner-menu"
-                            }
-                            _onClick={Clickbtn}
-                          >
-                            <li
-                              onClick={() => {
-                                history.push({
-                                  pathname: `/write/${PostData.postId}`,
-                                  state: { items: items },
-                                });
-                              }}
-                            >
-                              수정하기
-                            </li>
-                            <li onClick={completeExchange}>
-                              거래완료로 변경하기
-                            </li>
-                            <li>공유하기</li>
-                            <li onClick={deletePost}>삭제하기</li>
-                          </Grid>
-                        </>
-                      ) : (
-                        <>
-                          <Grid
-                            _className={
-                              btnActive ? "inner-menu active" : "inner-menu"
-                            }
-                            _onClick={Clickbtn}
-                          >
-                            <li onClick={goChat}>채팅하기</li>
-                            <li>공유하기</li>
-                            <li>신고하기</li>
-                          </Grid>
-                        </>
-                      )}
+                      <p>자세히 보기</p>
                     </Grid>
-                  </Grid>
+                  </Header>
+                </>
+              ) : (
+                <>
+                  <Header>
+                    <Grid
+                      _className="logout-inner"
+                      is_container
+                      is_flex
+                      flex_align="center"
+                    >
+                      <IoIosArrowBack
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => history.goBack()}
+                      />
+                      <p>자세히 보기</p>
+                      <button onClick={() => history.push("/intro")}>
+                        로그인
+                      </button>
+                    </Grid>
+                  </Header>
+                </>
+              )}
 
-                  {/* 컨텐츠 시작 */}
-                  <Grid padding="0 16px">
-                    <Title>
-                      <h2>{PostData.title}</h2>
-                    </Title>
-                    <Content>{PostData.content}</Content>
-                    {/* 상품 이미지 슬라이더 */}
-                    <ProductImg img={PostData.images} />
-                    {/* 해시태그 */}
-                    <Grid is_flex _className="tag">
-                      {PostData.tags.map((tag, i) => {
-                        return (
-                          <>
-                            <span key={tag.id}>#{tag.tagName}</span>
-                          </>
-                        );
-                      })}
-                    </Grid>
-                    {/* 라이크버튼  */}
-                    <Grid is_flex _className="btn-box">
-                      <Grid is_flex _className="like-btn" flex_align="center">
-                        {user_id ? (
-                          <FaStar
-                            className="icon bookmark-active"
-                            onClick={cancelBookmark}
-                          />
-                        ) : (
-                          <FiStar className="icon" onClick={addBookmark} />
-                        )}
-
-                        <span>즐겨찾기 {bmCnt}</span>
-                      </Grid>
-                      <Grid is_flex _className="chat-btn" flex_align="center">
-                        <BsChat className="icon" />
-                        <span>댓글 {commentlist?.length}</span>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  {/* 댓글 리스트 */}
-                  {commentlist ? (
+              {/* 카테고리 */}
+              <Grid
+                is_flex
+                flex_align="center"
+                flex_justify="space-between"
+                padding="0 16px"
+              >
+                <Cate className="chip">
+                  <span>{PostData.categoryName}</span>
+                  <span>{PostData.address}</span>
+                </Cate>
+              </Grid>
+              {/* 작성자 인포 */}
+              <Grid
+                is_flex
+                flex_align="center"
+                flex_justify="space-between"
+                _className="user-info"
+              >
+                <Profile>
+                  <img src={PostData.profileImg} alt="profile" />
+                </Profile>
+                <UserInfo>
+                  <p className="name">{PostData.nickname}</p>
+                  <p className="time">{PostData.createdAt}</p>
+                </UserInfo>
+                <Grid _className="modal-menu">
+                  <BiDotsVerticalRounded
+                    className={btnActive ? "icon" : "inactive-icon"}
+                    onClick={Clickbtn}
+                  />
+                  {Number(curUserId) === PostData.userId ? (
                     <>
-                      {commentlist.map((comment, i) => {
-                        return (
-                          <CommentList
-                            key={comment.id}
-                            comment={comment}
-                            postid={params.id}
-                            postuser={PostData.nickname}
-                          />
-                        );
-                      })}
+                      <Grid
+                        _className={
+                          btnActive ? "inner-menu active" : "inner-menu"
+                        }
+                        _onClick={Clickbtn}
+                      >
+                        <li
+                          onClick={() => {
+                            history.push({
+                              pathname: `/write/${PostData.postId}`,
+                              state: { items: items },
+                            });
+                          }}
+                        >
+                          수정하기
+                        </li>
+                        <li onClick={completeExchange}>거래완료로 변경하기</li>
+                        <li>공유하기</li>
+                        <li onClick={deletePost}>삭제하기</li>
+                      </Grid>
                     </>
                   ) : (
-                    <></>
+                    <>
+                      <Grid
+                        _className={
+                          btnActive ? "inner-menu active" : "inner-menu"
+                        }
+                        _onClick={Clickbtn}
+                      >
+                        <li onClick={goChat}>채팅하기</li>
+                        <li>공유하기</li>
+                        <li>신고하기</li>
+                      </Grid>
+                    </>
                   )}
-
-                  {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
-                  {PostData.comments.length === 0 && (
-                    <Grid is_container>
-                      <CommentInput postid={params.id} />
-                    </Grid>
-                  )}
-                  <Nav />
                 </Grid>
-              </DetailBox>
-            </>
-          )}
+              </Grid>
+
+              {/* 컨텐츠 시작 */}
+              <Grid padding="0 16px">
+                <Title>
+                  <h2>{PostData.title}</h2>
+                </Title>
+                <Content>{PostData.content}</Content>
+                {/* 상품 이미지 슬라이더 */}
+                <ProductImg img={PostData.images} />
+                {/* 해시태그 */}
+                <Grid is_flex _className="tag">
+                  {PostData.tags.map((tag, i) => {
+                    return (
+                      <>
+                        <span key={tag.id}>#{tag.tagName}</span>
+                      </>
+                    );
+                  })}
+                </Grid>
+                {/* 라이크버튼  */}
+                <Grid is_flex _className="btn-box">
+                  <Grid is_flex _className="like-btn" flex_align="center">
+                    {user_id ? (
+                      <FaStar
+                        className="icon bookmark-active"
+                        onClick={cancelBookmark}
+                      />
+                    ) : (
+                      <FiStar className="icon" onClick={addBookmark} />
+                    )}
+
+                    <span>즐겨찾기 {bmCnt}</span>
+                  </Grid>
+                  <Grid is_flex _className="chat-btn" flex_align="center">
+                    <BsChat className="icon" />
+                    <span>댓글 {commentlist?.length}</span>
+                  </Grid>
+                </Grid>
+              </Grid>
+              {/* 댓글 리스트 */}
+              {commentlist ? (
+                <>
+                  {commentlist.map((comment, i) => {
+                    return (
+                      <CommentList
+                        key={comment.id}
+                        comment={comment}
+                        postid={params.id}
+                        postuser={PostData.nickname}
+                      />
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+
+              {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
+              {PostData.comments.length === 0 && (
+                <Grid is_container>
+                  <CommentInput postid={params.id} />
+                </Grid>
+              )}
+              <Nav />
+            </Grid>
+          </DetailBox>
         </>
       )}
     </>
@@ -627,4 +622,17 @@ const Title = styled.div`
 const Content = styled.div`
   max-height: 100px;
   margin-bottom: 20px;
+`;
+
+//spinner
+const Spin = styled.div`
+  width: 100%;
+  max-width: 429px;
+  height: 100vh;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
 `;
