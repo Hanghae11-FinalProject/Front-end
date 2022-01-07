@@ -16,11 +16,16 @@ const UserModal = (props) => {
 
   const username = useSelector((state) => state.post.profile.username);
 
+  
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
   const token = getCookie("Token");
+
+  const [iconCilck, setIconClick] = useState(false)
+  
+ 
 
   const CheckActive = () => {
     editName !== name && editName !== ""
@@ -92,7 +97,7 @@ const UserModal = (props) => {
           },
           content: {
             width: "410px",
-            height: "430px",
+            height: "490px",
             position: "absolute",
             top: "40%",
             left: " 50%",
@@ -145,17 +150,17 @@ const UserModal = (props) => {
         <ExtraIcon>
           {icons.map((item, i) => {
             return (
-              <Grid
-                _onClick={() => {
-                  setImg(item);
-                }}
+              <Grid       
               >
                 <Image
                   size="50"
                   shape="circle"
                   src={item}
                   key={i}
-                  _className="icons"
+                  _className='icon'       
+                  _onClick={() => {
+                    setImg(item);
+                  }}
                 />
               </Grid>
             );
@@ -179,8 +184,24 @@ export default UserModal;
 const ExtraIcon = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  .icons {
+  .icon{
     cursor: pointer;
+    animation: 0.6s ease-in-out loadEffect2;
+  }@keyframes loadEffect2 {
+    0%{
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    50%{
+        opacity: 0.5;
+        transform: translateX(30px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+  
   }
 `;
 
@@ -250,3 +271,16 @@ const IconTitleWrap = styled.div`
     font-weight: bold;
   }
 `;
+
+const ModalWrap = styled.div`
+.mount1{ animation: 0.7s ease-in-out loadEffect1; }
+
+@keyframes loadEffect1 {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+`

@@ -41,6 +41,7 @@ const MyPost = () => {
       <MyPostBox>
         <Grid is_container _className="border">
           <MainTop>
+
             <IoIosArrowBack
               size="30"
               className="icon"
