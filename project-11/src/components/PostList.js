@@ -34,41 +34,45 @@ const PostList = ({ location, category }) => {
 
   useEffect(() => {
     curLocation();
-    console.log("지역, 카테고리", area, category);
-    let _post_data = { area, cate };
-    // console.log("미들웨어로 넘기는 값", _post_data, page);
-    //로딩시 불러오는 데이터
+  }, []);
 
+  useEffect(() => {
+    // let _post_data = { area, cate };
+    console.log("미들웨어로 넘기는 값", area, cate, page);
+    //로딩시 불러오는 데이터
     dispatch(postActions.getPostAction(area, cate, page));
-  }, [area, category, page]);
+  }, [area, cate, page]);
 
   //scroll event
   //스크롤시 다음페이지를 보여주는 것
   const getData = () => {
     let data;
-    let count = page;
+    let count = page + 1;
 
     axiosInstance
       .post(`api/category?page=${count}`, {
-        categoryName: [_post_data.category],
-        address: [_post_data.location],
+        categoryName: [area],
+        address: [cate],
       })
       .then((res) => {
         data = res.data.data;
         console.log("무한 스크롤 동작해서 받아 온 값", data, count);
 
         // //데이터가 사이즈보다 작을 경우
-        // if (data.length === 0 || data.length < 6) {
-        //   sethasMore(false);
-        //   setItems([...items, ...data]);
-        // } else {
-        //데이터가 사이즈만큼 넘어왔을 때
-        setItems([...items, ...data]);
-        setpage(count + 1);
-        console.log("무한스크롤 뒤의 페이지값", page);
-        // }
+        if (data.length < 5) {
+          console.log("사이즈가 작나?");
+          sethasMore(false);
+          setItems([...items, ...data]);
+        } else {
+          //데이터가 사이즈만큼 넘어왔을 때
+          console.log("사이즈가 큰가?");
+          setItems([...items, ...data]);
+          setpage(count);
+          console.log("무한스크롤 뒤의 페이지값", page);
+        }
       });
   };
+
   return (
     <React.Fragment>
       <MainContainer>
@@ -77,19 +81,19 @@ const PostList = ({ location, category }) => {
           next={getData}
           hasMore={hasMore}
         >
-          {/* {post_data.posts.length === 0 ? (
+          {post_data.posts.length === 0 ? (
             <>
               <div className="empty">상품이 없답니다</div>
             </>
-          ) : ( */}
-          <>
-            <Grid _className="post-list">
-              {post_data.posts.map((item, idx) => {
-                return <PostCard key={item.id} item={item} />;
-              })}
-            </Grid>
-          </>
-          {/* )} */}
+          ) : (
+            <>
+              <Grid _className="post-list">
+                {post_data.posts.map((item, idx) => {
+                  return <PostCard key={item.id} item={item} />;
+                })}
+              </Grid>
+            </>
+          )}
         </InfiniteScroll>
       </MainContainer>
     </React.Fragment>

@@ -445,9 +445,9 @@ const EditPost = (items) => {
               />
             </HashInputOuter>
           </HashTagArea>
+          <Nav write={"write"} />
         </Grid>
       </Container>
-      <Nav />
     </React.Fragment>
   );
 };
@@ -456,7 +456,8 @@ const Container = styled.div`
   margin: 0 auto;
   .border {
     height: 100vh;
-    border: 1px solid var(--help-color);
+    /* border: 1px solid var(--help-color); */
+    background-color: #fff;
     .activeBtn {
       color: var(--main-color);
       cursor: pointer;
@@ -469,9 +470,9 @@ const Container = styled.div`
 `;
 
 const MainTop = styled.div`
-  height: 44px;
-  margin: 8px;
-  border-bottom: 2px solid #eee;
+  height: 50px;
+
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
 
   display: flex;
   justify-content: space-between;

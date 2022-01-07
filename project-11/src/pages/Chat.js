@@ -2,15 +2,18 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 import { FaLocationArrow } from "react-icons/fa";
+import { RiArrowLeftRightLine } from "react-icons/ri";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { getCookie } from "../shared/Cookie";
 import MyChat from "../components/MyChat";
 import NotMyChat from "../components/NotMyChat";
+import axios from "axios";
 
 let List = [];
 
 const Chat = (data) => {
+  const token = getCookie("Token");
   let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
   let stompClient = Stomp.over(sockjs);
 
@@ -22,9 +25,26 @@ const Chat = (data) => {
   const receiverId = data.location.state.sender.userId;
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
-  // console.log(sender.profileImg);
-
+  // console.log(data.location.state.sender.nickname);
+  console.log(data);
   React.useEffect(() => {
+    axios
+      .post(
+        `http://13.125.250.43/api/message`,
+        {
+          roomName: roomName,
+          postId: data.location.state.postId,
+          toUserId: receiverId,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((res) => {
+        setMessageList(res.data.message);
+        console.log(res.data, "성공");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     stompClient.connect({}, () => {
       stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
 
@@ -66,18 +86,20 @@ const Chat = (data) => {
         <Grid is_container _className="border">
           <Header>
             <Grid _className="inner" is_container is_flex flex_align="center">
-              <p>Joo</p>
+              <p>{data.location.state.sender.nickname}</p>
             </Grid>
+            <div>
+              {/* {messageList.data.post.myItem}
+              <RiArrowLeftRightLine size="12" />
+              {messageList.data.post.exchangeItem} */}
+            </div>
           </Header>
           <ChatBox ref={scrollRef}>
             {messageList.map((message, idx) => {
-              // console.log(message.senderId, parseInt(myUserId));
               if (parseInt(myUserId) === message.senderId) {
-                // console.log("dd");
                 return <MyChat key={idx} data={message} />;
               } else {
-                // console.log("ss");
-                return <NotMyChat key={idx} data={message} />;
+                return <NotMyChat key={idx} data={message} sender={sender} />;
               }
             })}
 
@@ -117,7 +139,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  height: 50px;
+  height: 64px;
   position: fixed;
   top: 0;
   left: 0;

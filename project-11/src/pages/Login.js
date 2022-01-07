@@ -108,11 +108,11 @@ const LoginWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
-    border: 1px solid var(--help-color);
+    background-color: #fff;
+    /* border: 1px solid var(--help-color); */
     .login-wrap {
       .login-header-wrap {
         height: 50px;
-
         display: flex;
         align-items: center;
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Permit from "../shared/Permit";
-import Chattingitem from "../components/ChattingItem";
+import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
 import SockJS from "sockjs-client";
@@ -12,6 +12,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
+import axios from "axios";
 
 const Chatting = () => {
   let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
@@ -26,6 +27,7 @@ const Chatting = () => {
   const [optionThree, setOptionThree] = useState(false);
   const [newMsgData, setNewMsgData] = useState("");
   const [test, setTest] = useState(true);
+  const [stomp, setStomp] = useState();
 
   const testOne = () => {
     setTest(false);
@@ -59,11 +61,25 @@ const Chatting = () => {
       });
     stompClient.connect({}, () => {
       stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
-      // console.log(myUserId);
-      stompClient.subscribe(`/sub/${myUserId}`, (data) => {
-        const onMessage = JSON.parse(data.body);
-        setNewMsgData(onMessage);
-      });
+      setStomp(
+        stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+          const onMessage = JSON.parse(data.body);
+          setNewMsgData(onMessage);
+          console.log(onMessage);
+          axiosInstance
+            .post(
+              `/api/roomcount`,
+              { roomName: onMessage.roomName, toUserId: onMessage.senderId },
+              { headers: { Authorization: token } }
+            )
+            .then((res) => {
+              console.log(res, "성공");
+            })
+            .catch((err) => {
+              console.log(err, "에러");
+            });
+        })
+      );
     });
   }, []);
 
@@ -173,7 +189,13 @@ const Chatting = () => {
             <div className="chat-item">
               {rooms.map((p, idx) => {
                 return (
-                  <Chattingitem testOne={testOne} roomData={p} key={idx} />
+                  <ChattingItem
+                    testOne={testOne}
+                    stompClient={stompClient}
+                    stomp={stomp}
+                    roomData={p}
+                    key={idx}
+                  />
                 );
               })}
             </div>
@@ -191,14 +213,15 @@ const ChattingWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
+    background-color: white;
     /* min-height: 926px; */
-    border: 1px solid var(--help-color);
+    /* border: 1px solid var(--help-color); */
     position: relative;
 
     .chatting-wrap {
       .chatting-header {
         width: 100%;
-        max-width: 426px;
+        max-width: 428px;
         height: 50px;
         background-color: white;
         box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);

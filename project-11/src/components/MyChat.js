@@ -5,6 +5,7 @@ const MyChat = (props) => {
   return (
     <React.Fragment>
       <MyChatBox>
+        <span className="createdAt">{props.data.createdAt}</span>
         <p className="messages">{props.data.message}</p>
       </MyChatBox>
     </React.Fragment>
@@ -26,6 +27,13 @@ const MyChatBox = styled.div`
     color: white;
     max-width: 278px;
     word-break: break-all;
+  }
+  .createdAt {
+    font-size: 12px;
+    display: flex;
+    align-items: flex-end;
+    margin-right: 6px;
+    color: var(--help-color);
   }
 `;
 export default MyChat;

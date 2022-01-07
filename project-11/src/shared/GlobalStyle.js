@@ -29,6 +29,7 @@ const GlobalStyles = createGlobalStyle`
     color: var(--active-color);
     overflow-x: hidden;
     font-family: 'Noto Sans KR', sans-serif; 
+    background: #FFDADA;
 
     
   }
@@ -64,6 +65,7 @@ const GlobalStyles = createGlobalStyle`
     border-radius: 10px;
     background-color: #aaa;
   }
+
 
 `;
 

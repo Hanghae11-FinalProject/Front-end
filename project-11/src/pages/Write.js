@@ -414,7 +414,8 @@ const Container = styled.div`
   margin: 0 auto;
   .border {
     height: 100vh;
-    border: 1px solid var(--help-color);
+    /* border: 1px solid var(--help-color); */
+    background-color: #fff;
     .activeBtn {
       color: var(--main-color);
       cursor: pointer;
@@ -428,7 +429,6 @@ const Container = styled.div`
 
 const MainTop = styled.div`
   height: 50px;
-
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
 
   display: flex;

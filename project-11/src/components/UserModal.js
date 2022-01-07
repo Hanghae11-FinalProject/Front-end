@@ -2,53 +2,49 @@ import React, { useState, useEffect } from "react";
 import ReactModal from "react-modal";
 import { icons } from "../shared/util";
 import { Image, Grid } from "../elements/index";
-import { axiosInstance } from "../shared/api"; 
+import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as postActions} from "../redux/modules/post";
-
+import { actionCreators as postActions } from "../redux/modules/post";
 
 import styled from "styled-components";
 
 const UserModal = (props) => {
   const { name, isOpen, onCancel } = props;
-  console.log(props)
+  console.log(props);
   const [editName, setEditName] = useState(`${name}`);
 
-  const username = useSelector((state)=>state.post.profile.username)
+  const username = useSelector((state) => state.post.profile.username);
 
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
-  const [img, setImg] = useState("")
-  const token = getCookie('Token')
+  const [img, setImg] = useState("");
+  const token = getCookie("Token");
 
-  const CheckActive = () =>{
-    editName !== name &&
-    editName !== ""
-    ?(nickDoubleChk === "사용 가능한 닉네임 입니다." 
-    ?
-     setActive(false) 
-     : setActive(true))
-     :setActive(true)
-  }
+  const CheckActive = () => {
+    editName !== name && editName !== ""
+      ? nickDoubleChk === "사용 가능한 닉네임 입니다."
+        ? setActive(false)
+        : setActive(true)
+      : setActive(true);
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     CheckActive();
-  },[nickDoubleChk])
-  
-  useEffect(()=>{
-    if(editName === name){
-      setActive(false)
+  }, [nickDoubleChk]);
+
+  useEffect(() => {
+    if (editName === name) {
+      setActive(false);
     }
-  },[])
+  }, []);
 
   // 프로필 수정
   const EditProfile = () => {
-    dispatch(postActions.editProfileDB(img,editName,username)) // 수정된 값을 보내줘야한다.
-    onCancel()
-  }
-  
+    dispatch(postActions.editProfileDB(img, editName, username)); // 수정된 값을 보내줘야한다.
+    onCancel();
+  };
 
   // 닉네임 중복확인
   const nicknameCheck = () => {
@@ -77,7 +73,6 @@ const UserModal = (props) => {
         });
     }
   };
-
 
   const handleClose = () => {
     onCancel();
@@ -114,57 +109,63 @@ const UserModal = (props) => {
         }}
       >
         <TitleWrap>
-        <p className="title">프로필 수정</p>
-        <p className="nickname">닉네임</p>
+          <p className="title">프로필 수정</p>
+          <p className="nickname">닉네임</p>
         </TitleWrap>
         <BtnInputWrap>
-      <input
-        type="text"
-        className="inputform"
-        defaultValue={name}
-        placeholder="한글 또는 영문 10자이내"
-        onKeyUp={CheckActive}
-        onChange={(e) => setEditName(e.target.value)}
-      />
-      <button className="btnck" onClick={nicknameCheck}>중복확인</button>
-      </BtnInputWrap>
-      {nickDoubleChk && (
-              <span
-                style={{
-                  display: "flex",
-                  marginTop: "5px",
-                  color: "red",
-                  fontSize: "13px",
-                }}
-              >
-                {nickDoubleChk}
-              </span>
-            )}
-            <div>
-              <IconTitleWrap>
-                <p className="icontitle">프로필 아이콘</p>
-              </IconTitleWrap>
-
+          <input
+            type="text"
+            className="inputform"
+            defaultValue={name}
+            placeholder="한글 또는 영문 10자이내"
+            onKeyUp={CheckActive}
+            onChange={(e) => setEditName(e.target.value)}
+          />
+          <button className="btnck" onClick={nicknameCheck}>
+            중복확인
+          </button>
+        </BtnInputWrap>
+        {nickDoubleChk && (
+          <span
+            style={{
+              display: "flex",
+              marginTop: "5px",
+              color: "red",
+              fontSize: "13px",
+            }}
+          >
+            {nickDoubleChk}
+          </span>
+        )}
+        <div>
+          <IconTitleWrap>
+            <p className="icontitle">프로필 아이콘</p>
+          </IconTitleWrap>
         </div>
         <ExtraIcon>
           {icons.map((item, i) => {
             return (
-              <Grid _onClick={()=>{setImg(item)}}>
+              <Grid
+                _onClick={() => {
+                  setImg(item);
+                }}
+              >
                 <Image
-                size="50"
-                shape="circle"
-                src={item}
-                key={i}
-                _className="icons"
-              />
+                  size="50"
+                  shape="circle"
+                  src={item}
+                  key={i}
+                  _className="icons"
+                />
               </Grid>
-              
             );
           })}
         </ExtraIcon>
-        
+
         <BtnBox>
-          <Btn onClick={EditProfile} disabled={active}>완료</Btn>
+          <Btn onClick={EditProfile} disabled={active}>
+            완료
+          </Btn>
 
           <Btn onClick={handleClose}>닫기</Btn>
         </BtnBox>
@@ -184,13 +185,13 @@ const ExtraIcon = styled.div`
 `;
 
 const TitleWrap = styled.div`
-  .title{
+  .title {
     margin-bottom: 10px;
     display: flex;
     font-size: 16px;
     font-weight: bold;
   }
-  .nickname{
+  .nickname {
     margin-bottom: 10px;
     font-size: 14px;
     font-weight: bold;
@@ -214,38 +215,38 @@ const Btn = styled.button`
   outline: 0;
   cursor: pointer;
   :disabled {
-        cursor: not-allowed;
-        pointer-events: none;
-        background-color: var(--disabled-color);
-      }
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: var(--disabled-color);
+  }
 `;
 
 const BtnInputWrap = styled.div`
   display: flex;
-  .inputform{
-  width: 85%;
-  padding: 10px 10px;
-  outline: 0;
-  border: 1px solid var(--help-color);
+  .inputform {
+    width: 85%;
+    padding: 10px 10px;
+    outline: 0;
+    border: 1px solid var(--help-color);
   }
-  .btnck{
-  width: 15%;
-  height: 40px;
-  background-color: var(--main-color);
-  color: #fff;
-  border-radius: 6px;
-  margin: 0 5px;
-  border: 0;
-  outline: 0;
-  font-size: 12px;
-  cursor: pointer;
+  .btnck {
+    width: 15%;
+    height: 40px;
+    background-color: var(--main-color);
+    color: #fff;
+    border-radius: 6px;
+    margin: 0 5px;
+    border: 0;
+    outline: 0;
+    font-size: 12px;
+    cursor: pointer;
   }
-`
+`;
 const IconTitleWrap = styled.div`
-margin-top: 20px;
-  .icontitle{
+  margin-top: 20px;
+  .icontitle {
     display: flex;
     font-size: 14px;
     font-weight: bold;
   }
-`
+`;
