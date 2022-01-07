@@ -23,7 +23,7 @@ const MyChatBox = styled.div`
     text-align: left;
     line-height: 24px;
     background-color: var(--main-color);
-    font-size: 14px;
+    font-size: 16px;
     color: white;
     max-width: 278px;
     word-break: break-all;

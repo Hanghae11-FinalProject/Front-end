@@ -3,11 +3,16 @@ import styled from "styled-components";
 
 import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import {
+  IoMdArrowDropdown,
+  IoMdArrowDropup,
+  IoIosArrowBack,
+} from "react-icons/io";
 import { useHistory } from "react-router-dom";
+import { getCookie } from "../shared/Cookie";
 
 const InputAdd = () => {
+  const token = getCookie("Token");
   const history = useHistory();
   const modalClose = React.useRef();
   // disabled 활성화 여부
@@ -67,10 +72,13 @@ const InputAdd = () => {
   // 주소 입력 완료!
   const signUp = () => {
     axiosInstance
-      .post("user/address", { address: is_location })
+      .put(
+        "/user/address",
+        { address: is_location },
+        { headers: { Authorization: token } }
+      )
       .then((res) => {
         console.log("주소입력 완료", res);
-
         history.push("/");
       })
       .catch((err) => {
@@ -264,7 +272,7 @@ const AddressBox = styled.div`
     border: 1px solid var(--help-color);
     border-radius: 5px;
     position: absolute;
-    top: -17.5vh;
+    top: -15.8vh;
     background-color: #fff;
     cursor: pointer;
 

@@ -64,6 +64,9 @@ const Login = () => {
                 width: "30px",
                 height: "30px",
               }}
+              onClick={() => {
+                history.push("/intro");
+              }}
             />
             <span className="header-title">로그인</span>
           </div>
