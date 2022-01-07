@@ -5,6 +5,7 @@ import Nav from "../shared/Nav";
 import { Grid } from "../elements";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { history } from "../redux/configureStore";
 
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
@@ -12,7 +13,6 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-import axios from "axios";
 
 const Chatting = () => {
   let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
@@ -137,17 +137,25 @@ const Chatting = () => {
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
-                <p className="header-title">채팅</p>
-                <Grid _className="ct-wrap">
-                  <BiDotsVerticalRounded
-                    onClick={ModalControl}
-                    style={{
-                      width: "25px",
-                      height: "25px",
+                <div className="arrow-back">
+                  <IoIosArrowBack
+                    size="30"
+                    onClick={() => {
+                      history.goBack();
                     }}
-                    className="point-icon"
                   />
-                </Grid>
+                </div>
+                <p className="header-title">채팅</p>
+                {/* <Grid _className="ct-wrap"> */}
+                <BiDotsVerticalRounded
+                  onClick={ModalControl}
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                  }}
+                  className="point-icon"
+                />
+                {/* </Grid> */}
               </div>
               {is_open && (
                 <>
@@ -232,29 +240,25 @@ const ChattingWrap = styled.div`
 
         .chatting-header-wrap {
           height: 50px;
-          line-height: 50px;
           max-width: 429px;
           margin: 0 auto;
-          position: relative;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
 
           .header-title {
-            width: 88%;
-            padding-left: 45%;
-            position: absolute;
-            left: 0;
-
             font-size: 20px;
             font-weight: bold;
           }
-
-          .ct-wrap {
-            width: 30px;
-            padding-top: 5px;
-            margin-left: 92%;
+          .point-icon {
             cursor: pointer;
-
-            .point-icon {
-            }
+          }
+          .arrow-back {
+            width: 30px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
           }
         }
 
