@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { history } from "../redux/configureStore";
 import styled from "styled-components";
 import { Grid } from "../elements";
@@ -17,7 +17,9 @@ const MyPostCard = (my_List) => {
     >
       <div className="top-side">
         <ChipDiv>
-          <Grid _className="ing">
+          <Grid
+            _className={myList.currentState === "Proceeding" ? "ing" : "stop"}
+          >
             {myList.currentState === "Proceeding" ? "거래중" : "거래완료"}
           </Grid>
         </ChipDiv>
