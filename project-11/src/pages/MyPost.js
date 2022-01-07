@@ -42,7 +42,7 @@ const MyPost = () => {
         <Grid is_container _className="border">
           <MainTop>
 
-            <CgChevronLeft
+            <IoIosArrowBack
               size="30"
               className="icon"
               onClick={() => history.goBack()}
