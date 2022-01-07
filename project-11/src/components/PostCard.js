@@ -39,6 +39,7 @@ const PostCard = ({ item }) => {
   useEffect(() => {
     has_bookmarks();
   }, [item]);
+  console.log(item)
 
   return (
     <React.Fragment>
@@ -47,7 +48,7 @@ const PostCard = ({ item }) => {
           <Grid is_flex flex_align="center" _className="userBox">
             <ProfileImg>
               <img
-                src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc5sXof%2FbtrpQSjrN1i%2FK5lwGk9FVONRvTksAYvyJ1%2Fimg.png"
+                src={item.profileImg}
                 alt="profile"
               />
             </ProfileImg>
