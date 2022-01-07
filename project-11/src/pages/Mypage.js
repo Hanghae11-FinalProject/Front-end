@@ -62,7 +62,7 @@ const Mypage = () => {
               </Button>
             </UserInfo>
 
-            <UserModal  isOpen={modalOpen} onCancel={handleClose} name={name} />
+            <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
 
             <Grid _className="menu-wrap" padding="30px 16px;">
               <Grid
@@ -186,7 +186,7 @@ const Mypage = () => {
 export default Mypage;
 
 const MypageBox = styled.div`
-   .border {
+  .border {
     height: 100vh;
     /* border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color); */
@@ -206,7 +206,7 @@ const MypageBox = styled.div`
         border: 1px solid var(--help-color);
         cursor: pointer;
         &:hover {
-          background-color: var(--help-color);
+          background-color: var(--main-color);
           color: #fff;
         }
       }

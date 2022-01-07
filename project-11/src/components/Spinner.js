@@ -6,7 +6,7 @@ const Spinner = () => {
   return (
     <>
       <SpinnerBox>
-        <ScaleLoader height="100" width="30" color="#FF626F" radius="8" />
+        <ScaleLoader height="50" width="10" color="#FF626F" radius="8" />
       </SpinnerBox>
     </>
   );

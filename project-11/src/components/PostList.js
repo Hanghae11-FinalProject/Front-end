@@ -85,8 +85,8 @@ const PostList = ({ location, category }) => {
             <>
               <Spin>
                 <ScaleLoader
-                  height="100"
-                  width="30"
+                  height="50"
+                  width="10"
                   color="#FF626F"
                   radius="8"
                 />

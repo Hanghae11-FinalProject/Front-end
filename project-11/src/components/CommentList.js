@@ -22,7 +22,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const [btnActive, setBtnActive] = useState(false);
 
   const commentData = comment;
-
+  console.log(commentData);
   //댓글 쓰기
 
   const writeComment = () => {
