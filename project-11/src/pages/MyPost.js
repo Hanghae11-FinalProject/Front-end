@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 import { axiosInstance } from "../shared/api";
-import { CgChevronLeft } from "react-icons/cg";
+import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
 import Nav from "../shared/Nav";
 import MyPostCard from "../components/MyPostCard";
@@ -41,6 +41,7 @@ const MyPost = () => {
       <MyPostBox>
         <Grid is_container _className="border">
           <MainTop>
+
             <CgChevronLeft
               size="30"
               className="icon"
@@ -56,14 +57,17 @@ const MyPost = () => {
               내가 작성한 글
             </TopText>
           </MainTop>
-          {my_List.length === 0 ? (
-            <MpLoginCk />
-          ) : (
-            my_List.map((my_List, idx) => {
-              return <MyPostCard key={idx} my_List={my_List} />;
-            })
-          )}
-          <Nav mypage={"mypage"} />
+          <div className="post-box">
+            {my_List.length === 0 ? (
+              <MpLoginCk />
+            ) : (
+              my_List.map((my_List, idx) => {
+                return <MyPostCard key={idx} my_List={my_List} />;
+              })
+            )}
+          </div>
+ <Nav mypage={"mypage"} />
+
         </Grid>
       </MyPostBox>
     </>
@@ -72,11 +76,22 @@ const MyPost = () => {
 
 const MyPostBox = styled.div`
   .border {
+
     height: 100vh;
     /* border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color); */
     background: #fff;
+
     text-align: center;
+  }
+  .post-box {
+    height: 833px;
+    overflow-y: auto;
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+    ::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    }
   }
 `;
 

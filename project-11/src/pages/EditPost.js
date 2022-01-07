@@ -29,6 +29,7 @@ const EditPost = (items) => {
   const postId = editItems.postId;
   const is_edit = postId ? true : false;
   // console.log(editItems.images);
+  console.log(editItems);
 
   const [title, setTitle] = React.useState(""); // 제목
   const [content, setContent] = React.useState(""); // 내용
@@ -94,10 +95,9 @@ const EditPost = (items) => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    console.log(deleteEditImg); // 뺄거
-    console.log(images); // 새로 보낼거
-    console.log(preImg); // 프리뷰 둘다있음
-    console.log(hashArr); // 해쉬어래이 체크하자잉
+    console.log(myItem);
+    console.log(exchangeItem);
+    console.log(title);
   };
 
   // 교환할 물품 onChange 함수
@@ -115,17 +115,20 @@ const EditPost = (items) => {
     setHashtag(e.target.value);
   };
 
-  // 수정하기 image preview 및 해시태그 불러오기
+  // 수정하기 image preview 및 데이터 불러오기
   React.useEffect(() => {
     let editPre = [];
-    if (is_edit) {
-      setCategory(editItems.categoryName);
-      for (let i = 0; i < editItems.images.length; i++) {
-        editPre.push(editItems.images[i].imageUrl);
-      }
-      setPreImg(editPre); // preview에 저장
-      setCompare(editPre); // 비교용 배열에도 저장
+    for (let i = 0; i < editItems.images.length; i++) {
+      editPre.push(editItems.images[i].imageUrl);
     }
+    setPreImg(editPre); // preview에 저장
+    setCompare(editPre); // 비교용 배열에도 저장
+    setTitle(editItems.title);
+    setContent(editItems.content);
+    setMyItem(editItems.myItem);
+    setExchangeItem(editItems.exchangeItem);
+    setCategory(editItems.categoryName);
+
     // const GetHashContent = document.querySelector(".HashInputOuter"); //HashInputOuter클라스에서 입력하는 요소를 불러온다!
     // const HashWrapInner = document.createElement("div"); // div 만들기
     // HashWrapInner.className = "HashWrapInner";
@@ -256,10 +259,14 @@ const EditPost = (items) => {
     checkActive();
   }, [category]);
 
+  // 수정 페이지 처음 들어올때 액티브 함수 실행
+  React.useEffect(() => {
+    checkActive();
+  }, []);
+
   // 수정하기
   const editPost = async () => {
     const formData = new FormData();
-    // console.log(images);
     for (let i = 0; i < images.length; i++) {
       formData.append("image", images[i]);
     }
@@ -270,9 +277,9 @@ const EditPost = (items) => {
         content: content,
         category: category,
         currentState: currentState,
-        tag: hashArr,
         myItem: myItem,
         exchangeItem: exchangeItem,
+        tag: hashArr,
         images: deleteEditImg,
       })
     );
@@ -284,13 +291,12 @@ const EditPost = (items) => {
       url: `http://13.125.250.43/api/posts/${postId}`,
       data: formData,
       headers: {
-        "Content-type": "multipart/form-data",
         Authorization: token,
       },
     })
       .then((response) => {
         console.log("수정 완료", response);
-        // history.push(`/detail/${postId}`);
+        history.push(`/detail/${postId}`);
       })
       .catch((err) => {
         console.log(err, "에러났니~");

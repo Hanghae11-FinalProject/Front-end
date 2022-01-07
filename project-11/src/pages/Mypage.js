@@ -1,57 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "../shared/Nav";
 import { history } from "../redux/configureStore";
 
 import { Grid, Button } from "../elements/index";
 import styled from "styled-components";
 import UserModal from "../components/UserModal";
-import {
-  MdLock,
-  MdFeedback,
-  MdPersonRemoveAlt1,
-  MdExitToApp,
-} from "react-icons/md";
-import { BsQuestionCircleFill } from "react-icons/bs";
-import { IoIosArrowForward, IoMdSettings } from "react-icons/io";
-import { deleteCookie } from "../shared/Cookie";
+import {MdLock,MdFeedback,MdPersonRemoveAlt1,MdExitToApp} from 'react-icons/md'
+import {BsQuestionCircleFill} from 'react-icons/bs'
+import {IoIosArrowForward,IoMdSettings} from 'react-icons/io'
+import {deleteCookie, getCookie} from '../shared/Cookie'
 import Permit from "../shared/Permit";
+import { axiosInstance } from "../shared/api";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions} from "../redux/modules/post";
+
+// useSelector 리덕스에서 저장한 데이터에 접근하기 위하여 사용한다.
+// initialstate에 profile에 넣어둔 데이터 
 
 const Mypage = () => {
+  const token = getCookie('Token')
   const [modalOpen, setModalOpen] = useState(false);
-  const [name, setName] = useState("Shiba");
+  const [name, setName] = useState("");
+
+  const dispatch = useDispatch();
+  const userProfile = useSelector((state)=>state.post.profile); // initatilstate에서 데이터를 가져오는 방법
+  console.log(userProfile)
+
+  useEffect(()=>{
+    dispatch(postActions.getProfileDB())
+  },[])
+  
+  
+
 
   const handleClose = () => {
     setModalOpen(false);
   };
   return (
     <Permit>
-      <>
-        <MypageBox>
-          <Grid is_container _className="border">
-            <Header>
-              <Grid _className="inner" is_container is_flex flex_align="center">
-                <p>마이 페이지</p>
+    <>
+      <MypageBox>
+        <Grid is_container padding="16px" _className="border">
+          <UserInfo>
+            <IconBox>
+              <Grid _className="icon-img">
+                <img
+                  src={userProfile.profileImg}
+                  alt="icon"
+                />     
               </Grid>
-            </Header>
-            <UserInfo>
-              <IconBox>
-                <Grid _className="icon-img">
-                  <img
-                    src="https://www.urbanbrush.net/web/wp-content/uploads/edd/2020/06/urbanbrush-20200615000825087215.jpg"
-                    alt="icon"
-                  />
-                </Grid>
-                <div className="profile">
-                  <p className="profile-name">{name}</p>
-                  <p className="profile-email">siba@naver.com</p>
-                </div>
-              </IconBox>
-              <Button Btn _className="btn" _onClick={() => setModalOpen(true)}>
-                <p>프로필 수정</p>
-              </Button>
-            </UserInfo>
+              <div className="profile">
+                <p className="profile-name">{userProfile.nickname}</p>
+                <p className="profile-email">{userProfile.username}</p>
+                </div>         
+            </IconBox>
+            <Button Btn _className="btn" _onClick={() => setModalOpen(true)}>
+              <p>프로필 수정</p>
+            </Button>
+          </UserInfo>
 
-            <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
+          <UserModal isOpen={modalOpen} onCancel={handleClose} name={name}  />
+
 
             <Grid _className="menu-wrap" padding="30px 0;">
               <Grid
@@ -164,9 +173,9 @@ const Mypage = () => {
                 <span>회원탈퇴</span>
               </li>
             </ul>
-            <Nav mypage={"mypage"} />
           </Grid>
         </MypageBox>
+        <Nav mypage={"mypage"} />
       </>
     </Permit>
   );
@@ -183,21 +192,17 @@ const MypageBox = styled.div`
     background-color: #fff;
     .menu-wrap {
       margin-bottom: 20px;
-      padding: 30px 16px;
       .menu {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 15px;
         margin: 5px 0;
-
         border-radius: 6px;
-        box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-          rgba(17, 17, 26, 0.1) 0px 0px 8px;
-        /* border: 1px solid var(--help-color); */
+        border: 1px solid var(--help-color);
         cursor: pointer;
         &:hover {
-          background-color: var(--main-color);
+          background-color: var(--help-color);
           color: #fff;
         }
       }
@@ -212,13 +217,10 @@ const MypageBox = styled.div`
       text-align: center;
       width: 25%;
       cursor: pointer;
-
-      span {
-        font-size: 14px;
-      }
     }
   }
 `;
+
 
 const Header = styled.div`
   width: 100%;
@@ -247,8 +249,8 @@ const Header = styled.div`
   }
 `;
 
+
 const UserInfo = styled.div`
-  padding: 30px 16px 0 16px;
   .btn {
     background-color: white;
     border: 1px solid var(--main-color);
@@ -266,14 +268,18 @@ const IconBox = styled.div`
   display: flex;
   align-items: center;
   .icon-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 70px;
     height: 70px;
     border-radius: 50%;
     margin-right: 15px;
-    border: 3px solid var(--main-color);
+    background-color: #FFD8D8;
+
     img {
-      width: 100%;
-      height: 100%;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
     }
   }
