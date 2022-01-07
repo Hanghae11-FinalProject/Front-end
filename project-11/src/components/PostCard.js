@@ -109,7 +109,7 @@ const Post = styled.div`
     rgba(17, 17, 26, 0.15) 0px 0px 8px;
   cursor: pointer;
   .userBox {
-    padding-left: 16px;
+    padding-left: 10px;
   }
 
   .info-box {

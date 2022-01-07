@@ -57,7 +57,7 @@ const CommentList = ({ comment, postid, postuser }) => {
           <Grid is_container _className="comment-box">
             <Grid is_flex flex_align="center" _className="user">
               <Profile>
-                <img src={userProfile.profileImg} alt="UserImg" />
+                <img src={commentData.profileImg} alt="UserImg" />
               </Profile>
               {commentData.nickname === postuser ? (
                 <p>

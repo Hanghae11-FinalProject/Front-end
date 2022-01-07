@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
+
+import { MdOutlineClose } from "react-icons/md";
 
 const SearchHIstory = ({ list, onRemoveKeyword }) => {
   const [key, setKey] = useState();
@@ -24,7 +25,7 @@ const SearchHIstory = ({ list, onRemoveKeyword }) => {
                     onRemoveKeyword(i);
                   }}
                 >
-                  x
+                  <MdOutlineClose />
                 </span>
               </Keyword>
             </>
@@ -58,8 +59,13 @@ const Keyword = styled.div`
   border-radius: 16px;
   margin: 10px 10px 0 0;
   font-size: 14px;
+
+  display: flex;
+  align-items: center;
+
   cursor: pointer;
   span {
+    margin-top: 2px;
     cursor: pointer;
   }
 `;

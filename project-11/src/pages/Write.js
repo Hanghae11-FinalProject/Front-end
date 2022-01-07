@@ -236,7 +236,6 @@ const Write = () => {
     })
       .then((response) => {
         console.log("작성성공이니~", response);
-        // history.push("/");
         window.location.href = "/";
       })
       .catch((err) => {
