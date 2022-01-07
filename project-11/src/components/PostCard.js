@@ -10,7 +10,6 @@ import { FaStar } from "react-icons/fa";
 
 const PostCard = ({ item }) => {
   const curUserId = getCookie("Id");
-  const curUserImg = getCookie("Img");
   const [state, setState] = useState(
     item.currentState === "Proceeding" ? "거래중" : "거래완료"
   );
@@ -47,7 +46,7 @@ const PostCard = ({ item }) => {
         <Post onClick={MoveToDetail}>
           <Grid is_flex flex_align="center" _className="userBox">
             <ProfileImg>
-              <img src={curUserImg} alt="profile" />
+              <img src={item.profileImg} alt="profile" />
             </ProfileImg>
             <Grid padding="5px 0px;" _className="title-box">
               <PostTitle>
@@ -108,7 +107,7 @@ const Post = styled.div`
     rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.15) 0px 0px 8px;
-
+  cursor: pointer;
   .userBox {
     padding-left: 16px;
   }
@@ -158,9 +157,8 @@ const Post = styled.div`
 `;
 
 const ProfileImg = styled.div`
-  width: 45px;
+  width: 35px;
   height: 35px;
-  background-color: var(--main-color);
   border-radius: 50%;
   margin-right: 10px;
   text-align: center;
@@ -194,7 +192,7 @@ const PostImg = styled.div`
     img {
       width: 100%;
       height: 100%;
-      object-fit: fill;
+      object-fit: cover;
     }
   }
 `;

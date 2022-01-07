@@ -8,7 +8,6 @@ import {
   IoMdArrowDropup,
   IoIosArrowBack,
 } from "react-icons/io";
-
 import { useHistory } from "react-router-dom";
 import { getCookie } from "../shared/Cookie";
 
@@ -181,9 +180,10 @@ const InputAdd = () => {
 const InputAddWrap = styled.div`
   .border {
     height: 100vh;
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
     text-align: center;
+    background-color: #fff;
   }
   .text-box {
     margin-top: 28.5vh;
@@ -215,9 +215,8 @@ const InputAddWrap = styled.div`
 `;
 
 const MainTop = styled.div`
-  height: 44px;
-  margin: 8px;
-  border-bottom: 2px solid #eee;
+  height: 50px;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -231,6 +230,7 @@ const MainTop = styled.div`
 
 const TopText = styled.p`
   font-size: 20px;
+  font-weight: bold;
 `;
 
 const AddressBox = styled.div`

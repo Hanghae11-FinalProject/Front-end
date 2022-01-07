@@ -11,6 +11,8 @@ import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
 import CommentList from "../components/CommentList";
 import CommentInput from "../components/CommentInput";
+import Spinner from "../components/Spinner";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 import styled from "styled-components";
 import { FiStar } from "react-icons/fi";
@@ -29,7 +31,6 @@ const Detail = () => {
 
   const [items, setItems] = useState(); // 지우면 안대용~ for Write page
   const [user_id, setUser_id] = useState(false);
-  const comments = useSelector((state) => state.post);
 
   //게시글 전체 데이터 저장
   const [PostData, setPostdata] = useState();
@@ -43,6 +44,7 @@ const Detail = () => {
 
   const commentlist = useSelector((state) => state.post.post.comments);
 
+  // console.log("userid", typeof curUserId, typeof PostData.userId);
   // 포스트id로 포스트 가져오기
   const getPostData = async () => {
     try {
@@ -196,7 +198,11 @@ const Detail = () => {
   return (
     <>
       {!PostData ? (
-        <></>
+        <>
+          <Spin>
+            <ScaleLoader height="50" width="10" color="#FF626F" radius="8" />
+          </Spin>
+        </>
       ) : (
         <>
           <DetailBox key={PostData.postId}>
@@ -249,7 +255,7 @@ const Detail = () => {
                 </>
               )}
 
-              {/* 카테고리 라이크버튼  */}
+              {/* 카테고리 */}
               <Grid
                 is_flex
                 flex_align="center"
@@ -280,7 +286,7 @@ const Detail = () => {
                     className={btnActive ? "icon" : "inactive-icon"}
                     onClick={Clickbtn}
                   />
-                  {curUserName === PostData.nickname ? (
+                  {Number(curUserId) === PostData.userId ? (
                     <>
                       <Grid
                         _className={
@@ -354,7 +360,7 @@ const Detail = () => {
                   </Grid>
                   <Grid is_flex _className="chat-btn" flex_align="center">
                     <BsChat className="icon" />
-                    <span>댓글 {PostData.commentCount}</span>
+                    <span>댓글 {commentlist?.length}</span>
                   </Grid>
                 </Grid>
               </Grid>
@@ -616,4 +622,17 @@ const Title = styled.div`
 const Content = styled.div`
   max-height: 100px;
   margin-bottom: 20px;
+`;
+
+//spinner
+const Spin = styled.div`
+  width: 100%;
+  max-width: 429px;
+  height: 100vh;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
 `;

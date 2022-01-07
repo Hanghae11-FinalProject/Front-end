@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
+import ScaleLoader from "react-spinners/ScaleLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 
@@ -9,12 +10,11 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 
 const PostList = ({ location, category }) => {
-  const _post_data = { location, category };
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
   console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
-  //무한 스크롤을 위한 페이지 값
+  //지역, 카테고리 값 state로 관리
   const [page, setpage] = useState(post_data.page);
   const [area, setarea] = useState(location);
   const [cate, setcate] = useState(category);
@@ -59,7 +59,7 @@ const PostList = ({ location, category }) => {
         console.log("무한 스크롤 동작해서 받아 온 값", data, count);
 
         // //데이터가 사이즈보다 작을 경우
-        if (data.length < 5) {
+        if (data.length === 0 || data.length < 6) {
           console.log("사이즈가 작나?");
           sethasMore(false);
           setItems([...items, ...data]);
@@ -67,12 +67,12 @@ const PostList = ({ location, category }) => {
           //데이터가 사이즈만큼 넘어왔을 때
           console.log("사이즈가 큰가?");
           setItems([...items, ...data]);
-          setpage(count);
-          console.log("무한스크롤 뒤의 페이지값", page);
         }
+
+        setpage(count);
+        console.log("무한스크롤 뒤의 페이지값", page);
       });
   };
-
   return (
     <React.Fragment>
       <MainContainer>
@@ -83,7 +83,14 @@ const PostList = ({ location, category }) => {
         >
           {post_data.posts.length === 0 ? (
             <>
-              <div className="empty">상품이 없답니다</div>
+              <Spin>
+                <ScaleLoader
+                  height="50"
+                  width="10"
+                  color="#FF626F"
+                  radius="8"
+                />
+              </Spin>
             </>
           ) : (
             <>
@@ -115,4 +122,11 @@ const MainContainer = styled.div`
   }
 `;
 
+const Spin = styled.div`
+  height: 65vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center; ;
+`;
 export default PostList;

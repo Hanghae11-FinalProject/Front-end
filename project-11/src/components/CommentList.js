@@ -12,8 +12,9 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 const CommentList = ({ comment, postid, postuser }) => {
   const token = getCookie("Token");
-  const curUserName = getCookie("Name");
-  const curUserImg = getCookie("Img");
+  const curUserId = getCookie("Id");
+  const userProfile = useSelector((state) => state.post.profile);
+  console.log(userProfile);
   const dispatch = useDispatch();
 
   const [is_login, setIs_login] = useState(token ? true : false);
@@ -21,7 +22,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const [btnActive, setBtnActive] = useState(false);
 
   const commentData = comment;
-
+  console.log(commentData);
   //댓글 쓰기
 
   const writeComment = () => {
@@ -56,7 +57,7 @@ const CommentList = ({ comment, postid, postuser }) => {
           <Grid is_container _className="comment-box">
             <Grid is_flex flex_align="center" _className="user">
               <Profile>
-                <img src={curUserImg} alt="curUserImg" />
+                <img src={userProfile.profileImg} alt="UserImg" />
               </Profile>
               {commentData.nickname === postuser ? (
                 <p>
@@ -75,7 +76,7 @@ const CommentList = ({ comment, postid, postuser }) => {
                   _onClick={Clickbtn}
                 >
                   {/* 현재 로그인 유저아이디와 댓글작성 유저 아이디가 다르다면 모달 메뉴가 달라짐 */}
-                  {is_login && curUserName === commentData.nickname ? (
+                  {is_login && Number(curUserId) === commentData.userId ? (
                     <>
                       <li onClick={deleteComment}>삭제하기</li>
                     </>

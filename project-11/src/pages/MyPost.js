@@ -78,7 +78,6 @@ const MyPostBox = styled.div`
     /* border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color); */
     background: #fff;
-
     text-align: center;
   }
   .post-box {
