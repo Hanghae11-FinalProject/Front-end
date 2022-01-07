@@ -186,9 +186,10 @@ export default Mypage;
 const MypageBox = styled.div`
   .border {
     height: 100vh;
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
     text-align: center;
+    background-color: #fff;
     .menu-wrap {
       margin-bottom: 20px;
       .menu {
@@ -219,6 +220,36 @@ const MypageBox = styled.div`
     }
   }
 `;
+
+
+const Header = styled.div`
+  width: 100%;
+  max-width: 428px;
+  height: 50px;
+  position: fixed;
+  top: 0;
+
+  /* border-bottom: 1px solid var(--help-color); */
+  background-color: #fff;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  .inner {
+    height: 50px;
+    margin: 0 auto;
+
+    p {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      text-align: center;
+
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+`;
+
+
 const UserInfo = styled.div`
   .btn {
     background-color: white;

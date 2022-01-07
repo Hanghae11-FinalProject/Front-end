@@ -12,24 +12,17 @@ import { GrClose } from "react-icons/gr";
 
 const CommentInput = ({ name, postid, commentid }) => {
   const token = getCookie("Token");
-
   const dispatch = useDispatch();
-  // const comments = useSelector((state) => state.post.comments);
+  const responseTo = name;
   const [Newcomment, setNewComment] = useState();
   const [replyId, setReplyId] = useState(commentid);
   const [replyName, setReplyName] = useState(name ? true : false);
 
-  console.log(
-    "대댓글을 위한 값들 이름,포스트아이디, 댓글아이디",
-    name,
-    postid,
-    replyId
-  );
   //댓글 쓰기
   const writeComment = (e) => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/intro");
     }
     setNewComment(e.target.value);
   };
@@ -38,11 +31,17 @@ const CommentInput = ({ name, postid, commentid }) => {
   const postComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/intro");
     }
     dispatch(postActions.add_comment(postid, replyId, Newcomment));
     setNewComment("");
   };
+
+  // useEffect(() => {
+  //   if (!replyName) {
+  //     setReplyName(true);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -61,7 +60,9 @@ const CommentInput = ({ name, postid, commentid }) => {
                 <span>
                   <GrClose
                     className="close-btn"
-                    onClick={() => setReplyName(false)}
+                    onClick={() => {
+                      setReplyName(false);
+                    }}
                   />
                 </span>
               </Grid>
@@ -81,10 +82,10 @@ const CommentInput = ({ name, postid, commentid }) => {
                 <IoPaperPlane
                   className="add-btn"
                   onClick={() => {
-                    console.log("hello nickname ver", replyId);
                     dispatch(
                       postActions.add_childcomment(postid, replyId, Newcomment)
                     );
+                    setNewComment("");
                   }}
                 />
               </Grid>
@@ -122,7 +123,7 @@ const CommentInputBox = styled.div`
     position: fixed;
     bottom: 50px;
     width: 100%;
-    max-width: 426px;
+    max-width: 428px;
     background-color: #fff;
     padding: 10px 16px;
     box-sizing: border-box;
@@ -169,6 +170,13 @@ const CommentInputBox = styled.div`
 
         cursor: pointer;
       }
+    }
+
+    .comment-box-active {
+      display: block;
+    }
+    .comment-box-inactive {
+      display: none;
     }
   }
 `;

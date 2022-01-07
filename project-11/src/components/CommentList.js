@@ -13,9 +13,9 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 const CommentList = ({ comment, postid, postuser }) => {
   const token = getCookie("Token");
   const curUserName = getCookie("Name");
+  const curUserImg = getCookie("Img");
   const dispatch = useDispatch();
-  const childcomments = useSelector((state) => state.post.children);
-  console.log(childcomments);
+
   const [is_login, setIs_login] = useState(token ? true : false);
   const [name, setName] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
@@ -27,7 +27,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const writeComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/intro");
     }
     setName(commentData.nickname);
   };
@@ -55,7 +55,9 @@ const CommentList = ({ comment, postid, postuser }) => {
         <CommentBox key={commentData.id}>
           <Grid is_container _className="comment-box">
             <Grid is_flex flex_align="center" _className="user">
-              <Profile></Profile>
+              <Profile>
+                <img src={curUserImg} alt="curUserImg" />
+              </Profile>
               {commentData.nickname === postuser ? (
                 <p>
                   {commentData.nickname} <span className="chip">작성자</span>
@@ -92,9 +94,9 @@ const CommentList = ({ comment, postid, postuser }) => {
               <span>{commentData.createAt}</span>
             </Grid>
             {/* 부모 댓글에 속해 있는 자식 댓글들 */}
-            {childcomments ? (
+            {commentData.children ? (
               <>
-                {childcomments.map((reply, idx) => {
+                {commentData.children.map((reply, idx) => {
                   return (
                     <>
                       <Reply
@@ -116,17 +118,13 @@ const CommentList = ({ comment, postid, postuser }) => {
 
       {/* 코멘트 인풋창 */}
       {/* comment list가 있을때는 name이 붙는 인풋으로 아니면 디폴트 인풋창으로 */}
-      {name ? (
+      {name && (
         <CommentInput
           name={commentData.nickname}
           postid={postid}
           // parent id
           commentid={commentData.id}
         />
-      ) : (
-        <>
-          <CommentInput postid={postid} />
-        </>
       )}
       <CommentInput postid={postid} />
     </>
@@ -206,11 +204,20 @@ const CommentBox = styled.div`
 `;
 
 const Profile = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: var(--help-color);
   margin-right: 10px;
+  background-color: #ffd8d8;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const Comment = styled.div`

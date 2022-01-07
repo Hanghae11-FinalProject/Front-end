@@ -7,12 +7,12 @@ import Nav from "../shared/Nav";
 const MpLoginCk = () => {
   return (
     <LoginCkWrap>
-      <Grid is_container="container" _className="border">
+      <Grid is_container="container" _className="container-border">
         <div className="modal-wrap">
           <div className="icon-wrap">
-            <img src="/static/핑이 기본.png" />
-            <img src="/static/핑이 분노.png" />
-            <img src="/static/핑이 행복.png" />
+            <img src="/static/핑이 기본.png" alt="default" />
+            <img src="/static/핑이 분노.png" alt="default" />
+            <img src="/static/핑이 행복.png" alt="default" />
           </div>
           <div className="title">
             <p>작성한 글이 없어요</p>
@@ -36,12 +36,13 @@ const MpLoginCk = () => {
 export default MpLoginCk;
 
 const LoginCkWrap = styled.div`
-  .border {
-    /* border: 1px solid var(--help-color); */
+  .container-border {
     height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background-color: #fff;
     .modal-wrap {
       text-align: center;
       width: 100%;

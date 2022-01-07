@@ -29,7 +29,7 @@ const Detail = () => {
 
   const [items, setItems] = useState(); // 지우면 안대용~ for Write page
   const [user_id, setUser_id] = useState(false);
-  const comments = useSelector((state) => state.post.comments);
+  const comments = useSelector((state) => state.post);
 
   //게시글 전체 데이터 저장
   const [PostData, setPostdata] = useState();
@@ -40,6 +40,8 @@ const Detail = () => {
   const [bm, setCheckBm] = useState([]);
 
   const [btnActive, setBtnActive] = useState(false);
+
+  const commentlist = useSelector((state) => state.post.post.comments);
 
   // 포스트id로 포스트 가져오기
   const getPostData = async () => {
@@ -186,6 +188,9 @@ const Detail = () => {
 
   useEffect(() => {
     dispatch(postActions.get_Comment(params.id));
+
+    //댓글관리를 위한
+    dispatch(postActions.get_onepost(params.id));
   }, []);
 
   return (
@@ -210,7 +215,9 @@ const Detail = () => {
                         style={{
                           width: "30px",
                           height: "30px",
+                          cursor: "pointer",
                         }}
+                        onClick={() => history.goBack()}
                       />
                       <p>자세히 보기</p>
                     </Grid>
@@ -229,10 +236,14 @@ const Detail = () => {
                         style={{
                           width: "30px",
                           height: "30px",
+                          cursor: "pointer",
                         }}
+                        onClick={() => history.goBack()}
                       />
                       <p>자세히 보기</p>
-                      <button>로그인</button>
+                      <button onClick={() => history.push("/intro")}>
+                        로그인
+                      </button>
                     </Grid>
                   </Header>
                 </>
@@ -348,17 +359,22 @@ const Detail = () => {
                 </Grid>
               </Grid>
               {/* 댓글 리스트 */}
-
-              {comments.map((comment, i) => {
-                return (
-                  <CommentList
-                    key={comment.id}
-                    comment={comment}
-                    postid={params.id}
-                    postuser={PostData.nickname}
-                  />
-                );
-              })}
+              {commentlist ? (
+                <>
+                  {commentlist.map((comment, i) => {
+                    return (
+                      <CommentList
+                        key={comment.id}
+                        comment={comment}
+                        postid={params.id}
+                        postuser={PostData.nickname}
+                      />
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
 
               {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
               {PostData.comments.length === 0 && (
@@ -377,12 +393,20 @@ const Detail = () => {
 
 export default Detail;
 const DetailBox = styled.div`
-  padding-bottom: 150px;
-
   .border {
     padding-top: 60px;
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
+    height: 100vh;
+    padding-bottom: 110px;
+    background-color: #fff;
+
+    overflow-y: auto;
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+    ::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    }
   }
 
   .user-info {
@@ -497,7 +521,7 @@ const DetailBox = styled.div`
 // 헤더
 const Header = styled.div`
   width: 100%;
-  max-width: 426px;
+  max-width: 428px;
   height: 50px;
   position: fixed;
   top: 0;
@@ -511,9 +535,9 @@ const Header = styled.div`
     margin: 0 auto;
 
     p {
-      width: 100%;
+      width: 90%;
       position: absolute;
-      left: 0;
+      left: 5%;
       text-align: center;
 
       font-size: 20px;
@@ -530,9 +554,9 @@ const Header = styled.div`
     margin: 0 auto;
 
     p {
-      width: 100%;
+      width: 90%;
       position: absolute;
-      left: 0;
+      left: 5%;
       text-align: center;
 
       font-size: 20px;

@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { Grid } from "../elements/index";
+import React, { useState, useEffect } from "react";
+import { history } from "../redux/configureStore";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
 import { getCookie } from "../shared/Cookie";
+import { Grid } from "../elements/index";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Autoplay } from "swiper";
@@ -27,6 +30,9 @@ SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
   const token = getCookie("Token");
+  //redux 가져오기
+  const dispatch = useDispatch();
+  const post_page = useSelector((state) => state.post.page);
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
@@ -39,6 +45,11 @@ const Main = () => {
     { id: 4, locationName: "서대문구" },
     { id: 5, locationName: "성북구" },
   ];
+
+  // useEffect(() => {
+  //   console.log("location", is_location, is_cate, post_page);
+  //   dispatch(postActions.getPostAction(is_location, is_cate, 1));
+  // }, [is_location, is_cate, 1]);
 
   return (
     <>
@@ -67,7 +78,7 @@ const Main = () => {
                   flex_align="center"
                 >
                   <p>전체 글 보기</p>
-                  <button>로그인</button>
+                  <button onClick={() => history.push("/intro")}>로그인</button>
                 </Grid>
               </Header>
             </>
@@ -260,8 +271,16 @@ const Container = styled.div`
 
   .border {
     /* height: 100vh; */
+    /* border: 1px solid var(--help-color); */
+    background: #fff;
     padding-top: 50px;
-    border: 1px solid var(--help-color);
+    /*
+    overflow-y: auto;
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+    ::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    } */
   }
 `;
 

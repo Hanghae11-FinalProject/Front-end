@@ -9,6 +9,7 @@ import { getCookie } from "../../shared/Cookie";
 // *** 액션 타입
 const GET_POST = "GET_POST";
 const GET_ONEPOST = "GET_ONEPOST";
+const GET_DETAIL = "GET_DETAIL";
 const ADD_COMMENT = "ADD_COMMENT";
 const ADD_CHILDCOMMENT = "ADD_CHILDCOMMENT";
 const DEL_COMMENT = "DEL_COMMENT";
@@ -18,6 +19,7 @@ const GET_PROFILE = "GET_PROFILE";
 // *** 액션 생성 함수
 const getPosts = createAction(GET_POST, (_post_data) => ({ _post_data }));
 const getOnePost = createAction(GET_ONEPOST, (data) => ({ data }));
+const getDetail = createAction(GET_DETAIL, (data) => ({ data }));
 const addComment = createAction(ADD_COMMENT, (comment) => ({ comment }));
 const addChildComment = createAction(ADD_CHILDCOMMENT, (comment) => ({
   comment,
@@ -29,13 +31,18 @@ const editProfile = createAction(EDIT_PROFILE, (edit)=>({ edit }));
 
 // *** 초기값
 const initialState = {
+  post: [],
   posts: [],
   page: 0,
   has_next: false,
   comments: [],
   children: [],
   commentCnt: "",
+  location: "",
+  category: "",
+
   profile:[],
+
 };
 
 // *** 미들웨어
@@ -84,7 +91,7 @@ const editProfileDB = (img, nickname, username) => {
 //메인 게시글 조회
 const getPostAction = (area, cate, count) => {
   return async (dispatch, getState, { history }) => {
-    // console.log("미들웨어에 넘어온 지역 ", post_data);
+    console.log("미들웨어에 넘어온 값 ", area);
     axiosInstance
       .post(`api/category?page=${count}`, {
         categoryName: [cate],
@@ -94,7 +101,7 @@ const getPostAction = (area, cate, count) => {
         console.log("리듀스 저장 전 목록", res.data, count);
         let is_next = null;
 
-        if (res.data.data.length < 6) {
+        if (res.data.data.length < 5) {
           is_next = false;
         } else {
           is_next = true;
@@ -110,7 +117,23 @@ const getPostAction = (area, cate, count) => {
   };
 };
 
-//게시글 하나만 가져오기
+//게시글 가져오기
+const get_onepost = (postid) => {
+  return (dispatch, getState, { history }) => {
+    axiosInstance
+      .get(`/api/posts/${postid}`)
+      .then((res) => {
+        console.log("redux detail post", res.data);
+        const _data = res.data;
+        dispatch(getDetail(_data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+//게시글 댓글만 가져오기
 const get_Comment = (postid) => {
   return (dispatch, getState, { history }) => {
     axiosInstance
@@ -213,17 +236,16 @@ export default handleActions(
         //카테고리를 셀렉해주기 위해서 push대신에 하지만 무한스크롤을 위해push해야함
         draft.posts.push(...action.payload._post_data.posts);
 
-        console.log("리듀서 페이지 값 저장", action.payload._post_data.page);
+        //새 값을 받아서 기존의 값에 더해서 중복된 아이들 지워내고 배열에 넣어주기
+        // if (draft.location === "동대문") {
+        //   let arrStr = JSON.stringify(action.payload._post_data.posts);
+        //   const newArr = draft.posts.filter((el, idx) => {
+        //     return arrStr.includes(JSON.stringify(el));
+        //   });
+        //   console.log("걸러진 배열", newArr);
 
-        //한개만 가져오는 것과 중복된 리스트내용 지워주기
-        draft.posts = draft.posts.reduce((acc, cur) => {
-          if (acc.findIndex((a) => a.postId === cur.postId) === -1) {
-            return [...acc, cur];
-          } else {
-            acc[acc.findIndex((a) => a.postId === cur.postId)] = cur;
-            return acc;
-          }
-        }, []);
+        //   draft.posts.push(...newArr);
+        // }
 
         if (action.payload._post_data.page) {
           draft.page = action.payload._post_data.page;
@@ -232,34 +254,37 @@ export default handleActions(
         draft.has_next = action.payload._post_data.next;
       }),
 
-    [GET_ONEPOST]: (state, action) =>
+    [GET_DETAIL]: (state, action) =>
       produce(state, (draft) => {
-        draft.comments = action.payload.data;
-        draft.children = action.payload.data[0].children;
-        draft.commentCnt = action.payload.data.length;
+        draft.post = action.payload.data;
       }),
+
+    // [GET_ONEPOST]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     draft.posts.comments = action.payload.data;
+    // draft.children = action.payload.data[0].children;
+    // draft.commentCnt = action.payload.data.length;
+    // }),
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.comments.push(action.payload.comment.data);
+        //post 안에 comments!!!
+        draft.post.comments.push(action.payload.comment.data);
       }),
 
     [ADD_CHILDCOMMENT]: (state, action) =>
       produce(state, (draft) => {
         console.log(draft.children, "children");
-        draft.children.push(action.payload.comment.data);
+        draft.post.comments[0].children.push(action.payload.comment.data);
       }),
 
     [DEL_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        console.log("action payload", action.payload.commentid);
-        console.log("draft.comments", draft.comments);
-
-        const newComment = draft.comments.filter(
+        const newComment = draft.post.comments.filter(
           (co, id) => co.id !== action.payload.commentid
         );
         console.log(newComment, "newcomment");
-        draft.comments = [...newComment];
+        draft.post.comments = [...newComment];
       }),
     [GET_PROFILE]: (state, action) =>
     // draft는 initailstate 저장소 위치 지정 
@@ -284,8 +309,10 @@ const actionCreators = {
   add_comment,
   del_comment,
   add_childcomment,
+  get_onepost,
   getProfileDB,
   editProfileDB,
+
 };
 
 export { actionCreators };
