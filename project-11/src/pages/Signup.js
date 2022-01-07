@@ -329,7 +329,8 @@ const SignupWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
-    border: 1px solid var(--help-color);
+    background-color: #fff;
+    /* border: 1px solid var(--help-color); */
 
     .signup-wrap {
       .signup-header-wrap {
@@ -425,7 +426,6 @@ const SignupWrap = styled.div`
         cursor: pointer;
       }
       .drop-location {
-
         width: 191px;
         height: 162px;
         border: 1px solid var(--help-color);

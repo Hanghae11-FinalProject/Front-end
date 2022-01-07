@@ -8,8 +8,6 @@ import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
 
-import Permit from "./Permit";
-
 import styled from "styled-components";
 
 const Nav = (props) => {
@@ -93,7 +91,7 @@ export default Nav;
 
 const NavBox = styled.div`
   width: 100%;
-  max-width: 426px;
+  max-width: 428px;
   height: 50px;
   padding: 10px 0;
   text-align: center;

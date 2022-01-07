@@ -3,9 +3,11 @@ import { axiosInstance } from "../shared/api";
 import Nav from "../shared/Nav";
 import SearchHIstory from "../components/SearchHIstory";
 import PostCard from "../components/PostCard";
+import SearchEmpty from "../components/SearchEmpty";
 import { getCookie } from "../shared/Cookie";
-
+import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
+
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiSearch } from "react-icons/bi";
@@ -16,6 +18,7 @@ const Search = () => {
   const [recent, setRecent] = useState(preWord || []);
   const [key, setKey] = useState("");
   const [search_data, setSearch_data] = useState([]);
+  const [noresult, setNoresult] = useState();
   const [page, setPage] = useState(1);
   const [recommend, setRecommend] = useState([]);
   const [postcnt, setPostcnt] = useState(0);
@@ -33,7 +36,9 @@ const Search = () => {
       });
   };
 
+  //onkeyup event
   const handlekeyup = (e) => {
+    setNoresult("검색중입니다");
     if (key && e.key === "Enter") {
       console.log(e.target.value);
       setRecent([e.target.value, ...preWord]);
@@ -44,6 +49,9 @@ const Search = () => {
           console.log("검색완료", res);
           setSearch_data(res.data.data.posts);
           setPostcnt(res.data.data.postCnt);
+          if (res.data.data.postCnt === 0) {
+            setNoresult("일치하는 내용이 없어요");
+          }
           // setKey("");
         })
         .catch((err) => {
@@ -52,9 +60,9 @@ const Search = () => {
       // setKey("");
     }
 
-    // if (!key) {
-    //   setSearch_data([]);
-    // }
+    if (!key) {
+      setSearch_data([]);
+    }
   };
 
   //최근 검색어 5개 제한
@@ -96,7 +104,9 @@ const Search = () => {
                     style={{
                       width: "30px",
                       height: "30px",
+                      cursor: "pointer",
                     }}
+                    onClick={() => history.goBack()}
                   />
                   <p>검색</p>
                 </Grid>
@@ -115,10 +125,12 @@ const Search = () => {
                     style={{
                       width: "30px",
                       height: "30px",
+                      cursor: "pointer",
                     }}
+                    onClick={() => history.goBack()}
                   />
                   <p>검색</p>
-                  <button>로그인</button>
+                  <button onClick={() => history.push("/intro")}>로그인</button>
                 </Grid>
               </Header>
             </>
@@ -196,7 +208,8 @@ const Search = () => {
 
           {/* 검색할 데이터가 없을 경우 */}
           {search_data.length === 0 ? (
-            <>검색 결과가 없습니다</>
+            // 검색바에 검색어가 입력되어있을 때 서치 중이라고 떴다가, onkeyup 일어난 후 결과가 없다면 없다고 나옵니다
+            <>{key.length > 0 && <SearchEmpty result={noresult} />}</>
           ) : (
             <>
               {/* 검색한 데이터가 있을 경우 */}
@@ -222,9 +235,9 @@ export default Search;
 const SearchList = styled.div`
   .border {
     height: 100vh;
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
-
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
+    background-color: #fff;
     padding: 60px 0px 10px 0px;
 
     .input-form {
@@ -268,24 +281,24 @@ const SearchList = styled.div`
 // 헤더
 const Header = styled.div`
   width: 100%;
+  max-width: 428px;
   height: 50px;
   position: fixed;
   top: 0;
-  left: 0;
 
-  background-color: #fff;
   z-index: 10;
   .inner {
     height: 50px;
     margin: 0 auto;
     box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
+    background-color: #fff;
 
     p {
-      width: 100%;
+      width: 90%;
       position: absolute;
-      left: 0;
+      left: 5%;
       text-align: center;
 
       font-size: 20px;
@@ -296,16 +309,17 @@ const Header = styled.div`
   .logout-inner {
     height: 50px;
     margin: 0 auto;
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
     box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
 
     p {
-      width: 100%;
+      width: 90%;
       position: absolute;
-      left: 0;
+      left: 5%;
       text-align: center;
 
       font-size: 20px;

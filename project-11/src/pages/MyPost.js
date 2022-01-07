@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import styled from "styled-components";
 
+import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 import { axiosInstance } from "../shared/api";
 import { CgChevronLeft } from "react-icons/cg";
@@ -40,8 +41,20 @@ const MyPost = () => {
       <MyPostBox>
         <Grid is_container _className="border">
           <MainTop>
-            <CgChevronLeft size="30" className="icon" />
-            <TopText style={{ marginLeft: "6px" }}>내가 작성한 글</TopText>
+            <CgChevronLeft
+              size="30"
+              className="icon"
+              onClick={() => history.goBack()}
+            />
+            <TopText
+              style={{
+                marginLeft: "6px",
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              내가 작성한 글
+            </TopText>
           </MainTop>
           {my_List.length === 0 ? (
             <MpLoginCk />
@@ -50,9 +63,9 @@ const MyPost = () => {
               return <MyPostCard key={idx} my_List={my_List} />;
             })
           )}
+          <Nav mypage={"mypage"} />
         </Grid>
       </MyPostBox>
-      <Nav />
     </>
   );
 };
@@ -60,16 +73,17 @@ const MyPost = () => {
 const MyPostBox = styled.div`
   .border {
     height: 100vh;
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
+    background: #fff;
     text-align: center;
   }
 `;
 
 const MainTop = styled.div`
-  height: 44px;
-  margin: 0 8px;
-  border-bottom: 2px solid #eee;
+  height: 50px;
+
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;

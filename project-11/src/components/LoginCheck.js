@@ -10,9 +10,9 @@ const LoginCheck = () => {
       <Grid is_container="container" _className="border">
         <div className="modal-wrap">
           <div className="icon-wrap">
-            <img src="/static/핑이 기본.png" />
-            <img src="/static/핑이 분노.png" />
-            <img src="/static/핑이 행복.png" />
+            <img src="/static/핑이 기본.png" alt="default" />
+            <img src="/static/핑이 분노.png" alt="default" />
+            <img src="/static/핑이 행복.png" alt="default" />
           </div>
           <div className="title">
             <p>서비스를 이용하려면</p>
@@ -38,8 +38,10 @@ export default LoginCheck;
 
 const LoginCkWrap = styled.div`
   .border {
-    border: 1px solid var(--help-color);
+    /* border: 1px solid var(--help-color); */
     height: 100vh;
+    background-color: #fff;
+
     display: flex;
     justify-content: center;
     align-items: center;

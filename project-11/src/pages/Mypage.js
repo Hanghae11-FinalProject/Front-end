@@ -177,9 +177,10 @@ export default Mypage;
 const MypageBox = styled.div`
   .border {
     height: 100vh;
-    border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color);
+    /* border-right: 1px solid var(--help-color);
+    border-left: 1px solid var(--help-color); */
     text-align: center;
+    background-color: #fff;
     .menu-wrap {
       margin-bottom: 20px;
       padding: 30px 16px;
@@ -221,7 +222,7 @@ const MypageBox = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  max-width: 426px;
+  max-width: 428px;
   height: 50px;
   position: fixed;
   top: 0;

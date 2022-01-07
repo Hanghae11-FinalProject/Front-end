@@ -153,14 +153,15 @@ const ChattingWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
+    background-color: white;
     /* min-height: 926px; */
-    border: 1px solid var(--help-color);
+    /* border: 1px solid var(--help-color); */
     position: relative;
 
     .chatting-wrap {
       .chatting-header {
         width: 100%;
-        max-width: 426px;
+        max-width: 428px;
         height: 50px;
         background-color: white;
         box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);

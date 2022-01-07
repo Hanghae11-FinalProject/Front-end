@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 import styled from "styled-components";
-import { Grid, Image } from "../elements/index";
+import { Grid } from "../elements/index";
 import { RiArrowLeftRightLine } from "react-icons/ri";
 import { FiStar } from "react-icons/fi";
 import { BsChat } from "react-icons/bs";
@@ -10,6 +10,7 @@ import { FaStar } from "react-icons/fa";
 
 const PostCard = ({ item }) => {
   const curUserId = getCookie("Id");
+  const curUserImg = getCookie("Img");
   const [state, setState] = useState(
     item.currentState === "Proceeding" ? "거래중" : "거래완료"
   );
@@ -46,10 +47,7 @@ const PostCard = ({ item }) => {
         <Post onClick={MoveToDetail}>
           <Grid is_flex flex_align="center" _className="userBox">
             <ProfileImg>
-              <img
-                src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc5sXof%2FbtrpQSjrN1i%2FK5lwGk9FVONRvTksAYvyJ1%2Fimg.png"
-                alt="profile"
-              />
+              <img src={curUserImg} alt="profile" />
             </ProfileImg>
             <Grid padding="5px 0px;" _className="title-box">
               <PostTitle>
@@ -105,10 +103,11 @@ const Post = styled.div`
   padding-top: 5px;
   border-radius: 10px;
   margin-left: 1%;
+  margin-top: 5px;
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
     rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-    rgba(17, 17, 26, 0.1) 0px 0px 8px;
+    rgba(17, 17, 26, 0.15) 0px 0px 8px;
 
   .userBox {
     padding-left: 16px;
