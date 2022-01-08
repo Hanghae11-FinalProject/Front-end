@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ChattingItem from "./components/chattingitem";
+import ChattingItem from "./components/ChattingItem";
 
 test('check a nickname tag in ChattingItem', () => {
   const result = render(<ChattingItem />);
