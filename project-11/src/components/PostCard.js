@@ -1,33 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
 import styled from "styled-components";
-import { Grid, Image } from "../elements/index";
+import { Grid } from "../elements/index";
 import { RiArrowLeftRightLine } from "react-icons/ri";
 import { FiStar } from "react-icons/fi";
 import { BsChat } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 
 const PostCard = ({ item }) => {
+  const curUserId = getCookie("Id");
   const [state, setState] = useState(
     item.currentState === "Proceeding" ? "거래중" : "거래완료"
   );
-  const [like, setLike] = useState(false);
+
   const [user_id, setUser_id] = useState(false);
+  const [bookmark, setBookmark] = useState(item.bookMarks);
+  const [checkBm, setCheckBm] = useState();
+
+  const MoveToDetail = () => {
+    history.push(`/detail/${item.postId}`);
+  };
+
+  //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
+  const has_bookmarks = () => {
+    if (bookmark.length > 0) {
+      const bookmarkState = bookmark.filter((user) => {
+        return user.userId === Number(curUserId);
+      });
+
+      if (bookmarkState.length === 1) {
+        setUser_id(true);
+        setCheckBm(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    has_bookmarks();
+  }, [item]);
 
   return (
     <React.Fragment>
       <Grid is_flex>
-        <Post>
-          <Grid is_flex flex_align="center">
-            <Image shape="circle" size="34px;">
-              icon
-            </Image>
+        <Post onClick={MoveToDetail}>
+          <Grid is_flex flex_align="center" _className="userBox">
+            <ProfileImg>
+              <img src={item.profileImg} alt="profile" />
+            </ProfileImg>
             <Grid padding="5px 0px;" _className="title-box">
               <PostTitle>
                 <p>{item.title}</p>
               </PostTitle>
-              <Grid is_flex _className="info-box">
-                <span>{item.address}</span>
-                <span>{item.createdAt}</span>
+              <Grid is_flex flex_align="center" _className="info-box">
+                <p>{item.address}</p>
+                <p>{item.createdAt}</p>
               </Grid>
             </Grid>
           </Grid>
@@ -44,23 +71,23 @@ const PostCard = ({ item }) => {
 
           <PostContent>
             <Grid is_flex _className="exchange-box">
-              <span>{item.myItem}</span>
+              {/* <span>{item.myItem}</span> */}
               <RiArrowLeftRightLine className="icon" />
               <span>{item.exchangeItem}</span>
             </Grid>
           </PostContent>
           <Grid is_flex padding="10px 5px" _className="btn-box">
             <Grid is_flex _className="like-btn" flex_align="center">
-              {like && user_id ? (
-                <FaStar className="icon active" />
+              {user_id ? (
+                <FaStar className="icon bookmark-active" />
               ) : (
                 <FiStar className="icon" />
               )}
-              <span>2</span>
+              <span>{item.bookmarkCnt}</span>
             </Grid>
             <Grid is_flex _className="chat-btn" flex_align="center">
               <BsChat className="icon" />
-              <span>3</span>
+              <span>{item.commentCnt}</span>
             </Grid>
           </Grid>
         </Post>
@@ -70,16 +97,29 @@ const PostCard = ({ item }) => {
 };
 
 const Post = styled.div`
-  width: 100%;
-  border: 1px solid var(--help-color);
+  width: 98%;
+  /* border: 1px solid var(--help-color); */
   padding-top: 5px;
   border-radius: 10px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  margin-left: 1%;
+  margin-top: 5px;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+    rgba(17, 17, 26, 0.15) 0px 0px 8px;
+  cursor: pointer;
+  .userBox {
+    padding-left: 10px;
+  }
+
   .info-box {
-    span {
+    p {
+      height: 25px;
+      line-height: 25px;
       font-size: 12px;
       color: var(--help-color);
       margin-right: 5px;
+      display: block;
     }
   }
 
@@ -87,8 +127,10 @@ const Post = styled.div`
     width: 100%;
   }
   .btn-box {
-    border-top: 1px solid var(--help-color);
-    padding-left: 15px;
+    width: 90%;
+    margin: 0 auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+
     font-size: 10px;
     .like-btn,
     .chat-btn {
@@ -106,7 +148,23 @@ const Post = styled.div`
         color: var(--inactive-text-color);
         margin-right: 5px;
       }
+
+      .bookmark-active {
+        color: var(--main-color);
+      }
     }
+  }
+`;
+
+const ProfileImg = styled.div`
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+  text-align: center;
+  img {
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -162,6 +220,7 @@ const PostContent = styled.div`
       margin: 5px;
       font-size: 14px;
       font-weight: bold;
+      /* color: var(--main-color); */
     }
 
     span {
@@ -181,9 +240,11 @@ const ChipDiv = styled.div`
   justify-content: flex-end;
 
   div {
-    padding: 5px 10px;
+    width: 60px;
     font-size: 12px;
-    border-radius: 12px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 9px;
     text-align: center;
     color: #fff;
   }

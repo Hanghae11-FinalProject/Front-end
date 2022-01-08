@@ -11,11 +11,8 @@ import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
-import { IoIosArrowBack } from "react-icons/io";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
-import Permit from "../shared/Permit";
-
 // style
 import "swiper/css";
 import "swiper/css/pagination";
@@ -24,9 +21,15 @@ import axios from "axios";
 
 SwiperCore.use([Pagination, Navigation]);
 
-const Write = () => {
+const EditPost = (items) => {
   const dispatch = useDispatch();
   const token = getCookie("Token"); // 토큰 가져오기
+
+  const editItems = items.location.state.items; // 수정하기 용 Data
+  const postId = editItems.postId;
+  const is_edit = postId ? true : false;
+  // console.log(editItems.images);
+  console.log(editItems);
 
   const [title, setTitle] = React.useState(""); // 제목
   const [content, setContent] = React.useState(""); // 내용
@@ -37,6 +40,8 @@ const Write = () => {
   const [hashArr, setHashArr] = React.useState([]); // 해시태그 담을 배열
   const [images, setImages] = React.useState([]); // 이미지 aixos 통신용
   const [preImg, setPreImg] = React.useState([]); // preview용 이미지
+  const [deleteEditImg, setDeleteEditImg] = React.useState([]); // 따로 수정하기할때 보내줄 url 저장소
+  const [compare, setCompare] = React.useState([]); // 이미지, preview 두개 state 위치 비교를 위한 state
   const [active, setActive] = React.useState(true); // 버튼 액티브
   const [currentState, setCurrentState] = React.useState("Proceeding"); // currentState 기본값 넘겨주기
   const [is_open, setIs_open] = React.useState(false); // 모달창 활성화/비활성화 여부
@@ -90,6 +95,9 @@ const Write = () => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
+    console.log(myItem);
+    console.log(exchangeItem);
+    console.log(title);
   };
 
   // 교환할 물품 onChange 함수
@@ -106,6 +114,36 @@ const Write = () => {
   const onChangeHashtag = (e) => {
     setHashtag(e.target.value);
   };
+
+  // 수정하기 image preview 및 데이터 불러오기
+  React.useEffect(() => {
+    let editPre = [];
+    for (let i = 0; i < editItems.images.length; i++) {
+      editPre.push(editItems.images[i].imageUrl);
+    }
+    setPreImg(editPre); // preview에 저장
+    setCompare(editPre); // 비교용 배열에도 저장
+    setTitle(editItems.title);
+    setContent(editItems.content);
+    setMyItem(editItems.myItem);
+    setExchangeItem(editItems.exchangeItem);
+    setCategory(editItems.categoryName);
+
+    // const GetHashContent = document.querySelector(".HashInputOuter"); //HashInputOuter클라스에서 입력하는 요소를 불러온다!
+    // const HashWrapInner = document.createElement("div"); // div 만들기
+    // HashWrapInner.className = "HashWrapInner";
+
+    // let editTag = [];
+    // if (is_edit) {
+    //   for (let i = 0; i < editItems.tags.length; i++) {
+    //     const tags = { tagName: editItems.tags[i].tagName };
+    //     HashWrapInner.innerHTML = "#" + editItems.tags[i].tagName;
+    //     GetHashContent?.appendChild(HashWrapInner);
+    //     editTag.push(tags);
+    //   } // console.log(hashArr); < 넣어지는거 확인함
+    //   setHashArr(...editTag);
+    // }
+  }, []);
 
   // 해시태그 onKeyup 함수
   const createTag = useCallback(
@@ -139,8 +177,9 @@ const Write = () => {
     [tagName, hashArr]
   );
 
-  // 이미지, preview이미지
+  // 이미지, preview이미지 추가
   const addImage = (e) => {
+    // console.log(e.target.files);
     const nowSelectImgList = e.target.files; // 이미지파일 리스트 (object)
 
     if (images.length !== 0) {
@@ -149,7 +188,9 @@ const Write = () => {
       // !!!*** 이미지를 추가한 뒤 중간에 또 추가하면 갯수가 리셋되는거
       setImages(e.target.files); // axios통신용으로 따로 한번 저장 해주고!
     }
+    // console.log(images);
     const nowImgURLList = [...preImg]; // 현재의 preImg 복사
+
     for (let i = 0; i < nowSelectImgList.length; i++) {
       const nowImgURL = URL.createObjectURL(nowSelectImgList[i]); // 미리보기 가능하도록 변수화
       //URL.createObjectURL() 이 친구는 상대경로를 만들어 주는 친구이다.
@@ -158,33 +199,48 @@ const Write = () => {
     setPreImg([...nowImgURLList]); // 반복문이 끝난뒤 preImg 원본에 넣어준다.
   };
 
-  // 이미지파일 및 미리보기 삭제
-  let forImages = [...images]; // state의 불변성 유지 때문에 images를 복사
+  // 이미지 파일, 기존 이미지url 추출 및 preview 이미지 삭제
+  let deletedUrl = []; // 백에 보내줄 url을 담아줄 빈 배열
+  let forImages = [...images];
   const deleteImages = (x) => {
-    let idxLocation = ""; // 지우는 미리보기 이미지의 위치를 저장해주기 위한 변수
-    for (let i = 0; i < preImg.length; i++) {
-      if (preImg[i] === x) {
-        idxLocation = i;
-      }
-    }
-    let imgLocation = forImages[idxLocation]; // 복사한 images배열에서의 지울 파일 위치 지정
-    console.log(imgLocation);
-    const deleteImg = forImages.filter((y) => {
-      if (y !== imgLocation) {
-        return y;
-      }
-    });
-    // filter함수로 지울 파일만 제외하여 배열 재생성 후 setimages
-    setImages(deleteImg);
-    // forImages.splice(idxLocation, 1);
-
     const deletePreImg = preImg.filter((item) => {
       // preImg를 요소 하나씩 filter를 돌려 만약 내가 누른 사진의 url이면 반환되지 못하도록 함수 설계
       if (item !== x) {
         return item;
       }
     });
-    setPreImg(deletePreImg);
+    setPreImg(deletePreImg); // preview에서 빼주기
+
+    // 수정전의 이미지 파일을 제외하고
+    let idxLocation = ""; // 지우는 미리보기 이미지의 위치를 저장해주기 위한 변수
+    for (let i = 0; i < preImg.length; i++) {
+      if (preImg[i] === x) {
+        idxLocation = i;
+      }
+    }
+    console.log(idxLocation - compare.length); // 위치 비교를 위한 배열의 길이만큼 빼준다
+    let imgLocation = forImages[idxLocation - compare.length]; // 복사한 images배열에서의 지울 파일 위치 지정
+    const deleteImg = forImages.filter((y) => {
+      if (y !== imgLocation) {
+        return y;
+      }
+    });
+    // filter함수로 지울 파일만 제외하여 배열 재생성 후 setimages
+
+    // 기존 이미지는 뺄 Url만 따로 담아서 DB에 보내주자 (이렇게 보내기로 함)
+    if (x.indexOf("pingpong-bucket") !== -1) {
+      deletedUrl.push(...deletedUrl, x);
+      const Img = { imageUrl: deletedUrl[0] };
+      setDeleteEditImg([...deleteEditImg, Img]);
+      const deleteCompare = compare.filter((z) => {
+        if (z !== x) {
+          return z;
+        }
+      });
+      setCompare(deleteCompare); // 프리뷰 사진을 먼저 지우고 다시 추가한 사진을 지울 경우 compare의 길이가 그대로 남아있으면 안되니 같이 빼준다.
+    } else {
+      setImages(deleteImg);
+    }
   };
 
   // Upload 버튼 active 함수
@@ -203,10 +259,14 @@ const Write = () => {
     checkActive();
   }, [category]);
 
-  // 게시글 작성
-  const postWrite = async () => {
+  // 수정 페이지 처음 들어올때 액티브 함수 실행
+  React.useEffect(() => {
+    checkActive();
+  }, []);
+
+  // 수정하기
+  const editPost = async () => {
     const formData = new FormData();
-    // console.log(images);
     for (let i = 0; i < images.length; i++) {
       formData.append("image", images[i]);
     }
@@ -217,26 +277,26 @@ const Write = () => {
         content: content,
         category: category,
         currentState: currentState,
-        tag: hashArr,
         myItem: myItem,
         exchangeItem: exchangeItem,
+        tag: hashArr,
+        images: deleteEditImg,
       })
     );
     for (let value of formData.values()) {
       console.log(value);
     }
     await axios({
-      method: "post",
-      url: "http://13.125.250.43/api/posts",
+      method: "put",
+      url: `http://13.125.250.43/api/posts/${postId}`,
       data: formData,
       headers: {
-        "Content-type": "multipart/form-data",
         Authorization: token,
       },
     })
       .then((response) => {
-        console.log("작성성공이니~", response);
-        window.location.href = "/";
+        console.log("수정 완료", response);
+        history.push(`/detail/${postId}`);
       })
       .catch((err) => {
         console.log(err, "에러났니~");
@@ -244,169 +304,151 @@ const Write = () => {
   };
 
   return (
-    <Permit>
-      <React.Fragment>
-        <Container>
-          <Grid is_container _className="border">
-            <MainTop>
-              <IoIosArrowBack
-                cursor={"pointer"}
-                size="30"
-                onClick={() => {
-                  history.goBack();
-                }}
-              />
-              <TopText
-                style={{
-                  marginLeft: "6px",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                }}
-              >
-                글 작성하기
-              </TopText>
-              <TopText
-                style={{ padding: "6px", fontSize: "16px" }}
-                className={!active ? "activeBtn" : "unActiveBtn"}
-                disabled={active}
-                onClick={postWrite}
-              >
-                완료
-              </TopText>
-            </MainTop>
-            <TitleArea>
-              <TitleInput
-                // value={editItems.title}
-                type="text"
-                maxLength={20}
-                placeholder="제목 (20자 이하)"
-                onChange={changeTitle}
-                onKeyUp={checkActive}
-              ></TitleInput>
-            </TitleArea>
+    <React.Fragment>
+      <Container>
+        <Grid is_container _className="border">
+          <MainTop>
+            <CgChevronLeft
+              cursor={"pointer"}
+              size="30"
+              onClick={() => {
+                history.goBack();
+              }}
+            />
+            <TopText style={{ marginLeft: "6px" }}>글 수정하기</TopText>
+            <TopText
+              style={{ padding: "6px" }}
+              className={active ? "activeBtn" : "unActiveBtn"}
+              disabled={active}
+              onClick={editPost}
+            >
+              완료
+            </TopText>
+          </MainTop>
+          <TitleArea>
+            <TitleInput
+              defaultValue={editItems.title}
+              type="text"
+              maxLength={20}
+              placeholder="제목 (20자 이하)"
+              onChange={changeTitle}
+              onKeyUp={checkActive}
+            ></TitleInput>
+          </TitleArea>
 
-            <CateArea>
-              <Catediv
-                onClick={modalControl}
-                ref={modalClose}
-                // value={editItems.categoryName}
-                className={
-                  is_open === false
-                    ? category === "품목 선택"
-                      ? "default"
-                      : "selected"
-                    : "active"
-                }
-              >
-                <div>{category}</div>
-                {is_open ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
-              </Catediv>
-              {is_open && (
-                <>
-                  <Grid _className="category-option">
-                    {cateOption.map((options, idx) => {
-                      return (
-                        <p
-                          key={idx}
-                          onClick={() => {
-                            setCategory(options);
-                            setIs_open(false);
-                          }}
-                        >
-                          {options}
-                        </p>
-                      );
-                    })}
-                  </Grid>
-                </>
-              )}
-            </CateArea>
-
-            <TradeDiv>
-              <TradeInput
-                // value={editItems.myItem}
-                onChange={changeMyItem}
-                maxLength="10"
-                placeholder="교환할 물품 (1개 입력)"
-              ></TradeInput>
-              <CenterLine />
-              <TradeInput
-                // value={editItems.exchangeItem}
-                onChange={changeYourItem}
-                maxLength="10"
-                placeholder="교환받을 물품 (1개 입력)"
-              ></TradeInput>
-            </TradeDiv>
-
-            <ImgArea>
-              <label htmlFor="input-file" className="input-Btn-Css">
-                <MdOutlineCameraAlt size={30} />
-                {preImg.length} / 5
-                <input
-                  type="file"
-                  onChange={addImage}
-                  // max={5}
-                  encType="multipart/form-data"
-                  multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
-                  id="input-file" // 커스텀 디자인을 위한 라벨링
-                  className="input-Btn"
-                />
-              </label>
-              <Slider>
-                <Swiper
-                  className="Img-Preview"
-                  spaceBetween={0}
-                  slidesPerView={3}
-                  pagination={{ clickable: true }}
-                >
-                  {preImg.map((x, index) => {
+          <CateArea>
+            <Catediv
+              onClick={modalControl}
+              ref={modalClose}
+              value={editItems.categoryName}
+              className={is_edit && is_open ? "active" : "selected"}
+            >
+              <div>{category}</div>
+              {is_open ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+            </Catediv>
+            {is_open && (
+              <>
+                <Grid _className="category-option">
+                  {cateOption.map((options, idx) => {
                     return (
-                      <SwiperSlide key={index} className="slide">
-                        <TiDelete
-                          size="25px"
-                          className="deleteBtn"
-                          onClick={() => {
-                            deleteImages(x);
-                          }}
-                        />
-                        <Preview src={x} />
-                      </SwiperSlide>
+                      <p
+                        key={idx}
+                        onClick={() => {
+                          setCategory(options);
+                          setIs_open(false);
+                        }}
+                      >
+                        {options}
+                      </p>
                     );
                   })}
-                </Swiper>
-              </Slider>
-            </ImgArea>
+                </Grid>
+              </>
+            )}
+          </CateArea>
 
-            <ContentArea>
-              <ContentInput
-                // value={editItems.content}
-                placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
-                onChange={changeContent}
-                onKeyUp={checkActive}
-                rows={19}
-                maxLength="300"
-              ></ContentInput>
-            </ContentArea>
+          <TradeDiv>
+            <TradeInput
+              defaultValue={editItems.myItem}
+              onChange={changeMyItem}
+              maxLength="10"
+              placeholder="교환할 물품 (1개 입력)"
+            ></TradeInput>
+            <CenterLine />
+            <TradeInput
+              defaultValue={editItems.exchangeItem}
+              onChange={changeYourItem}
+              maxLength="10"
+              placeholder="교환받을 물품 (1개 입력)"
+            ></TradeInput>
+          </TradeDiv>
 
-            <HashTagArea className="HashWrap">
-              <HashInputOuter className="HashInputOuter">
-                {/* 동적으로 생성되는 태그를 담을 div */}
-                <HashInput
-                  className="HashInput"
-                  type="text"
-                  defaultValue={tagName}
-                  onChange={onChangeHashtag}
-                  onKeyUp={createTag}
-                  placeholder="# 태그 입력"
-                />
-              </HashInputOuter>
-            </HashTagArea>
+          <ImgArea>
+            <label htmlFor="input-file" className="input-Btn-Css">
+              <MdOutlineCameraAlt size={30} />
+              {preImg.length} / 10
+              <input
+                type="file"
+                onChange={addImage}
+                encType="multipart/form-data"
+                multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
+                id="input-file" // 커스텀 디자인을 위한 라벨링
+                className="input-Btn"
+              />
+            </label>
+            <Slider>
+              <Swiper
+                className="Img-Preview"
+                spaceBetween={0}
+                slidesPerView={3}
+                pagination={{ clickable: true }}
+              >
+                {preImg.map((x, index) => {
+                  return (
+                    <SwiperSlide key={index} className="slide">
+                      <TiDelete
+                        size="25px"
+                        className="deleteBtn"
+                        onClick={() => {
+                          deleteImages(x);
+                        }}
+                      />
+                      <Preview src={x} />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </Slider>
+          </ImgArea>
 
-            <Nav write={"write"} />
-          </Grid>
-        </Container>
-      </React.Fragment>
-    </Permit>
+          <ContentArea>
+            <ContentInput
+              defaultValue={editItems.content}
+              placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
+              onChange={changeContent}
+              onKeyUp={checkActive}
+              rows={19}
+              maxLength="300"
+            ></ContentInput>
+          </ContentArea>
+
+          <HashTagArea className="HashWrap">
+            <HashInputOuter className="HashInputOuter">
+              {/* 동적으로 생성되는 태그를 담을 div */}
+              <HashInput
+                className="HashInput"
+                type="text"
+                defaultValue={tagName}
+                onChange={onChangeHashtag}
+                onKeyUp={createTag}
+                placeholder="# 태그 입력"
+              />
+            </HashInputOuter>
+          </HashTagArea>
+          <Nav write={"write"} />
+        </Grid>
+      </Container>
+    </React.Fragment>
   );
 };
 
@@ -429,6 +471,7 @@ const Container = styled.div`
 
 const MainTop = styled.div`
   height: 50px;
+
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
 
   display: flex;
@@ -464,16 +507,14 @@ const CateArea = styled.div`
   z-index: 2;
   color: var(--inactive-text-color);
   margin: 8px 16px;
-  border-bottom: 1px solid #eee;
 
+  border-bottom: 1px solid #eee;
   .category-option {
-    width: 100%;
-    max-width: 25.2rem;
+    width: 25.2rem;
     height: 361px;
     margin-top: 2px;
     position: absolute;
     background-color: #ffffff;
-
     border: 1px solid var(--disabled-color);
     border-radius: 6px;
     cursor: pointer;
@@ -498,8 +539,7 @@ const CateArea = styled.div`
 `;
 
 const Catediv = styled.div`
-  width: 100%;
-  max-width: 429px;
+  width: 25.2rem;
   height: 48px;
   padding: 0px 6px;
   font-size: 16px;
@@ -509,8 +549,6 @@ const Catediv = styled.div`
   align-items: center;
   color: var(--sub-font-color);
   cursor: pointer;
-
-  margin: 10px 0;
 `;
 
 const TradeDiv = styled.div`
@@ -598,7 +636,6 @@ const Preview = styled.img`
 const ContentArea = styled.div`
   height: 330px;
   margin: 16px;
-  /* border-bottom: 1px solid var(--help-color); */
 `;
 
 const ContentInput = styled.textarea`
@@ -606,7 +643,6 @@ const ContentInput = styled.textarea`
   width: 100%;
   font-size: 16px;
   resize: none;
-  font-family: "NanumSquareRound";
   border: none;
   ::placeholder {
     color: var(--help-color);
@@ -619,7 +655,6 @@ const ContentInput = styled.textarea`
 const HashTagArea = styled.div`
   height: 75px;
   margin: 15px;
-  margin-top: 50px;
   border-top: 1px solid var(--help-color);
 `;
 
@@ -657,4 +692,4 @@ const HashInput = styled.input`
   }
 `;
 
-export default Write;
+export default EditPost;

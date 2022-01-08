@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-
-import { Grid } from "../elements/index";
+import React, { useState, useEffect } from "react";
+import { history } from "../redux/configureStore";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
+import { getCookie } from "../shared/Cookie";
+import { Grid } from "../elements/index";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Autoplay } from "swiper";
+
 import { ImSpoonKnife } from "react-icons/im";
 import { MdMenuBook } from "react-icons/md";
 import { GiHanger } from "react-icons/gi";
@@ -15,6 +19,7 @@ import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { RiCupFill } from "react-icons/ri";
 import { IoExtensionPuzzle } from "react-icons/io5";
 import { BiSmile } from "react-icons/bi";
+import { BsThreeDots } from "react-icons/bs";
 
 import styled from "styled-components";
 // style
@@ -24,28 +29,72 @@ import "swiper/css/pagination";
 SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
+  const token = getCookie("Token");
+  //redux 가져오기
+  const dispatch = useDispatch();
+  const post_page = useSelector((state) => state.post.page);
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
-  const [is_location, setIs_Location] = useState("");
+  const [is_location, setIs_Location] = useState("위치 설정하기");
   const [is_cate, setIs_Cate] = useState("");
   //지역 옵션
-  const locations = ["전체", "동대문구", "마포구", "서대문구", "성북구"];
+  const locations = [
+    { id: 1, locationName: "전체" },
+    { id: 2, locationName: "동대문구" },
+    { id: 3, locationName: "마포구" },
+    { id: 4, locationName: "서대문구" },
+    { id: 5, locationName: "성북구" },
+  ];
+
+  //여기서 지역구를 보내야 받아진다
+  useEffect(() => {
+    console.log(
+      "메인페이지에서 리덕스로 보내는 값",
+      is_location,
+      is_cate,
+      post_page
+    );
+    dispatch(postActions.getPostAction(is_location, is_cate, post_page));
+  }, [is_location, is_cate]);
 
   return (
     <>
       <Container>
         <Grid is_container _className="border">
-          <Header>
-            <Grid _className="inner" is_container is_flex flex_align="center">
-              <p>전체 글 보기</p>
-            </Grid>
-          </Header>
+          {token ? (
+            <>
+              <Header>
+                <Grid
+                  _className="inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <p>전체 글 보기</p>
+                </Grid>
+              </Header>
+            </>
+          ) : (
+            <>
+              <Header>
+                <Grid
+                  _className="logout-inner"
+                  is_container
+                  is_flex
+                  flex_align="center"
+                >
+                  <p>전체 글 보기</p>
+                  <button onClick={() => history.push("/intro")}>로그인</button>
+                </Grid>
+              </Header>
+            </>
+          )}
 
           <Category>
             <Slider>
               <Swiper
                 className="CateBtn-Container"
-                spaceBetween={3}
+                spaceBetween={10}
                 slidesPerView={4.5}
                 pagination={{ clickable: true }}
                 // autoplay={{ delay: 50000 }}
@@ -109,7 +158,7 @@ const Main = () => {
                 <SwiperSlide>
                   <CateBtn
                     onClick={() => {
-                      is_cate === "가전" ? setIs_Cate("") : setIs_Cate("기전");
+                      is_cate === "가전" ? setIs_Cate("") : setIs_Cate("가전");
                     }}
                   >
                     <Grid
@@ -164,6 +213,20 @@ const Main = () => {
                     </Grid>
                   </CateBtn>
                 </SwiperSlide>
+                <SwiperSlide>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "기타" ? setIs_Cate("") : setIs_Cate("기타");
+                    }}
+                  >
+                    <Grid
+                      _className={is_cate === "기타" ? "active" : "default"}
+                    >
+                      <BsThreeDots className="icon" />
+                      <p>기타</p>
+                    </Grid>
+                  </CateBtn>
+                </SwiperSlide>
               </Swiper>
             </Slider>
           </Category>
@@ -187,13 +250,13 @@ const Main = () => {
                   {locations.map((loc, i) => {
                     return (
                       <p
-                        key={i}
+                        key={loc.id}
                         onClick={() => {
-                          setIs_Location(loc);
+                          setIs_Location(loc.locationName);
                           setIs_open(false);
                         }}
                       >
-                        {loc}
+                        {loc.locationName}
                       </p>
                     );
                   })}
@@ -201,31 +264,46 @@ const Main = () => {
               </>
             )}
           </LocationBox>
-          <PostList location={is_location} category={is_cate} />
+          <PostList
+            location={is_location}
+            category={is_cate}
+            curpage={post_page}
+          />
+          <Nav home={"home"} />
         </Grid>
       </Container>
-      <Nav home={"home"} />
     </>
   );
 };
 
 const Container = styled.div`
   margin: 0 auto;
+
   .border {
+    /* height: 100vh; */
+    /* border: 1px solid var(--help-color); */
+    background: #fff;
     padding-top: 50px;
-    border: 1px solid var(--help-color);
+    /*
+    overflow-y: auto;
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+    ::-webkit-scrollbar {
+      display: none; // Chrome, Safari, Opera
+    } */
   }
 `;
 
 const Header = styled.div`
   width: 100%;
+  max-width: 426px;
   height: 50px;
   position: fixed;
   top: 0;
-  left: 0;
 
-  border-bottom: 1px solid var(--help-color);
+  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
+  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
   .inner {
     height: 50px;
@@ -239,6 +317,32 @@ const Header = styled.div`
 
       font-size: 20px;
       font-weight: bold;
+    }
+  }
+
+  .logout-inner {
+    height: 50px;
+    line-height: 50px;
+
+    p {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      text-align: center;
+
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      margin-left: 85%;
+      border: 0;
+      color: var(--main-color);
+      outline: none;
+      background-color: transparent;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 9;
     }
   }
 `;
@@ -266,12 +370,11 @@ const CateBtn = styled.div`
   height: 80px;
   border-radius: 50%;
   border: 1px solid var(--disabled-color);
-
   .default {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 1px solid var(--disabled-color);
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -279,13 +382,13 @@ const CateBtn = styled.div`
     cursor: pointer;
     .icon {
       font-size: 32px;
-      color: var(--inactive-icon-color);
+      color: var(--inactive-text-color);
     }
 
     p {
       font-size: 12px;
       margin-top: 5px;
-      color: var(--inactive-icon-color);
+      color: var(--inactive-text-color);
     }
   }
 
@@ -299,6 +402,7 @@ const CateBtn = styled.div`
     align-items: center;
     cursor: pointer;
     background-color: var(--main-color);
+    animation: 0.6s ease-in-out loadEffect3;
     .icon {
       color: #fff;
       font-size: 32px;
@@ -308,6 +412,36 @@ const CateBtn = styled.div`
       font-size: 12px;
       margin-top: 5px;
       color: #fff;
+    }
+  }@keyframes loadEffect3 {
+    0%{
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    65%{
+        opacity: 0.65;
+        transform: scale(1.01);
+    }
+    85%{
+        opacity: 0.85;
+        transform: scale(0.97);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+  .inactive {
+    .icon {
+      color: var(--help-color);
+      font-size: 32px;
+    }
+
+    p {
+      font-size: 12px;
+      margin-top: 5px;
+      color: var(--help-color);
     }
   }
 `;
@@ -324,13 +458,31 @@ const LocationBox = styled.div`
 
   .active {
     color: var(--main-color);
-  }
+    animation: 0.6s ease-in-out loadEffect3;
+  }@keyframes loadEffect3 {
+    0%{
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    65%{
+        opacity: 0.65;
+        transform: scale(1.01);
+    }
+    85%{
+        opacity: 0.85;
+        transform: scale(0.97);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
   .location-option {
     width: 140px;
     position: absolute;
-    top: 30px;
-    left: 10px;
+    top: 45px;
+    left: 25px;
     color: var(--active-color);
     background-color: #ffffff;
     border: 1px solid var(--disabled-color);
@@ -342,7 +494,7 @@ const LocationBox = styled.div`
       padding: 10px 10px;
 
       &:hover {
-        background-color: var(--disabled-color);
+        background-color: var(--main-light-color);
       }
     }
   }

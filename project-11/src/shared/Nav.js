@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { history } from "../redux/configureStore";
+import { getCookie } from "./Cookie";
 import { Grid } from "../elements";
 import { MdHome } from "react-icons/md";
-import { BsChat, BsPlusLg, BsSearch } from "react-icons/bs";
+import { BsPlusLg } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
@@ -28,7 +29,8 @@ const Nav = (props) => {
             />
           </Menu>
           <Menu>
-            <BsSearch
+            <BiSearch
+              size="24"
               className={props.search === "search" ? "active" : "icon"}
               onClick={() => {
                 history.push("/search");
@@ -36,14 +38,33 @@ const Nav = (props) => {
             />
           </Menu>
           <PlusMenu>
-            <BsPlusLg className="plus-icon" />
+            <BsPlusLg
+              className={
+                props.write !== "write"
+                  ? "plus-icon inactive"
+                  : "plus-icon active"
+              }
+              onClick={() => {
+                // if (!token) {
+                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                //   history.push("/login");
+                // } else {
+                history.push("/write");
+                // }
+              }}
+            />
           </PlusMenu>
           <Menu>
             <HiOutlineChatAlt2
               size="24"
               className={props.chatting === "chatting" ? "active" : "icon"}
               onClick={() => {
+                // if (!token) {
+                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                //   history.push("/login");
+                // } else {
                 history.push("/chatting");
+                // }
               }}
             />
           </Menu>
@@ -51,7 +72,12 @@ const Nav = (props) => {
             <RiUserFill
               className={props.mypage === "mypage" ? "active" : "icon"}
               onClick={() => {
+                // if (!token) {
+                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+                //   history.push("/login");
+                // } else {
                 history.push("/mypage");
+                // }
               }}
             />
           </Menu>
@@ -65,6 +91,7 @@ export default Nav;
 
 const NavBox = styled.div`
   width: 100%;
+  max-width: 428px;
   height: 50px;
   padding: 10px 0;
   text-align: center;
@@ -73,6 +100,9 @@ const NavBox = styled.div`
   position: fixed;
   bottom: 0;
   border-top: 1px solid var(--help-color);
+  /* border-right: 1px solid var(--help-color);
+  border-left: 1px solid var(--help-color); */
+
   background-color: #fff;
   z-index: 9999;
 `;
@@ -85,10 +115,17 @@ const PlusMenu = styled.div`
     font-weight: bold;
     width: 30px;
     height: 30px;
-    background-color: var(--main-color);
     color: #fff;
     border-radius: 30px;
     cursor: pointer;
+  }
+
+  .inactive {
+    background-color: var(--inactive-icon-color);
+  }
+
+  .active {
+    background-color: var(--main-color);
   }
 `;
 const Menu = styled.div`
@@ -104,5 +141,23 @@ const Menu = styled.div`
 
   .active {
     color: var(--main-color);
-  }
+    animation: 0.6s ease-in-out loadEffect3;
+  }@keyframes loadEffect3 {
+    0%{
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    65%{
+        opacity: 0.65;
+        transform: scale(1.01);
+    }
+    85%{
+        opacity: 0.85;
+        transform: scale(0.97);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 `;

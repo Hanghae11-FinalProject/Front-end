@@ -11,7 +11,7 @@ const Login = () => {
   const [login_disabled, setLoginDisabled] = useState(true);
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
-  
+
   const handleChangeInput = (e) => {
     setInputValues({
       ...input_values,
@@ -27,12 +27,12 @@ const Login = () => {
       })
       .then((response) => {
         console.log("로그인 완료", response);
-        const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickname}userToken=${response.headers.authorization}`;
+        const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=${response.headers.authorization}`;
         setCookie("OK", loginInfo);
         history.push("/");
       })
       .catch((error) => {
-        console.log("로그인 실패", error);
+        window.alert("뭐가 틀렸는지 한번 더 생각해보세요", error);
       });
     setLoginDisabled(true);
     setLoginTrue(true);
@@ -63,6 +63,9 @@ const Login = () => {
               style={{
                 width: "30px",
                 height: "30px",
+              }}
+              onClick={() => {
+                history.push("/intro");
               }}
             />
             <span className="header-title">로그인</span>
@@ -108,16 +111,17 @@ const LoginWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
-    border: 1px solid var(--help-color);
+    background-color: #fff;
+    /* border: 1px solid var(--help-color); */
     .login-wrap {
       .login-header-wrap {
         height: 50px;
-
         display: flex;
         align-items: center;
 
         position: relative;
-        border-bottom: 1px solid var(--help-color);
+        /* border-bottom: 1px solid var(--help-color); */
+        box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
         .header-title {
           position: absolute;
           left: 45%;
@@ -167,7 +171,7 @@ const LoginWrap = styled.div`
       width: 100%;
       max-width: 397px;
       height: 48px;
-      border-radius: 50px;
+      border-radius: 4px;
       color: white;
       margin-top: 48px;
       border: 0px;

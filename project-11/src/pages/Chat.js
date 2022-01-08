@@ -1,95 +1,240 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
-import { FaLocationArrow } from "react-icons/fa";
+import { IoPaperPlane } from "react-icons/io5";
+import { BsPlusLg } from "react-icons/bs";
+import { IoIosArrowBack } from "react-icons/io";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import { getCookie } from "../shared/Cookie";
+import MyChat from "../components/MyChat";
+import NotMyChat from "../components/NotMyChat";
+import axios from "axios";
+import { history } from "../redux/configureStore";
+import Nav from "../shared/Nav";
 
-const Chat = () => {
+let List = [];
+
+const Chat = (data) => {
+  const token = getCookie("Token");
+  let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
+  let stompClient = Stomp.over(sockjs);
+
+  const [optionOne, setOptionOne] = useState(false);
+  const [optionTwo, setOptionTwo] = useState(false);
+  const [optionThree, setOptionThree] = useState(false);
+  const [is_open, setIs_open] = useState(false);
+
+  const scrollRef = useRef();
+  const myUserId = getCookie("Id");
   const [currentMes, setCurrentMes] = useState("");
-  const [messageList, setMessageList] = useState([
-    {
-      username: "min",
-      content: "hello",
-      time: "12:55",
-      img: "http://pds.joins.com/news/component/htmlphoto_mmdata/201701/12/htm_2017011210251641338.jpg",
-    },
-    {
-      username: "joo",
-      content: "hi",
-      time: "12:56",
-      img: "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
-    },
-    {
-      username: "min",
-      content: "how r u?",
-      time: "12:55",
-      img: "http://pds.joins.com/news/component/htmlphoto_mmdata/201701/12/htm_2017011210251641338.jpg",
-    },
-    {
-      username: "joo",
-      content: "fine",
-      time: "12:56",
-      img: "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
-    },
-  ]);
-  const username = "min";
+  const [messageList, setMessageList] = useState([]);
 
-  const sendMessage = (e) => {
-    //chat info
-    console.log(e.target.value);
-    setCurrentMes(e.target.value);
+  const receiverId = data.location.state.sender.userId;
+  const roomName = data.location.state.roomName;
+  const sender = data.location.state.sender;
+  // console.log(data.location.state.sender.nickname);
+  console.log(data);
+  React.useEffect(() => {
+    axios
+      .post(
+        `http://13.125.250.43/api/message`,
+        {
+          roomName: roomName,
+          postId: data.location.state.postId,
+          toUserId: receiverId,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((res) => {
+        setMessageList(res.data.message);
+        console.log(res.data, "성공");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    stompClient.connect({}, () => {
+      stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
+
+      stompClient.subscribe(`/sub/${roomName}`, (data) => {
+        console.log(data);
+        const onMessage = JSON.parse(data.body);
+        setMessageList((messageList) => messageList.concat(onMessage));
+        // console.log(messageList);
+      });
+    });
+  }, []); // setSearches(searches => searches.concat(query))
+
+  const sendMessage = () => {
+    console.log(receiverId);
+    const box = {
+      type: "Talk", //타입
+      message: currentMes, //메세지
+      roomName: roomName, //채팅방넘버
+      senderId: myUserId, // 내 userId
+      receiverId: receiverId, // 상대방 userId
+    };
+    stompClient.send("/pub/message", {}, JSON.stringify(box));
+    setCurrentMes("");
   };
+
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messageList]);
+
+  const roomOut = () => {
+    const box = {
+      type: "Exit", //타입
+      message: "", //메세지
+      roomName: roomName, //채팅방넘버
+      senderId: myUserId, // 내 userId
+      receiverId: receiverId, // 상대방 userId
+    };
+    stompClient.send("/pub/message", {}, JSON.stringify(box));
+    setCurrentMes("");
+    history.push("/chatting");
+  };
+
+  const OptionTwoControl = () => {
+    setOptionOne(false);
+    setOptionThree(false);
+    if (optionTwo) {
+      setOptionTwo(false);
+    } else {
+      setOptionTwo(true);
+    }
+  };
+
+  const OptionThreeControl = () => {
+    setOptionTwo(false);
+    setOptionOne(false);
+    if (optionThree) {
+      setOptionThree(false);
+    } else {
+      setOptionThree(true);
+    }
+  };
+
+  const ModalControl = () => {
+    if (is_open) {
+      setIs_open(false);
+      document.body.style.cssText = `
+      position: none; 
+      overflow-y: none;
+      width: 100%;
+      `;
+    } else {
+      setIs_open(true);
+      document.body.style.cssText = `
+      position: fixed; 
+      overflow-y: scroll;
+      width: 100%;
+      `;
+    }
+  };
+
   return (
     <>
       <Container>
         <Grid is_container _className="border">
-          <Header>
-            <Grid _className="inner" is_container is_flex flex_align="center">
-              <p>Joo</p>
-            </Grid>
-          </Header>
-          <ChatBox>
-            {messageList.map((message, idx) => {
-              return (
+          <div className="chatting-wrap">
+            <div className="chatting-header">
+              <div className="chatting-header-wrap">
+                <div className="arrow-back">
+                  <IoIosArrowBack
+                    size="30"
+                    onClick={() => {
+                      history.goBack();
+                    }}
+                  />
+                </div>
+                <p className="header-title">채팅</p>
+                {/* <Grid _className="ct-wrap"> */}
+                <BiDotsVerticalRounded
+                  onClick={ModalControl}
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                  }}
+                  className="point-icon"
+                />
+                {/* </Grid> */}
+              </div>
+              {is_open && (
                 <>
-                  <div
-                    key={idx}
-                    className="message"
-                    id={username === message.username ? "me" : "you"}
-                  >
-                    <Grid is_flex _className="chat-line">
-                      <Grid _className="profileimg">
-                        <img src={message.img} alt="profile" />
-                      </Grid>
-                      <Grid>
-                        <div className="chat-mes">{message.content}</div>
-                        <Grid is_flex _className="chat-info">
-                          <span>{message.time}</span>
-                          <span>{message.username}</span>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </div>
+                  <div className="modal-back"></div>
+                  <Grid _className="drop-chat">
+                    <p className="unactive" onClick={roomOut}>
+                      채팅방 나가기
+                    </p>
+
+                    <p
+                      className="unactive"
+                      onClick={() => {
+                        ModalControl();
+                        OptionTwoControl();
+                      }}
+                    >
+                      신고하기
+                    </p>
+
+                    <p
+                      className="unactive"
+                      onClick={() => {
+                        ModalControl();
+                        OptionThreeControl();
+                      }}
+                    >
+                      차단하기
+                    </p>
+                  </Grid>
                 </>
-              );
+              )}
+            </div>
+            {/* <div> */}
+            {/* {messageList.data.post.myItem}
+              <RiArrowLeftRightLine size="12" />
+              {messageList.data.post.exchangeItem} */}
+          </div>
+          {/* </Header> */}
+          <ChatBox ref={scrollRef}>
+            {messageList.map((message, idx) => {
+              if (parseInt(myUserId) === message.senderId) {
+                return <MyChat key={idx} data={message} />;
+              } else {
+                return <NotMyChat key={idx} data={message} sender={sender} />;
+              }
             })}
+
             <ChatInput>
               <Grid is_flex _className="input-inner">
+                <BsPlusLg className="plus-icon-active" />
                 <input
                   type="text"
                   value={currentMes}
-                  placeholder="hey.."
+                  placeholder="메세지를 입력하세요."
                   onChange={(e) => setCurrentMes(e.target.value)}
                   onKeyPress={(e) => {
                     e.key === "Enter" && sendMessage(e);
                   }}
                 />
-                <button className="chat-btn">
-                  <FaLocationArrow />
-                </button>
+                <IoPaperPlane
+                  className="send-chat-icon"
+                  size="34"
+                  onClick={sendMessage}
+                />
               </Grid>
             </ChatInput>
           </ChatBox>
         </Grid>
+        {/* <Nav /> */}
       </Container>
     </>
   );
@@ -102,36 +247,88 @@ const Container = styled.div`
   .border {
     height: 100vh;
     padding-top: 70px;
-    border: 1px solid var(--help-color);
+    background-color: white;
   }
-`;
+  .chatting-wrap {
+      .chatting-header {
+        width: 100%;
+        max-width: 428px;
+        height: 50px;
+        background-color: white;
+        box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        z-index: 10;
 
-const Header = styled.div`
-  width: 100%;
-  height: 50px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  border-bottom: 1px solid var(--help-color);
-  background-color: #fff;
-  z-index: 10;
-  .inner {
-    height: 50px;
-    margin: 0 auto;
+        .chatting-header-wrap {
+          height: 50px;
+          max-width: 429px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
 
-    p {
-      width: 100%;
-      position: absolute;
-      left: 0;
-      text-align: center;
-      font-weight: bold;
+          .header-title {
+            font-size: 20px;
+            font-weight: bold;
+          }
+          .point-icon {
+            cursor: pointer;
+          }
+          .arrow-back {
+            width: 30px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+          }
+        }
+
+        .modal-back {
+          position: absolute;
+          top: 50px;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background-color: rgba(0, 0, 0, 0.25);
+        }
+        .drop-chat {
+          height: 207px;
+          width: 303px;
+          border-radius: 24px;
+          background-color: white;
+          position: absolute;
+          top: 110%;
+          left: 50%;
+          transform: translate(-50%, 110%);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: center;
+          filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+          cursor: pointer;
+          .unactive {
+            padding: 8px 8px;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+    .chat-item {
+      margin-top: 50px;
     }
   }
 `;
 
 const ChatBox = styled.div`
   padding: 0 16px;
-
+  max-height: 85vh;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   .message {
     margin: 15px 0;
   }
@@ -151,6 +348,7 @@ const ChatBox = styled.div`
   .chat-mes {
     padding: 8px 10px;
     border-radius: 12px;
+    /* color: black; */
   }
 
   .chat-info {
@@ -161,12 +359,11 @@ const ChatBox = styled.div`
   }
   #you .chat-mes {
     background-color: var(--main-color);
-    color: #fff;
+    /* color: #fff; */
   }
 
   #me .chat-line {
     display: flex;
-
     justify-content: end;
   }
 
@@ -186,14 +383,31 @@ const ChatInput = styled.div`
   bottom: 15px;
 
   .input-inner {
+    display: flex;
+    align-items: center;
     input {
-      width: 350px;
-      padding: 5px 10px;
-    }
-
-    button {
-      width: 40px;
+      width: 305px;
       height: 40px;
+      border: none;
+      border-radius: 20px;
+      padding: 5px 10px;
+      background-color: #0000000d;
+    }
+    .plus-icon-active {
+      padding: 8px 0;
+      margin: 0 16px 0 0;
+      font-weight: bold;
+      width: 34px;
+      height: 34px;
+      color: #fff;
+      border-radius: 36px;
+      cursor: pointer;
+      background-color: var(--main-color);
+    }
+    .send-chat-icon {
+      margin: 0 0 4px 8px;
+      color: var(--main-color);
+      cursor: pointer;
     }
   }
 `;

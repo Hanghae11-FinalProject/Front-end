@@ -13,8 +13,13 @@ import Write from "../pages/Write";
 import Detail from "../pages/Detail";
 import Search from "../pages/Search";
 import Landing from "../pages/Landing";
+import InputAdd from "../pages/InputAdd";
 import Chatting from "../pages/Chatting";
 import Chat from "../pages/Chat";
+import Favorite from "../pages/Favorite";
+import MyPost from "../pages/MyPost";
+import EditPost from "../pages/EditPost";
+import OAuthRedirect from "../components/OAuthRedirect";
 
 function App() {
   return (
@@ -23,14 +28,23 @@ function App() {
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main}></Route>
         <Route path="/intro" exact component={Landing}></Route>
+        <Route path="/address" exact component={InputAdd}></Route>
         <Route path="/login" exact component={Login}></Route>
         <Route path="/signup" exact component={Signup}></Route>
         <Route path="/mypage" exact component={Mypage}></Route>
+        <Route path="/favorite" exact component={Favorite}></Route>
+        <Route path="/mypost" exact component={MyPost}></Route>
         <Route path="/write" exact component={Write}></Route>
-        <Route path="/detail" exact component={Detail}></Route>
+        <Route path="/write/:id" exact component={EditPost} />
+        <Route path="/detail/:id" exact component={Detail}></Route>
         <Route path="/search" exact component={Search}></Route>
         <Route path="/chatting" exact component={Chatting}></Route>
         <Route path="/chat" exact component={Chat}></Route>
+        <Route
+          path="/oauth/callback/kakao"
+          exact
+          component={OAuthRedirect}
+        ></Route>
       </ConnectedRouter>
     </div>
   );

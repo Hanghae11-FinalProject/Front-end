@@ -1,33 +1,61 @@
 import React from "react";
 import styled from "styled-components";
+import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
 
-const ChattingItem = () => {
-    return (
-        <ChattingWrap>
-            <div className='chatting-item-wrap'>
-                <div className='profile-img'>
-                    <img src='/static/noimage2.gif'/>
-                </div>
-                <div className='chat-info'>
-                    <div className='nickname-time-wrap'>
-                    <h1 className='nickname'>정민경</h1>
-                    <span>하루전</span>
-                    </div>
-                    <p>상그리아 와인 최고...</p>
-                </div>
-                <div className='chatting-cnt'>2</div>
-            </div>
-        </ChattingWrap>
-    );
+const ChattingItem = (p) => {
+  const myUserId = getCookie("Id");
+  React.useEffect(() => {
+    p.testOne();
+  }, [p]);
+  // console.log(p.stomp);
+
+  const goChat = () => {
+    p.stomp.unsubscribe(`/sub/${myUserId}`);
+    p.stompClient.disconnect();
+    history.push({
+      pathname: `/chat`,
+      state: {
+        roomName: p.roomData.roomName,
+        sender: p.roomData.user,
+        postId: p.roomData.postId,
+      },
+    });
+  };
+  return (
+    <ChattingWrap>
+      <div className="chatting-item-wrap" onClick={goChat}>
+        <div className="profile-img">
+          <img src={p.roomData.user.profileImg} alt="room img" />
+        </div>
+        <div className="chat-info">
+          <div className="nickname-time-wrap">
+            <h1 className="nickname">{p.roomData.user.nickname}</h1>
+            <span>{p.roomData.lastMessage.createdAt}</span>
+          </div>
+          <p>{p.roomData.lastMessage.content}</p>
+        </div>
+        <div
+          className={
+            p.roomData.notReadingMessageCount ? "chatting-cnt" : "cnt-zero"
+          }
+        >
+          {p.roomData.notReadingMessageCount !== 0
+            ? p.roomData.notReadingMessageCount
+            : ""}
+        </div>
+      </div>
+    </ChattingWrap>
+  );
 };
 
 export default ChattingItem;
-
 
 const ChattingWrap = styled.div`
   padding: 20px;
   max-width: 428px;
   border-bottom: 3px solid #ededed;
+  cursor: pointer;
   .chatting-item-wrap {
     display: flex;
     align-items: center;
@@ -44,38 +72,39 @@ const ChattingWrap = styled.div`
         border-radius: 50%;
         object-fit: cover;
       }
-    }    
-        .chat-info{
-            width: 76%;
-            .nickname-time-wrap{
-            display: flex;
-            .nickname{
-            font-size: 17px;
-            margin-right: 10px;
-            }
-            span{
-                font-size: 12px;
-                margin-top: 4px;
-                }
-            }
-            p{
-                font-size: 15px;
-            }
+    }
+    .chat-info {
+      width: 76%;
+      .nickname-time-wrap {
+        display: flex;
+        .nickname {
+          font-size: 17px;
+          margin-right: 10px;
         }
-        .chatting-cnt{
-            background-color: #FF626F;
-            width: 22px;
-            height: 22px;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 22px;
-            border-radius: 50%;
-            text-align: center;
-
+        span {
+          font-size: 12px;
+          margin-top: 4px;
         }
       }
+      p {
+        font-size: 15px;
+      }
     }
-    
+    .chatting-cnt {
+      background-color: #ff626f;
+      width: 22px;
+      height: 22px;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 22px;
+      border-radius: 50%;
+      text-align: center;
+    }
+    .cnt-zero {
+      background-color: #fff;
+      width: 22px;
+      height: 22px;
+    }
   }
 `;
