@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
-import Chattingitem from "../components/Chattingitem";
+import Chattingitem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 
 
