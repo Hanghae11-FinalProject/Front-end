@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import PuffLoader from "react-spinners/PuffLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 
@@ -84,11 +85,9 @@ const PostList = ({ location, category }) => {
           {post_data.posts.length === 0 ? (
             <>
               <Spin>
-                <ScaleLoader
-                  height="50px"
-                  width="10px"
-                  color="#FF626F"
-                  radius="8px"
+                <PuffLoader
+                  size="100"
+                  color="var(--main-color)"
                 />
               </Spin>
             </>

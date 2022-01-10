@@ -67,7 +67,9 @@ const editProfileDB = (img, nickname, username) => {
       )
       .then((response) => {
         console.log(response);
-        dispatch(editProfile(response.data));
+        dispatch(
+          editProfile(response.data)
+        );
       })
       .catch((err) => {
         console.log(err);

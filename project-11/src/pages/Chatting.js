@@ -274,6 +274,7 @@ const ChattingWrap = styled.div`
         .drop-chat {
           height: 165px;
           width: 260px;
+
           border-radius: 12px;
           background-color: white;
           position: absolute;

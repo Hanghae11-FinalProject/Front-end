@@ -14,7 +14,7 @@ export const icons = [
   "https://media.vlpt.us/images/leejh4197/post/02d079f1-ddab-49fb-8f59-628d5c7fd1bf/KakaoTalk_20220107_120404067_05.png",
   "https://media.vlpt.us/images/leejh4197/post/4c4d3417-5906-40fe-bdb2-9616d87ee679/KakaoTalk_20220107_120404067_09.png",
   "https://media.vlpt.us/images/leejh4197/post/87971bdc-51ba-468c-9171-935f01966df2/KakaoTalk_20220107_120404067_07.png",
-
+  
 ];
 
 export const copyUrlToClip = () => {
