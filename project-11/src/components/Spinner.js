@@ -1,4 +1,5 @@
 import ScaleLoader from "react-spinners/ScaleLoader";
+import PuffLoader from "react-spinners/PuffLoader";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 
@@ -6,7 +7,7 @@ const Spinner = () => {
   return (
     <>
       <SpinnerBox>
-        <ScaleLoader height="100" width="30" color="#FF626F" radius="8" />
+           <PuffLoader size="60px" color="#FF626F" margin="2px" />
       </SpinnerBox>
     </>
   );

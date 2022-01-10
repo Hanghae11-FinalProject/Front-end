@@ -11,8 +11,8 @@ import styled from "styled-components";
 
 const UserModal = (props) => {
   const { name, isOpen, onCancel } = props;
-  console.log(props);
   const [editName, setEditName] = useState(`${name}`);
+  const [iconList, setIconList] = useState([]);
 
   const username = useSelector((state) => state.post.profile.username);
 
@@ -21,11 +21,7 @@ const UserModal = (props) => {
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
-  const token = getCookie("Token");
 
-  const [iconCilck, setIconClick] = useState(false)
-  
- 
 
   const CheckActive = () => {
     editName !== name && editName !== ""
@@ -82,6 +78,48 @@ const UserModal = (props) => {
   const handleClose = () => {
     onCancel();
   };
+// 프로필 클릭 이벤트
+
+
+  useEffect(()=>{
+    const newList = icons.map((icon, i) => {
+      const object = {icons:icon, active:false};
+      return object
+    })
+    setIconList(newList);
+  },[])
+
+
+  // 클릭했을때 해당 요소 -> if
+  // 의 active 반대로 바꾸고 -> !ic.active
+  //  배열을 리턴 받아야한다. -> {}
+
+//원본배열 작업 후 원본배열을 다시 받기
+  const handleClick = (i) =>{
+   
+    const newList = iconList.map((ic,idx)=> {
+      if(i === idx){//만약 인자로 받아온 i가 newList의 idx번째와 같다면
+        // return {icons:ic.icons, active:!ic.active} //액티브를 반대값으로 리턴
+        return {
+          ...ic,
+          active: !ic.active
+        }
+      }else{//인덱스가 같지 않다면
+        // return {icons:ic.icons, active:false} //원래 액티브값을 리턴
+        return {
+          ...ic,
+          active: false
+        }
+      }
+    })
+   
+   
+    setIconList(newList)
+
+  }
+  console.log(iconList)
+
+
   return (
     <>
       <ReactModal
@@ -148,19 +186,22 @@ const UserModal = (props) => {
           </IconTitleWrap>
         </div>
         <ExtraIcon>
-          {icons.map((item, i) => {
+          {iconList && iconList.map((item, i) => {
             return (
-              <Grid       
+              <Grid                    
               >
                 <Image
                   size="50"
                   shape="circle"
-                  src={item}
+                  src={item.icons}
                   key={i}
-                  _className='icon'       
-                  _onClick={() => {
+                  _className={item.active ? 'icon' : 'noneicon'}
+                  _onClick={()=>{
                     setImg(item);
-                  }}
+                    handleClick(i);
+                  }
+                  }       
+                  
                 />
               </Grid>
             );
@@ -184,25 +225,31 @@ export default UserModal;
 const ExtraIcon = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  .icon{
+  .noneicon{
     cursor: pointer;
-    animation: 0.6s ease-in-out loadEffect2;
-  }@keyframes loadEffect2 {
+  }
+  .icon{
+    border: 3px solid var(--main-color);
+    cursor: pointer;
+    animation: 0.6s ease-in-out loadEffect3;
+  }@keyframes loadEffect3 {
     0%{
         opacity: 0;
-        transform: translateX(-30px);
+        transform: scale(0.7);
     }
-    50%{
-        opacity: 0.5;
-        transform: translateX(30px);
+    65%{
+        opacity: 0.65;
+        transform: scale(1.01);
+    }
+    85%{
+        opacity: 0.85;
+        transform: scale(0.97);
     }
     100%{
         opacity: 1;
-        transform: translateX(0px);
+        transform: scale(1);
     }
 }
-  
-  }
 `;
 
 const TitleWrap = styled.div`
@@ -272,15 +319,4 @@ const IconTitleWrap = styled.div`
   }
 `;
 
-const ModalWrap = styled.div`
-.mount1{ animation: 0.7s ease-in-out loadEffect1; }
 
-@keyframes loadEffect1 {
-    0%{
-        opacity: 0;
-    }
-    100%{
-        opacity: 1;
-    }
-}
-`
