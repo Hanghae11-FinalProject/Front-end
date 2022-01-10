@@ -165,6 +165,14 @@ const Detail = () => {
       )
       .then((res) => {
         console.log(res, "성공");
+        history.push({
+          pathname: `/chat`,
+          state: {
+            roomName: res.data.roomName,
+            sender: res.data.user,
+            postId: PostData.postId,
+          },
+        });
       })
       .catch((err) => {
         console.log(err, "에러");

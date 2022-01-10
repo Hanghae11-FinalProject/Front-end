@@ -2,11 +2,22 @@ import React from "react";
 import styled from "styled-components";
 
 const MyChat = (props) => {
+  // console.log(props.nicknames);
+  const out = `${props.nicknames.senderName}님이 퇴장`;
   return (
     <React.Fragment>
       <MyChatBox>
         <span className="createdAt">{props.data.createdAt}</span>
         <p className="messages">{props.data.message}</p>
+        {/* {props.data.message === out ? (
+          <div className="out-chat-box">
+            <span className="out-chat">
+              {props.nicknames.senderName}님이 채팅을 나갔습니다.
+            </span>
+          </div>
+        ) : (
+          ""
+        )} */}
       </MyChatBox>
     </React.Fragment>
   );
@@ -16,6 +27,15 @@ const MyChatBox = styled.div`
   display: flex;
   justify-content: end;
   margin: 12px 0px;
+  .out-chat-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    .out-chat {
+      font-size: 14px;
+      color: var(--main-color);
+    }
+  }
   .messages {
     display: inline-block;
     padding: 8px 12px;

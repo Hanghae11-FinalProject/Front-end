@@ -469,11 +469,10 @@ const CateArea = styled.div`
   .category-option {
     width: 100%;
     max-width: 25.2rem;
-    height: 361px;
-    margin-top: 2px;
+    height: 397px;
+    margin-top: -6px;
     position: absolute;
     background-color: #ffffff;
-
     border: 1px solid var(--disabled-color);
     border-radius: 6px;
     cursor: pointer;

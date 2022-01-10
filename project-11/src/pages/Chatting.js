@@ -32,6 +32,7 @@ const Chatting = () => {
   const testOne = () => {
     setTest(false);
   };
+
   React.useEffect(() => {
     setTest(true);
   }, [test]);
@@ -69,7 +70,7 @@ const Chatting = () => {
           axiosInstance
             .post(
               `/api/roomcount`,
-              { roomName: onMessage.roomName, toUserId: onMessage.senderId },
+              { roomName: onMessage.roomName, userId: myUserId },
               { headers: { Authorization: token } }
             )
             .then((res) => {
@@ -273,10 +274,11 @@ const ChattingWrap = styled.div`
         .drop-chat {
           height: 165px;
           width: 260px;
-          border-radius: 10px;
+
+          border-radius: 12px;
           background-color: white;
           position: absolute;
-          top: 260%;
+          top: 300%;
           left: 50%;
           transform: translate(-50%, 110%);
           display: flex;
