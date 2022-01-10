@@ -272,7 +272,7 @@ const AddressBox = styled.div`
     border: 1px solid var(--help-color);
     border-radius: 5px;
     position: absolute;
-    top: -15.8vh;
+    top: -17.5vh;
     background-color: #fff;
     cursor: pointer;
 

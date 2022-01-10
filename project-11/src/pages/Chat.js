@@ -5,6 +5,7 @@ import { IoPaperPlane } from "react-icons/io5";
 import { BsPlusLg } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import { CgArrowsHAlt } from "react-icons/cg";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { getCookie } from "../shared/Cookie";
@@ -17,6 +18,7 @@ import Nav from "../shared/Nav";
 let List = [];
 
 const Chat = (data) => {
+  const nickName = getCookie("Name");
   const token = getCookie("Token");
   let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
   let stompClient = Stomp.over(sockjs);
@@ -30,12 +32,16 @@ const Chat = (data) => {
   const myUserId = getCookie("Id");
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
+  const [items, setItems] = useState([]);
 
   const receiverId = data.location.state.sender.userId;
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
-  // console.log(data.location.state.sender.nickname);
-  console.log(data);
+  const nicknames = {
+    senderName: data.location.state.sender.nickname,
+    nickName: nickName,
+  };
+
   React.useEffect(() => {
     axios
       .post(
@@ -44,11 +50,13 @@ const Chat = (data) => {
           roomName: roomName,
           postId: data.location.state.postId,
           toUserId: receiverId,
+          userId: myUserId,
         },
         { headers: { Authorization: token } }
       )
       .then((res) => {
         setMessageList(res.data.message);
+        setItems(res.data.post);
         console.log(res.data, "성공");
       })
       .catch((err) => {
@@ -61,7 +69,7 @@ const Chat = (data) => {
         console.log(data);
         const onMessage = JSON.parse(data.body);
         setMessageList((messageList) => messageList.concat(onMessage));
-        // console.log(messageList);
+        console.log(messageList);
       });
     });
   }, []); // setSearches(searches => searches.concat(query))
@@ -155,7 +163,9 @@ const Chat = (data) => {
                     }}
                   />
                 </div>
-                <p className="header-title">채팅</p>
+                <p className="header-title">
+                  {data.location.state.sender.nickname}
+                </p>
                 {/* <Grid _className="ct-wrap"> */}
                 <BiDotsVerticalRounded
                   onClick={ModalControl}
@@ -198,18 +208,39 @@ const Chat = (data) => {
                 </>
               )}
             </div>
-            {/* <div> */}
-            {/* {messageList.data.post.myItem}
-              <RiArrowLeftRightLine size="12" />
-              {messageList.data.post.exchangeItem} */}
+            <div className="item-bar">
+              <p>
+                {items.myItem ? items.myItem : ""} <CgArrowsHAlt size="12" />{" "}
+                {items.exchangeItem ? items.exchangeItem : ""}
+              </p>
+            </div>
           </div>
           {/* </Header> */}
           <ChatBox ref={scrollRef}>
+            {messageList.length === 0 ? (
+              <div className="enter-chat-box">
+                <span className="enter-chat">
+                  {data.location.state.sender.nickname}님과 {nickName}님이
+                  채팅을 시작하였습니다.
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
             {messageList.map((message, idx) => {
               if (parseInt(myUserId) === message.senderId) {
-                return <MyChat key={idx} data={message} />;
+                return (
+                  <MyChat key={idx} nicknames={nicknames} data={message} />
+                );
               } else {
-                return <NotMyChat key={idx} data={message} sender={sender} />;
+                return (
+                  <NotMyChat
+                    key={idx}
+                    nicknames={nicknames}
+                    data={message}
+                    sender={sender}
+                  />
+                );
               }
             })}
 
@@ -233,8 +264,8 @@ const Chat = (data) => {
               </Grid>
             </ChatInput>
           </ChatBox>
+          <Nav />
         </Grid>
-        {/* <Nav /> */}
       </Container>
     </>
   );
@@ -250,6 +281,7 @@ const Container = styled.div`
     background-color: white;
   }
   .chatting-wrap {
+    margin-top: -20px;
       .chatting-header {
         width: 100%;
         max-width: 428px;
@@ -293,12 +325,12 @@ const Container = styled.div`
           background-color: rgba(0, 0, 0, 0.25);
         }
         .drop-chat {
-          height: 207px;
-          width: 303px;
-          border-radius: 24px;
+          height: 165px;
+          width: 260px;
+          border-radius: 12px;
           background-color: white;
           position: absolute;
-          top: 110%;
+          top: 300%;
           left: 50%;
           transform: translate(-50%, 110%);
           display: flex;
@@ -313,6 +345,14 @@ const Container = styled.div`
           }
         }
       }
+      .item-bar{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        background-color: #00000005;
+        padding: 4px;
+      }
     }
     .chat-item {
       margin-top: 50px;
@@ -322,12 +362,21 @@ const Container = styled.div`
 
 const ChatBox = styled.div`
   padding: 0 16px;
-  max-height: 85vh;
+  max-height: 81vh;
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
+  }
+  .enter-chat-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    .enter-chat {
+      font-size: 14px;
+      color: var(--main-color);
+    }
   }
   .message {
     margin: 15px 0;
@@ -380,7 +429,7 @@ const ChatBox = styled.div`
 
 const ChatInput = styled.div`
   position: fixed;
-  bottom: 15px;
+  bottom: 57px;
 
   .input-inner {
     display: flex;

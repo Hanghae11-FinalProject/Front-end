@@ -318,7 +318,7 @@ const EditPost = (items) => {
             <TopText style={{ marginLeft: "6px" }}>글 수정하기</TopText>
             <TopText
               style={{ padding: "6px" }}
-              className={active ? "activeBtn" : "unActiveBtn"}
+              className="activeBtn"
               disabled={active}
               onClick={editPost}
             >
@@ -511,7 +511,7 @@ const CateArea = styled.div`
   border-bottom: 1px solid #eee;
   .category-option {
     width: 25.2rem;
-    height: 361px;
+    height: 398px;
     margin-top: 2px;
     position: absolute;
     background-color: #ffffff;
