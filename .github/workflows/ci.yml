@@ -26,4 +26,8 @@ jobs:
         run: |
           cd project-11
           yarn install
-          CI=true yarn test
+          CI=true yarn test --coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
