@@ -271,12 +271,12 @@ const ChattingWrap = styled.div`
           background-color: rgba(0, 0, 0, 0.25);
         }
         .drop-chat {
-          height: 207px;
-          width: 303px;
-          border-radius: 24px;
+          height: 165px;
+          width: 260px;
+          border-radius: 10px;
           background-color: white;
           position: absolute;
-          top: 110%;
+          top: 260%;
           left: 50%;
           transform: translate(-50%, 110%);
           display: flex;
