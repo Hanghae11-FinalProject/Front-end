@@ -101,6 +101,7 @@ const CommentInput = ({ name, postid, commentid }) => {
                 <input
                   type="text"
                   placeholder="댓글을 입력해주세요"
+                  value={Newcomment}
                   onChange={writeComment}
                   disabled={token ? false : true}
                 />

@@ -16,11 +16,11 @@ const UserModal = (props) => {
 
   const username = useSelector((state) => state.post.profile.username);
 
-  
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
+
 
 
   const CheckActive = () => {
@@ -190,6 +190,7 @@ const UserModal = (props) => {
             return (
               <Grid                    
               >
+
                 <Image
                   size="50"
                   shape="circle"

@@ -33,12 +33,7 @@ const initialState = {
   posts: [],
   page: 0,
   has_next: false,
-  comments: [],
-  children: [],
   commentCnt: "",
-  location: "",
-  category: "",
-
   profile: [],
 };
 
@@ -59,13 +54,6 @@ const getProfileDB = () => {
       });
   };
 };
-
-// axiosInstance.put('/api/userInfos',
-//     {nickname:editName,profileImg:img},
-//     {headers:{Authorization: token }})
-//     .then((response)=>{
-//       console.log('프로필 수정',response)
-//     })
 
 // 프로필 수정2
 const editProfileDB = (img, nickname, username) => {
@@ -239,7 +227,6 @@ export default handleActions(
         draft.posts.push(...action.payload._post_data.posts);
 
         //새 값을 받아서 기존의 값에 더해서 중복된 아이들 지워내고 배열에 넣어주기
-
         // let arrStr = JSON.stringify(action.payload._post_data.posts);
         // const newArr = draft.posts.filter((el, idx) => {
         //   return arrStr.includes(JSON.stringify(el));

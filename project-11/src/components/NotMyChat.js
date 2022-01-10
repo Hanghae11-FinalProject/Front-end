@@ -41,7 +41,7 @@ const NotMineBox = styled.div`
     text-align: left;
     line-height: 24px;
     background-color: var(--help-color);
-    font-size: 14px;
+    font-size: 16px;
     color: black;
     max-width: 278px;
     word-break: break-all;
