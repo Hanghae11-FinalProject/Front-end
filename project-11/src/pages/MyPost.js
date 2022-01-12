@@ -10,12 +10,12 @@ import { Grid } from "../elements";
 import Nav from "../shared/Nav";
 import MyPostCard from "../components/MyPostCard";
 import MpLoginCk from "../components/MpLoginCk";
+import Spinner from "../components/Spinner";
 
 const MyPost = () => {
   const token = getCookie("Token");
-
   const [my_List, setMy_List] = React.useState([]);
-
+  const [is_loading, setIs_loading] = React.useState(false);
   useEffect(() => {
     axiosInstance
       .get(`/api/myposts`, {
@@ -27,11 +27,13 @@ const MyPost = () => {
         console.log("성공쓰~", res);
         console.log(res.data);
         setMy_List(res.data);
+        setIs_loading(true);
       })
       .catch((err) => {
         console.log("에러네용", err);
       });
   }, []);
+
   useEffect(() => {
     console.log(my_List);
   }, [my_List]);
@@ -40,6 +42,7 @@ const MyPost = () => {
     <>
       <MyPostBox>
         <Grid is_container _className="border">
+          {is_loading === false && <Spinner />}
           <MainTop>
             <IoIosArrowBack
               size="30"

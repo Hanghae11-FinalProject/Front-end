@@ -91,7 +91,6 @@ const InputAdd = () => {
       <InputAddWrap>
         <Grid is_container _className="border">
           <MainTop>
-            <IoIosArrowBack size="30" className="icon" />
             <TopText style={{ marginLeft: "6px" }}>추가 정보 입력</TopText>
           </MainTop>
           <div className="text-box">

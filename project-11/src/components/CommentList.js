@@ -27,13 +27,13 @@ const CommentList = ({ comment, postid, postuser }) => {
   const commentData = comment;
   let nickChange = commentData.nickname;
 
-  useEffect(() => {
-    if (controlRpl) {
-      setControlRpl(false);
-    } else {
-      setControlRpl(true);
-    }
-  }, [is_name]);
+  // useEffect(() => {
+  //   if (controlRpl) {
+  //     setControlRpl(false);
+  //   } else {
+  //     setControlRpl(true);
+  //   }
+  // }, [is_name]);
   console.log(commentData);
   console.log(is_name, "컨트롤");
 
@@ -180,63 +180,59 @@ const CommentList = ({ comment, postid, postuser }) => {
       {/* ) : (
         <CommentInput postid={postid} />
       )} */}
-      <>
-        <CommentInputBox>
+      {is_name ? (
+        <CommentInputBox style={is_name ? {} : { display: "none" }}>
           <Grid is_container _className="out-box">
-            {is_name === true ? (
-              <>
-                <Grid
-                  is_container
-                  is_flex
-                  flex_align="center"
-                  flex_justify="space-between"
-                  _className="reply-name"
-                >
-                  <p>@{nickChange}에게 댓글달기</p>
-                  <span>
-                    <GrClose className="close-btn" onClick={cancleReply} />
-                  </span>
-                </Grid>
-                <Grid
-                  is_container
-                  is_flex
-                  flex_align="center"
-                  _className="reply-box"
-                >
-                  <input
-                    type="text"
-                    placeholder={`@${nickChange} 답글을 입력해주세요`}
-                    onChange={writeComment}
-                    disabled={token ? false : true}
-                  />
+            <Grid
+              is_container
+              is_flex
+              flex_align="center"
+              flex_justify="space-between"
+              _className="reply-name"
+            >
+              <p>@{nickChange}에게 댓글달기</p>
+              <span>
+                <GrClose className="close-btn" onClick={cancleReply} />
+              </span>
+            </Grid>
+            <Grid
+              is_container
+              is_flex
+              flex_align="center"
+              _className="comment-box-active"
+            >
+              <input
+                type="text"
+                placeholder={`@${nickChange} 답글을 입력해주세요`}
+                onChange={writeComment}
+                disabled={token ? false : true}
+              />
 
-                  <IoPaperPlane className="add-btn" onClick={addChildComment} />
-                </Grid>
-              </>
-            ) : (
-              <>
-                <Grid
-                  is_container
-                  is_flex
-                  flex_align="center"
-                  _className="comment-box"
-                >
-                  <input
-                    type="text"
-                    placeholder="댓글을 입력해주세요"
-                    value={Newcomment}
-                    onChange={writeComment}
-                    disabled={token ? false : true}
-                  />
-
-                  <IoPaperPlane className="add-btn" onClick={postComment} />
-                </Grid>
-              </>
-            )}
+              <IoPaperPlane className="add-btn" onClick={addChildComment} />
+            </Grid>
           </Grid>
         </CommentInputBox>
-      </>
-
+      ) : (
+        <CommentInputBox style={is_name ? { display: "none" } : {}}>
+          <Grid is_container _className="out-box">
+            <Grid
+              is_container
+              is_flex
+              flex_align="center"
+              _className="comment-box-active"
+            >
+              <input
+                type="text"
+                placeholder="댓글을 입력해주세요"
+                value={Newcomment}
+                onChange={writeComment}
+                disabled={token ? false : true}
+              />
+              <IoPaperPlane className="add-btn" onClick={postComment} />
+            </Grid>
+          </Grid>
+        </CommentInputBox>
+      )}
     </>
   );
 };
@@ -365,11 +361,12 @@ const CommentInputBox = styled.div`
         }
       }
     }
-    .reply-box {
+    .comment-box-inactive {
       margin: 0 auto;
       padding: 3px 10px;
       background-color: var(--light-color);
       border-radius: 18px;
+      display: none;
 
       input {
         width: 92%;
@@ -387,7 +384,7 @@ const CommentInputBox = styled.div`
       }
     }
 
-    .comment-box {
+    .comment-box-active {
       margin: 0 auto;
       padding: 3px 10px;
       background-color: var(--light-color);
