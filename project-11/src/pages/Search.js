@@ -283,9 +283,10 @@ const Header = styled.div`
   width: 100%;
   max-width: 428px;
   height: 50px;
+
+  background-color: #fff;
   position: fixed;
   top: 0;
-
   z-index: 10;
   .inner {
     height: 50px;

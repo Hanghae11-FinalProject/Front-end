@@ -41,7 +41,7 @@ const initialState = {
 
 // *** 미들웨어
 
-//프로필 수정
+//마이페이지 - 프로필 수정부분 프로필 데이터 가져오기
 const getProfileDB = () => {
   return async (dispatch, getState, { history }) => {
     const token = getCookie("Token");
@@ -57,14 +57,14 @@ const getProfileDB = () => {
   };
 };
 
-// 프로필 수정2
-const editProfileDB = (img, nickname, username) => {
+//마이페이지 - 프로필 수정부분 수정된 데이터 보내기
+const editProfileDB = (img, nickname) => {
   return async (dispatch, getState, { history }) => {
     const token = getCookie("Token");
     await axiosInstance
       .put(
         "/api/userInfos",
-        { nickname: nickname, profileImg: img, username: username },
+        { nickname: nickname, profileImg: img.icons },
         { headers: { Authorization: token } }
       )
       .then((response) => {
@@ -79,22 +79,24 @@ const editProfileDB = (img, nickname, username) => {
 // get 형식 그대로 백에다가 수정된 데이터 요청하기
 
 //메인 게시글 조회
+
 const getPostAction = (area, cate, count, is_select) => {
   if (is_select) {
     count = 0;
   }
   return async (dispatch, getState, { history }) => {
     // console.log("미들웨어에 넘어온 값 (장소,카테,페이지) ", area, cate, count);
+
     axiosInstance
       .post(`api/category?page=${count}`, {
-        categoryName: [cate],
-        address: [area],
+        categoryName: [category],
+        address: [location],
       })
       .then((res) => {
         // console.log("통신 후 리듀스 저장 전 목록", res.data, count);
         let is_next = null;
 
-        if (res.data.data.length < 5) {
+        if (res.data.data.length < 6) {
           is_next = false;
         } else {
           is_next = true;
@@ -239,6 +241,7 @@ export default handleActions(
       produce(state, (draft) => {
         //카테고리를 셀렉해주기 위해서 push대신에 하지만 무한스크롤을 위해push해야함
         draft.posts.push(...action.payload._post_data.posts);
+
         if (action.payload._post_data.page) {
           draft.page = action.payload._post_data.page;
         }

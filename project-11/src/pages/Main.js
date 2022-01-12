@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-
+import { axiosInstance } from "../shared/api";
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
 import { getCookie } from "../shared/Cookie";
@@ -30,9 +30,7 @@ SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
   const token = getCookie("Token");
-  //redux 가져오기
   const dispatch = useDispatch();
-  const post_page = useSelector((state) => state.post.page);
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
@@ -264,11 +262,13 @@ const Main = () => {
               </>
             )}
           </LocationBox>
+
           <PostList
             location={is_location}
             category={is_cate}
             selected={selected}
           />
+
           <Nav home={"home"} />
         </Grid>
       </Container>
@@ -420,6 +420,7 @@ const CateBtn = styled.div`
       transform: scale(1);
     }
   }
+
   .inactive {
     .icon {
       color: var(--help-color);
@@ -464,6 +465,7 @@ const LocationBox = styled.div`
       transform: scale(1);
     }
   }
+
   .location-option {
     width: 140px;
     position: absolute;

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
+
 
 const PostList = ({ location, category, selected }) => {
   //redux 가져오기
@@ -39,6 +39,7 @@ const PostList = ({ location, category, selected }) => {
     curLocation();
     setpage(0);
   }, [location, category]);
+
   useEffect(() => {
     // console.log("랜더링2");
     // console.log("미들웨어로 넘기는 값", area, cate, page); //로딩시 불러오는 데이터
@@ -48,12 +49,13 @@ const PostList = ({ location, category, selected }) => {
     // console.log(page);
     dispatch(postActions.getPostAction(area, category, page, is_select));
   }, [area, category, page]);
+
   //scroll event
   //스크롤시 다음페이지를 보여주는 것
   const getData = () => {
     let data;
     let count = page + 1;
-    // console.log(count, category);
+
     axiosInstance
       .post(`api/category?page=${count}`, {
         categoryName: [cate],
@@ -61,7 +63,7 @@ const PostList = ({ location, category, selected }) => {
       })
       .then((res) => {
         data = res.data.data;
-        // console.log("무한 스크롤 동작해서 받아 온 값", data, count);
+
         // //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 6) {
           // console.log("사이즈가 작나?");
@@ -73,7 +75,7 @@ const PostList = ({ location, category, selected }) => {
           setItems([...items, ...data]);
         }
         setpage(count);
-        // console.log("무한스크롤 뒤의 페이지값", page);
+
       });
   };
   return (
