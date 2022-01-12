@@ -41,7 +41,13 @@ const Reply = ({ reply, postid, postuser }) => {
           <BsArrowReturnRight className="arrow" />
           <Grid _className="reply-box">
             <Grid is_flex flex_align="center" _className="user">
-              <Profile></Profile>
+              <Profile>
+                <img
+                  className="profile-img"
+                  src={replyData.profileImg}
+                  alt="profileImg"
+                />
+              </Profile>
               {replyData.nickname === postuser ? (
                 <p>
                   {replyData.nickname} <span className="chip">작성자</span>
@@ -171,11 +177,19 @@ const ReplyBox = styled.div`
 `;
 
 const Profile = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background-color: var(--help-color);
+  /* background-color: var(--help-color); */
   margin-right: 10px;
+  background-color: #ffd8d8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .profile-img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const Comment = styled.div`

@@ -9,17 +9,17 @@ import PostCard from "./PostCard";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 
-const PostList = ({ location, category }) => {
-  console.log("메인페이지에서 넘어오는 값", location, category);
+
+const PostList = ({ location, category, selected }) => {
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
-  console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
-  //main페이지에서 넘어오는 지역, 카테고리, 페이지 값 관리
-  //페이지의 경우 refresh되는게 아니면 리덕스에 저장된 페이지가 오는 것
+  // console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
+  //지역, 카테고리 값 state로 관리
   const [page, setpage] = useState(post_data.page);
   const [area, setarea] = useState(location);
   const [cate, setcate] = useState(category);
+  let is_select = selected;
 
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
@@ -34,17 +34,20 @@ const PostList = ({ location, category }) => {
       return setarea(location);
     }
   };
-
+  // console.log(area, category, selected);
   useEffect(() => {
     curLocation();
     setpage(0);
   }, [location, category]);
 
   useEffect(() => {
-    console.log("랜더링2");
-    console.log("미들웨어로 넘기는 값", area, cate, page);
-    //로딩시 불러오는 데이터
-    dispatch(postActions.getPostAction(area, category, page));
+    // console.log("랜더링2");
+    // console.log("미들웨어로 넘기는 값", area, cate, page); //로딩시 불러오는 데이터
+    if (page !== 0) {
+      is_select = false;
+    }
+    // console.log(page);
+    dispatch(postActions.getPostAction(area, category, page, is_select));
   }, [area, category, page]);
 
   //scroll event
@@ -52,6 +55,7 @@ const PostList = ({ location, category }) => {
   const getData = () => {
     let data;
     let count = page + 1;
+
     axiosInstance
       .post(`api/category?page=${count}`, {
         categoryName: [cate],
@@ -59,20 +63,19 @@ const PostList = ({ location, category }) => {
       })
       .then((res) => {
         data = res.data.data;
-        console.log("무한 스크롤 동작해서 받아 온 값", area, cate, data, count);
 
         // //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 6) {
-          console.log("사이즈가 작나?");
+          // console.log("사이즈가 작나?");
           sethasMore(false);
           setItems([...items, ...data]);
         } else {
           //데이터가 사이즈만큼 넘어왔을 때
-          console.log("사이즈가 큰가?");
+          // console.log("사이즈가 큰가?");
           setItems([...items, ...data]);
         }
-
         setpage(count);
+
       });
   };
   return (

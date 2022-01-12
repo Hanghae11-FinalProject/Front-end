@@ -13,6 +13,7 @@ const ADD_CHILDCOMMENT = "ADD_CHILDCOMMENT";
 const DEL_COMMENT = "DEL_COMMENT";
 const EDIT_PROFILE = "EDIT_PROFILE";
 const GET_PROFILE = "GET_PROFILE";
+const GET_CATE = "GET_CATE";
 
 // *** 액션 생성 함수
 const getPosts = createAction(GET_POST, (_post_data) => ({ _post_data }));
@@ -26,6 +27,7 @@ const delComment = createAction(DEL_COMMENT, (commentid) => ({ commentid }));
 // 프로필 수정
 const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
 const editProfile = createAction(EDIT_PROFILE, (edit) => ({ edit }));
+const getCate = createAction(GET_CATE, (_post_data) => ({ _post_data }));
 
 // *** 초기값
 const initialState = {
@@ -77,21 +79,21 @@ const editProfileDB = (img, nickname) => {
 // get 형식 그대로 백에다가 수정된 데이터 요청하기
 
 //메인 게시글 조회
-const getPostAction = (location, category, count) => {
+
+const getPostAction = (area, cate, count, is_select) => {
+  if (is_select) {
+    count = 0;
+  }
   return async (dispatch, getState, { history }) => {
-    console.log(
-      "미들웨어에 넘어온 값 (장소,카테,페이지) ",
-      location,
-      category,
-      count
-    );
+    // console.log("미들웨어에 넘어온 값 (장소,카테,페이지) ", area, cate, count);
+
     axiosInstance
       .post(`api/category?page=${count}`, {
         categoryName: [category],
         address: [location],
       })
       .then((res) => {
-        console.log("통신 후 리듀스 저장 전 목록", res.data, count);
+        // console.log("통신 후 리듀스 저장 전 목록", res.data, count);
         let is_next = null;
 
         if (res.data.data.length < 6) {
@@ -99,13 +101,24 @@ const getPostAction = (location, category, count) => {
         } else {
           is_next = true;
         }
-
-        let _post_data = {
-          posts: res.data.data,
-          page: count + 1,
-          next: is_next,
-        };
-        dispatch(getPosts(_post_data));
+        if (is_select) {
+          // console.log(res.data);
+          let _post_data = {
+            posts: res.data.data,
+            page: count + 1,
+            next: is_next,
+          };
+          // console.log("겟카테액션");
+          dispatch(getCate(_post_data));
+        } else {
+          let _post_data = {
+            posts: res.data.data,
+            page: count + 1,
+            next: is_next,
+          };
+          // console.log("원래액션");
+          dispatch(getPosts(_post_data));
+        }
       });
   };
 };
@@ -233,6 +246,15 @@ export default handleActions(
           draft.page = action.payload._post_data.page;
         }
 
+        draft.has_next = action.payload._post_data.next;
+      }),
+    [GET_CATE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.posts = [...action.payload._post_data.posts];
+        // draft.posts.push(...action.payload._post_data.posts);
+        if (action.payload._post_data.page) {
+          draft.page = action.payload._post_data.page;
+        }
         draft.has_next = action.payload._post_data.next;
       }),
 

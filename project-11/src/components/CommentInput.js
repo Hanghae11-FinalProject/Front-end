@@ -13,10 +13,9 @@ import { GrClose } from "react-icons/gr";
 const CommentInput = ({ name, postid, commentid }) => {
   const token = getCookie("Token");
   const dispatch = useDispatch();
-  const responseTo = name;
   const [Newcomment, setNewComment] = useState();
   const [replyId, setReplyId] = useState(commentid);
-  const [replyName, setReplyName] = useState(name ? true : false);
+  console.log(name);
 
   //댓글 쓰기
   const writeComment = (e) => {
@@ -41,69 +40,21 @@ const CommentInput = ({ name, postid, commentid }) => {
     <>
       <CommentInputBox>
         <Grid is_container _className="out-box">
-          {replyName && name ? (
-            <>
-              <Grid
-                is_container
-                is_flex
-                flex_align="center"
-                flex_justify="space-between"
-                _className="reply-name"
-              >
-                <p>@{name}에게 댓글달기</p>
-                <span>
-                  <GrClose
-                    className="close-btn"
-                    onClick={() => {
-                      setReplyName(false);
-                    }}
-                  />
-                </span>
-              </Grid>
-              <Grid
-                is_container
-                is_flex
-                flex_align="center"
-                _className="comment-box"
-              >
-                <input
-                  type="text"
-                  placeholder={`@${name} 답 글을 입력해주세요`}
-                  onChange={writeComment}
-                  disabled={token ? false : true}
-                />
-
-                <IoPaperPlane
-                  className="add-btn"
-                  onClick={() => {
-                    dispatch(
-                      postActions.add_childcomment(postid, replyId, Newcomment)
-                    );
-                    setNewComment("");
-                  }}
-                />
-              </Grid>
-            </>
-          ) : (
-            <>
-              <Grid
-                is_container
-                is_flex
-                flex_align="center"
-                _className="comment-box"
-              >
-                <input
-                  type="text"
-                  placeholder="댓글을 입력해주세요"
-                  value={Newcomment}
-                  onChange={writeComment}
-                  disabled={token ? false : true}
-                />
-
-                <IoPaperPlane className="add-btn" onClick={postComment} />
-              </Grid>
-            </>
-          )}
+          <Grid
+            is_container
+            is_flex
+            flex_align="center"
+            _className="comment-box"
+          >
+            <input
+              type="text"
+              placeholder="댓글을 입력해주세요"
+              value={Newcomment}
+              onChange={writeComment}
+              disabled={token ? false : true}
+            />
+            <IoPaperPlane className="add-btn" onClick={postComment} />
+          </Grid>
         </Grid>
       </CommentInputBox>
     </>

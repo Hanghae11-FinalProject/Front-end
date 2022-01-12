@@ -23,17 +23,23 @@ const FavoriteItem = (props) => {
       )
       .then((res) => {
         console.log(res, "성공");
-        history.push({
-          pathname: `/chat`,
-          state: {
-            roomName: res.data.roomName,
-            sender: res.data.user,
-            postId: postId,
-          },
-        });
+        console.log(res.data);
+        if (res.data.message !== "same room") {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: postId,
+            },
+          });
+        } else {
+          window.alert("이미 생성된 채팅방 입니다.");
+        }
       })
       .catch((err) => {
         console.log(err, "에러");
+        window.alert("이미 상대방과의 채팅방이 있습니다.");
       });
   };
 

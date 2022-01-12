@@ -10,11 +10,9 @@ const SearchEmpty = (props) => {
       <SearchEmptyBox>
         <Grid is_container _className="container-border">
           <div className="modal-wrap">
-            <div className="icon-wrap">
-              <img src="/static/핑이 기본.png" alt="default" />
-              <img src="/static/핑이 분노.png" alt="default" />
-              <img src="/static/핑이 행복.png" alt="default" />
-            </div>
+            <AppImg>
+              <img src="/static/pingpong00.png" alt="logo" />
+            </AppImg>
             <div className="title">
               {props.result === "검색중입니다" ? (
                 <>
@@ -47,13 +45,6 @@ const SearchEmptyBox = styled.div`
     .modal-wrap {
       text-align: center;
       width: 100%;
-      .icon-wrap {
-        margin-bottom: 40px;
-        img {
-          width: 63px;
-          height: 63px;
-        }
-      }
       .title {
         margin-bottom: 80px;
         p {
@@ -62,5 +53,10 @@ const SearchEmptyBox = styled.div`
         }
       }
     }
+  }
+`;
+const AppImg = styled.div`
+  img {
+    width: 90%;
   }
 `;

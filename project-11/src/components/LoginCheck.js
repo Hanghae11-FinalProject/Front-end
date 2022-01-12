@@ -9,11 +9,9 @@ const LoginCheck = () => {
     <LoginCkWrap>
       <Grid is_container="container" _className="border">
         <div className="modal-wrap">
-          <div className="icon-wrap">
-            <img src="/static/핑이 기본.png" alt="default" />
-            <img src="/static/핑이 분노.png" alt="default" />
-            <img src="/static/핑이 행복.png" alt="default" />
-          </div>
+          <AppImg>
+            <img src="/static/pingpong00.png" alt="logo" />
+          </AppImg>
           <div className="title">
             <p>서비스를 이용하려면</p>
             <p>먼저 로그인이 필요해요!</p>
@@ -76,5 +74,10 @@ const LoginCkWrap = styled.div`
         }
       }
     }
+  }
+`;
+const AppImg = styled.div`
+  img {
+    width: 90%;
   }
 `;
