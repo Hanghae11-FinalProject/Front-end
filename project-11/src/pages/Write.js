@@ -249,30 +249,16 @@ const Write = () => {
         <Container>
           <Grid is_container _className="border">
             <MainTop>
-              <IoIosArrowBack
-                cursor={"pointer"}
-                size="30"
-                onClick={() => {
-                  history.goBack();
-                }}
-              />
-              <TopText
-                style={{
-                  marginLeft: "6px",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                }}
-              >
+              <p className="toptitle">
                 글 작성하기
-              </TopText>
-              <TopText
-                style={{ padding: "6px", fontSize: "16px" }}
+              </p>
+              <p 
                 className={!active ? "activeBtn" : "unActiveBtn"}
                 disabled={active}
                 onClick={postWrite}
               >
                 완료
-              </TopText>
+              </p>
             </MainTop>
             <TitleArea>
               <TitleInput
@@ -430,15 +416,25 @@ const Container = styled.div`
 const MainTop = styled.div`
   height: 50px;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
+  .toptitle{
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  p{
+    font-size: 20px;
+    top: 50%;
+    left: 88%;
+    position: absolute;
+    transform: translate(0,-50%);
+  }
 `;
 
-const TopText = styled.p`
-  font-size: 20px;
-`;
+
 
 const TitleArea = styled.div`
   height: 50px;

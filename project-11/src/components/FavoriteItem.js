@@ -34,7 +34,8 @@ const FavoriteItem = (props) => {
             },
           });
         } else {
-          window.alert("이미 생성된 채팅방 입니다.");
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          return;
         }
       })
       .catch((err) => {

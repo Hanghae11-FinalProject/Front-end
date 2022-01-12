@@ -8,7 +8,6 @@ import Stomp from "stompjs";
 import { history } from "../redux/configureStore";
 
 import styled from "styled-components";
-import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
@@ -138,14 +137,6 @@ const Chatting = () => {
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
-                <div className="arrow-back">
-                  <IoIosArrowBack
-                    size="30"
-                    onClick={() => {
-                      history.goBack();
-                    }}
-                  />
-                </div>
                 <p className="header-title">채팅</p>
                 {/* <Grid _className="ct-wrap"> */}
                 <BiDotsVerticalRounded
@@ -246,13 +237,22 @@ const ChattingWrap = styled.div`
           display: flex;
           justify-content: space-between;
           align-items: center;
+          position: relative;
 
           .header-title {
             font-size: 20px;
             font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
           }
           .point-icon {
             cursor: pointer;
+            position: absolute;
+            left: 90%;
+            top: 50%;
+            transform: translate(0,-50%);
           }
           .arrow-back {
             width: 30px;

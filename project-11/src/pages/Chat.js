@@ -22,11 +22,12 @@ const Chat = (data) => {
   const token = getCookie("Token");
   let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
   let stompClient = Stomp.over(sockjs);
-  console.log(data);
+  // console.log(data);
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
   const [is_open, setIs_open] = useState(false);
+  const [active, setActive] = useState(false);
 
   const scrollRef = useRef();
   const myUserId = getCookie("Id");
@@ -41,7 +42,7 @@ const Chat = (data) => {
     senderName: data.location.state.sender.nickname,
     nickName: nickName,
   };
-  console.log(data.location);
+  // console.log(data.location);
 
   React.useEffect(() => {
     axios
@@ -67,16 +68,19 @@ const Chat = (data) => {
       stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
 
       stompClient.subscribe(`/sub/${roomName}`, (data) => {
-        console.log(data);
+        console.log(JSON.parse(data.body).type);
         const onMessage = JSON.parse(data.body);
         setMessageList((messageList) => messageList.concat(onMessage));
-        console.log(messageList);
+        if (onMessage.type === "Exit") {
+          setActive(true);
+        }
+        // console.log(messageList);
       });
     });
   }, []); // setSearches(searches => searches.concat(query))
 
   const sendMessage = () => {
-    console.log(receiverId);
+    // console.log(receiverId);
     const box = {
       type: "Talk", //타입
       message: currentMes, //메세지
@@ -84,6 +88,11 @@ const Chat = (data) => {
       senderId: myUserId, // 내 userId
       receiverId: receiverId, // 상대방 userId
     };
+    if (currentMes === "") {
+      return;
+    } else if (active === true) {
+      return; // 이렇게하면 그 다음에 다시 채팅방 들어오면 다시 채팅 가능할듯? 확인해보자
+    }
     stompClient.send("/pub/message", {}, JSON.stringify(box));
     setCurrentMes("");
   };
@@ -108,7 +117,7 @@ const Chat = (data) => {
     };
     stompClient.send("/pub/message", {}, JSON.stringify(box));
     setCurrentMes("");
-    history.push("/chatting");
+    // history.push("/chatting");
   };
 
   const OptionTwoControl = () => {

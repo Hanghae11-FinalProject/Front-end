@@ -27,6 +27,17 @@ const CommentList = ({ comment, postid, postuser }) => {
   const commentData = comment;
   let nickChange = commentData.nickname;
 
+
+  // useEffect(() => {
+  //   if (controlRpl) {
+  //     setControlRpl(false);
+  //   } else {
+  //     setControlRpl(true);
+  //   }
+  // }, [is_name]);
+  console.log(commentData);
+  console.log(is_name, "컨트롤");
+
   //댓글 쓰기
   const writeCommentBtn = () => {
     if (!token) {
@@ -218,6 +229,7 @@ const CommentList = ({ comment, postid, postuser }) => {
         />
       ) : (
         <CommentInput postid={postid} />
+
       )}
 
       <CommentInput postid={postid} /> */}
@@ -277,6 +289,7 @@ const CommentList = ({ comment, postid, postuser }) => {
           </Grid>
         </CommentInputBox>
       </>
+
     </>
   );
 };
@@ -405,11 +418,12 @@ const CommentInputBox = styled.div`
         }
       }
     }
-    .reply-box {
+    .comment-box-inactive {
       margin: 0 auto;
       padding: 3px 10px;
       background-color: var(--light-color);
       border-radius: 18px;
+      display: none;
 
       input {
         width: 92%;
@@ -427,7 +441,7 @@ const CommentInputBox = styled.div`
       }
     }
 
-    .comment-box {
+    .comment-box-active {
       margin: 0 auto;
       padding: 3px 10px;
       background-color: var(--light-color);

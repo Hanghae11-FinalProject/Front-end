@@ -108,11 +108,11 @@ const UserModal = (props) => {
           active: false,
         };
       }
-    });
+    })
+    setIconList(newList)
 
-    setIconList(newList);
-  };
-  // console.log(iconList);
+  }
+  console.log(iconList)
 
   return (
     <>
