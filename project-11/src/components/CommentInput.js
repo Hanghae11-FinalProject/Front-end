@@ -22,7 +22,7 @@ const CommentInput = ({ name, postid, commentid }) => {
   const writeComment = (e) => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/intro");
+      history.push("/login");
     }
     setNewComment(e.target.value);
   };
@@ -31,17 +31,11 @@ const CommentInput = ({ name, postid, commentid }) => {
   const postComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/intro");
+      history.push("/login");
     }
     dispatch(postActions.add_comment(postid, replyId, Newcomment));
     setNewComment("");
   };
-
-  // useEffect(() => {
-  //   if (!replyName) {
-  //     setReplyName(true);
-  //   }
-  // }, []);
 
   return (
     <>
@@ -133,16 +127,22 @@ const CommentInputBox = styled.div`
     border-left: 1px solid var(--help-color); */
 
     .reply-name {
-      padding-bottom: 10px;
+      /* padding-bottom: 10px; */
+      width: 100%;
+      height: 30px;
       font-size: 14px;
       color: var(--main-color);
+      background-color: #fff;
 
       p {
         width: 95%;
       }
 
       span {
+        width: 5%;
+        height: 20px;
         color: var(--inactive-icon-color);
+
         .close-btn {
           font-size: 10px;
           color: var(--inactive-icon-color);

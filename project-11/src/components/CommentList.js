@@ -14,7 +14,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const token = getCookie("Token");
   const curUserId = getCookie("Id");
   const userProfile = useSelector((state) => state.post.profile);
-  console.log(userProfile);
+
   const dispatch = useDispatch();
 
   const [is_login, setIs_login] = useState(token ? true : false);
@@ -119,13 +119,15 @@ const CommentList = ({ comment, postid, postuser }) => {
 
       {/* 코멘트 인풋창 */}
       {/* comment list가 있을때는 name이 붙는 인풋으로 아니면 디폴트 인풋창으로 */}
-      {name && (
+      {name ? (
         <CommentInput
           name={commentData.nickname}
           postid={postid}
           // parent id
           commentid={commentData.id}
         />
+      ) : (
+        <>{/* <CommentInput postid={postid} /> */}</>
       )}
       <CommentInput postid={postid} />
     </>
@@ -178,7 +180,7 @@ const CommentBox = styled.div`
           background-color: #fff;
           border: 1px solid var(--help-color);
           display: none;
-          z-index: 10;
+          z-index: 5;
           li {
             color: var(--active-color);
             padding: 8px 10px;

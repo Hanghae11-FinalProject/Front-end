@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-
+import { axiosInstance } from "../shared/api";
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
 import { getCookie } from "../shared/Cookie";
@@ -30,9 +30,7 @@ SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
   const token = getCookie("Token");
-  //redux 가져오기
   const dispatch = useDispatch();
-  const post_page = useSelector((state) => state.post.page);
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
@@ -45,17 +43,6 @@ const Main = () => {
     { id: 4, locationName: "서대문구" },
     { id: 5, locationName: "성북구" },
   ];
-
-  //여기서 지역구를 보내야 받아진다
-  useEffect(() => {
-    console.log(
-      "메인페이지에서 리덕스로 보내는 값",
-      is_location,
-      is_cate,
-      post_page
-    );
-    dispatch(postActions.getPostAction(is_location, is_cate, post_page));
-  }, [is_location, is_cate]);
 
   return (
     <>
@@ -264,11 +251,7 @@ const Main = () => {
               </>
             )}
           </LocationBox>
-          <PostList
-            location={is_location}
-            category={is_cate}
-            curpage={post_page}
-          />
+          <PostList location={is_location} category={is_cate} />
           <Nav home={"home"} />
         </Grid>
       </Container>
@@ -413,24 +396,25 @@ const CateBtn = styled.div`
       margin-top: 5px;
       color: #fff;
     }
-  }@keyframes loadEffect3 {
-    0%{
-        opacity: 0;
-        transform: scale(0.7);
+  }
+  @keyframes loadEffect3 {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
     }
-    65%{
-        opacity: 0.65;
-        transform: scale(1.01);
+    65% {
+      opacity: 0.65;
+      transform: scale(1.01);
     }
-    85%{
-        opacity: 0.85;
-        transform: scale(0.97);
+    85% {
+      opacity: 0.85;
+      transform: scale(0.97);
     }
-    100%{
-        opacity: 1;
-        transform: scale(1);
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
-}
+  }
 
   .inactive {
     .icon {
@@ -459,24 +443,25 @@ const LocationBox = styled.div`
   .active {
     color: var(--main-color);
     animation: 0.6s ease-in-out loadEffect3;
-  }@keyframes loadEffect3 {
-    0%{
-        opacity: 0;
-        transform: scale(0.7);
+  }
+  @keyframes loadEffect3 {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
     }
-    65%{
-        opacity: 0.65;
-        transform: scale(1.01);
+    65% {
+      opacity: 0.65;
+      transform: scale(1.01);
     }
-    85%{
-        opacity: 0.85;
-        transform: scale(0.97);
+    85% {
+      opacity: 0.85;
+      transform: scale(0.97);
     }
-    100%{
-        opacity: 1;
-        transform: scale(1);
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
-}
+  }
 
   .location-option {
     width: 140px;

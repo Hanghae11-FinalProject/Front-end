@@ -263,7 +263,7 @@ const UserInfo = styled.div`
     p {
       color: var(--main-color);
     }
-  }  
+  }
 `;
 
 const IconBox = styled.div`

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
-import ScaleLoader from "react-spinners/ScaleLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
@@ -11,14 +10,17 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 
 const PostList = ({ location, category }) => {
+  console.log("메인페이지에서 넘어오는 값", location, category);
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
   console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
-  //지역, 카테고리 값 state로 관리
+  //main페이지에서 넘어오는 지역, 카테고리, 페이지 값 관리
+  //페이지의 경우 refresh되는게 아니면 리덕스에 저장된 페이지가 오는 것
   const [page, setpage] = useState(post_data.page);
   const [area, setarea] = useState(location);
   const [cate, setcate] = useState(category);
+
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
@@ -35,29 +37,29 @@ const PostList = ({ location, category }) => {
 
   useEffect(() => {
     curLocation();
-  }, []);
+    setpage(0);
+  }, [location, category]);
 
   useEffect(() => {
-    // let _post_data = { area, cate };
+    console.log("랜더링2");
     console.log("미들웨어로 넘기는 값", area, cate, page);
     //로딩시 불러오는 데이터
-    dispatch(postActions.getPostAction(area, cate, page));
-  }, [area, cate, page]);
+    dispatch(postActions.getPostAction(area, category, page));
+  }, [area, category, page]);
 
   //scroll event
   //스크롤시 다음페이지를 보여주는 것
   const getData = () => {
     let data;
     let count = page + 1;
-
     axiosInstance
       .post(`api/category?page=${count}`, {
-        categoryName: [area],
-        address: [cate],
+        categoryName: [cate],
+        address: [area],
       })
       .then((res) => {
         data = res.data.data;
-        console.log("무한 스크롤 동작해서 받아 온 값", data, count);
+        console.log("무한 스크롤 동작해서 받아 온 값", area, cate, data, count);
 
         // //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 6) {
@@ -71,7 +73,6 @@ const PostList = ({ location, category }) => {
         }
 
         setpage(count);
-        console.log("무한스크롤 뒤의 페이지값", page);
       });
   };
   return (
@@ -85,10 +86,7 @@ const PostList = ({ location, category }) => {
           {post_data.posts.length === 0 ? (
             <>
               <Spin>
-                <PuffLoader
-                  size="100"
-                  color="var(--main-color)"
-                />
+                <PuffLoader size="100px" color="var(--main-color)" />
               </Spin>
             </>
           ) : (
