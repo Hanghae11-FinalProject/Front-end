@@ -15,7 +15,7 @@ import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 
 const Chatting = () => {
-  let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
+  let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
   let stompClient = Stomp.over(sockjs);
 
   const myUserId = getCookie("Id");
