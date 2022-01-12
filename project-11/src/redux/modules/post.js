@@ -92,8 +92,8 @@ const getPostAction = (area, cate, count, is_select) => {
 
     axiosInstance
       .post(`api/category?page=${count}`, {
-        categoryName: [category],
-        address: [location],
+        categoryName: [cate],
+        address: [area],
       })
       .then((res) => {
         // console.log("통신 후 리듀스 저장 전 목록", res.data, count);

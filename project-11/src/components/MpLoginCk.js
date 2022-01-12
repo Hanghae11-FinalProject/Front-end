@@ -13,7 +13,10 @@ const MpLoginCk = () => {
             <img src="/static/pingpong00.png" alt="logo" />
           </AppImg>
           <div className="title">
-            <p>작성한 글이 없어요</p>
+            <p>내가 작성한 글이 없어요</p>
+            <span style={{ fontColor: "#00000099" }}>
+              새로운 글을 작성해 보세요
+            </span>
           </div>
           <div className="subtitle">
             <span
@@ -21,7 +24,7 @@ const MpLoginCk = () => {
                 history.push("/write");
               }}
             >
-              게시물 쓰러가기!
+              글 작성하러 가기
             </span>
           </div>
         </div>
@@ -56,7 +59,7 @@ const LoginCkWrap = styled.div`
         line-height: 48px;
         width: 90%;
         height: 48px;
-        border-radius: 50px;
+        border-radius: 4px;
         background-color: var(--main-color);
         margin: 0 auto;
         span {

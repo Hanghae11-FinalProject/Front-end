@@ -34,7 +34,7 @@ const Detail = () => {
 
   //게시글 전체 데이터 저장
   const [PostData, setPostdata] = useState();
-
+  console.log(PostData);
   //arr type
   const [bmCnt, setBmCnt] = useState();
   const [bookmark, setBookmark] = useState();
@@ -161,6 +161,10 @@ const Detail = () => {
   };
 
   const goChat = () => {
+    if (PostData.currentState === "Complete") {
+      window.alert("이미 거래가 완료된 게시글 입니다.");
+      return;
+    }
     axiosInstance
       .post(
         `/api/room`,
@@ -182,7 +186,8 @@ const Detail = () => {
             },
           });
         } else {
-          window.alert("이미 생성된 채팅방 입니다.");
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          return;
         }
       })
       .catch((err) => {
@@ -407,11 +412,11 @@ const Detail = () => {
               )}
 
               {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
-              {PostData.comments.length === 0 && (
+              {/* {PostData.comments.length === 0 && (
                 <Grid is_container>
                   <CommentInput postid={params.id} />
                 </Grid>
-              )}
+              )} */}
               <Nav />
             </Grid>
           </DetailBox>
