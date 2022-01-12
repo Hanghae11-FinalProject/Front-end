@@ -100,14 +100,6 @@ const Search = () => {
                   is_flex
                   flex_align="center"
                 >
-                  <IoIosArrowBack
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => history.goBack()}
-                  />
                   <p>검색</p>
                 </Grid>
               </Header>

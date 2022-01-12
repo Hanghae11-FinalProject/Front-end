@@ -13,6 +13,7 @@ const ADD_CHILDCOMMENT = "ADD_CHILDCOMMENT";
 const DEL_COMMENT = "DEL_COMMENT";
 const EDIT_PROFILE = "EDIT_PROFILE";
 const GET_PROFILE = "GET_PROFILE";
+const EDIT_STAR = "EDIT_STAR" 
 const GET_CATE = "GET_CATE";
 
 // *** 액션 생성 함수
@@ -27,6 +28,8 @@ const delComment = createAction(DEL_COMMENT, (commentid) => ({ commentid }));
 // 프로필 수정
 const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
 const editProfile = createAction(EDIT_PROFILE, (edit) => ({ edit }));
+// 즐겨찾기 
+const editStar = createAction(EDIT_STAR, (star)=>({star}))
 const getCate = createAction(GET_CATE, (_post_data) => ({ _post_data }));
 
 // *** 초기값
@@ -302,6 +305,15 @@ export default handleActions(
       produce(state, (draft) => {
         draft.profile = action.payload.edit;
       }),
+    [EDIT_STAR]: (state, action) =>
+      produce(state, (draft) => {
+        // draft.posts = action.payload.star.productId;
+        console.log(draft.posts)
+        const idx = draft.posts.findIndex((p)=>
+          p.postId == action.payload.star.postId
+        )
+        draft.posts[idx] = {...draft.posts[idx],...action.payload.star}
+      }),
   },
   initialState
 );
@@ -316,6 +328,7 @@ const actionCreators = {
   get_onepost,
   getProfileDB,
   editProfileDB,
+  editStar,
 };
 
 export { actionCreators };

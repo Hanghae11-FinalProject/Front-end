@@ -20,7 +20,7 @@ let List = [];
 const Chat = (data) => {
   const nickName = getCookie("Name");
   const token = getCookie("Token");
-  let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
+  let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
   let stompClient = Stomp.over(sockjs);
   console.log(data);
   const [optionOne, setOptionOne] = useState(false);

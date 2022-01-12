@@ -5,6 +5,7 @@ import { axiosInstance } from "../shared/api";
 import PuffLoader from "react-spinners/PuffLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
+import { history } from "../redux/configureStore";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
@@ -78,6 +79,9 @@ const PostList = ({ location, category, selected }) => {
 
       });
   };
+
+  
+
   return (
     <React.Fragment>
       <MainContainer>
