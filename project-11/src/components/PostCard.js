@@ -13,7 +13,6 @@ const PostCard = ({ item }) => {
   const [state, setState] = useState(
     item.currentState === "Proceeding" ? "거래중" : "거래완료"
   );
-
   const [user_id, setUser_id] = useState(false);
   const [bookmark, setBookmark] = useState(item.bookMarks);
   const [checkBm, setCheckBm] = useState();
@@ -60,7 +59,11 @@ const PostCard = ({ item }) => {
           </Grid>
           <PostImg>
             <Grid _className="imgbox">
-              <img src={item.images[0].imageUrl} alt="PostImg" />
+              {item.images[0].imageUrl ? (
+                <img src={item.images[0].imageUrl} alt="PostImg" />
+              ) : (
+                <div></div>
+              )}
             </Grid>
             <ChipDiv>
               <Grid _className={state === "거래중" ? "ing" : "stop"}>

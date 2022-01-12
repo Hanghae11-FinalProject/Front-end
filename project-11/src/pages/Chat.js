@@ -22,7 +22,7 @@ const Chat = (data) => {
   const token = getCookie("Token");
   let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
   let stompClient = Stomp.over(sockjs);
-
+  console.log(data);
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -41,11 +41,12 @@ const Chat = (data) => {
     senderName: data.location.state.sender.nickname,
     nickName: nickName,
   };
+  console.log(data.location);
 
   React.useEffect(() => {
     axios
       .post(
-        `http://13.125.250.43/api/message`,
+        `http://52.78.32.4/api/message`,
         {
           roomName: roomName,
           postId: data.location.state.postId,

@@ -43,7 +43,7 @@ const Detail = () => {
   const [btnActive, setBtnActive] = useState(false);
 
   const commentlist = useSelector((state) => state.post.post.comments);
-
+  // console.log(commentlist);
   // console.log("userid", typeof curUserId, typeof PostData.userId);
   // 포스트id로 포스트 가져오기
   const getPostData = async () => {
@@ -55,6 +55,7 @@ const Detail = () => {
       setItems(res.data);
       setCheckBm(res.data.bookMarks);
       setBmCnt(res.data.bookMarkCount);
+      // console.log(PostData);
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
@@ -165,14 +166,18 @@ const Detail = () => {
       )
       .then((res) => {
         console.log(res, "성공");
-        history.push({
-          pathname: `/chat`,
-          state: {
-            roomName: res.data.roomName,
-            sender: res.data.user,
-            postId: PostData.postId,
-          },
-        });
+        if (res.data.message !== "same room") {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: PostData.postId,
+            },
+          });
+        } else {
+          window.alert("이미 생성된 채팅방 입니다.");
+        }
       })
       .catch((err) => {
         console.log(err, "에러");
@@ -419,7 +424,6 @@ const DetailBox = styled.div`
     height: 100vh;
     padding-bottom: 110px;
     background-color: #fff;
-
     overflow-y: auto;
     -ms-overflow-style: none; // IE and Edge
     scrollbar-width: none; // Firefox
@@ -427,7 +431,6 @@ const DetailBox = styled.div`
       display: none; // Chrome, Safari, Opera
     }
   }
-
   .user-info {
     width: 94%;
     margin: 0 auto;
@@ -440,34 +443,28 @@ const DetailBox = styled.div`
       color: var(--help-color);
       font-size: 14px;
     }
-
     .icon {
       font-size: 24px;
       color: var(--inactvie-icon-color);
     }
-
     //단추메뉴 버튼
     .modal-menu {
       position: relative;
-
       .icon {
         font-size: 20px;
         cursor: pointer;
         color: var(--active-color);
       }
-
       .inactive-icon {
         font-size: 20px;
         cursor: pointer;
         color: var(--inactive-icon-color);
       }
-
       .inner-menu {
         position: absolute;
         top: 20px;
         right: -5px;
         width: 170px;
-
         background-color: #fff;
         border: 1px solid var(--help-color);
         display: none;
@@ -476,23 +473,19 @@ const DetailBox = styled.div`
           color: var(--active-color);
           padding: 8px 10px;
           cursor: pointer;
-
           &:hover {
             background-color: var(--main-light-color);
           }
         }
       }
-
       .active {
         display: block;
       }
     }
   }
-
   .tag {
     display: flex;
     flex-wrap: wrap;
-
     span {
       padding: 2px 10px;
       border: 1px solid var(--main-color);
@@ -502,9 +495,7 @@ const DetailBox = styled.div`
       border-radius: 16px;
     }
   }
-
   /* 즐겨찾기 댓글 버튼 */
-
   .btn-box {
     border-top: 1px solid var(--help-color);
     border-bottom: 1px solid var(--help-color);
@@ -519,7 +510,6 @@ const DetailBox = styled.div`
       margin-right: 10px;
       cursor: pointer;
       color: var(--inactive-text-color);
-
       .icon {
         font-size: 16px;
       }
@@ -544,7 +534,6 @@ const Header = styled.div`
   height: 50px;
   position: fixed;
   top: 0;
-
   /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
@@ -552,36 +541,29 @@ const Header = styled.div`
   .inner {
     height: 50px;
     margin: 0 auto;
-
     p {
       width: 90%;
       position: absolute;
       left: 5%;
       text-align: center;
-
       font-size: 20px;
       font-weight: bold;
     }
   }
-
   .logout-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     height: 50px;
     margin: 0 auto;
-
     p {
       width: 90%;
       position: absolute;
       left: 5%;
       text-align: center;
-
       font-size: 20px;
       font-weight: bold;
     }
-
     button {
       border: 0;
       color: var(--main-color);
@@ -626,7 +608,6 @@ const UserInfo = styled.div`
 
 const Title = styled.div`
   margin: 20px 0;
-
   h2 {
     font-size: 20px;
   }
@@ -643,7 +624,6 @@ const Spin = styled.div`
   max-width: 429px;
   height: 100vh;
   margin: 0 auto;
-
   display: flex;
   justify-content: center;
   align-items: center;

@@ -9,11 +9,9 @@ const LoginCheck = () => {
     <LoginCkWrap>
       <Grid is_container="container" _className="border">
         <div className="modal-wrap">
-          <div className="icon-wrap">
-            <img src="/static/핑이 기본.png" />
-            <img src="/static/핑이 분노.png" />
-            <img src="/static/핑이 행복.png" />
-          </div>
+          <AppImg>
+            <img src="/static/pingpong00.png" alt="logo" />
+          </AppImg>
           <div className="title">
             <p>즐겨찾기 목록이 없어요</p>
           </div>
@@ -44,13 +42,6 @@ const LoginCkWrap = styled.div`
     .modal-wrap {
       text-align: center;
       width: 100%;
-      .icon-wrap {
-        margin-bottom: 40px;
-        img {
-          width: 63px;
-          height: 63px;
-        }
-      }
       .title {
         margin-bottom: 80px;
         p {
@@ -72,5 +63,10 @@ const LoginCkWrap = styled.div`
         }
       }
     }
+  }
+`;
+const AppImg = styled.div`
+  img {
+    width: 90%;
   }
 `;
