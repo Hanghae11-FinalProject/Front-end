@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-
+import { axiosInstance } from "../shared/api";
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
 import { getCookie } from "../shared/Cookie";
@@ -30,13 +30,12 @@ SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
   const token = getCookie("Token");
-  //redux 가져오기
   const dispatch = useDispatch();
-  const post_page = useSelector((state) => state.post.page);
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
   const [is_cate, setIs_Cate] = useState("");
+  const [selected, setSelected] = useState(false);
   //지역 옵션
   const locations = [
     { id: 1, locationName: "전체" },
@@ -45,17 +44,6 @@ const Main = () => {
     { id: 4, locationName: "서대문구" },
     { id: 5, locationName: "성북구" },
   ];
-
-  //여기서 지역구를 보내야 받아진다
-  useEffect(() => {
-    console.log(
-      "메인페이지에서 리덕스로 보내는 값",
-      is_location,
-      is_cate,
-      post_page
-    );
-    dispatch(postActions.getPostAction(is_location, is_cate, post_page));
-  }, [is_location, is_cate]);
 
   return (
     <>
@@ -103,6 +91,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "식품" ? setIs_Cate("") : setIs_Cate("식품");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -117,6 +106,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "도서" ? setIs_Cate("") : setIs_Cate("도서");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -131,6 +121,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "의류" ? setIs_Cate("") : setIs_Cate("의류");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -145,6 +136,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "가구" ? setIs_Cate("") : setIs_Cate("가구");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -159,6 +151,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "가전" ? setIs_Cate("") : setIs_Cate("가전");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -173,6 +166,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "생활" ? setIs_Cate("") : setIs_Cate("생활");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -187,6 +181,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "취미" ? setIs_Cate("") : setIs_Cate("취미");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -203,6 +198,7 @@ const Main = () => {
                       is_cate === "재능교환"
                         ? setIs_Cate("")
                         : setIs_Cate("재능교환");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -217,6 +213,7 @@ const Main = () => {
                   <CateBtn
                     onClick={() => {
                       is_cate === "기타" ? setIs_Cate("") : setIs_Cate("기타");
+                      setSelected(true);
                     }}
                   >
                     <Grid
@@ -254,6 +251,7 @@ const Main = () => {
                         onClick={() => {
                           setIs_Location(loc.locationName);
                           setIs_open(false);
+                          setSelected(true);
                         }}
                       >
                         {loc.locationName}
@@ -264,11 +262,13 @@ const Main = () => {
               </>
             )}
           </LocationBox>
+
           <PostList
             location={is_location}
             category={is_cate}
-            curpage={post_page}
+            selected={selected}
           />
+
           <Nav home={"home"} />
         </Grid>
       </Container>
@@ -278,7 +278,6 @@ const Main = () => {
 
 const Container = styled.div`
   margin: 0 auto;
-
   .border {
     /* height: 100vh; */
     /* border: 1px solid var(--help-color); */
@@ -300,7 +299,6 @@ const Header = styled.div`
   height: 50px;
   position: fixed;
   top: 0;
-
   /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
@@ -308,32 +306,26 @@ const Header = styled.div`
   .inner {
     height: 50px;
     margin: 0 auto;
-
     p {
       width: 100%;
       position: absolute;
       left: 0;
       text-align: center;
-
       font-size: 20px;
       font-weight: bold;
     }
   }
-
   .logout-inner {
     height: 50px;
     line-height: 50px;
-
     p {
       width: 100%;
       position: absolute;
       left: 0;
       text-align: center;
-
       font-size: 20px;
       font-weight: bold;
     }
-
     button {
       margin-left: 85%;
       border: 0;
@@ -374,7 +366,6 @@ const CateBtn = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 50%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -384,14 +375,12 @@ const CateBtn = styled.div`
       font-size: 32px;
       color: var(--inactive-text-color);
     }
-
     p {
       font-size: 12px;
       margin-top: 5px;
       color: var(--inactive-text-color);
     }
   }
-
   .active {
     width: 80px;
     height: 80px;
@@ -407,37 +396,36 @@ const CateBtn = styled.div`
       color: #fff;
       font-size: 32px;
     }
-
     p {
       font-size: 12px;
       margin-top: 5px;
       color: #fff;
     }
-  }@keyframes loadEffect3 {
-    0%{
-        opacity: 0;
-        transform: scale(0.7);
+  }
+  @keyframes loadEffect3 {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
     }
-    65%{
-        opacity: 0.65;
-        transform: scale(1.01);
+    65% {
+      opacity: 0.65;
+      transform: scale(1.01);
     }
-    85%{
-        opacity: 0.85;
-        transform: scale(0.97);
+    85% {
+      opacity: 0.85;
+      transform: scale(0.97);
     }
-    100%{
-        opacity: 1;
-        transform: scale(1);
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
-}
+  }
 
   .inactive {
     .icon {
       color: var(--help-color);
       font-size: 32px;
     }
-
     p {
       font-size: 12px;
       margin-top: 5px;
@@ -455,28 +443,28 @@ const LocationBox = styled.div`
   .icon {
     margin-right: 5px;
   }
-
   .active {
     color: var(--main-color);
     animation: 0.6s ease-in-out loadEffect3;
-  }@keyframes loadEffect3 {
-    0%{
-        opacity: 0;
-        transform: scale(0.7);
+  }
+  @keyframes loadEffect3 {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
     }
-    65%{
-        opacity: 0.65;
-        transform: scale(1.01);
+    65% {
+      opacity: 0.65;
+      transform: scale(1.01);
     }
-    85%{
-        opacity: 0.85;
-        transform: scale(0.97);
+    85% {
+      opacity: 0.85;
+      transform: scale(0.97);
     }
-    100%{
-        opacity: 1;
-        transform: scale(1);
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
-}
+  }
 
   .location-option {
     width: 140px;
@@ -489,10 +477,8 @@ const LocationBox = styled.div`
     border-radius: 6px;
     z-index: 15;
     cursor: pointer;
-
     p {
       padding: 10px 10px;
-
       &:hover {
         background-color: var(--main-light-color);
       }

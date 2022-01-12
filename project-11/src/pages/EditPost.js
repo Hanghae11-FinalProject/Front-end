@@ -288,7 +288,7 @@ const EditPost = (items) => {
     }
     await axios({
       method: "put",
-      url: `http://13.125.250.43/api/posts/${postId}`,
+      url: `http://52.78.32.4/api/posts/${postId}`,
       data: formData,
       headers: {
         Authorization: token,

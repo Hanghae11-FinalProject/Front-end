@@ -21,8 +21,6 @@ const UserModal = (props) => {
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
 
-
-
   const CheckActive = () => {
     editName !== name && editName !== ""
       ? nickDoubleChk === "사용 가능한 닉네임 입니다."
@@ -43,7 +41,7 @@ const UserModal = (props) => {
 
   // 프로필 수정
   const EditProfile = () => {
-    dispatch(postActions.editProfileDB(img, editName, username)); // 수정된 값을 보내줘야한다.
+    dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
     onCancel();
   };
 
@@ -78,45 +76,43 @@ const UserModal = (props) => {
   const handleClose = () => {
     onCancel();
   };
-// 프로필 클릭 이벤트
+  // 프로필 클릭 이벤트
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const newList = icons.map((icon, i) => {
-      const object = {icons:icon, active:false};
-      return object
-    })
+      const object = { icons: icon, active: false };
+      return object;
+    });
     setIconList(newList);
-  },[])
-
+  }, []);
 
   // 클릭했을때 해당 요소 -> if
   // 의 active 반대로 바꾸고 -> !ic.active
   //  배열을 리턴 받아야한다. -> {}
 
-//원본배열 작업 후 원본배열을 다시 받기
-  const handleClick = (i) =>{
-   
-    const newList = iconList.map((ic,idx)=> {
-      if(i === idx){//만약 인자로 받아온 i가 newList의 idx번째와 같다면
+  //원본배열 작업 후 원본배열을 다시 받기
+  const handleClick = (i) => {
+    const newList = iconList.map((ic, idx) => {
+      if (i === idx) {
+        //만약 인자로 받아온 i가 newList의 idx번째와 같다면
         // return {icons:ic.icons, active:!ic.active} //액티브를 반대값으로 리턴
         return {
           ...ic,
-          active: !ic.active
-        }
-      }else{//인덱스가 같지 않다면
+          active: !ic.active,
+        };
+      } else {
+        //인덱스가 같지 않다면
         // return {icons:ic.icons, active:false} //원래 액티브값을 리턴
         return {
           ...ic,
-          active: false
-        }
+          active: false,
+        };
       }
     })
     setIconList(newList)
 
   }
   console.log(iconList)
-
 
   return (
     <>
@@ -184,27 +180,24 @@ const UserModal = (props) => {
           </IconTitleWrap>
         </div>
         <ExtraIcon>
-          {iconList && iconList.map((item, i) => {
-            return (
-              <Grid                    
-              >
-
-                <Image
-                  size="50"
-                  shape="circle"
-                  src={item.icons}
-                  key={i}
-                  _className={item.active ? 'icon' : 'noneicon'}
-                  _onClick={()=>{
-                    setImg(item);
-                    handleClick(i);
-                  }
-                  }       
-                  
-                />
-              </Grid>
-            );
-          })}
+          {iconList &&
+            iconList.map((item, i) => {
+              return (
+                <Grid>
+                  <Image
+                    size="50"
+                    shape="circle"
+                    src={item.icons}
+                    key={i}
+                    _className={item.active ? "icon" : "noneicon"}
+                    _onClick={() => {
+                      setImg(item);
+                      handleClick(i);
+                    }}
+                  />
+                </Grid>
+              );
+            })}
         </ExtraIcon>
 
         <BtnBox>
@@ -224,31 +217,32 @@ export default UserModal;
 const ExtraIcon = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  .noneicon{
+  .noneicon {
     cursor: pointer;
   }
-  .icon{
+  .icon {
     border: 3px solid var(--main-color);
     cursor: pointer;
     animation: 0.6s ease-in-out loadEffect3;
-  }@keyframes loadEffect3 {
-    0%{
-        opacity: 0;
-        transform: scale(0.7);
+  }
+  @keyframes loadEffect3 {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
     }
-    65%{
-        opacity: 0.65;
-        transform: scale(1.01);
+    65% {
+      opacity: 0.65;
+      transform: scale(1.01);
     }
-    85%{
-        opacity: 0.85;
-        transform: scale(0.97);
+    85% {
+      opacity: 0.85;
+      transform: scale(0.97);
     }
-    100%{
-        opacity: 1;
-        transform: scale(1);
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
-}
+  }
 `;
 
 const TitleWrap = styled.div`
@@ -317,5 +311,3 @@ const IconTitleWrap = styled.div`
     font-weight: bold;
   }
 `;
-
-
