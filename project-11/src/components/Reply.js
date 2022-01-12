@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-import { axiosInstance } from "../shared/api";
+
 import { Grid } from "../elements";
-import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowReturnRight } from "react-icons/bs";
 
-const Reply = ({ reply, postid, postuser }) => {
+const Reply = ({ reply, parentid, postuser }) => {
   const token = getCookie("Token");
   const curUserName = getCookie("Name");
   const dispatch = useDispatch();
@@ -22,7 +21,7 @@ const Reply = ({ reply, postid, postuser }) => {
   const deleteComment = () => {
     let ok = window.confirm("정말 삭제하시겠어요?");
     if (ok) {
-      dispatch(postActions.del_comment(replyData.id));
+      dispatch(postActions.del_childcomment(replyData.id, parentid));
     }
   };
 

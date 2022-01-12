@@ -6,25 +6,39 @@ import { getCookie } from "../../shared/Cookie";
 
 // *** 액션 타입
 const GET_POST = "GET_POST";
-const GET_ONEPOST = "GET_ONEPOST";
+// const GET_COMMENTS = "GET_COMMENTS";
 const GET_DETAIL = "GET_DETAIL";
+const DEL_DETAIL = "DEL_DETAIL";
 const ADD_COMMENT = "ADD_COMMENT";
 const ADD_CHILDCOMMENT = "ADD_CHILDCOMMENT";
 const DEL_COMMENT = "DEL_COMMENT";
+const DEL_CHILDCOMMENT = "DEL_CHILDCOMMENT";
 const EDIT_PROFILE = "EDIT_PROFILE";
 const GET_PROFILE = "GET_PROFILE";
 const EDIT_STAR = "EDIT_STAR" 
 const GET_CATE = "GET_CATE";
 
 // *** 액션 생성 함수
+//메인 데이터 관련
 const getPosts = createAction(GET_POST, (_post_data) => ({ _post_data }));
-const getOnePost = createAction(GET_ONEPOST, (data) => ({ data }));
+
+//게시글 데이터 관련
 const getDetail = createAction(GET_DETAIL, (data) => ({ data }));
-const addComment = createAction(ADD_COMMENT, (comment) => ({ comment }));
-const addChildComment = createAction(ADD_CHILDCOMMENT, (comment) => ({
+const delDetail = createAction(DEL_DETAIL, (dataid) => ({ dataid }));
+//댓글 관련
+// const getOnePost = createAction(GET_COMMENTS, (data) => ({ data }));
+const addComment = createAction(ADD_COMMENT, (comment) => ({
   comment,
 }));
+const addchildcomment = createAction(ADD_CHILDCOMMENT, (comment, id) => ({
+  comment,
+  id,
+}));
 const delComment = createAction(DEL_COMMENT, (commentid) => ({ commentid }));
+const delchildcomment = createAction(DEL_CHILDCOMMENT, (commentid, id) => ({
+  commentid,
+  id,
+}));
 // 프로필 수정
 const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
 const editProfile = createAction(EDIT_PROFILE, (edit) => ({ edit }));
@@ -41,6 +55,9 @@ const initialState = {
   commentCnt: "",
   profile: [],
 };
+
+//token가져오기
+const token = getCookie("Token");
 
 // *** 미들웨어
 
@@ -82,7 +99,6 @@ const editProfileDB = (img, nickname) => {
 // get 형식 그대로 백에다가 수정된 데이터 요청하기
 
 //메인 게시글 조회
-
 const getPostAction = (area, cate, count, is_select) => {
   if (is_select) {
     count = 0;
@@ -142,21 +158,39 @@ const get_onepost = (postid) => {
   };
 };
 
-//게시글 댓글만 가져오기
-const get_Comment = (postid) => {
+//게시글 삭제
+const del_onepost = (postid) => {
   return (dispatch, getState, { history }) => {
     axiosInstance
-      .get(`/api/posts/${postid}`)
-      .then((res) => {
-        console.log("redux detail ", res.data.comments);
-        const _data = res.data.comments;
-        dispatch(getOnePost(_data));
+      .delete(`api/posts/${postid}`, {
+        headers: {
+          Authorization: token,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((res) => {
+        console.log("post delete", res);
+        dispatch(delDetail(postid));
+        // history.push("/");
+      })
+      .catch((err) => console.log(err));
   };
 };
+
+//게시글 댓글만 가져오기 (마지막에 다 되면 삭제)
+// const get_Comment = (postid) => {
+//   return (dispatch, getState, { history }) => {
+//     axiosInstance
+//       .get(`/api/posts/${postid}`)
+//       .then((res) => {
+//         console.log("redux detail ", res.data.comments);
+//         const _data = res.data.comments;
+//         dispatch(getOnePost(_data));
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   };
+//};
 
 //게시글 상세 페이지 댓글 쓰기
 const add_comment = (id, replyId, Newcomment) => {
@@ -168,7 +202,7 @@ const add_comment = (id, replyId, Newcomment) => {
         `/api/comments/`,
         {
           postId: id,
-          parentId: replyId,
+          parentId: "",
           content: Newcomment,
         },
         {
@@ -191,6 +225,7 @@ const add_comment = (id, replyId, Newcomment) => {
 const add_childcomment = (id, replyId, Newcomment) => {
   return function (dispatch, getState, { history }) {
     const token = getCookie("Token");
+    let parentid = replyId;
 
     axiosInstance
       .post(
@@ -208,7 +243,8 @@ const add_childcomment = (id, replyId, Newcomment) => {
       )
       .then((res) => {
         console.log("댓글 쓰기 성공", res);
-        dispatch(addChildComment(res));
+        console.log(parentid);
+        dispatch(addchildcomment(res, parentid));
       })
       .catch((err) => {
         console.log("댓글 쓰기 실패", err);
@@ -232,6 +268,27 @@ const del_comment = (commentid) => {
         console.log("delete sucess", res);
         //받아오는 정보중 id값만을 이용한다
         dispatch(delComment(res.data));
+      })
+      .catch((err) => console.log("delete fail", err));
+  };
+};
+
+//게시글 상세 페이지 대댓글 삭제
+const del_childcomment = (commentid, postid) => {
+  return function (dispatch, getState, { history }) {
+    const token = getCookie("Token");
+
+    axiosInstance
+      .delete(`/api/comments/${commentid}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        //삭제되는 댓글 정보를 받는다.
+        console.log("delete sucess", res);
+        //받아오는 정보중 id값만을 이용한다
+        dispatch(delchildcomment(res.data, postid));
       })
       .catch((err) => console.log("delete fail", err));
   };
@@ -266,12 +323,15 @@ export default handleActions(
         draft.post = action.payload.data;
       }),
 
-    // [GET_ONEPOST]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.posts.comments = action.payload.data;
-    // draft.children = action.payload.data[0].children;
-    // draft.commentCnt = action.payload.data.length;
-    // }),
+    [DEL_DETAIL]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(action.payload.dataid);
+        const arr = draft.posts.filter(
+          (p, idx) => p.postId !== action.payload.dataid
+        );
+        console.log([...arr], "arr");
+        draft.posts = [...arr];
+      }),
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
@@ -281,8 +341,14 @@ export default handleActions(
 
     [ADD_CHILDCOMMENT]: (state, action) =>
       produce(state, (draft) => {
-        console.log(draft.children, "children");
-        draft.post.comments[0].children.push(action.payload.comment.data);
+        //넘겨주는 값 중에 parentid를 받아오기 때문에 parentid를 payload값으로 받아와서 기존에 들어가있는 댓글 아이디값이랑 비교해서 인덱스 값을 찾아내서 그 인덱스값의 칠드런에 새로운 대댓글을 더해준다
+        let indexNum = draft.post.comments.findIndex(
+          (com, idx) => com.id === action.payload.id
+        );
+
+        draft.post.comments[indexNum].children.push(
+          action.payload.comment.data
+        );
       }),
 
     [DEL_COMMENT]: (state, action) =>
@@ -293,6 +359,20 @@ export default handleActions(
         console.log(newComment, "newcomment");
         draft.post.comments = [...newComment];
       }),
+
+    [DEL_CHILDCOMMENT]: (state, action) =>
+      produce(state, (draft) => {
+        //post안의 댓글리스트에서 해당 부모 댓글 아이디 인덱스 위치를 찾아낸다
+        const indexNum = draft.post.comments.findIndex(
+          (com, idx) => com.id === action.payload.id
+        );
+        //찾아낸 인덱스로 해당 대댓글 리스트를 찾아내고 거기서 삭제하는 대댓글 아이디를 비교해서 일치하지 않은 리스트만 뽑아내서 새로 넣어준다
+        const newReply = draft.post.comments[indexNum].children.filter(
+          (reply, idx) => reply.id !== action.payload.commentid
+        );
+        draft.post.comments[indexNum].children = [...newReply];
+      }),
+
     [GET_PROFILE]: (state, action) =>
       // draft는 initailstate 저장소 위치 지정
       produce(state, (draft) => {
@@ -321,11 +401,13 @@ export default handleActions(
 const actionCreators = {
   getPostAction,
   getPosts,
-  get_Comment,
+  get_onepost,
+  del_onepost,
+  // get_Comment,
   add_comment,
   del_comment,
   add_childcomment,
-  get_onepost,
+  del_childcomment,
   getProfileDB,
   editProfileDB,
   editStar,

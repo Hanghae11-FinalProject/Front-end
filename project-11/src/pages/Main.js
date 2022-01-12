@@ -44,6 +44,8 @@ const Main = () => {
     { id: 4, locationName: "서대문구" },
     { id: 5, locationName: "성북구" },
   ];
+  const post_data = useSelector((state) => state.post);
+  useEffect(() => {}, [post_data]);
 
   return (
     <>

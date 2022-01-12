@@ -20,6 +20,7 @@ import { FaStar } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsChat } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
+import { createAction } from "redux-actions";
 
 const Detail = () => {
   const token = getCookie("Token");
@@ -34,8 +35,11 @@ const Detail = () => {
 
   //게시글 전체 데이터 저장
   const [PostData, setPostdata] = useState();
-  console.log(PostData);
-  //arr type
+
+  //리덕스에서 댓글가져오기
+  const commentlist = useSelector((state) => state.post.post.comments);
+  //즐겨찾기 state관리
+
   const [bmCnt, setBmCnt] = useState();
   const [bookmark, setBookmark] = useState();
   const [bm, setCheckBm] = useState([]);
@@ -43,9 +47,6 @@ const Detail = () => {
 
   const [btnActive, setBtnActive] = useState(false);
 
-  const commentlist = useSelector((state) => state.post.post.comments);
-  // console.log(commentlist);
-  // console.log("userid", typeof curUserId, typeof PostData.userId);
   // 포스트id로 포스트 가져오기
   const getPostData = async () => {
     try {
@@ -65,17 +66,18 @@ const Detail = () => {
 
   //포스트 삭제하기
   const deletePost = () => {
-    axiosInstance
-      .delete(`api/posts/${params.id}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        history.push("/");
-      })
-      .catch((err) => console.log(err));
+    // axiosInstance
+    //   .delete(`api/posts/${params.id}`, {
+    //     headers: {
+    //       Authorization: token,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log("post delete", res);
+    //     history.push("/");
+    //   })
+    //   .catch((err) => console.log(err));
+    dispatch(postActions.del_onepost(params.id));
   };
 
   //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
@@ -145,7 +147,6 @@ const Detail = () => {
 
   //거래완료버튼
   const completeExchange = () => {
-    console.log(params.id);
     axiosInstance
       .put(
         `api/currentstate/${params.id}`,
@@ -213,9 +214,9 @@ const Detail = () => {
   }, [bm]);
 
   useEffect(() => {
-    dispatch(postActions.get_Comment(params.id));
-
     //댓글관리를 위한
+    // dispatch(postActions.get_Comment(params.id));
+
     dispatch(postActions.get_onepost(params.id));
   }, []);
 

@@ -10,12 +10,12 @@ import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 
-
 const PostList = ({ location, category, selected }) => {
   //redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
-  // console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
+
+  console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
   //지역, 카테고리 값 state로 관리
   const [page, setpage] = useState(post_data.page);
   const [area, setarea] = useState(location);
@@ -76,7 +76,6 @@ const PostList = ({ location, category, selected }) => {
           setItems([...items, ...data]);
         }
         setpage(count);
-
       });
   };
 

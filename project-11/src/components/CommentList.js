@@ -27,6 +27,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const commentData = comment;
   let nickChange = commentData.nickname;
 
+
   // useEffect(() => {
   //   if (controlRpl) {
   //     setControlRpl(false);
@@ -80,8 +81,9 @@ const CommentList = ({ comment, postid, postuser }) => {
   const postComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/intro");
+      history.push("/login");
     }
+    console.log(commentData.id);
     dispatch(postActions.add_comment(postid, commentData.id, Newcomment));
     setNewComment("");
     setIs_Name(false);
@@ -89,10 +91,25 @@ const CommentList = ({ comment, postid, postuser }) => {
 
   // 대댓글 추가
   const addChildComment = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/login");
+    }
+    console.log(postid, commentData.id, Newcomment);
     dispatch(postActions.add_childcomment(postid, commentData.id, Newcomment));
     setNewComment("");
     setIs_Name(false);
   };
+
+  useEffect(() => {
+    if (controlRpl) {
+      setControlRpl(false);
+    } else {
+      setControlRpl(true);
+    }
+  }, [is_name]);
+  console.log(commentData);
+  console.log(is_name, "컨트롤");
 
   // 댓글 취소 (삭제아님)
   const cancleReply = () => {
@@ -133,7 +150,7 @@ const CommentList = ({ comment, postid, postuser }) => {
                     <>
                       <li onClick={writeCommentBtn}>댓글달기</li>
                       <li>채팅하기</li>
-                      <li onClick={deleteComment}>신고하기</li>
+                      <li>신고하기</li>
                     </>
                   )}
                 </Grid>
@@ -150,7 +167,7 @@ const CommentList = ({ comment, postid, postuser }) => {
                   return (
                     <>
                       <Reply
-                        postid={postid}
+                        parentid={commentData.id}
                         reply={reply}
                         key={reply.id}
                         postuser={postuser}
@@ -163,76 +180,116 @@ const CommentList = ({ comment, postid, postuser }) => {
               <></>
             )}
           </Grid>
+          {is_name === true && (
+            <>
+              <ReplyInput>
+                <Grid
+                  is_container
+                  is_flex
+                  flex_align="center"
+                  flex_justify="space-between"
+                  _className="reply-name"
+                >
+                  <p>@{nickChange}에게 댓글달기</p>
+                  <span>
+                    <GrClose className="close-btn" onClick={cancleReply} />
+                  </span>
+                </Grid>
+                <Grid
+                  is_container
+                  is_flex
+                  flex_align="center"
+                  _className="reply-box"
+                >
+                  <input
+                    type="text"
+                    placeholder={`@${nickChange} 답글을 입력해주세요`}
+                    onChange={writeComment}
+                    disabled={token ? false : true}
+                  />
+
+                  <IoPaperPlane className="add-btn" onClick={addChildComment} />
+                </Grid>
+              </ReplyInput>
+            </>
+          )}
         </CommentBox>
       </>
 
       {/* 코멘트 인풋창 */}
       {/* comment list가 있을때는 name이 붙는 인풋으로 아니면 디폴트 인풋창으로 */}
 
-      {/* {is_name === true ? ( */}
-      {/* <CommentInput
-        name={commentData.nickname}
-        postid={postid}
-        // parent id
-        commentid={commentData.id}
-        is_name={is_name}
-      /> */}
-      {/* ) : (
-        <CommentInput postid={postid} />
-      )} */}
-      {is_name ? (
-        <CommentInputBox style={is_name ? {} : { display: "none" }}>
-          <Grid is_container _className="out-box">
-            <Grid
-              is_container
-              is_flex
-              flex_align="center"
-              flex_justify="space-between"
-              _className="reply-name"
-            >
-              <p>@{nickChange}에게 댓글달기</p>
-              <span>
-                <GrClose className="close-btn" onClick={cancleReply} />
-              </span>
-            </Grid>
-            <Grid
-              is_container
-              is_flex
-              flex_align="center"
-              _className="comment-box-active"
-            >
-              <input
-                type="text"
-                placeholder={`@${nickChange} 답글을 입력해주세요`}
-                onChange={writeComment}
-                disabled={token ? false : true}
-              />
-
-              <IoPaperPlane className="add-btn" onClick={addChildComment} />
-            </Grid>
-          </Grid>
-        </CommentInputBox>
+      {/* {is_name === true ? (
+        <CommentInput
+          name={commentData.nickname}
+          postid={postid}
+          // parent id
+          commentid={commentData.id}
+          is_name={is_name}
+        />
       ) : (
-        <CommentInputBox style={is_name ? { display: "none" } : {}}>
+        <CommentInput postid={postid} />
+
+      )}
+
+      <CommentInput postid={postid} /> */}
+      <>
+        <CommentInputBox>
           <Grid is_container _className="out-box">
-            <Grid
-              is_container
-              is_flex
-              flex_align="center"
-              _className="comment-box-active"
-            >
-              <input
-                type="text"
-                placeholder="댓글을 입력해주세요"
-                value={Newcomment}
-                onChange={writeComment}
-                disabled={token ? false : true}
-              />
-              <IoPaperPlane className="add-btn" onClick={postComment} />
-            </Grid>
+            {is_name === true ? (
+              <>
+                {/* <Grid
+                  is_container
+                  is_flex
+                  flex_align="center"
+                  flex_justify="space-between"
+                  _className="reply-name"
+                >
+                  <p>@{nickChange}에게 댓글달기</p>
+                  <span>
+                    <GrClose className="close-btn" onClick={cancleReply} />
+                  </span>
+                </Grid>
+                <Grid
+                  is_container
+                  is_flex
+                  flex_align="center"
+                  _className="reply-box"
+                >
+                  <input
+                    type="text"
+                    placeholder={`@${nickChange} 답글을 입력해주세요`}
+                    onChange={writeComment}
+                    disabled={token ? false : true}
+                  />
+
+                  <IoPaperPlane className="add-btn" onClick={addChildComment} />
+                </Grid> */}
+              </>
+            ) : (
+              <>
+                <Grid
+                  is_container
+                  is_flex
+                  flex_align="center"
+                  _className="comment-box"
+                >
+                  <input
+                    type="text"
+                    placeholder="commentlist 댓글을 입력해주세요"
+                    value={Newcomment}
+                    onChange={writeComment}
+                    disabled={token ? false : true}
+                  />
+
+                  <IoPaperPlane className="add-btn" onClick={postComment} />
+                </Grid>
+              </>
+            )}
           </Grid>
         </CommentInputBox>
-      )}
+      </>
+
     </>
   );
 };
@@ -389,7 +446,6 @@ const CommentInputBox = styled.div`
       padding: 3px 10px;
       background-color: var(--light-color);
       border-radius: 18px;
-      /* display: none; */
 
       input {
         width: 92%;
@@ -406,12 +462,7 @@ const CommentInputBox = styled.div`
         cursor: pointer;
       }
     }
-
-    .comment-box-active {
-      display: block;
-    }
-    .comment-box-inactive {
-      display: none;
-    }
   }
 `;
+
+const ReplyInput = styled.div``;
