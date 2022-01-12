@@ -227,7 +227,7 @@ const Write = () => {
     }
     await axios({
       method: "post",
-      url: "http://13.125.250.43/api/posts",
+      url: "http://52.78.32.4/api/posts",
       data: formData,
       headers: {
         "Content-type": "multipart/form-data",
