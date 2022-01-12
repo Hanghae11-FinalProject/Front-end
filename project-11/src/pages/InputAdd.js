@@ -91,9 +91,13 @@ const InputAdd = () => {
       <InputAddWrap>
         <Grid is_container _className="border">
           <MainTop>
-            <IoIosArrowBack size="30" className="icon" />
             <TopText style={{ marginLeft: "6px" }}>추가 정보 입력</TopText>
           </MainTop>
+          <LogoWrap>
+            <div className="logowrap">
+              <img className="logo" src="/static/logo.png" alt=""/>
+            </div>
+          </LogoWrap>
           <div className="text-box">
             <span>주소</span>
           </div>
@@ -186,7 +190,6 @@ const InputAddWrap = styled.div`
     background-color: #fff;
   }
   .text-box {
-    margin-top: 28.5vh;
     display: flex;
     margin-left: 16px;
     margin-bottom: 8px;
@@ -197,9 +200,9 @@ const InputAddWrap = styled.div`
     width: 100%;
     max-width: 397px;
     height: 48px;
-    border-radius: 50px;
+    border-radius: 4px;
     color: white;
-    margin-top: 48px;
+    margin-top: 19vh;
     border: 0px;
     cursor: pointer;
     opacity: 0.8;
@@ -248,12 +251,11 @@ const AddressBox = styled.div`
   }
 
   .drop-city {
-    width: 12rem;
+    width: 12.1rem;
     height: 37.5px;
     border: 1px solid var(--help-color);
-    border-radius: 5px;
     position: absolute;
-    top: -75%;
+    top: 5.3vh;
     background-color: #fff;
     cursor: pointer;
 
@@ -267,12 +269,11 @@ const AddressBox = styled.div`
   }
 
   .drop-location {
-    width: 12rem;
+    width: 12.1rem;
     height: 162px;
     border: 1px solid var(--help-color);
-    border-radius: 5px;
     position: absolute;
-    top: -17.5vh;
+    top: 5.3vh;
     background-color: #fff;
     cursor: pointer;
 
@@ -295,5 +296,16 @@ const LocationWrap = styled.div`
     border: 1px solid var(--main-color);
   }
 `;
+
+const LogoWrap = styled.div`
+.logowrap{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    .logo{
+    max-width: 170px;
+  }
+  }
+`
 
 export default InputAdd;

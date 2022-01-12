@@ -112,8 +112,6 @@ const UserModal = (props) => {
         }
       }
     })
-   
-   
     setIconList(newList)
 
   }

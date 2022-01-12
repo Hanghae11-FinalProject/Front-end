@@ -34,7 +34,7 @@ const Signup = () => {
   const checkpw = watch("password");
   const checkpwconfirm = watch("password_confirm");
 
-  // useRef 특정 돔을 선택할때 사용하는데 엘리먼트 크기를 가져올때, 스크롤바 위치를 가져올때, 엘리먼트 포커스를 설정해줘야 할 때 등..
+ 
   password.current = watch("password");
 
   // disabled 체크
@@ -397,7 +397,11 @@ const SignupWrap = styled.div`
           height: 48px;
           border-radius: 4px;
           cursor: pointer;
-          margin-bottom: 16px;
+          margin-bottom: 5px;
+          :hover{
+            background-color: var(--main-color);
+            color: white;
+          }
         }
       }
     }

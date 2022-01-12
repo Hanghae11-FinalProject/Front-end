@@ -6,11 +6,16 @@ import { setCookie } from "../shared/Cookie";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
+import { KAKAO_AUTH_URL } from "../shared/OAuth";
 
 const Login = () => {
   const [login_disabled, setLoginDisabled] = useState(true);
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
+
+  const ClikKakao = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
 
   const handleChangeInput = (e) => {
     setInputValues({
@@ -32,7 +37,7 @@ const Login = () => {
         history.push("/");
       })
       .catch((error) => {
-        window.alert("뭐가 틀렸는지 한번 더 생각해보세요", error);
+        window.alert("이메일 또는 비밀번호를 다시 확인해주세요", error);
       });
     setLoginDisabled(true);
     setLoginTrue(true);
@@ -59,19 +64,15 @@ const Login = () => {
       <Grid is_container="is_container" _className="grid-border">
         <div className="login-wrap">
           <div className="login-header-wrap">
-            <IoIosArrowBack
-              style={{
-                width: "30px",
-                height: "30px",
-              }}
-              onClick={() => {
-                history.push("/intro");
-              }}
-            />
             <span className="header-title">로그인</span>
           </div>
+          <LogoWrap>
+            <div className="logowrap">
+              <img className="logo" src="/static/logo.png" alt=""/>
+            </div>
+          </LogoWrap>
           <div className="login-input-wrap">
-            <span>이메일</span>
+            <span className="emailtext">이메일</span>
             <input
               name="user_id"
               onChange={handleChangeInput}
@@ -96,8 +97,25 @@ const Login = () => {
               disabled={login_disabled}
               className="login-btn"
             >
-              가입하기
+              로그인
             </button>
+              <div className="kakaobtn">
+                <p className="or">OR</p>
+                <div className="kakaobubblewrap" onClick={ClikKakao}>
+                  <img className="kakaobubble" src="/static/kakaobubble.png" alt=""/>
+                  <p className="kakaotext">카카오계정으로 로그인</p>
+                </div>
+                <div className="bottomtext">
+                  <span 
+                  className="signupbtn"
+                  onClick={() => {
+                history.push("/signup");
+              }}>회원가입</span>
+                  <span onClick={() => {
+                history.push("/");
+              }}>둘러보기</span>
+                </div>
+              </div>
           </div>
         </div>
       </Grid>
@@ -108,6 +126,7 @@ const Login = () => {
 export default Login;
 
 const LoginWrap = styled.div`
+position: relative;
   .grid-border {
     width: 100%;
     height: 100vh;
@@ -118,13 +137,14 @@ const LoginWrap = styled.div`
         height: 50px;
         display: flex;
         align-items: center;
-
         position: relative;
         /* border-bottom: 1px solid var(--help-color); */
         box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
         .header-title {
           position: absolute;
-          left: 45%;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%,-50%);
           font-size: 20px;
           font-weight: bold;
         }
@@ -134,9 +154,11 @@ const LoginWrap = styled.div`
         display: flex;
         flex-direction: column;
         padding: 0 16px;
+        .emailtext{
+          margin-top: 50px;
+        }
         span {
           margin-bottom: 4px;
-          margin-top: 32px;
         }
         input {
           margin-bottom: 16px;
@@ -146,6 +168,57 @@ const LoginWrap = styled.div`
           outline: none;
           border: 1px solid var(--help-color);
           padding-left: 10px;
+        }
+        .kakaobtn{
+          display: flex;
+          text-align: center;
+          flex-direction: column;
+          cursor: pointer;
+          .or{
+            color: var(--help-color);
+            margin-top: 12px;
+          }
+          .kakaobubblewrap{
+            width: 100%;
+            height: 48px;
+            background-color: #FEE500;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-top: 12px;
+            .kakaobubble{
+              width: 20px;
+              height: 20px;
+              margin-left: 16px;
+          }
+          .kakaotext{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            color: #41231F;
+            font-size: 14px;
+            font-weight: 600;
+          }
+          }
+          .bottomtext{
+            display: flex;
+            max-width: 429px;
+            margin: 0 auto;
+            margin-top: 20px;
+            span{
+              padding: 0px 25px;
+              color: var(--help-color);
+            }
+            span:nth-child(1){
+              border-right: 1px solid var(--help-color);
+              cursor: pointer;
+            }
+            span:nth-child(2){
+              cursor: pointer;
+            }
+          }
         }
       }
     }
@@ -187,3 +260,15 @@ const LoginWrap = styled.div`
     }
   }
 `;
+
+const LogoWrap = styled.div`
+  .logowrap{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    .logo{
+    max-width: 170px;
+  }
+  }
+  
+`

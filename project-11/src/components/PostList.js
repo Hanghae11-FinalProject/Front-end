@@ -6,6 +6,7 @@ import ScaleLoader from "react-spinners/ScaleLoader";
 import PuffLoader from "react-spinners/PuffLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
+import { history } from "../redux/configureStore";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
@@ -74,6 +75,9 @@ const PostList = ({ location, category }) => {
         console.log("무한스크롤 뒤의 페이지값", page);
       });
   };
+
+  
+
   return (
     <React.Fragment>
       <MainContainer>

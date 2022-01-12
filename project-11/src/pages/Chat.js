@@ -20,7 +20,7 @@ let List = [];
 const Chat = (data) => {
   const nickName = getCookie("Name");
   const token = getCookie("Token");
-  let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
+  let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
   let stompClient = Stomp.over(sockjs);
 
   const [optionOne, setOptionOne] = useState(false);
@@ -45,7 +45,7 @@ const Chat = (data) => {
   React.useEffect(() => {
     axios
       .post(
-        `http://13.125.250.43/api/message`,
+        `http://52.78.32.4/api/message`,
         {
           roomName: roomName,
           postId: data.location.state.postId,
@@ -357,7 +357,7 @@ const Container = styled.div`
     .chat-item {
       margin-top: 50px;
     }
-  }
+  
 `;
 
 const ChatBox = styled.div`
