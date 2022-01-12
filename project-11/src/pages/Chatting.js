@@ -20,7 +20,12 @@ const Chatting = () => {
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState([]); // 전체
+  const [ingRooms, setIngRooms] = useState([]); // 거래중
+  const [completeRooms, setCompleteRooms] = useState([]); // 거래완료
+  const [is_every, setIs_Every] = useState(true); // 전체 클릭 감지
+  const [is_ing, setIs_Ing] = useState(false); // 거래중 클릭 감지
+  const [is_complete, setIs_Complete] = useState(false); // 거래완료 클릭 감지
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -39,6 +44,7 @@ const Chatting = () => {
   React.useEffect(() => {
     console.log(newMsgData);
     console.log(rooms);
+    console.log(ingRooms, completeRooms);
     let data = rooms;
     for (let i = 0; i < data.length; i++) {
       if (data[i].roomName === newMsgData.roomName) {
@@ -46,8 +52,8 @@ const Chatting = () => {
         data[i].lastMessage.content = newMsgData.message;
       }
     }
-    setRooms(data);
-  }, [newMsgData]);
+    setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??
+  }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
 
   React.useEffect(() => {
     axiosInstance
@@ -55,6 +61,18 @@ const Chatting = () => {
       .then((res) => {
         console.log(res);
         setRooms(res.data);
+        let ing = [];
+        let com = [];
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].currentState === "Proceeding") {
+            ing = [...ing, res.data[i]];
+            setIngRooms(ing);
+          } else if (res.data[i].currentState === "Complete") {
+            com = [...com, res.data[i]];
+            setCompleteRooms(com);
+          }
+        }
+        // if(res.data.cur)
       })
       .catch((err) => {
         console.log(err, "에러");
@@ -158,6 +176,9 @@ const Chatting = () => {
                       onClick={() => {
                         OptionOneControl();
                         ModalControl();
+                        setIs_Every(true);
+                        setIs_Ing(false);
+                        setIs_Complete(false);
                       }}
                     >
                       전체
@@ -168,6 +189,9 @@ const Chatting = () => {
                       onClick={() => {
                         ModalControl();
                         OptionTwoControl();
+                        setIs_Every(false);
+                        setIs_Ing(true);
+                        setIs_Complete(false);
                       }}
                     >
                       거래중
@@ -178,6 +202,9 @@ const Chatting = () => {
                       onClick={() => {
                         ModalControl();
                         OptionThreeControl();
+                        setIs_Every(false);
+                        setIs_Ing(false);
+                        setIs_Complete(true);
                       }}
                     >
                       거래완료
@@ -187,7 +214,7 @@ const Chatting = () => {
               )}
             </div>
             <div className="chat-item">
-              {rooms.map((p, idx) => {
+              {/* {rooms.map((p, idx) => {
                 return (
                   <ChattingItem
                     testOne={testOne}
@@ -197,7 +224,43 @@ const Chatting = () => {
                     key={idx}
                   />
                 );
-              })}
+              })} */}
+              {is_every &&
+                rooms.map((p, idx) => {
+                  return (
+                    <ChattingItem
+                      testOne={testOne}
+                      stompClient={stompClient}
+                      stomp={stomp}
+                      roomData={p}
+                      key={idx}
+                    />
+                  );
+                })}
+              {is_ing &&
+                ingRooms.map((p, idx) => {
+                  return (
+                    <ChattingItem
+                      testOne={testOne}
+                      stompClient={stompClient}
+                      stomp={stomp}
+                      roomData={p}
+                      key={idx}
+                    />
+                  );
+                })}
+              {is_complete &&
+                completeRooms.map((p, idx) => {
+                  return (
+                    <ChattingItem
+                      testOne={testOne}
+                      stompClient={stompClient}
+                      stomp={stomp}
+                      roomData={p}
+                      key={idx}
+                    />
+                  );
+                })}
             </div>
           </div>
           <Nav chatting={"chatting"} />
@@ -245,14 +308,14 @@ const ChattingWrap = styled.div`
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
+            transform: translate(-50%, -50%);
           }
           .point-icon {
             cursor: pointer;
             position: absolute;
             left: 90%;
             top: 50%;
-            transform: translate(0,-50%);
+            transform: translate(0, -50%);
           }
           .arrow-back {
             width: 30px;
