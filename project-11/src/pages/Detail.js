@@ -157,7 +157,9 @@ const Detail = () => {
           },
         }
       )
-      .then((res) => console.log("거래완료 버튼 성공", res))
+      .then((res) => {
+        console.log(res)
+        window.alert("거래완료로 변경되었습니다.")})
       .catch((err) => console.log(err));
   };
 
@@ -253,7 +255,7 @@ const Detail = () => {
                           height: "30px",
                           cursor: "pointer",
                         }}
-                        onClick={() => history.goBack()}
+                        onClick={()=>history.goBack()}
                       />
                       <p>자세히 보기</p>
                     </Grid>
@@ -277,7 +279,7 @@ const Detail = () => {
                         onClick={() => history.goBack()}
                       />
                       <p>자세히 보기</p>
-                      <button onClick={() => history.push("/intro")}>
+                      <button onClick={() => history.push("/login")}>
                         로그인
                       </button>
                     </Grid>
@@ -411,13 +413,11 @@ const Detail = () => {
               ) : (
                 <></>
               )}
-
-              {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
-              {/* {PostData.comments.length === 0 && (
+              {PostData.comments.length === 0 && (
                 <Grid is_container>
                   <CommentInput postid={params.id} />
-                </Grid>
-              )} */}
+                </Grid> 
+              )} 
               <Nav />
             </Grid>
           </DetailBox>

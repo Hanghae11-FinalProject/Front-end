@@ -100,6 +100,7 @@ const editProfileDB = (img, nickname) => {
 
 //메인 게시글 조회
 const getPostAction = (area, cate, count, is_select) => {
+  console.log(area, cate, count, is_select)
   if (is_select) {
     count = 0;
   }
@@ -388,7 +389,6 @@ export default handleActions(
     [EDIT_STAR]: (state, action) =>
       produce(state, (draft) => {
         // draft.posts = action.payload.star.productId;
-        console.log(draft.posts)
         const idx = draft.posts.findIndex((p)=>
           p.postId == action.payload.star.postId
         )

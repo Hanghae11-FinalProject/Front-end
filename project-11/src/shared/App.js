@@ -20,7 +20,6 @@ import Favorite from "../pages/Favorite";
 import MyPost from "../pages/MyPost";
 import EditPost from "../pages/EditPost";
 import OAuthRedirect from "../components/OAuthRedirect";
-import Spinner from "../components/Spinner";
 
 function App() {
   return (
@@ -41,7 +40,6 @@ function App() {
         <Route path="/search" exact component={Search}></Route>
         <Route path="/chatting" exact component={Chatting}></Route>
         <Route path="/chat" exact component={Chat}></Route>
-        <Route path="/test" exact component={Spinner}></Route>
         <Route
           path="/oauth/callback/kakao"
           exact

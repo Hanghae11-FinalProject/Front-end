@@ -74,7 +74,7 @@ const Main = () => {
                   flex_align="center"
                 >
                   <p>전체 글 보기</p>
-                  <button onClick={() => history.push("/intro")}>로그인</button>
+                  <button onClick={() => history.push("/login")}>로그인</button>
                 </Grid>
               </Header>
             </>

@@ -1,114 +1,86 @@
 import React from "react";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
-import { RiKakaoTalkFill } from "react-icons/ri";
 import styled from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Pagination, Autoplay, Navigation } from "swiper";
+import Login from "./Login";
 
-import { KAKAO_AUTH_URL } from "../shared/OAuth";
+import "swiper/css";
+import "swiper/css/pagination";
+
+SwiperCore.use([Pagination, Autoplay, Navigation]);
 
 const Landing = () => {
-  const ClikKakao = () => {
-    window.location.href = KAKAO_AUTH_URL;
-  };
 
-  return (
-    <>
+  const swiperStyle ={
+    position:'relative',
+    width:"429px",
+    height:"100vh"
+  }
+
+
+  return ( 
       <Intro>
-        <Grid is_container padding="16px" _className="intro-box">
-          <Grid _className="intro-anime">
-            <Logo>
-              <img src="/static/logo.png" alt="logo" />
-            </Logo>
-            <AppImg>
-              <img src="/static/pingpong00.png" alt="logo" />
-            </AppImg>
-          </Grid>
-          <BTNS>
-            <button
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              로그인
-            </button>
-            <button
-              onClick={() => {
-                history.push("/signup");
-              }}
-            >
-              회원가입
-            </button>
-            <button
-              onClick={() => {
-                history.push("/");
-              }}
-            >
-              둘러보기
-            </button>
-            <KakaoBtn onClick={ClikKakao}>
-              <RiKakaoTalkFill size="38" />
-            </KakaoBtn>
-          </BTNS>
+        <Grid is_container _className="intro-box">
+          <div className="title-wrap" onClick={()=>{history.push('/login')}}>
+          <p>
+            SKIP
+          </p>
+          </div>
+        <Swiper 
+        style={swiperStyle}
+        slidesPerView={1}
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 2200 }}
+        >
+          <SwiperSlide>
+            <img src="/static/one.gif" style={{width:"429px",height:"100vh"}} alt=""/>
+          </SwiperSlide>
+          <SwiperSlide>
+          <img src="/static/one.gif" style={{width:"429px",height:"100vh"}} alt=""/>
+          </SwiperSlide>
+          <SwiperSlide>
+          <img src="/static/one.gif" style={{width:"429px",height:"100vh"}} alt=""/>
+          </SwiperSlide>
+        </Swiper>
+          
         </Grid>
       </Intro>
-    </>
   );
 };
 
 export default Landing;
 
 const Intro = styled.div`
+.swiper-pagination-bullet-active {
+    background-color: var(--main-color) !important;
+    width: 16px !important;
+    border-radius: 4px !important;
+  }
   .intro-box {
-    padding: 80px 0 30px 0;
-    background: #fff1f1;
-    .intro-anime {
+    background-color: white;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    .title-wrap{
+      display: flex;
       text-align: center;
+      justify-content: center;
+      width: 70px;
+      height: 29px;
+      border: 1px solid black;
+      /* background-color:rgba(255, 255, 255, 0.5); */
+      border-radius: 17px;
+      position: absolute;
+      top: 7%;
+      left: 75%;
+      z-index: 2;
+      cursor: pointer;
     }
   }
 `;
 
-const Logo = styled.div`
-  img {
-    width: 60%;
-  }
-`;
-const AppImg = styled.div`
-  img {
-    width: 90%;
-  }
-`;
-const KakaoBtn = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 64px;
-  background-color: rgba(255, 255, 255, 0.3);
-  background-color: #ffd600;
-  /* border: 1px solid var(--help-color); */
-  /* box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1); */
-  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-    rgba(17, 17, 26, 0.15) 0px 0px 8px;
 
-  margin: 20px auto;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-const BTNS = styled.div`
-  margin-top: 40px;
-  padding: 0 40px;
-  button {
-    width: 100%;
-    border-radius: 24px;
-    height: 48px;
-    background-color: var(--main-color);
-    color: #fff;
-    font-size: 16px;
 
-    outline: 0;
-    border: 0;
-    margin: 5px 0;
-    cursor: pointer;
-  }
-`;

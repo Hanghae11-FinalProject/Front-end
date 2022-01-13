@@ -42,7 +42,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const writeCommentBtn = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/intro");
+      history.push("/login");
     }
     if (is_name === false) {
       setIs_Name(true);
@@ -72,7 +72,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const writeComment = (e) => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/intro");
+      history.push("/login");
     }
     setNewComment(e.target.value);
   };
