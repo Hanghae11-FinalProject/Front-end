@@ -43,6 +43,7 @@ const Detail = () => {
   const [bmCnt, setBmCnt] = useState();
   const [bookmark, setBookmark] = useState();
   const [bm, setCheckBm] = useState([]);
+
   //댓글 갯수 관리
   const [comCnt, setcomCnt] = useState();
 
@@ -63,6 +64,7 @@ const Detail = () => {
       setProductId(res.data.postId);
       setState(res.data.currentState);
       setcomCnt(res.data.commentCount);
+
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
