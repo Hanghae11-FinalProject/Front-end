@@ -109,6 +109,7 @@ const editProfileDB = (img, nickname) => {
 
 //메인 게시글 조회
 const getPostAction = (area, cate, count, is_select) => {
+  console.log(area, cate, count, is_select)
   if (is_select) {
     count = 0;
   }

@@ -248,7 +248,7 @@ const Detail = () => {
                           height: "30px",
                           cursor: "pointer",
                         }}
-                        onClick={() => history.goBack()}
+                        onClick={()=>history.goBack()}
                       />
                       <p>자세히 보기</p>
                     </Grid>

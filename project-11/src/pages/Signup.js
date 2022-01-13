@@ -177,7 +177,7 @@ const Signup = () => {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  history.push("/intro");
+                  history.push("/login");
                 }}
               />
               <span className="header-title">회원가입</span>

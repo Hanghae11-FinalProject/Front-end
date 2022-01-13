@@ -123,7 +123,7 @@ const Search = () => {
                     onClick={() => history.goBack()}
                   />
                   <p>검색</p>
-                  <button onClick={() => history.push("/intro")}>로그인</button>
+                  <button onClick={() => history.push("/login")}>로그인</button>
                 </Grid>
               </Header>
             </>
