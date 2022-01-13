@@ -11,8 +11,9 @@ import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { IoPaperPlane } from "react-icons/io5";
 import { GrClose } from "react-icons/gr";
+import { BsArrowReturnRight } from "react-icons/bs";
 
-const CommentList = ({ comment, postid, postuser }) => {
+const CommentList = ({ comment, postid, postuser, comcnt }) => {
   const token = getCookie("Token");
   const curUserId = getCookie("Id");
   const userProfile = useSelector((state) => state.post.profile);
@@ -26,17 +27,6 @@ const CommentList = ({ comment, postid, postuser }) => {
   const [controlRpl, setControlRpl] = useState(false);
   const commentData = comment;
   let nickChange = commentData.nickname;
-
-
-  // useEffect(() => {
-  //   if (controlRpl) {
-  //     setControlRpl(false);
-  //   } else {
-  //     setControlRpl(true);
-  //   }
-  // }, [is_name]);
-  console.log(commentData);
-  console.log(is_name, "컨트롤");
 
   //댓글 쓰기
   const writeCommentBtn = () => {
@@ -55,7 +45,7 @@ const CommentList = ({ comment, postid, postuser }) => {
   const deleteComment = () => {
     let ok = window.confirm("정말 삭제하시겠어요?");
     if (ok) {
-      dispatch(postActions.del_comment(commentData.id));
+      dispatch(postActions.del_comment(commentData.id, postid, comcnt));
     }
   };
 
@@ -96,7 +86,9 @@ const CommentList = ({ comment, postid, postuser }) => {
       history.push("/login");
     }
     console.log(postid, commentData.id, Newcomment);
-    dispatch(postActions.add_childcomment(postid, commentData.id, Newcomment));
+    dispatch(
+      postActions.add_childcomment(postid, commentData.id, Newcomment, comcnt)
+    );
     setNewComment("");
     setIs_Name(false);
   };
@@ -108,8 +100,6 @@ const CommentList = ({ comment, postid, postuser }) => {
       setControlRpl(true);
     }
   }, [is_name]);
-  console.log(commentData);
-  console.log(is_name, "컨트롤");
 
   // 댓글 취소 (삭제아님)
   const cancleReply = () => {
@@ -171,6 +161,8 @@ const CommentList = ({ comment, postid, postuser }) => {
                         reply={reply}
                         key={reply.id}
                         postuser={postuser}
+                        comcnt={comcnt}
+                        postid={postid}
                       />
                     </>
                   );
@@ -183,32 +175,38 @@ const CommentList = ({ comment, postid, postuser }) => {
           {is_name === true && (
             <>
               <ReplyInput>
-                <Grid
-                  is_container
-                  is_flex
-                  flex_align="center"
-                  flex_justify="space-between"
-                  _className="reply-name"
-                >
-                  <p>@{nickChange}에게 댓글달기</p>
-                  <span>
-                    <GrClose className="close-btn" onClick={cancleReply} />
-                  </span>
-                </Grid>
-                <Grid
-                  is_container
-                  is_flex
-                  flex_align="center"
-                  _className="reply-box"
-                >
-                  <input
-                    type="text"
-                    placeholder={`@${nickChange} 답글을 입력해주세요`}
-                    onChange={writeComment}
-                    disabled={token ? false : true}
-                  />
+                <BsArrowReturnRight className="arrow" />
+                <Grid _className="reply-input-box">
+                  <Grid
+                    is_container
+                    is_flex
+                    flex_align="center"
+                    flex_justify="space-between"
+                    _className="reply-name"
+                  >
+                    <p>@{nickChange}님에게 답글다는 중...</p>
+                    <span>
+                      <GrClose className="close-btn" onClick={cancleReply} />
+                    </span>
+                  </Grid>
+                  <Grid
+                    is_container
+                    is_flex
+                    flex_align="center"
+                    _className="reply-box"
+                  >
+                    <input
+                      type="text"
+                      placeholder={`댓글을 입력해주세요`}
+                      onChange={writeComment}
+                      disabled={token ? false : true}
+                    />
 
-                  <IoPaperPlane className="add-btn" onClick={addChildComment} />
+                    <IoPaperPlane
+                      className="add-btn"
+                      onClick={addChildComment}
+                    />
+                  </Grid>
                 </Grid>
               </ReplyInput>
             </>
@@ -234,11 +232,12 @@ const CommentList = ({ comment, postid, postuser }) => {
 
       <CommentInput postid={postid} /> */}
       <>
-        <CommentInputBox>
+        {/*  */}
+        {/* <CommentInputBox>
           <Grid is_container _className="out-box">
             {is_name === true ? (
               <>
-                {/* <Grid
+                <Grid
                   is_container
                   is_flex
                   flex_align="center"
@@ -264,7 +263,7 @@ const CommentList = ({ comment, postid, postuser }) => {
                   />
 
                   <IoPaperPlane className="add-btn" onClick={addChildComment} />
-                </Grid> */}
+                </Grid>
               </>
             ) : (
               <>
@@ -287,9 +286,9 @@ const CommentList = ({ comment, postid, postuser }) => {
               </>
             )}
           </Grid>
-        </CommentInputBox>
+        </CommentInputBox> */}
+        <CommentInput postid={postid} comcnt={comcnt} />
       </>
-
     </>
   );
 };
@@ -401,7 +400,8 @@ const CommentInputBox = styled.div`
     /* border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color); */
 
-    .reply-name {
+    //대댓글창
+    /* .reply-name {
       padding-bottom: 10px;
       font-size: 14px;
       color: var(--main-color);
@@ -417,8 +417,8 @@ const CommentInputBox = styled.div`
           cursor: pointer;
         }
       }
-    }
-    .comment-box-inactive {
+    } */
+    .comment-box {
       margin: 0 auto;
       padding: 3px 10px;
       background-color: var(--light-color);
@@ -440,29 +440,50 @@ const CommentInputBox = styled.div`
         cursor: pointer;
       }
     }
+  }
+`;
 
-    .comment-box-active {
-      margin: 0 auto;
-      padding: 3px 10px;
-      background-color: var(--light-color);
-      border-radius: 18px;
+const ReplyInput = styled.div`
+  display: flex;
+  margin: 5px 0 10px 0;
+
+  .reply-input-box {
+    width: 95%;
+    margin-left: 10px;
+    padding: 5px 5px 5px 5px;
+    background-color: var(--light-color);
+    border-radius: 6px;
+
+    .reply-name {
+      padding: 5px 10px;
+      p {
+        color: var(--main-color);
+        width: 95%;
+      }
+
+      .close-btn {
+        cursor: pointer;
+      }
+    }
+
+    .reply-box {
+      padding: 0px 10px;
+      background-color: rgba(255, 255, 255, 0.55);
 
       input {
-        width: 92%;
-        padding: 5px 10px;
-        outline: none;
+        width: 100%;
+        height: 40px;
         border: 0;
+        outline: 0;
         background-color: transparent;
       }
 
       .add-btn {
         color: var(--main-color);
         font-size: 26px;
-
+        height: 40px;
         cursor: pointer;
       }
     }
   }
 `;
-
-const ReplyInput = styled.div``;

@@ -30,7 +30,7 @@ SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
   const token = getCookie("Token");
-  const dispatch = useDispatch();
+
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
@@ -44,8 +44,6 @@ const Main = () => {
     { id: 4, locationName: "서대문구" },
     { id: 5, locationName: "성북구" },
   ];
-  const post_data = useSelector((state) => state.post);
-  useEffect(() => {}, [post_data]);
 
   return (
     <>
@@ -85,7 +83,7 @@ const Main = () => {
               <Swiper
                 className="CateBtn-Container"
                 spaceBetween={10}
-                slidesPerView={4.5}
+                slidesPerView={4.3}
                 pagination={{ clickable: true }}
                 // autoplay={{ delay: 50000 }}
               >
@@ -97,7 +95,9 @@ const Main = () => {
                     }}
                   >
                     <Grid
-                      _className={is_cate === "식품" ? "active" : "default"}
+                      _className={
+                        is_cate === "식품" ? "default active" : "default"
+                      }
                     >
                       <ImSpoonKnife className="icon" />
                       <p>식품</p>
@@ -301,7 +301,6 @@ const Header = styled.div`
   height: 50px;
   position: fixed;
   top: 0;
-  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -345,9 +344,18 @@ const Slider = styled.div`
   height: 80px;
   margin: 15px 0px;
   display: flex;
+
+  .CateBtn-Container {
+    padding-right: 12px;
+  }
   .swiper-slide:nth-child(1) {
     margin-left: 12px;
   }
+
+  .CateBtn-Container {
+    padding-right: 10px;
+  }
+
   .swiper-pagination.swiper-pagination-clickable {
     display: none;
   }
@@ -363,11 +371,11 @@ const CateBtn = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 1px solid var(--disabled-color);
   .default {
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    border: 1px solid var(--disabled-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -384,14 +392,17 @@ const CateBtn = styled.div`
     }
   }
   .active {
+
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    border: 1px solid var(--disabled-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
     background-color: var(--main-color);
     animation: 0.6s ease-in-out loadEffect3;
     .icon {

@@ -28,6 +28,7 @@ const Chat = (data) => {
   const [optionThree, setOptionThree] = useState(false);
   const [is_open, setIs_open] = useState(false);
   const [active, setActive] = useState(false);
+  const [is_exit, setIs_exit] = useState(false);
 
   const scrollRef = useRef();
   const myUserId = getCookie("Id");
@@ -73,6 +74,7 @@ const Chat = (data) => {
         setMessageList((messageList) => messageList.concat(onMessage));
         if (onMessage.type === "Exit") {
           setActive(true);
+          setIs_exit(true);
         }
         // console.log(messageList);
       });
@@ -91,10 +93,11 @@ const Chat = (data) => {
     if (currentMes === "") {
       return;
     } else if (active === true) {
-      return; // 이렇게하면 그 다음에 다시 채팅방 들어오면 다시 채팅 가능할듯? 확인해보자
+      return; // 이렇게하면 그 다음에 다시 채팅방 들어오면 다시 채팅 가능할듯?(다시 한번 체크)
     }
     stompClient.send("/pub/message", {}, JSON.stringify(box));
     setCurrentMes("");
+    // console.log(is_exit, active);
   };
 
   const scrollToBottom = () => {
@@ -117,7 +120,7 @@ const Chat = (data) => {
     };
     stompClient.send("/pub/message", {}, JSON.stringify(box));
     setCurrentMes("");
-    // history.push("/chatting");
+    history.replace("/chatting");
   };
 
   const OptionTwoControl = () => {
@@ -253,7 +256,15 @@ const Chat = (data) => {
                 );
               }
             })}
-
+            {is_exit === true ? (
+              <div className="exit-chat-box">
+                <span className="exit-chat">
+                  {data.location.state.sender.nickname}님이 채팅방을 나갔습니다.
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
             <ChatInput>
               <Grid is_flex _className="input-inner">
                 <BsPlusLg className="plus-icon-active" />
@@ -383,6 +394,15 @@ const ChatBox = styled.div`
     justify-content: center;
     margin-top: 30px;
     .enter-chat {
+      font-size: 14px;
+      color: var(--main-color);
+    }
+  }
+  .exit-chat-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    .exit-chat {
       font-size: 14px;
       color: var(--main-color);
     }

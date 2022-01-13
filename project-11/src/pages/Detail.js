@@ -38,14 +38,18 @@ const Detail = () => {
 
   //리덕스에서 댓글가져오기
   const commentlist = useSelector((state) => state.post.post.comments);
-  //즐겨찾기 state관리
 
+  //즐겨찾기 state관리
   const [bmCnt, setBmCnt] = useState();
   const [bookmark, setBookmark] = useState();
   const [bm, setCheckBm] = useState([]);
-  const [productId,setProductId] = useState();
 
+  //댓글 갯수 관리
+  const [comCnt, setcomCnt] = useState();
+
+  const [productId, setProductId] = useState();
   const [btnActive, setBtnActive] = useState(false);
+  const [state, setState] = useState();
 
   // 포스트id로 포스트 가져오기
   const getPostData = async () => {
@@ -57,7 +61,9 @@ const Detail = () => {
       setItems(res.data);
       setCheckBm(res.data.bookMarks);
       setBmCnt(res.data.bookMarkCount);
-      setProductId(res.data.postId)
+      setProductId(res.data.postId);
+      setState(res.data.currentState);
+      setcomCnt(res.data.commentCount);
 
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
@@ -118,9 +124,10 @@ const Detail = () => {
             },
           }
         )
-        .then((res) => {  
-          console.log(res)
-        dispatch(postActions.editStar(res.data))})
+        .then((res) => {
+          console.log(res);
+          dispatch(postActions.editStar(res.data));
+        })
         .catch((err) => console.log(err));
     }
   };
@@ -140,27 +147,15 @@ const Detail = () => {
         },
       })
       .then((res) => {
-        console.log(res.data)
-      dispatch(postActions.editStar(res.data))})
+        console.log(res.data);
+        dispatch(postActions.editStar(res.data));
+      })
       .catch((err) => console.log(err));
   };
 
-  //거래완료버튼
+  //거래완료버튼 변경
   const completeExchange = () => {
-    axiosInstance
-      .put(
-        `api/currentstate/${params.id}`,
-        { currentState: "Complete" },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res)
-        window.alert("거래완료로 변경되었습니다.")})
-      .catch((err) => console.log(err));
+    dispatch(postActions.exchange_state(params.id));
   };
 
   const goChat = () => {
@@ -209,16 +204,14 @@ const Detail = () => {
 
   useEffect(() => {
     getPostData();
-  }, []);
+    //댓글 개수를 실시간 체크하기 위해서 의존값으로 댓글리스트를 걸어뒀습니다
+  }, [commentlist]);
 
   useEffect(() => {
     has_bookmarks();
   }, [bm]);
 
   useEffect(() => {
-    //댓글관리를 위한
-    // dispatch(postActions.get_Comment(params.id));
-
     dispatch(postActions.get_onepost(params.id));
   }, []);
 
@@ -320,26 +313,54 @@ const Detail = () => {
                   />
                   {Number(curUserId) === PostData.userId ? (
                     <>
-                      <Grid
-                        _className={
-                          btnActive ? "inner-menu active" : "inner-menu"
-                        }
-                        _onClick={Clickbtn}
-                      >
-                        <li
-                          onClick={() => {
-                            history.push({
-                              pathname: `/write/${PostData.postId}`,
-                              state: { items: items },
-                            });
-                          }}
-                        >
-                          수정하기
-                        </li>
-                        <li onClick={completeExchange}>거래완료로 변경하기</li>
-                        <li>공유하기</li>
-                        <li onClick={deletePost}>삭제하기</li>
-                      </Grid>
+                      {state === "Proceeding" ? (
+                        <>
+                          <Grid
+                            _className={
+                              btnActive ? "inner-menu active" : "inner-menu"
+                            }
+                            _onClick={Clickbtn}
+                          >
+                            <li
+                              onClick={() => {
+                                history.push({
+                                  pathname: `/write/${PostData.postId}`,
+                                  state: { items: items },
+                                });
+                              }}
+                            >
+                              수정하기
+                            </li>
+                            <li onClick={completeExchange}>
+                              거래완료로 변경하기
+                            </li>
+                            <li>공유하기</li>
+                            <li onClick={deletePost}>삭제하기</li>
+                          </Grid>
+                        </>
+                      ) : (
+                        <>
+                          <Grid
+                            _className={
+                              btnActive ? "inner-menu active" : "inner-menu"
+                            }
+                            _onClick={Clickbtn}
+                          >
+                            <li
+                              onClick={() => {
+                                history.push({
+                                  pathname: `/write/${PostData.postId}`,
+                                  state: { items: items },
+                                });
+                              }}
+                            >
+                              수정하기
+                            </li>
+                            <li>공유하기</li>
+                            <li onClick={deletePost}>삭제하기</li>
+                          </Grid>
+                        </>
+                      )}
                     </>
                   ) : (
                     <>
@@ -392,7 +413,8 @@ const Detail = () => {
                   </Grid>
                   <Grid is_flex _className="chat-btn" flex_align="center">
                     <BsChat className="icon" />
-                    <span>댓글 {commentlist?.length}</span>
+                    {/* <span>댓글 {commentlist?.length}</span> */}
+                    <span>댓글 {comCnt}</span>
                   </Grid>
                 </Grid>
               </Grid>
@@ -406,6 +428,7 @@ const Detail = () => {
                         comment={comment}
                         postid={params.id}
                         postuser={PostData.nickname}
+                        comcnt={comCnt}
                       />
                     );
                   })}
@@ -413,11 +436,13 @@ const Detail = () => {
               ) : (
                 <></>
               )}
+
+              {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
               {PostData.comments.length === 0 && (
                 <Grid is_container>
-                  <CommentInput postid={params.id} />
-                </Grid> 
-              )} 
+                  <CommentInput postid={params.id} comcnt={comCnt} />
+                </Grid>
+              )}
               <Nav />
             </Grid>
           </DetailBox>

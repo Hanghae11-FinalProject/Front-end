@@ -10,13 +10,12 @@ import styled from "styled-components";
 import { IoPaperPlane } from "react-icons/io5";
 import { GrClose } from "react-icons/gr";
 
-const CommentInput = ({ name, postid, commentid }) => {
+const CommentInput = ({ name, postid, commentid, comcnt }) => {
   const token = getCookie("Token");
   const dispatch = useDispatch();
   const [Newcomment, setNewComment] = useState();
   const [replyId, setReplyId] = useState(commentid);
-  console.log(name);
-
+  console.log(comcnt);
   //댓글 쓰기
   const writeComment = (e) => {
     if (!token) {
@@ -32,7 +31,7 @@ const CommentInput = ({ name, postid, commentid }) => {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
       history.push("/login");
     }
-    dispatch(postActions.add_comment(postid, replyId, Newcomment));
+    dispatch(postActions.add_comment(postid, replyId, Newcomment, comcnt));
     setNewComment("");
   };
 
