@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowReturnRight } from "react-icons/bs";
 
-const Reply = ({ reply, parentid, postuser }) => {
+const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
   const token = getCookie("Token");
   const curUserName = getCookie("Name");
   const dispatch = useDispatch();
@@ -21,7 +21,9 @@ const Reply = ({ reply, parentid, postuser }) => {
   const deleteComment = () => {
     let ok = window.confirm("정말 삭제하시겠어요?");
     if (ok) {
-      dispatch(postActions.del_childcomment(replyData.id, parentid));
+      dispatch(
+        postActions.del_childcomment(replyData.id, parentid, postid, comcnt)
+      );
     }
   };
 

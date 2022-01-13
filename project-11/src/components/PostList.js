@@ -22,9 +22,12 @@ const PostList = ({ location, category, selected }) => {
   const [cate, setcate] = useState(category);
   let is_select = selected;
 
+  const [state, setState] = useState(false);
+
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
+
   //api로 넘겨줘야 할 값들
   //동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
   //따로 조건문을 써서 값을 정해주었습니다.
@@ -35,7 +38,7 @@ const PostList = ({ location, category, selected }) => {
       return setarea(location);
     }
   };
-  // console.log(area, category, selected);
+
   useEffect(() => {
     curLocation();
     setpage(0);
@@ -48,6 +51,7 @@ const PostList = ({ location, category, selected }) => {
       is_select = false;
     }
     // console.log(page);
+
     dispatch(postActions.getPostAction(area, category, page, is_select));
   }, [area, category, page]);
 
@@ -78,8 +82,6 @@ const PostList = ({ location, category, selected }) => {
         setpage(count);
       });
   };
-
-  
 
   return (
     <React.Fragment>
