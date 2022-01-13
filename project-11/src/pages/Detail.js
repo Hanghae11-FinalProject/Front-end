@@ -43,7 +43,7 @@ const Detail = () => {
   const [bmCnt, setBmCnt] = useState();
   const [bookmark, setBookmark] = useState();
   const [bm, setCheckBm] = useState([]);
-  const [productId,setProductId] = useState();
+  const [productId, setProductId] = useState();
 
   const [btnActive, setBtnActive] = useState(false);
 
@@ -57,8 +57,7 @@ const Detail = () => {
       setItems(res.data);
       setCheckBm(res.data.bookMarks);
       setBmCnt(res.data.bookMarkCount);
-      setProductId(res.data.postId)
-
+      setProductId(res.data.postId);
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
@@ -118,9 +117,10 @@ const Detail = () => {
             },
           }
         )
-        .then((res) => {  
-          console.log(res)
-        dispatch(postActions.editStar(res.data))})
+        .then((res) => {
+          console.log(res);
+          dispatch(postActions.editStar(res.data));
+        })
         .catch((err) => console.log(err));
     }
   };
@@ -140,8 +140,9 @@ const Detail = () => {
         },
       })
       .then((res) => {
-        console.log(res.data)
-      dispatch(postActions.editStar(res.data))})
+        console.log(res.data);
+        dispatch(postActions.editStar(res.data));
+      })
       .catch((err) => console.log(err));
   };
 
@@ -413,11 +414,11 @@ const Detail = () => {
               )}
 
               {/* 댓글이 없을 때 나타나는 댓글 인풋창, 부모댓글이라 포스트 아이디만 넘겨줌*/}
-              {/* {PostData.comments.length === 0 && (
+              {PostData.comments.length === 0 && (
                 <Grid is_container>
                   <CommentInput postid={params.id} />
                 </Grid>
-              )} */}
+              )}
               <Nav />
             </Grid>
           </DetailBox>

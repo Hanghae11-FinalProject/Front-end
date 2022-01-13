@@ -85,7 +85,7 @@ const Main = () => {
               <Swiper
                 className="CateBtn-Container"
                 spaceBetween={10}
-                slidesPerView={4.5}
+                slidesPerView={4.3}
                 pagination={{ clickable: true }}
                 // autoplay={{ delay: 50000 }}
               >
@@ -301,7 +301,6 @@ const Header = styled.div`
   height: 50px;
   position: fixed;
   top: 0;
-  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -343,11 +342,8 @@ const Header = styled.div`
 
 const Slider = styled.div`
   height: 80px;
-  margin: 15px 0px;
+  margin: 15px 12px;
   display: flex;
-  .swiper-slide:nth-child(1) {
-    margin-left: 12px;
-  }
   .swiper-pagination.swiper-pagination-clickable {
     display: none;
   }
@@ -363,11 +359,11 @@ const CateBtn = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 1px solid var(--disabled-color);
   .default {
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    border: 1px solid var(--disabled-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -387,6 +383,7 @@ const CateBtn = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    border: 1px solid var(--disabled-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
