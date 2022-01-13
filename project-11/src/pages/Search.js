@@ -29,7 +29,8 @@ const Search = () => {
       .get(`api/search/rank`)
       .then((res) => {
         console.log("인기검색어", res);
-        setRecommend(res.data.searchRankList);
+        setRecommend(res.data);
+        // setRecommend(res);
       })
       .catch((err) => {
         console.log("인기검색어 조회 실패", err);
@@ -163,7 +164,7 @@ const Search = () => {
                               >
                                 {idx + 1}
                               </p>
-                              <Keyword key={idx}>{item}</Keyword>
+                              <Keyword key={idx}>{item.rank_Keyword}</Keyword>
                             </Grid>
                           </>
                         );
@@ -179,7 +180,7 @@ const Search = () => {
                               >
                                 {idx + 6}
                               </p>
-                              <Keyword key={idx}>{item}</Keyword>
+                              <Keyword key={idx}>{item.rank_Keyword}</Keyword>
                             </Grid>
                           </>
                         );
@@ -347,15 +348,8 @@ const Title = styled.div`
   margin: 5px 0;
 `;
 const Keyword = styled.div`
-  padding: 5px 10px;
-
-  border-radius: 16px;
+  padding: 0px 10px;
   margin: 10px 10px 0 0;
-  font-size: 14px;
-  cursor: pointer;
-  span {
-    cursor: pointer;
-  }
 `;
 
 const RemcommendBox = styled.div`

@@ -30,7 +30,7 @@ SwiperCore.use([Pagination, Autoplay]);
 
 const Main = () => {
   const token = getCookie("Token");
-  const dispatch = useDispatch();
+
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
@@ -44,8 +44,6 @@ const Main = () => {
     { id: 4, locationName: "서대문구" },
     { id: 5, locationName: "성북구" },
   ];
-  const post_data = useSelector((state) => state.post);
-  useEffect(() => {}, [post_data]);
 
   return (
     <>
@@ -97,7 +95,9 @@ const Main = () => {
                     }}
                   >
                     <Grid
-                      _className={is_cate === "식품" ? "active" : "default"}
+                      _className={
+                        is_cate === "식품" ? "default active" : "default"
+                      }
                     >
                       <ImSpoonKnife className="icon" />
                       <p>식품</p>
@@ -344,12 +344,18 @@ const Slider = styled.div`
   height: 80px;
   margin: 15px 0px;
   display: flex;
+
+  .CateBtn-Container {
+    padding-right: 12px;
+  }
   .swiper-slide:nth-child(1) {
     margin-left: 12px;
   }
+
   .CateBtn-Container {
     padding-right: 10px;
   }
+
   .swiper-pagination.swiper-pagination-clickable {
     display: none;
   }
@@ -386,6 +392,7 @@ const CateBtn = styled.div`
     }
   }
   .active {
+
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -395,6 +402,7 @@ const CateBtn = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
     background-color: var(--main-color);
     animation: 0.6s ease-in-out loadEffect3;
     .icon {

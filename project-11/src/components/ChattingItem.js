@@ -64,8 +64,8 @@ const ChattingWrap = styled.div`
       height: 70px;
       margin-right: 20px;
       border-radius: 50%;
-      background-color: black;
-      border: 1px solid gray;
+      /* background-color: black; */
+      /* border: 1px solid gray; */
       img {
         width: 100%;
         height: 100%;
