@@ -50,6 +50,7 @@ const Chatting = () => {
       if (data[i].roomName === newMsgData.roomName) {
         data[i].notReadingMessageCount = data[i].notReadingMessageCount + 1;
         data[i].lastMessage.content = newMsgData.message;
+        data[i].lastMessage.createdAt = newMsgData.createdAt;
       }
     }
     setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??

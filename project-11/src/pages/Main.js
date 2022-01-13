@@ -342,8 +342,14 @@ const Header = styled.div`
 
 const Slider = styled.div`
   height: 80px;
-  margin: 15px 12px;
+  margin: 15px 0px;
   display: flex;
+  .swiper-slide:nth-child(1) {
+    margin-left: 12px;
+  }
+  .CateBtn-Container {
+    padding-right: 10px;
+  }
   .swiper-pagination.swiper-pagination-clickable {
     display: none;
   }
