@@ -12,48 +12,60 @@ import "swiper/css/pagination";
 SwiperCore.use([Pagination, Autoplay, Navigation]);
 
 const Landing = () => {
+  const swiperStyle = {
+    position: "relative",
+    width: "429px",
+    height: "100vh",
+  };
 
-  const swiperStyle ={
-    position:'relative',
-    width:"429px",
-    height:"100vh"
-  }
-
-
-  return ( 
-      <Intro>
-        <Grid is_container _className="intro-box">
-          <div className="title-wrap" onClick={()=>{history.push('/login')}}>
-          <p>
-            SKIP
-          </p>
-          </div>
-        <Swiper 
-        style={swiperStyle}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 2200 }}
+  return (
+    <Intro>
+      <Grid is_container _className="intro-box">
+        <div
+          className="title-wrap"
+          onClick={() => {
+            history.push("/login");
+          }}
+        >
+          <p>SKIP</p>
+        </div>
+        <Swiper
+          style={swiperStyle}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 2200 }}
         >
           <SwiperSlide>
-            <img src="/static/one.gif" style={{width:"429px",height:"100vh"}} alt=""/>
+            <img
+              src="/static/Landing1.gif"
+              style={{ width: "429px", height: "100vh" }}
+              alt=""
+            />
           </SwiperSlide>
           <SwiperSlide>
-          <img src="/static/one.gif" style={{width:"429px",height:"100vh"}} alt=""/>
+            <img
+              src="/static/Landing2.gif"
+              style={{ width: "429px", height: "100vh" }}
+              alt=""
+            />
           </SwiperSlide>
           <SwiperSlide>
-          <img src="/static/one.gif" style={{width:"429px",height:"100vh"}} alt=""/>
+            <img
+              src="/static/Landing3.gif"
+              style={{ width: "429px", height: "100vh" }}
+              alt=""
+            />
           </SwiperSlide>
         </Swiper>
-          
-        </Grid>
-      </Intro>
+      </Grid>
+    </Intro>
   );
 };
 
 export default Landing;
 
 const Intro = styled.div`
-.swiper-pagination-bullet-active {
+  .swiper-pagination-bullet-active {
     background-color: var(--main-color) !important;
     width: 16px !important;
     border-radius: 4px !important;
@@ -63,7 +75,7 @@ const Intro = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
-    .title-wrap{
+    .title-wrap {
       display: flex;
       text-align: center;
       justify-content: center;
@@ -80,7 +92,3 @@ const Intro = styled.div`
     }
   }
 `;
-
-
-
-
