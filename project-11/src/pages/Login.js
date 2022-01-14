@@ -13,7 +13,7 @@ const Login = () => {
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
 
-  const ClikKakao = () => {
+  const ClickKakao = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
@@ -100,8 +100,7 @@ const Login = () => {
               로그인
             </button>
               <div className="kakaobtn">
-                <p className="or">OR</p>
-                <div className="kakaobubblewrap" onClick={ClikKakao}>
+                <div className="kakaobubblewrap" onClick={ClickKakao}>
                   <img className="kakaobubble" src="/static/kakaobubble.png" alt=""/>
                   <p className="kakaotext">카카오계정으로 로그인</p>
                 </div>
@@ -174,10 +173,6 @@ position: relative;
           text-align: center;
           flex-direction: column;
           cursor: pointer;
-          .or{
-            color: var(--help-color);
-            margin-top: 12px;
-          }
           .kakaobubblewrap{
             width: 100%;
             height: 48px;
