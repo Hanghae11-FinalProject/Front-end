@@ -114,6 +114,13 @@ const PostList = ({ location, category, selected }) => {
 
 const MainContainer = styled.div`
   padding: 0 16px 60px 16px;
+  height: 85vh;
+  overflow-y: auto;
+  -ms-overflow-style: none; // IE and Edge
+  scrollbar-width: 10px; // Firefox
+  ::-webkit-scrollbar {
+    display: none; // Chrome, Safari, Opera
+  }
 
   .post-list {
     display: grid;

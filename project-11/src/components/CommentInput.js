@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { Grid } from "../elements/index";
-import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 import { history } from "../redux/configureStore";
 
 import styled from "styled-components";
 import { IoPaperPlane } from "react-icons/io5";
-import { GrClose } from "react-icons/gr";
 
 const CommentInput = ({ name, postid, commentid, comcnt }) => {
   const token = getCookie("Token");
@@ -51,6 +49,9 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
               value={Newcomment}
               onChange={writeComment}
               disabled={token ? false : true}
+              onKeyPress={(e) => {
+                e.key === "Enter" && postComment();
+              }}
             />
             <IoPaperPlane className="add-btn" onClick={postComment} />
           </Grid>
