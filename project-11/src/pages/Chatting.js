@@ -42,9 +42,6 @@ const Chatting = () => {
   }, [test]);
 
   React.useEffect(() => {
-    console.log(newMsgData);
-    console.log(rooms);
-    console.log(ingRooms, completeRooms);
     let data = rooms;
     for (let i = 0; i < data.length; i++) {
       if (data[i].roomName === newMsgData.roomName) {
@@ -276,10 +273,8 @@ export default Chatting;
 const ChattingWrap = styled.div`
   .grid-border {
     width: 100%;
-    height: 100vh;
+    height: 120vh;
     background-color: white;
-    /* min-height: 926px; */
-    /* border: 1px solid var(--help-color); */
     position: relative;
 
     .chatting-wrap {
@@ -301,7 +296,7 @@ const ChattingWrap = styled.div`
           display: flex;
           justify-content: space-between;
           align-items: center;
-          position: relative;
+          /* position: relative; */
 
           .header-title {
             font-size: 20px;
@@ -342,9 +337,9 @@ const ChattingWrap = styled.div`
           border-radius: 12px;
           background-color: white;
           position: absolute;
-          top: 300%;
+          top: 150%;
           left: 50%;
-          transform: translate(-50%, 110%);
+          transform: translate(-50%, 150%);
           display: flex;
           flex-direction: column;
           justify-content: space-evenly;

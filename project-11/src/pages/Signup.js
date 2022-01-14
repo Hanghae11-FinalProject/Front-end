@@ -34,7 +34,6 @@ const Signup = () => {
   const checkpw = watch("password");
   const checkpwconfirm = watch("password_confirm");
 
- 
   password.current = watch("password");
 
   // disabled 체크
@@ -376,7 +375,7 @@ const SignupWrap = styled.div`
           border: 1px solid var(--help-color);
         }
         input:focus {
-          outline: 1px solid var(--main-color);
+          border: 1px solid var(--main-color);
         }
 
         .doubleinput {
@@ -398,7 +397,7 @@ const SignupWrap = styled.div`
           border-radius: 4px;
           cursor: pointer;
           margin-bottom: 5px;
-          :hover{
+          :hover {
             background-color: var(--main-color);
             color: white;
           }

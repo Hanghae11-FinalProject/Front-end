@@ -91,6 +91,7 @@ const Search = () => {
     <>
       <SearchList>
         <Grid is_container _className="border">
+          <Grid _className="background"></Grid>
           {/* header */}
           {token ? (
             <>
@@ -227,11 +228,19 @@ export default Search;
 
 const SearchList = styled.div`
   .border {
-    height: 100vh;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     background-color: #fff;
     padding: 60px 0px 10px 0px;
+
+    .background {
+      width: 100%;
+      max-width: 429px;
+      height: 100vh;
+      background-color: #fff;
+
+      position: fixed;
+      top: 0;
+      z-index: -10;
+    }
 
     .input-form {
       width: 98%;
