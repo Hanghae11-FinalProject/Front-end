@@ -17,6 +17,7 @@ const Landing = () => {
     width: "100%",
     height: "auto",
   };
+
   const ClickKakao = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
@@ -116,7 +117,9 @@ const Intro = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
+
     .imgwrap {
+
       display: flex;
       justify-content: center;
       padding: 55px 20px 40px 20px;
@@ -198,13 +201,17 @@ const Swipercontainer = styled.div`
 `;
 
 const SwiperCustom = styled(Swiper)`
-  &.swiper {
-    /* margin-top:-20px; */
-  }
-  .swiper-horizontal > .swiper-pagination-bullets,
-  .swiper-pagination-bullets .swiper-pagination-horizontal,
-  .swiper-pagination-custom,
-  .swiper-pagination-fraction {
-    bottom: 10px;
-  }
-`;
+
+&.swiper{
+  /* margin-top:-20px; */
+}
+.swiper-horizontal>
+.swiper-pagination-bullets, 
+.swiper-pagination-bullets
+.swiper-pagination-horizontal, 
+.swiper-pagination-custom, 
+.swiper-pagination-fraction{
+  bottom: 10px;
+}
+`
+
