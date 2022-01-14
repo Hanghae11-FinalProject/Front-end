@@ -200,6 +200,9 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
                       placeholder={`댓글을 입력해주세요`}
                       onChange={writeComment}
                       disabled={token ? false : true}
+                      onKeyPress={(e) => {
+                        e.key === "Enter" && addChildComment();
+                      }}
                     />
 
                     <IoPaperPlane
