@@ -139,6 +139,13 @@ const getPostAction = (area, cate, count, is_select) => {
           };
           console.log("겟카테액션");
           dispatch(getCate(_post_data));
+        } else if (count === 0 && res.data.data.length < 7) {
+          let _post_data = {
+            posts: res.data.data,
+            page: count + 1,
+            next: is_next,
+          };
+          dispatch(getCate(_post_data));
         } else {
           let _post_data = {
             posts: res.data.data,

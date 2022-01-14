@@ -143,7 +143,7 @@ const Mypage = () => {
                 onClick={() => {
                   deleteCookie("OK");
                   window.alert("로그아웃 되었습니다.");
-                  history.push("/");
+                  history.push("/intro");
                 }}
               >
                 <p>
@@ -158,12 +158,13 @@ const Mypage = () => {
                 </p>
                 <span>로그아웃</span>
               </li>
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("응 못나가");
+                }}
+              >
                 <p>
                   <MdPersonRemoveAlt1
-                    onClick={() => {
-                      window.alert("응 못나가");
-                    }}
                     style={{
                       width: "24px",
                       height: "24px",
