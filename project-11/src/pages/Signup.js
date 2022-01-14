@@ -376,7 +376,7 @@ const SignupWrap = styled.div`
           border: 1px solid var(--help-color);
         }
         input:focus {
-          outline: 1px solid var(--main-color);
+          border: 1px solid var(--main-color);
         }
 
         .doubleinput {
@@ -386,7 +386,7 @@ const SignupWrap = styled.div`
             width: 80%;
           }
           input:focus {
-            outline: 1px solid var(--main-color);
+            border: 1px solid var(--main-color);
           }
         }
         .doublecheck {
@@ -484,6 +484,7 @@ const SignupWrap = styled.div`
     }
   }
 `;
+// 엑티브 노엑티브
 const LocationWrap = styled.div`
   position: relative;
   .default {
