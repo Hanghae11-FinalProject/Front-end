@@ -10,7 +10,6 @@ const FavoriteItem = (props) => {
   const token = getCookie("Token");
   const postId = props.postId;
   const toUserId = props.postUserId;
-
   const goChat = () => {
     axiosInstance
       .post(
@@ -23,7 +22,6 @@ const FavoriteItem = (props) => {
       )
       .then((res) => {
         console.log(res, "성공");
-        console.log(res.data);
         if (res.data.message !== "same room") {
           history.push({
             pathname: `/chat`,
@@ -53,7 +51,11 @@ const FavoriteItem = (props) => {
       <Grid is_container="is_container" _className="itembox">
         <div className="deal-title">
           <div className="img-wrap">
-            <img src={props.image} alt="" />
+            {props.image !== null ? (
+              <img src={props.image} alt="" />
+            ) : (
+              <img src="/static/defaultImg.jpg" alt="" />
+            )}
           </div>
           <div className="deal-content">
             <div className="deal-chip">

@@ -13,23 +13,33 @@ SwiperCore.use([FreeMode, Pagination]);
 const ProductImg = ({ img }) => {
   return (
     <ProductImgBox>
-      <Swiper
-        slidesPerView={2.5}
-        spaceBetween={10}
-        freeMode={true}
-        pagination={{
-          clickable: true,
-        }}
-        className="mySwiper"
-      >
-        {img.map((url, i) => {
-          return (
-            <SwiperSlide key={url.id}>
-              <img src={url.imageUrl} alt="product" />
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+      {img.length !== 0 ? (
+        <Swiper
+          slidesPerView={2.5}
+          spaceBetween={10}
+          freeMode={true}
+          pagination={{
+            clickable: true,
+          }}
+          className="mySwiper"
+        >
+          {img.map((url, i) => {
+            return (
+              <SwiperSlide key={url.id}>
+                <img src={url.imageUrl} alt="product" />
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      ) : (
+        <div className="default-img-box">
+          <img
+            src="/static/defaultImg.jpg"
+            alt="defaultImg"
+            className="default-img"
+          />
+        </div>
+      )}
     </ProductImgBox>
   );
 };
@@ -38,6 +48,19 @@ export default ProductImg;
 
 const ProductImgBox = styled.div`
   margin: 10px 0;
+
+  .default-img-box {
+    width: 100%;
+    height: 150px;
+    border-radius: 4px;
+    .default-img {
+      display: block;
+      width: 155px;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
 
   /* swiper */
   .swiper {

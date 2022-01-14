@@ -59,10 +59,10 @@ const PostCard = ({ item }) => {
           </Grid>
           <PostImg>
             <Grid _className="imgbox">
-              {item.images[0].imageUrl ? (
+              {item.images.length !== 0 ? (
                 <img src={item.images[0].imageUrl} alt="PostImg" />
               ) : (
-                <div></div>
+                <img src="/static/defaultImg.jpg" alt="defaultImg" />
               )}
             </Grid>
             <ChipDiv>

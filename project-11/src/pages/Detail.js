@@ -64,7 +64,6 @@ const Detail = () => {
       setProductId(res.data.postId);
       setState(res.data.currentState);
       setcomCnt(res.data.commentCount);
-
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
@@ -83,7 +82,11 @@ const Detail = () => {
     //     history.push("/");
     //   })
     //   .catch((err) => console.log(err));
-    dispatch(postActions.del_onepost(params.id));
+    if (window.confirm("게시물을 삭제 하시겠습니까?")) {
+      dispatch(postActions.del_onepost(params.id));
+    } else {
+      return;
+    }
   };
 
   //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
@@ -248,7 +251,7 @@ const Detail = () => {
                           height: "30px",
                           cursor: "pointer",
                         }}
-                        onClick={()=>history.goBack()}
+                        onClick={() => history.goBack()}
                       />
                       <p>자세히 보기</p>
                     </Grid>

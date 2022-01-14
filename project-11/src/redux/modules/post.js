@@ -109,12 +109,12 @@ const editProfileDB = (img, nickname) => {
 
 //메인 게시글 조회
 const getPostAction = (area, cate, count, is_select) => {
-  console.log(area, cate, count, is_select)
+  console.log(area, cate, count, is_select);
   if (is_select) {
     count = 0;
   }
   return async (dispatch, getState, { history }) => {
-    // console.log("미들웨어에 넘어온 값 (장소,카테,페이지) ", area, cate, count);
+    console.log("미들웨어에 넘어온 값 (장소,카테,페이지) ", count);
 
     axiosInstance
       .post(`api/category?page=${count}`, {
@@ -130,7 +130,7 @@ const getPostAction = (area, cate, count, is_select) => {
         } else {
           is_next = true;
         }
-        if (is_select) {
+        if (is_select || count === 0) {
           console.log(res.data);
           let _post_data = {
             posts: res.data.data,
@@ -180,7 +180,7 @@ const del_onepost = (postid) => {
       .then((res) => {
         console.log("post delete", res);
         dispatch(delDetail(postid));
-        // history.push("/");
+        window.location.replace("/");
       })
       .catch((err) => console.log(err));
   };

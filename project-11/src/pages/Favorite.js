@@ -15,7 +15,6 @@ const Favorite = () => {
   const token = getCookie("Token");
   const userid = getCookie("Name");
   const [is_loading, setIs_loading] = React.useState(false);
-  console.log(userid);
 
   const [favorite_list, setFavoriteList] = useState([]);
 
@@ -23,7 +22,7 @@ const Favorite = () => {
     axiosInstance
       .get("/api/bookmark", { headers: { Authorization: token } })
       .then((response) => {
-        console.log(response.data.data);
+        console.log(response);
         setFavoriteList(response.data.data);
         setIs_loading(true);
       });
