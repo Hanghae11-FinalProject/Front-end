@@ -12,6 +12,11 @@ import "swiper/css/pagination";
 SwiperCore.use([Pagination, Autoplay, Navigation]);
 
 const Landing = () => {
+  const swiperStyle = {
+    position: "relative",
+    width: "429px",
+    height: "100vh",
+  };
 
   const swiperStyle ={
     position:'relative',
@@ -89,6 +94,7 @@ const Intro = styled.div`
     width: 100%;
     height: 100vh;
     position: relative;
+    
     .imgwrap{
       display: flex;
       justify-content: center;
@@ -183,4 +189,3 @@ const SwiperCustom = styled(Swiper)`
   bottom: 10px;
 }
 `
-
