@@ -177,6 +177,32 @@ const EditPost = (items) => {
     [tagName, hashArr]
   );
 
+  const addTag = () => {
+    const GetHashContent = document.querySelector(".HashInputOuter");
+    const HashWrapInner = document.createElement("div");
+    HashWrapInner.className = "HashWrapInner";
+
+    HashWrapInner.addEventListener("click", () => {
+      GetHashContent?.removeChild(HashWrapInner);
+      // console.log(HashWrapInner.innerHTML);
+      setHashArr(hashArr.filter((tagName) => tagName)); // filter()는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환
+    });
+
+    // input에서 enter로 태그 생성 enter의 키 코드는 13 이다!
+    if (tagName.trim() !== "") {
+      // trim()은 문자열 좌우에서 공백을 제거하는 함수
+      if (hashArr.length === 5) {
+        return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
+      }
+      // console.log("엔터로 된거닝?", e.target.value);
+      HashWrapInner.innerHTML = "#" + tagName;
+      GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
+      const tag = { tagName: tagName };
+      setHashArr((hashArr) => [...hashArr, tag]);
+      setHashtag(""); // 태그를 추가한 뒤 새로운 태그를 추가하기 위해 tagName을 다시 빈 값으로 만들어준다.
+    }
+  };
+
   // 이미지, preview이미지 추가
   const addImage = (e) => {
     // console.log(e.target.files);
@@ -435,14 +461,19 @@ const EditPost = (items) => {
           <HashTagArea className="HashWrap">
             <HashInputOuter className="HashInputOuter">
               {/* 동적으로 생성되는 태그를 담을 div */}
-              <HashInput
-                className="HashInput"
-                type="text"
-                defaultValue={tagName}
-                onChange={onChangeHashtag}
-                onKeyUp={createTag}
-                placeholder="# 태그 입력"
-              />
+              <div className="input-btn">
+                <HashInput
+                  className="HashInput"
+                  type="text"
+                  defaultValue={tagName}
+                  onChange={onChangeHashtag}
+                  onKeyUp={createTag}
+                  placeholder="# 태그 입력"
+                />
+                <button className="add-tag" onClick={addTag}>
+                  추가
+                </button>
+              </div>
             </HashInputOuter>
           </HashTagArea>
           <Nav write={"write"} />
@@ -634,15 +665,18 @@ const Preview = styled.img`
 `;
 
 const ContentArea = styled.div`
-  height: 330px;
+  height: 280px;
   margin: 16px;
+  /* border-bottom: 1px solid var(--help-color); */
 `;
 
 const ContentInput = styled.textarea`
   /* width: 24.6rem; */
   width: 100%;
+  height: 280px;
   font-size: 16px;
   resize: none;
+  font-family: "NanumSquareRound";
   border: none;
   ::placeholder {
     color: var(--help-color);
@@ -655,12 +689,19 @@ const ContentInput = styled.textarea`
 const HashTagArea = styled.div`
   height: 75px;
   margin: 15px;
+  margin-top: 50px;
   border-top: 1px solid var(--help-color);
 `;
 
 const HashInputOuter = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  .input-btn {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--help-color);
+  }
   .HashWrapInner {
     margin-top: 5px;
     border-radius: 10px;
@@ -676,11 +717,21 @@ const HashInputOuter = styled.div`
     margin-right: 5px;
     cursor: pointer;
   }
+  .add-tag {
+    padding: 5px 28px;
+    width: 87px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const HashInput = styled.input`
-  width: 365px;
-  height: 40px;
+  width: 310px;
+  height: 55px;
   font-size: 16px;
   border-radius: 8px;
   border: none;

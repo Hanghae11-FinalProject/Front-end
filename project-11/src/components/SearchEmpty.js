@@ -3,6 +3,7 @@ import { Grid } from "../elements";
 import styled from "styled-components";
 
 const SearchEmpty = (props) => {
+
   return (
     <>
       <SearchEmptyBox>

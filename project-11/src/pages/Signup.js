@@ -52,7 +52,15 @@ const Signup = () => {
 
   useEffect(() => {
     checkActive();
-  }, [is_location]);
+  }, [
+    actNic,
+    actId,
+    checkemail,
+    checknickname,
+    checkpw,
+    checkpwconfirm,
+    is_location,
+  ]);
 
   const onSubmit = (data) => {
     console.log(is_location);
@@ -63,8 +71,6 @@ const Signup = () => {
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
         address: is_location,
-        // profileImg:
-        //   "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
       .then((response) => {
         console.log(response);
@@ -83,7 +89,6 @@ const Signup = () => {
   const idCheck = () => {
     let RegId = /^\S+@\S+$/i;
     const check = RegId.test(checkemail);
-    setActId(true);
     if (!check) {
       // 유효성 통과 못 한거
       console.log(check, "유효성 노 통과");
@@ -96,6 +101,7 @@ const Signup = () => {
       axiosInstance
         .post("/user/idCheck", { username: checkemail })
         .then((response) => {
+          setActId(true);
           console.log("중복확인 성공!", response);
           if (response.data === "") {
             console.log("사용가능한 이메일");
@@ -110,7 +116,6 @@ const Signup = () => {
   const nicknameCheck = () => {
     let RegNick = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{2,10}$/;
     const check = RegNick.test(checknickname);
-    setActNic(true);
     if (!check) {
       // 유효성 통과 못 한거
       console.log(check, "유효성 노 통과");
@@ -126,6 +131,7 @@ const Signup = () => {
           nickname: checknickname,
         })
         .then((response) => {
+          setActNic(true);
           console.log("닉넴 중복확인 성공!", response.data);
           if (response.data === "") {
             console.log("사용가능한 닉네임");
@@ -176,7 +182,7 @@ const Signup = () => {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  history.push("/login");
+                  history.push("/intro");
                 }}
               />
               <span className="header-title">회원가입</span>
