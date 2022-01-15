@@ -24,6 +24,10 @@ const Signup = () => {
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [pwDoubleChk, setPwDoubleChk] = useState("");
   const [pwChk, setPwChk] = useState("");
+  const [passNick, setPassNick] = useState('');
+  const [passId, setPassId] = useState('');
+
+
   // disabled 활성화 여부
   const [active, setActive] = useState(true);
   const [actId, setActId] = useState(false);
@@ -34,26 +38,59 @@ const Signup = () => {
   const checkpw = watch("password");
   const checkpwconfirm = watch("password_confirm");
 
+  
  
   password.current = watch("password");
 
-  // disabled 체크
-  const checkActive = () => {
-    actNic &&
-    actId &&
-    checkemail !== "" &&
-    checknickname !== "" &&
-    checkpw !== "" &&
-    checkpwconfirm !== "" &&
-    checkpw === checkpwconfirm &&
-    is_location !== "시/군/구"
-      ? setActive(false)
-      : setActive(true);
+  //다시 눌렀을때 꺼지게 하는 함수
+  const modalControl = () => {
+    if (is_open) {
+      setIs_open(false);
+    } else {
+      setIs_open(true);
+    }
   };
+
+  // disabled 체크
+  
+  const checkActive = () => {
+    if(actNic === true &&
+      actId === true &&
+      passId === checkemail &&
+      passNick === checknickname &&
+      checkemail !== "" &&
+      checknickname !== "" &&
+      checkpw !== "" &&
+      checkpwconfirm !== "" &&
+      checkpw === checkpwconfirm &&
+      is_location !== "시/군/구"){
+        setActive(false)
+      }else{
+        setActive(true)
+      }
+  };
+
+
 
   useEffect(() => {
     checkActive();
-  }, [is_location]);
+  }, [idDoubleChk,nickDoubleChk,is_location]);
+  
+  
+  useEffect(() => {
+    if(passId !== checkemail && actId === true){
+      setIsDoubleChk('중복확인을 다시 해주세요.');
+    }
+  }, [checkemail]);
+
+  useEffect(() => {
+    if(passNick !== checknickname && actNic === true){
+      setNickDoubleChk('중복확인을 다시 해주세요.');
+    }
+    console.log(actNic, actId)
+  }, [checknickname]);
+
+
 
   const onSubmit = (data) => {
     console.log(is_location);
@@ -64,8 +101,6 @@ const Signup = () => {
         passwordCheck: data.password_confirm,
         nickname: data.nickname,
         address: is_location,
-        // profileImg:
-        //   "https://i.pinimg.com/564x/36/d5/a6/36d5a6aaf858916199e15fded53b698e.jpg",
       })
       .then((response) => {
         console.log(response);
@@ -73,6 +108,10 @@ const Signup = () => {
           window.alert("축하합니다 회원가입에 성공하셨습니다.");
           history.push("/login");
         } else {
+          if(response.data.message){
+            window.alert(response.data.message);
+          return
+          }
           window.alert("아이디,닉네임 중복확인을 해주세요");
         }
       })
@@ -82,9 +121,9 @@ const Signup = () => {
   };
 
   const idCheck = () => {
+    console.log(is_location)
     let RegId = /^\S+@\S+$/i;
     const check = RegId.test(checkemail);
-    setActId(true);
     if (!check) {
       // 유효성 통과 못 한거
       console.log(check, "유효성 노 통과");
@@ -95,23 +134,28 @@ const Signup = () => {
       //유효성 통과 한거
       //axios
       axiosInstance
-        .post("/user/idCheck", { username: checkemail })
-        .then((response) => {
-          console.log("중복확인 성공!", response);
-          if (response.data === "") {
-            console.log("사용가능한 이메일");
-            setIsDoubleChk("사용 가능한 이메일 입니다.");
+      .post("/user/idCheck", { username: checkemail })
+      .then((response) => {
+        console.log("중복확인 성공!", response);
+        setActId(true);
+        if(response.data.message ==="이미 존재하는 이메일 입니다"){
+          setActId(false)
+        }
+        setPassId(checkemail)
+        if (response.data === "") {
+          console.log("사용가능한 이메일");
+          setIsDoubleChk("사용 가능한 이메일 입니다.");
           } else {
             console.log(response.data.message);
             setIsDoubleChk(response.data.message);
           }
         });
-    }
-  };
-  const nicknameCheck = () => {
+      }
+    };
+    const nicknameCheck = () => {
+      console.log(is_location)
     let RegNick = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{2,10}$/;
     const check = RegNick.test(checknickname);
-    setActNic(true);
     if (!check) {
       // 유효성 통과 못 한거
       console.log(check, "유효성 노 통과");
@@ -121,12 +165,17 @@ const Signup = () => {
       console.log(check, "유효성 통과");
       //유효성 통과 한거
       //axios
-
+      
       axiosInstance
-        .post("/user/nicknameCheck", {
-          nickname: checknickname,
-        })
-        .then((response) => {
+      .post("/user/nicknameCheck", {
+        nickname: checknickname,
+      })
+      .then((response) => {
+          setActNic(true);
+          if(response.data.message ==="이미 존재하는 닉네임 입니다"){
+            setActNic(false)
+          }
+          setPassNick(checknickname)
           console.log("닉넴 중복확인 성공!", response.data);
           if (response.data === "") {
             console.log("사용가능한 닉네임");
@@ -286,6 +335,7 @@ const Signup = () => {
                     <div
                       className="select-city-wrap"
                       onClick={() => {
+                        modalControl()
                         setIs_open(true);
                       }}
                     >
@@ -380,7 +430,7 @@ const SignupWrap = styled.div`
         }
 
         .doubleinput {
-          max-width: 100%;
+          /* max-width: 100%; */
           justify-content: space-between;
           input {
             width: 80%;
@@ -426,7 +476,7 @@ const SignupWrap = styled.div`
         width: 191px;
         height: 48px;
         outline: none;
-        border: 1px solid var(--help-color);
+        /* border: 1px solid var(--help-color); */
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -481,8 +531,46 @@ const SignupWrap = styled.div`
       &:hover {
         opacity: 1;
       }
+    }    
+    @media screen and (max-width:376px) { 
+    .address-wrap {
+        .select-wrap{
+          width: 165px;
+        }
+        .select-city-wrap{
+          width: 165px;
+        }
+      }
+      .doubleinput {
+          justify-content: space-between;
+          input {
+            margin-right: 10px;
+          }
+          input:focus {
+            border: 1px solid var(--main-color);
+          }
+        }
+    @media screen and (max-width:321px) { 
+    .address-wrap {
+        .select-wrap{
+          width: 140px;
+        }
+        .select-city-wrap{
+          width: 140px;
+        }
+      } 
     }
-  }
+    .doubleinput {
+          justify-content: space-between;
+          input {
+            margin-right: 10px;
+          }
+          input:focus {
+            border: 1px solid var(--main-color);
+          }
+        }
+    }
+  } 
 `;
 // 엑티브 노엑티브
 const LocationWrap = styled.div`
@@ -493,4 +581,5 @@ const LocationWrap = styled.div`
   .active {
     border: 1px solid var(--main-color);
   }
+
 `;

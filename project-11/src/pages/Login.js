@@ -6,16 +6,13 @@ import { setCookie } from "../shared/Cookie";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
-import { KAKAO_AUTH_URL } from "../shared/OAuth";
 
 const Login = () => {
   const [login_disabled, setLoginDisabled] = useState(true);
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
 
-  const ClickKakao = () => {
-    window.location.href = KAKAO_AUTH_URL;
-  };
+
 
   const handleChangeInput = (e) => {
     setInputValues({
@@ -34,7 +31,7 @@ const Login = () => {
         console.log("로그인 완료", response);
         const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=${response.headers.authorization}`;
         setCookie("OK", loginInfo);
-        history.push("/");
+        history.push("/main");
       })
       .catch((error) => {
         window.alert("이메일 또는 비밀번호를 다시 확인해주세요", error);
@@ -99,22 +96,6 @@ const Login = () => {
             >
               로그인
             </button>
-              <div className="kakaobtn">
-                <div className="kakaobubblewrap" onClick={ClickKakao}>
-                  <img className="kakaobubble" src="/static/kakaobubble.png" alt=""/>
-                  <p className="kakaotext">카카오계정으로 로그인</p>
-                </div>
-                <div className="bottomtext">
-                  <span 
-                  className="signupbtn"
-                  onClick={() => {
-                history.push("/signup");
-              }}>회원가입</span>
-                  <span onClick={() => {
-                history.push("/");
-              }}>둘러보기</span>
-                </div>
-              </div>
           </div>
         </div>
       </Grid>
@@ -167,53 +148,6 @@ position: relative;
           outline: none;
           border: 1px solid var(--help-color);
           padding-left: 10px;
-        }
-        .kakaobtn{
-          display: flex;
-          text-align: center;
-          flex-direction: column;
-          cursor: pointer;
-          .kakaobubblewrap{
-            width: 100%;
-            height: 48px;
-            background-color: #FEE500;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            margin-top: 12px;
-            .kakaobubble{
-              width: 20px;
-              height: 20px;
-              margin-left: 16px;
-          }
-          .kakaotext{
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%,-50%);
-            color: #41231F;
-            font-size: 14px;
-            font-weight: 600;
-          }
-          }
-          .bottomtext{
-            display: flex;
-            max-width: 429px;
-            margin: 0 auto;
-            margin-top: 20px;
-            span{
-              padding: 0px 25px;
-              color: var(--help-color);
-            }
-            span:nth-child(1){
-              border-right: 1px solid var(--help-color);
-              cursor: pointer;
-            }
-            span:nth-child(2){
-              cursor: pointer;
-            }
-          }
         }
       }
     }

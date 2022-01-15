@@ -24,7 +24,7 @@ const Nav = (props) => {
             <MdHome
               className={props.home === "home" ? "active home" : "icon home"}
               onClick={() => {
-                history.push("/");
+                history.push("/main");
               }}
             />
           </Menu>

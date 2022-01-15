@@ -12,12 +12,6 @@ import "swiper/css/pagination";
 SwiperCore.use([Pagination, Autoplay, Navigation]);
 
 const Landing = () => {
-  const swiperStyle = {
-    position: "relative",
-    width: "429px",
-    height: "100vh",
-  };
-
   const swiperStyle ={
     position:'relative',
     width:"100%",
@@ -42,13 +36,13 @@ const Landing = () => {
         autoplay={{ delay: 2200 }}
         >
           <SwiperSlide>
-            <img src="/static/landingimg1.gif" style={{width:"100%",height:"auto"}} alt=""/>
+            <img src="/static/landing1.gif" style={{width:"100%",height:"auto"}} alt=""/>
           </SwiperSlide>
           <SwiperSlide>
-          <img src="/static/landingimg2.gif" style={{width:"100%",height:"auto"}} alt=""/>
+          <img src="/static/landing2.gif" style={{width:"100%",height:"auto"}} alt=""/>
           </SwiperSlide>
           <SwiperSlide>
-          <img src="/static/landingimg3.gif" style={{width:"100%",height:"auto"}} alt=""/>
+          <img src="/static/landing3.gif" style={{width:"100%",height:"auto"}} alt=""/>
           </SwiperSlide>
         </SwiperCustom>
         </Swipercontainer>
@@ -71,7 +65,7 @@ const Landing = () => {
                 history.push("/signup");
               }}>회원가입</span>
                   <span onClick={() => {
-                history.push("/");
+                history.push("/main");
               }}>둘러보기</span>
                 </div>
               </div>

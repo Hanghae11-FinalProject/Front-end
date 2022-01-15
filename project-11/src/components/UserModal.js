@@ -6,32 +6,45 @@ import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-
 import styled from "styled-components";
 
 const UserModal = (props) => {
   const { name, isOpen, onCancel } = props;
-  const [editName, setEditName] = useState(`${name}`);
-  const [iconList, setIconList] = useState([]);
 
-  const username = useSelector((state) => state.post.profile.username);
+  const [editName, setEditName] = useState('');
+  const [iconList, setIconList] = useState([]);
+  const [iconState, setIconState] = useState([]);
+  
+  console.log(name)
+
 
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
 
+
+
   const CheckActive = () => {
-    editName !== name && editName !== ""
-      ? nickDoubleChk === "사용 가능한 닉네임 입니다."
-        ? setActive(false)
-        : setActive(true)
-      : setActive(true);
+    iconState.length !== 0 || editName !== "" && nickDoubleChk === "사용 가능한 닉네임 입니다." ? setActive(false) : setActive(true)
   };
 
-  useEffect(() => {
-    CheckActive();
-  }, [nickDoubleChk]);
+
+  // 프로필 수정
+  const EditProfile = () => {
+    if(editName !== name && nickDoubleChk !== "사용 가능한 닉네임 입니다."){
+      window.alert("중복확인을 해주세요")
+    return;
+    }
+    setNickDoubleChk();
+    const newList = icons.map((icon, i) => {
+      const object = { icons: icon, active: false };
+      return object;
+    });
+    setIconList(newList);
+    dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
+    onCancel();    
+  };
 
   useEffect(() => {
     if (editName === name) {
@@ -39,11 +52,6 @@ const UserModal = (props) => {
     }
   }, []);
 
-  // 프로필 수정
-  const EditProfile = () => {
-    dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
-    onCancel();
-  };
 
   // 닉네임 중복확인
   const nicknameCheck = () => {
@@ -72,10 +80,19 @@ const UserModal = (props) => {
         });
     }
   };
-
+  
   const handleClose = () => {
     onCancel();
+    const newList = icons.map((icon, i) => {
+      const object = { icons: icon, active: false };
+      return object;
+    });
+    setIconList(newList);
+    setNickDoubleChk();
   };
+
+  
+
   // 프로필 클릭 이벤트
 
   useEffect(() => {
@@ -111,8 +128,18 @@ const UserModal = (props) => {
     })
     setIconList(newList)
 
+    const arr = newList.filter((item)=>{
+     return item.active === true;
+    })
+    setIconState(arr)
+    if(editName === ""){
+      setEditName(name)
+    }
   }
-  console.log(iconList)
+
+  useEffect(() => {
+    CheckActive();
+  }, [handleClick]);
 
   return (
     <>

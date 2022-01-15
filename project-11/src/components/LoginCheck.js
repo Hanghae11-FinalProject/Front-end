@@ -16,12 +16,10 @@ const LoginCheck = () => {
             <p>서비스를 이용하려면</p>
             <p>먼저 로그인이 필요해요!</p>
           </div>
-          <div className="subtitle">
-            <span
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
+          <div className="subtitle"
+          onClick={()=>{history.push('/')}}
+          >
+            <span>
               로그인하러 가기
             </span>
           </div>
@@ -64,11 +62,11 @@ const LoginCkWrap = styled.div`
         line-height: 48px;
         width: 90%;
         height: 48px;
-        border-radius: 50px;
+        border-radius: 4px;
         background-color: var(--main-color);
         margin: 0 auto;
+        cursor: pointer;
         span {
-          cursor: pointer;
           font-size: 16px;
           color: white;
         }
@@ -78,6 +76,6 @@ const LoginCkWrap = styled.div`
 `;
 const AppImg = styled.div`
   img {
-    width: 90%;
+    width: 60%;
   }
 `;

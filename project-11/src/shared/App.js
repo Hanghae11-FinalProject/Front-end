@@ -28,8 +28,8 @@ function App() {
       <GlobalStyles />
       <ConnectedRouter history={history}>
         <Switch>
-          <Route path="/" exact component={Main}></Route>
-          <Route path="/intro" exact component={Landing}></Route>
+          <Route path="/" exact component={Landing}></Route>
+          <Route path="/main" exact component={Main}></Route>
           <Route path="/address" exact component={InputAdd}></Route>
           <Route path="/login" exact component={Login}></Route>
           <Route path="/signup" exact component={Signup}></Route>
