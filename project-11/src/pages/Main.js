@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
@@ -135,24 +135,26 @@ const Main = () => {
                     >
                       <IoShirt className="icon" size={28} />
                       <p>의류</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "가구" ? setIs_Cate("") : setIs_Cate("가구");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "가구" ? "active" : "default"}
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "가구"
+                          ? setIs_Cate("")
+                          : setIs_Cate("가구");
+                        setSelected(true);
+                      }}
                     >
                       <Grid
                         _className={is_cate === "가구" ? "active" : "default"}
                       >
-                        <FaCouch className="icon" />
-                        <p>가구</p>
+                        <Grid
+                          _className={is_cate === "가구" ? "active" : "default"}
+                        >
+                          <FaCouch className="icon" />
+                          <p>가구</p>
+                        </Grid>
                       </Grid>
                     </CateBtn>
                   </SwiperSlide>

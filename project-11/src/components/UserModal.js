@@ -18,6 +18,7 @@ const UserModal = (props) => {
   console.log(name)
 
 
+
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
@@ -91,7 +92,6 @@ const UserModal = (props) => {
     setNickDoubleChk();
   };
 
-  
 
   // 프로필 클릭 이벤트
 
@@ -134,6 +134,7 @@ const UserModal = (props) => {
     setIconState(arr)
     if(editName === ""){
       setEditName(name)
+
     }
   }
 
