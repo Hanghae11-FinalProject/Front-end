@@ -58,9 +58,11 @@ const Chat = (data) => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
+        console.log(res.data, "성공");
+        let x = res.data.message;
+        console.log(x);
         setMessageList(res.data.message);
         setItems(res.data.post);
-        console.log(res.data, "성공");
       })
       .catch((err) => {
         console.log(err);
