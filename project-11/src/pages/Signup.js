@@ -385,7 +385,7 @@ const SignupWrap = styled.div`
         }
 
         .doubleinput {
-          max-width: 100%;
+          /* max-width: 100%; */
           justify-content: space-between;
           input {
             width: 80%;

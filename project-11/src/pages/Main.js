@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/post";
-import { axiosInstance } from "../shared/api";
 import PostList from "../components/PostList";
 import Nav from "../shared/Nav";
 import { getCookie } from "../shared/Cookie";
