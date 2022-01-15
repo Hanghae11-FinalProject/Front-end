@@ -1,15 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import ChattingItem from "./components/ChattingItem";
-import Login from "./pages/Login";
-
-describe("LoginBtnRender", () => {
-  it("should render LoginPage button", () => {
-    render(<Login />);
-
-    screen.getByRole("button");
-  });
-});
 
 test("sample test", () => {
   const num1 = 10;

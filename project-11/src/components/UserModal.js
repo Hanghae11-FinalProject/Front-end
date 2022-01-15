@@ -3,16 +3,19 @@ import ReactModal from "react-modal";
 import { icons } from "../shared/util";
 import { Image, Grid } from "../elements/index";
 import { axiosInstance } from "../shared/api";
-
+import { getCookie } from "../shared/Cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-
 import styled from "styled-components";
 
 const UserModal = (props) => {
   const { name, isOpen, onCancel } = props;
+
   const [editName, setEditName] = useState("");
   const [iconList, setIconList] = useState([]);
+  const [iconState, setIconState] = useState([]);
+
+  console.log(name);
 
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
@@ -20,11 +23,26 @@ const UserModal = (props) => {
   const [img, setImg] = useState("");
 
   const CheckActive = () => {
-    editName !== name && editName !== ""
-      ? nickDoubleChk === "사용 가능한 닉네임 입니다."
-        ? setActive(false)
-        : setActive(true)
+    iconState.length !== 0 ||
+    (editName !== "" && nickDoubleChk === "사용 가능한 닉네임 입니다.")
+      ? setActive(false)
       : setActive(true);
+  };
+
+  // 프로필 수정
+  const EditProfile = () => {
+    if (editName !== name && nickDoubleChk !== "사용 가능한 닉네임 입니다.") {
+      window.alert("중복확인을 해주세요");
+      return;
+    }
+    setNickDoubleChk();
+    const newList = icons.map((icon, i) => {
+      const object = { icons: icon, active: false };
+      return object;
+    });
+    setIconList(newList);
+    dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
+    onCancel();
   };
 
   useEffect(() => {
@@ -33,35 +51,28 @@ const UserModal = (props) => {
     }
   }, []);
 
-  // 프로필 수정
-
-  const EditProfile = () => {
-    dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
-    onCancel();
-  };
-
   // 닉네임 중복확인
   const nicknameCheck = () => {
     let RegNick = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{2,10}$/;
     const check = RegNick.test(editName);
     if (!check) {
-      // console.log(check, "유효성 노 통과");
+      console.log(check, "유효성 노 통과");
       setNickDoubleChk("한글, 영문, 숫자 조합 2~10자로 입력하세요");
       return;
     } else {
-      // console.log(check, "유효성 통과");
+      console.log(check, "유효성 통과");
 
       axiosInstance
         .post("/user/nicknameCheck", {
           nickname: editName,
         })
         .then((response) => {
-          // console.log("닉넴 중복확인 성공!", response.data);
+          console.log("닉넴 중복확인 성공!", response.data);
           if (response.data === "") {
-            // console.log("사용가능한 닉네임");
+            console.log("사용가능한 닉네임");
             setNickDoubleChk("사용 가능한 닉네임 입니다.");
           } else {
-            // console.log(response.data.message);
+            console.log(response.data.message);
             setNickDoubleChk(response.data.message);
           }
         });
@@ -70,7 +81,14 @@ const UserModal = (props) => {
 
   const handleClose = () => {
     onCancel();
+    const newList = icons.map((icon, i) => {
+      const object = { icons: icon, active: false };
+      return object;
+    });
+    setIconList(newList);
+    setNickDoubleChk();
   };
+
   // 프로필 클릭 이벤트
 
   useEffect(() => {
@@ -106,8 +124,10 @@ const UserModal = (props) => {
     });
     setIconList(newList);
 
-  };
-
+    const arr = newList.filter((item) => {
+      return item.active === true;
+    });
+    setIconState(arr);
     if (editName === "") {
       setEditName(name);
     }
@@ -116,7 +136,6 @@ const UserModal = (props) => {
   useEffect(() => {
     CheckActive();
   }, [handleClick]);
-
 
   return (
     <>
@@ -155,7 +174,6 @@ const UserModal = (props) => {
         </TitleWrap>
         <BtnInputWrap>
           <input
-            // ref={username}
             type="text"
             className="inputform"
             defaultValue={name}
@@ -206,7 +224,9 @@ const UserModal = (props) => {
         </ExtraIcon>
 
         <BtnBox>
-          <Btn onClick={EditProfile}>완료</Btn>
+          <Btn onClick={EditProfile} disabled={active}>
+            완료
+          </Btn>
 
           <Btn onClick={handleClose}>닫기</Btn>
         </BtnBox>
