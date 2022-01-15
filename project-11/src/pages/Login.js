@@ -151,14 +151,14 @@ const LoginWrap = styled.div`
     width: 100%;
     height: 100vh;
     background-color: #fff;
-    /* border: 1px solid var(--help-color); */
+
     .login-wrap {
       .login-header-wrap {
         height: 50px;
         display: flex;
         align-items: center;
         position: relative;
-        /* border-bottom: 1px solid var(--help-color); */
+
         box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
         .header-title {
           position: absolute;
@@ -173,7 +173,8 @@ const LoginWrap = styled.div`
       .login-input-wrap {
         display: flex;
         flex-direction: column;
-        padding: 0 16px;
+        padding: 0 16px 50px 16px;
+        background-color: #fff;
         .emailtext {
           margin-top: 50px;
         }

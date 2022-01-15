@@ -3,7 +3,7 @@ import ReactModal from "react-modal";
 import { icons } from "../shared/util";
 import { Image, Grid } from "../elements/index";
 import { axiosInstance } from "../shared/api";
-import { getCookie } from "../shared/Cookie";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 
@@ -11,10 +11,8 @@ import styled from "styled-components";
 
 const UserModal = (props) => {
   const { name, isOpen, onCancel } = props;
-  const [editName, setEditName] = useState(`${name}`);
+  const [editName, setEditName] = useState("");
   const [iconList, setIconList] = useState([]);
-
-  const username = useSelector((state) => state.post.profile.username);
 
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
@@ -30,16 +28,13 @@ const UserModal = (props) => {
   };
 
   useEffect(() => {
-    CheckActive();
-  }, [nickDoubleChk]);
-
-  useEffect(() => {
     if (editName === name) {
       setActive(false);
     }
   }, []);
 
   // 프로필 수정
+
   const EditProfile = () => {
     dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
     onCancel();
@@ -110,8 +105,18 @@ const UserModal = (props) => {
       }
     });
     setIconList(newList);
+
   };
-  // console.log(iconList)
+
+    if (editName === "") {
+      setEditName(name);
+    }
+  };
+
+  useEffect(() => {
+    CheckActive();
+  }, [handleClick]);
+
 
   return (
     <>
@@ -150,6 +155,7 @@ const UserModal = (props) => {
         </TitleWrap>
         <BtnInputWrap>
           <input
+            // ref={username}
             type="text"
             className="inputform"
             defaultValue={name}
@@ -200,9 +206,7 @@ const UserModal = (props) => {
         </ExtraIcon>
 
         <BtnBox>
-          <Btn onClick={EditProfile} disabled={active}>
-            완료
-          </Btn>
+          <Btn onClick={EditProfile}>완료</Btn>
 
           <Btn onClick={handleClose}>닫기</Btn>
         </BtnBox>

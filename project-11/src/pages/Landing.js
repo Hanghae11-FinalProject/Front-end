@@ -41,21 +41,21 @@ const Landing = () => {
           >
             <SwiperSlide>
               <img
-                src="/static/Landing1.gif"
+                src="/static/landingimg1.gif"
                 style={{ width: "100%", height: "auto" }}
                 alt=""
               />
             </SwiperSlide>
             <SwiperSlide>
               <img
-                src="/static/Landing2.gif"
+                src="/static/landingimg2.gif"
                 style={{ width: "100%", height: "auto" }}
                 alt=""
               />
             </SwiperSlide>
             <SwiperSlide>
               <img
-                src="/static/Landing3.gif"
+                src="/static/landingimg3.gif"
                 style={{ width: "100%", height: "auto" }}
                 alt=""
               />
@@ -126,7 +126,8 @@ const Intro = styled.div`
     .login-input-wrap {
       display: flex;
       flex-direction: column;
-      padding: 0 16px;
+      padding: 0 16px 50px 16px;
+      background-color: white;
       .login-btn {
         background-color: var(--main-color);
         text-align: center;
@@ -199,13 +200,15 @@ const Swipercontainer = styled.div`
 `;
 
 const SwiperCustom = styled(Swiper)`
-  &.swiper {
-    /* margin-top:-20px; */
-  }
-  .swiper-horizontal > .swiper-pagination-bullets,
-  .swiper-pagination-bullets .swiper-pagination-horizontal,
-  .swiper-pagination-custom,
-  .swiper-pagination-fraction {
-    bottom: 10px;
-  }
-`;
+&.swiper{
+  /* margin-top:-20px; */
+}
+.swiper-horizontal>
+.swiper-pagination-bullets, 
+.swiper-pagination-bullets
+.swiper-pagination-horizontal, 
+.swiper-pagination-custom, 
+.swiper-pagination-fraction{
+  bottom: 10px;
+}
+`

@@ -13,11 +13,10 @@ import SwiperCore, { Pagination, Autoplay } from "swiper";
 
 import { ImSpoonKnife } from "react-icons/im";
 import { MdMenuBook } from "react-icons/md";
-import { GiHanger } from "react-icons/gi";
 import { FaCouch, FaMapMarkerAlt } from "react-icons/fa";
 import { CgSmartHomeRefrigerator } from "react-icons/cg";
 import { RiCupFill } from "react-icons/ri";
-import { IoExtensionPuzzle } from "react-icons/io5";
+import { IoExtensionPuzzle, IoShirt } from "react-icons/io5";
 import { BiSmile } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 
@@ -53,6 +52,7 @@ const Main = () => {
     <>
       <Container>
         <Grid is_container _className="border">
+          <Grid _className="background"></Grid>
           {token ? (
             <>
               <Header>
@@ -136,22 +136,20 @@ const Main = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid
-                        _className={is_cate === "의류" ? "active" : "default"}
-                      >
-                        <GiHanger className="icon" />
-                        <p>의류</p>
-                      </Grid>
-                    </CateBtn>
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <CateBtn
-                      onClick={() => {
-                        is_cate === "가구"
-                          ? setIs_Cate("")
-                          : setIs_Cate("가구");
-                        setSelected(true);
-                      }}
+                      <IoShirt className="icon" size={28} />
+                      <p>의류</p>
+                    </Grid>
+                  </CateBtn>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <CateBtn
+                    onClick={() => {
+                      is_cate === "가구" ? setIs_Cate("") : setIs_Cate("가구");
+                      setSelected(true);
+                    }}
+                  >
+                    <Grid
+                      _className={is_cate === "가구" ? "active" : "default"}
                     >
                       <Grid
                         _className={is_cate === "가구" ? "active" : "default"}
@@ -304,16 +302,18 @@ const Container = styled.div`
   margin: 0 auto;
 
   .border {
-    /* height: 100vh; */
-    /* border: 1px solid var(--help-color); */
     background: #fff;
     padding-top: 50px;
 
-    overflow-y: auto;
-    -ms-overflow-style: none; // IE and Edge
-    scrollbar-width: none; // Firefox
-    ::-webkit-scrollbar {
-      display: none; // Chrome, Safari, Opera
+    .background {
+      width: 100%;
+      max-width: 429px;
+      height: 100vh;
+      background-color: #fff;
+
+      position: fixed;
+      top: 0;
+      z-index: -10;
     }
   }
 `;
@@ -472,8 +472,7 @@ const CateBtn = styled.div`
 const LocationBox = styled.div`
   position: relative;
   color: var(--inactive-text-color);
-  margin: 20px 0;
-  padding: 16px;
+  padding: 0px 16px 16px 16px;
   cursor: pointer;
   .icon {
     margin-right: 5px;
