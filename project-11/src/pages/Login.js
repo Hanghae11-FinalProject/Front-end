@@ -6,16 +6,13 @@ import { setCookie } from "../shared/Cookie";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
-import { KAKAO_AUTH_URL } from "../shared/OAuth";
 
 const Login = () => {
   const [login_disabled, setLoginDisabled] = useState(true);
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
 
-  const ClickKakao = () => {
-    window.location.href = KAKAO_AUTH_URL;
-  };
+
 
   const handleChangeInput = (e) => {
     setInputValues({
@@ -34,7 +31,7 @@ const Login = () => {
         console.log("로그인 완료", response);
         const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=${response.headers.authorization}`;
         setCookie("OK", loginInfo);
-        history.push("/");
+        history.push("/main");
       })
       .catch((error) => {
         window.alert("이메일 또는 비밀번호를 다시 확인해주세요", error);
@@ -109,6 +106,7 @@ const Login = () => {
             >
               로그인
             </button>
+
             <div className="kakaobtn">
               <div className="kakaobubblewrap" onClick={ClickKakao}>
                 <img

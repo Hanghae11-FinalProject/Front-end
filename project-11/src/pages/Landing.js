@@ -12,11 +12,11 @@ import "swiper/css/pagination";
 SwiperCore.use([Pagination, Autoplay, Navigation]);
 
 const Landing = () => {
-  const swiperStyle = {
-    position: "relative",
-    width: "100%",
-    height: "auto",
-  };
+  const swiperStyle ={
+    position:'relative',
+    width:"100%",
+    height:"auto",
+  }
 
   const ClickKakao = () => {
     window.location.href = KAKAO_AUTH_URL;
@@ -33,70 +33,46 @@ const Landing = () => {
           />
         </div>
         <Swipercontainer>
-          <SwiperCustom
-            style={swiperStyle}
-            slidesPerView={1}
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 2200 }}
-          >
-            <SwiperSlide>
-              <img
-                src="/static/landingimg1.gif"
-                style={{ width: "100%", height: "auto" }}
-                alt=""
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="/static/landingimg2.gif"
-                style={{ width: "100%", height: "auto" }}
-                alt=""
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src="/static/landingimg3.gif"
-                style={{ width: "100%", height: "auto" }}
-                alt=""
-              />
-            </SwiperSlide>
-          </SwiperCustom>
+        <SwiperCustom 
+        style={swiperStyle}
+        slidesPerView={1}
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 2200 }}
+        >
+          <SwiperSlide>
+            <img src="/static/landing1.gif" style={{width:"100%",height:"auto"}} alt=""/>
+          </SwiperSlide>
+          <SwiperSlide>
+          <img src="/static/landing2.gif" style={{width:"100%",height:"auto"}} alt=""/>
+          </SwiperSlide>
+          <SwiperSlide>
+          <img src="/static/landing3.gif" style={{width:"100%",height:"auto"}} alt=""/>
+          </SwiperSlide>
+        </SwiperCustom>
         </Swipercontainer>
         <div className="login-input-wrap">
-          <button
-            className="login-btn"
-            onClick={() => {
-              history.push("/login");
-            }}
-          >
-            로그인하러가기
-          </button>
-          <div className="kakaobtn">
-            <div className="kakaobubblewrap" onClick={ClickKakao}>
-              <img
-                className="kakaobubble"
-                src="/static/kakaobubble.png"
-                alt=""
-              />
-              <p className="kakaotext">카카오계정으로 로그인</p>
-            </div>
-            <div className="bottomtext">
-              <span
-                className="signupbtn"
-                onClick={() => {
-                  history.push("/signup");
-                }}
-              >
-                회원가입
-              </span>
-              <span
-                onClick={() => {
-                  history.push("/");
-                }}
-              >
-                둘러보기
-              </span>
-            </div>
+            <button
+              className="login-btn"
+              onClick={()=>{history.push('/login')}}
+            >
+              로그인하러가기
+            </button>
+              <div className="kakaobtn">
+                <div className="kakaobubblewrap" onClick={ClickKakao}>
+                  <img className="kakaobubble" src="/static/kakaobubble.png" alt=""/>
+                  <p className="kakaotext">카카오계정으로 로그인</p>
+                </div>
+                <div className="bottomtext">
+                  <span 
+                  className="signupbtn"
+                  onClick={() => {
+                history.push("/signup");
+              }}>회원가입</span>
+                  <span onClick={() => {
+                history.push("/main");
+              }}>둘러보기</span>
+                </div>
+              </div>
           </div>
         </div>
       </Grid>

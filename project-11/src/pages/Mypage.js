@@ -142,7 +142,7 @@ const Mypage = () => {
                 onClick={() => {
                   deleteCookie("OK");
                   window.alert("로그아웃 되었습니다.");
-                  history.push("/intro");
+                  history.push("/");
                 }}
               >
                 <p>

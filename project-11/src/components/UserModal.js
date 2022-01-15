@@ -11,29 +11,31 @@ import styled from "styled-components";
 const UserModal = (props) => {
   const { name, isOpen, onCancel } = props;
 
-  const [editName, setEditName] = useState("");
+  const [editName, setEditName] = useState('');
   const [iconList, setIconList] = useState([]);
   const [iconState, setIconState] = useState([]);
+  
+  console.log(name)
 
-  console.log(name);
+
 
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
   const [img, setImg] = useState("");
 
+
+
   const CheckActive = () => {
-    iconState.length !== 0 ||
-    (editName !== "" && nickDoubleChk === "사용 가능한 닉네임 입니다.")
-      ? setActive(false)
-      : setActive(true);
+    iconState.length !== 0 || editName !== "" && nickDoubleChk === "사용 가능한 닉네임 입니다." ? setActive(false) : setActive(true)
   };
+
 
   // 프로필 수정
   const EditProfile = () => {
-    if (editName !== name && nickDoubleChk !== "사용 가능한 닉네임 입니다.") {
-      window.alert("중복확인을 해주세요");
-      return;
+    if(editName !== name && nickDoubleChk !== "사용 가능한 닉네임 입니다."){
+      window.alert("중복확인을 해주세요")
+    return;
     }
     setNickDoubleChk();
     const newList = icons.map((icon, i) => {
@@ -42,7 +44,7 @@ const UserModal = (props) => {
     });
     setIconList(newList);
     dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
-    onCancel();
+    onCancel();    
   };
 
   useEffect(() => {
@@ -50,6 +52,7 @@ const UserModal = (props) => {
       setActive(false);
     }
   }, []);
+
 
   // 닉네임 중복확인
   const nicknameCheck = () => {
@@ -78,7 +81,7 @@ const UserModal = (props) => {
         });
     }
   };
-
+  
   const handleClose = () => {
     onCancel();
     const newList = icons.map((icon, i) => {
@@ -88,6 +91,7 @@ const UserModal = (props) => {
     setIconList(newList);
     setNickDoubleChk();
   };
+
 
   // 프로필 클릭 이벤트
 
@@ -121,17 +125,18 @@ const UserModal = (props) => {
           active: false,
         };
       }
-    });
-    setIconList(newList);
+    })
+    setIconList(newList)
 
-    const arr = newList.filter((item) => {
-      return item.active === true;
-    });
-    setIconState(arr);
-    if (editName === "") {
-      setEditName(name);
+    const arr = newList.filter((item)=>{
+     return item.active === true;
+    })
+    setIconState(arr)
+    if(editName === ""){
+      setEditName(name)
+
     }
-  };
+  }
 
   useEffect(() => {
     CheckActive();

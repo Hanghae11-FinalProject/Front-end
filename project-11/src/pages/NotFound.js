@@ -17,11 +17,12 @@ const NotFound = () => {
               주소를 다시 확인하고 이용해 주시길 바랍니다
             </span>
           </div>
-          <div className="subtitle">
+          <div className="subtitle"
+          onClick={() => {
+            history.push("/main");
+          }}
+          >
             <span
-              onClick={() => {
-                history.push("/");
-              }}
             >
               메인으로 가기
             </span>
@@ -58,8 +59,8 @@ const NotFoundWrap = styled.div`
         border-radius: 4px;
         background-color: var(--main-color);
         margin: 0 auto;
+        cursor: pointer;
         span {
-          cursor: pointer;
           font-size: 16px;
           color: white;
         }
@@ -67,10 +68,10 @@ const NotFoundWrap = styled.div`
     }
   }
 `;
-const AppImg = styled.div`
+const AppImg = styled.div` 
   img {
-    width: 52.5vw;
-    height: 35vh;
+    width: 200px;
+    height: 200px;
   }
 `;
 
