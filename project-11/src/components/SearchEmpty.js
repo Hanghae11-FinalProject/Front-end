@@ -4,7 +4,7 @@ import { Grid } from "../elements";
 import styled from "styled-components";
 
 const SearchEmpty = (props) => {
-  console.log(props);
+  // console.log(props);
   return (
     <>
       <SearchEmptyBox>

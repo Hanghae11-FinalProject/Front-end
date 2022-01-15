@@ -30,6 +30,10 @@ SwiperCore.use([Pagination, Autoplay]);
 const Main = () => {
   const token = getCookie("Token");
 
+  useEffect(() => {
+    console.log(token);
+  }, []);
+
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");
@@ -77,57 +81,60 @@ const Main = () => {
               </Header>
             </>
           )}
-
-          <Category>
-            <Slider>
-              <Swiper
-                className="CateBtn-Container"
-                spaceBetween={10}
-                slidesPerView={4.3}
-                pagination={{ clickable: true }}
-                // autoplay={{ delay: 50000 }}
-              >
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "식품" ? setIs_Cate("") : setIs_Cate("식품");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={
-                        is_cate === "식품" ? "default active" : "default"
-                      }
+          <div className="scroll-from-cate">
+            <Category>
+              <Slider>
+                <Swiper
+                  className="CateBtn-Container"
+                  spaceBetween={10}
+                  slidesPerView={4.3}
+                  pagination={{ clickable: true }}
+                  // autoplay={{ delay: 50000 }}
+                >
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "식품"
+                          ? setIs_Cate("")
+                          : setIs_Cate("식품");
+                        setSelected(true);
+                      }}
                     >
-                      <ImSpoonKnife className="icon" />
-                      <p>식품</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "도서" ? setIs_Cate("") : setIs_Cate("도서");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "도서" ? "active" : "default"}
+                      <Grid
+                        _className={
+                          is_cate === "식품" ? "default active" : "default"
+                        }
+                      >
+                        <ImSpoonKnife className="icon" />
+                        <p>식품</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "도서"
+                          ? setIs_Cate("")
+                          : setIs_Cate("도서");
+                        setSelected(true);
+                      }}
                     >
-                      <MdMenuBook className="icon" />
-                      <p>도서</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "의류" ? setIs_Cate("") : setIs_Cate("의류");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "의류" ? "active" : "default"}
+                      <Grid
+                        _className={is_cate === "도서" ? "active" : "default"}
+                      >
+                        <MdMenuBook className="icon" />
+                        <p>도서</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "의류"
+                          ? setIs_Cate("")
+                          : setIs_Cate("의류");
+                        setSelected(true);
+                      }}
                     >
                       <IoShirt className="icon" size={28} />
                       <p>의류</p>
@@ -144,133 +151,146 @@ const Main = () => {
                     <Grid
                       _className={is_cate === "가구" ? "active" : "default"}
                     >
-                      <FaCouch className="icon" />
-                      <p>가구</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "가전" ? setIs_Cate("") : setIs_Cate("가전");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "가전" ? "active" : "default"}
-                    >
-                      <CgSmartHomeRefrigerator className="icon" />
-                      <p>가전</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "생활" ? setIs_Cate("") : setIs_Cate("생활");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "생활" ? "active" : "default"}
-                    >
-                      <RiCupFill className="icon" />
-                      <p>생활</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "취미" ? setIs_Cate("") : setIs_Cate("취미");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "취미" ? "active" : "default"}
-                    >
-                      <IoExtensionPuzzle className="icon" />
-                      <p>취미</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "재능교환"
-                        ? setIs_Cate("")
-                        : setIs_Cate("재능교환");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "재능교환" ? "active" : "default"}
-                    >
-                      <BiSmile className="icon" />
-                      <p>재능교환</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <CateBtn
-                    onClick={() => {
-                      is_cate === "기타" ? setIs_Cate("") : setIs_Cate("기타");
-                      setSelected(true);
-                    }}
-                  >
-                    <Grid
-                      _className={is_cate === "기타" ? "active" : "default"}
-                    >
-                      <BsThreeDots className="icon" />
-                      <p>기타</p>
-                    </Grid>
-                  </CateBtn>
-                </SwiperSlide>
-              </Swiper>
-            </Slider>
-          </Category>
-          <LocationBox>
-            <Grid
-              is_flex
-              flex_align="center"
-              _onClick={() => setIs_open(true)}
-              _className={
-                is_location === "위치 설정하기" ? "default" : "active"
-              }
-            >
-              <FaMapMarkerAlt className="icon" />
-              <Grid is_flex flex_align="center">
-                {is_location}
-              </Grid>
-            </Grid>
-            {is_open && (
-              <>
-                <Grid _className="location-option">
-                  {locations.map((loc, i) => {
-                    return (
-                      <p
-                        key={loc.id}
-                        onClick={() => {
-                          setIs_Location(loc.locationName);
-                          setIs_open(false);
-                          setSelected(true);
-                        }}
+                      <Grid
+                        _className={is_cate === "가구" ? "active" : "default"}
                       >
-                        {loc.locationName}
-                      </p>
-                    );
-                  })}
+                        <FaCouch className="icon" />
+                        <p>가구</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "가전"
+                          ? setIs_Cate("")
+                          : setIs_Cate("가전");
+                        setSelected(true);
+                      }}
+                    >
+                      <Grid
+                        _className={is_cate === "가전" ? "active" : "default"}
+                      >
+                        <CgSmartHomeRefrigerator className="icon" />
+                        <p>가전</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "생활"
+                          ? setIs_Cate("")
+                          : setIs_Cate("생활");
+                        setSelected(true);
+                      }}
+                    >
+                      <Grid
+                        _className={is_cate === "생활" ? "active" : "default"}
+                      >
+                        <RiCupFill className="icon" />
+                        <p>생활</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "취미"
+                          ? setIs_Cate("")
+                          : setIs_Cate("취미");
+                        setSelected(true);
+                      }}
+                    >
+                      <Grid
+                        _className={is_cate === "취미" ? "active" : "default"}
+                      >
+                        <IoExtensionPuzzle className="icon" />
+                        <p>취미</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "재능교환"
+                          ? setIs_Cate("")
+                          : setIs_Cate("재능교환");
+                        setSelected(true);
+                      }}
+                    >
+                      <Grid
+                        _className={
+                          is_cate === "재능교환" ? "active" : "default"
+                        }
+                      >
+                        <BiSmile className="icon" />
+                        <p>재능교환</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <CateBtn
+                      onClick={() => {
+                        is_cate === "기타"
+                          ? setIs_Cate("")
+                          : setIs_Cate("기타");
+                        setSelected(true);
+                      }}
+                    >
+                      <Grid
+                        _className={is_cate === "기타" ? "active" : "default"}
+                      >
+                        <BsThreeDots className="icon" />
+                        <p>기타</p>
+                      </Grid>
+                    </CateBtn>
+                  </SwiperSlide>
+                </Swiper>
+              </Slider>
+            </Category>
+            <LocationBox>
+              <Grid
+                is_flex
+                flex_align="center"
+                _onClick={() => setIs_open(true)}
+                _className={
+                  is_location === "위치 설정하기" ? "default" : "active"
+                }
+              >
+                <FaMapMarkerAlt className="icon" />
+                <Grid is_flex flex_align="center">
+                  {is_location}
                 </Grid>
-              </>
-            )}
-          </LocationBox>
+              </Grid>
+              {is_open && (
+                <>
+                  <Grid _className="location-option">
+                    {locations.map((loc, i) => {
+                      return (
+                        <p
+                          key={loc.id}
+                          onClick={() => {
+                            setIs_Location(loc.locationName);
+                            setIs_open(false);
+                            setSelected(true);
+                          }}
+                        >
+                          {loc.locationName}
+                        </p>
+                      );
+                    })}
+                  </Grid>
+                </>
+              )}
+            </LocationBox>
 
-          <PostList
-            location={is_location}
-            category={is_cate}
-            selected={selected}
-          />
-
+            <PostList
+              location={is_location}
+              category={is_cate}
+              selected={selected}
+            />
+          </div>
           <Nav home={"home"} />
         </Grid>
       </Container>
@@ -280,6 +300,7 @@ const Main = () => {
 
 const Container = styled.div`
   margin: 0 auto;
+
   .border {
     background: #fff;
     padding-top: 50px;

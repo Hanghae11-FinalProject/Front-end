@@ -119,7 +119,6 @@ const Intro = styled.div`
     position: relative;
 
     .imgwrap {
-
       display: flex;
       justify-content: center;
       padding: 55px 20px 40px 20px;
@@ -201,7 +200,6 @@ const Swipercontainer = styled.div`
 `;
 
 const SwiperCustom = styled(Swiper)`
-
 &.swiper{
   /* margin-top:-20px; */
 }
@@ -214,4 +212,3 @@ const SwiperCustom = styled(Swiper)`
   bottom: 10px;
 }
 `
-

@@ -6,6 +6,7 @@ import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 import CommentInput from "./CommentInput";
 import Reply from "./Reply";
+import { axiosInstance } from "../shared/api";
 
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -66,12 +67,14 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
     setNewComment(e.target.value);
   };
 
+
   // 대댓글 추가
   const addChildComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
       history.push("/login");
     }
+
     if (!Newcomment) {
       return;
     }
@@ -93,6 +96,38 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
   // 댓글 취소 (삭제아님)
   const cancleReply = () => {
     setIs_Name(false);
+  };
+
+  // 채팅하기
+  const goChat = () => {
+    axiosInstance
+      .post(
+        `/api/room`,
+        {
+          postId: postid,
+          toUserId: comment.userId,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((res) => {
+        // console.log(res, "성공");
+        if (res.data.message === "same room") {
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          history.push("/chatting");
+        } else {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: postid,
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err, "에러");
+      });
   };
 
   return (
@@ -128,7 +163,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
                   ) : (
                     <>
                       <li onClick={writeCommentBtn}>댓글달기</li>
-                      <li>채팅하기</li>
+                      <li onClick={goChat}>채팅하기</li>
                       <li>신고하기</li>
                     </>
                   )}
