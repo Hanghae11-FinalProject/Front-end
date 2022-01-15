@@ -64,11 +64,21 @@ const Login = () => {
       <Grid is_container="is_container" _className="grid-border">
         <div className="login-wrap">
           <div className="login-header-wrap">
+            <IoIosArrowBack
+              style={{
+                width: "30px",
+                height: "30px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                history.push("/intro");
+              }}
+            />
             <span className="header-title">로그인</span>
           </div>
           <LogoWrap>
             <div className="logowrap">
-              <img className="logo" src="/static/logo.png" alt=""/>
+              <img className="logo" src="/static/logo.png" alt="" />
             </div>
           </LogoWrap>
           <div className="login-input-wrap">
@@ -99,22 +109,33 @@ const Login = () => {
             >
               로그인
             </button>
-              <div className="kakaobtn">
-                <div className="kakaobubblewrap" onClick={ClickKakao}>
-                  <img className="kakaobubble" src="/static/kakaobubble.png" alt=""/>
-                  <p className="kakaotext">카카오계정으로 로그인</p>
-                </div>
-                <div className="bottomtext">
-                  <span 
+            <div className="kakaobtn">
+              <div className="kakaobubblewrap" onClick={ClickKakao}>
+                <img
+                  className="kakaobubble"
+                  src="/static/kakaobubble.png"
+                  alt=""
+                />
+                <p className="kakaotext">카카오계정으로 로그인</p>
+              </div>
+              <div className="bottomtext">
+                <span
                   className="signupbtn"
                   onClick={() => {
-                history.push("/signup");
-              }}>회원가입</span>
-                  <span onClick={() => {
-                history.push("/");
-              }}>둘러보기</span>
-                </div>
+                    history.push("/signup");
+                  }}
+                >
+                  회원가입
+                </span>
+                <span
+                  onClick={() => {
+                    history.push("/");
+                  }}
+                >
+                  둘러보기
+                </span>
               </div>
+            </div>
           </div>
         </div>
       </Grid>
@@ -125,7 +146,7 @@ const Login = () => {
 export default Login;
 
 const LoginWrap = styled.div`
-position: relative;
+  position: relative;
   .grid-border {
     width: 100%;
     height: 100vh;
@@ -143,7 +164,7 @@ position: relative;
           position: absolute;
           left: 50%;
           top: 50%;
-          transform: translate(-50%,-50%);
+          transform: translate(-50%, -50%);
           font-size: 20px;
           font-weight: bold;
         }
@@ -153,7 +174,7 @@ position: relative;
         display: flex;
         flex-direction: column;
         padding: 0 16px;
-        .emailtext{
+        .emailtext {
           margin-top: 50px;
         }
         span {
@@ -168,49 +189,49 @@ position: relative;
           border: 1px solid var(--help-color);
           padding-left: 10px;
         }
-        .kakaobtn{
+        .kakaobtn {
           display: flex;
           text-align: center;
           flex-direction: column;
           cursor: pointer;
-          .kakaobubblewrap{
+          .kakaobubblewrap {
             width: 100%;
             height: 48px;
-            background-color: #FEE500;
+            background-color: #fee500;
             border-radius: 4px;
             display: flex;
             align-items: center;
             position: relative;
             margin-top: 12px;
-            .kakaobubble{
+            .kakaobubble {
               width: 20px;
               height: 20px;
               margin-left: 16px;
+            }
+            .kakaotext {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              color: #41231f;
+              font-size: 14px;
+              font-weight: 600;
+            }
           }
-          .kakaotext{
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%,-50%);
-            color: #41231F;
-            font-size: 14px;
-            font-weight: 600;
-          }
-          }
-          .bottomtext{
+          .bottomtext {
             display: flex;
             max-width: 429px;
             margin: 0 auto;
             margin-top: 20px;
-            span{
+            span {
               padding: 0px 25px;
               color: var(--help-color);
             }
-            span:nth-child(1){
+            span:nth-child(1) {
               border-right: 1px solid var(--help-color);
               cursor: pointer;
             }
-            span:nth-child(2){
+            span:nth-child(2) {
               cursor: pointer;
             }
           }
@@ -257,13 +278,12 @@ position: relative;
 `;
 
 const LogoWrap = styled.div`
-  .logowrap{
+  .logowrap {
     display: flex;
     justify-content: center;
     margin-top: 50px;
-    .logo{
-    max-width: 170px;
+    .logo {
+      max-width: 170px;
+    }
   }
-  }
-  
-`
+`;

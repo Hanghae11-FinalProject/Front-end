@@ -35,7 +35,7 @@ const Chat = (data) => {
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [items, setItems] = useState([]);
-
+  console.log(messageList);
   const receiverId = data.location.state.sender.userId;
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
@@ -222,10 +222,14 @@ const Chat = (data) => {
               )}
             </div>
             <div className="item-bar">
-              <p>
-                {items.myItem ? items.myItem : ""} <CgArrowsHAlt size="12" />{" "}
-                {items.exchangeItem ? items.exchangeItem : ""}
-              </p>
+              {items.myItem === "" && items.exchangeItem === "" ? (
+                <p>이미 삭제된 게시물 입니다</p>
+              ) : (
+                <p>
+                  {items.myItem} <CgArrowsHAlt size="12" />
+                  {items.exchangeItem}
+                </p>
+              )}
             </div>
           </div>
           {/* </Header> */}

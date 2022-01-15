@@ -13,7 +13,6 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
   const dispatch = useDispatch();
   const [Newcomment, setNewComment] = useState();
   const [replyId, setReplyId] = useState(commentid);
-  console.log(comcnt);
   //댓글 쓰기
   const writeComment = (e) => {
     if (!token) {
