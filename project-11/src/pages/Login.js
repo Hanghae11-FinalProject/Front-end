@@ -64,6 +64,16 @@ const Login = () => {
       <Grid is_container="is_container" _className="grid-border">
         <div className="login-wrap">
           <div className="login-header-wrap">
+            <IoIosArrowBack
+              style={{
+                width: "30px",
+                height: "30px",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                history.push("/intro");
+              }}
+            />
             <span className="header-title">로그인</span>
           </div>
           <LogoWrap>

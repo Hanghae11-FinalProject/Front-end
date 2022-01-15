@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
+import { history } from "../redux/configureStore";
 
 import { Grid } from "../elements";
 import { getCookie } from "../shared/Cookie";
+import { axiosInstance } from "../shared/api";
 
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -33,6 +35,36 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
     } else {
       setBtn(true);
     }
+  };
+
+  const goChat = () => {
+    axiosInstance
+      .post(
+        `/api/room`,
+        {
+          postId: postid,
+          toUserId: replyData.userId,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((res) => {
+        if (res.data.message === "same room") {
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          history.push("/chatting");
+        } else {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: postid,
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err, "에러");
+      });
   };
 
   return (
@@ -72,7 +104,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
                     </>
                   ) : (
                     <>
-                      <li>채팅하기</li>
+                      <li onClick={goChat}>채팅하기</li>
                     </>
                   )}
                 </Grid>
