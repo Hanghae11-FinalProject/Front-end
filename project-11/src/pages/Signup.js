@@ -38,8 +38,7 @@ const Signup = () => {
   const checkpw = watch("password");
   const checkpwconfirm = watch("password_confirm");
 
-  
- 
+
   password.current = watch("password");
 
   //다시 눌렀을때 꺼지게 하는 함수
@@ -74,7 +73,9 @@ const Signup = () => {
 
   useEffect(() => {
     checkActive();
-  }, [idDoubleChk,nickDoubleChk,is_location]);
+      }, [
+    idDoubleChk,nickDoubleChk,is_location
+  ]);
   
   
   useEffect(() => {
@@ -89,6 +90,7 @@ const Signup = () => {
     }
     console.log(actNic, actId)
   }, [checknickname]);
+
 
 
 
@@ -226,7 +228,7 @@ const Signup = () => {
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  history.push("/login");
+                  history.push("/intro");
                 }}
               />
               <span className="header-title">회원가입</span>
@@ -448,7 +450,7 @@ const SignupWrap = styled.div`
           border-radius: 4px;
           cursor: pointer;
           margin-bottom: 5px;
-          :hover{
+          :hover {
             background-color: var(--main-color);
             color: white;
           }

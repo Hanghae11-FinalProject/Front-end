@@ -15,7 +15,7 @@ import { BsQuestionCircleFill } from "react-icons/bs";
 import { IoIosArrowForward, IoMdSettings } from "react-icons/io";
 import { deleteCookie, getCookie } from "../shared/Cookie";
 import Permit from "../shared/Permit";
-import { axiosInstance } from "../shared/api";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 
@@ -23,7 +23,6 @@ import { actionCreators as postActions } from "../redux/modules/post";
 // initialstate에 profile에 넣어둔 데이터
 
 const Mypage = () => {
-  const token = getCookie("Token");
   const [modalOpen, setModalOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -189,14 +188,11 @@ export default Mypage;
 const MypageBox = styled.div`
   .border {
     height: 100vh;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     text-align: center;
     background-color: #fff;
     padding-top: 30px;
 
     .menu-wrap {
-      margin-bottom: 20px;
       .menu {
         display: flex;
         justify-content: space-between;

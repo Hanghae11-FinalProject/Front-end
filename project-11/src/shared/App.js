@@ -21,7 +21,6 @@ import MyPost from "../pages/MyPost";
 import EditPost from "../pages/EditPost";
 import OAuthRedirect from "../components/OAuthRedirect";
 import NotFound from "../pages/NotFound";
-
 function App() {
   return (
     <div className="App">

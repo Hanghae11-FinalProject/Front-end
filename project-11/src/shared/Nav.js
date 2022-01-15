@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { history } from "../redux/configureStore";
-import { getCookie } from "./Cookie";
 import { Grid } from "../elements";
 import { MdHome } from "react-icons/md";
 import { BsPlusLg } from "react-icons/bs";
@@ -45,12 +44,7 @@ const Nav = (props) => {
                   : "plus-icon active"
               }
               onClick={() => {
-                // if (!token) {
-                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-                //   history.push("/login");
-                // } else {
                 history.push("/write");
-                // }
               }}
             />
           </PlusMenu>
@@ -59,12 +53,7 @@ const Nav = (props) => {
               size="24"
               className={props.chatting === "chatting" ? "active" : "icon"}
               onClick={() => {
-                // if (!token) {
-                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-                //   history.push("/login");
-                // } else {
                 history.push("/chatting");
-                // }
               }}
             />
           </Menu>
@@ -72,12 +61,7 @@ const Nav = (props) => {
             <RiUserFill
               className={props.mypage === "mypage" ? "active" : "icon"}
               onClick={() => {
-                // if (!token) {
-                //   window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-                //   history.push("/login");
-                // } else {
                 history.push("/mypage");
-                // }
               }}
             />
           </Menu>

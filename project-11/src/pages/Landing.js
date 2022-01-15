@@ -17,17 +17,21 @@ const Landing = () => {
     width:"100%",
     height:"auto",
   }
+
   const ClickKakao = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
-  return ( 
-      <Intro>
-        
-        <Grid is_container _className="intro-box">
-          <div className="imgwrap">            
-          <img src="/static/landinglogo.png" alt="" style={{height:"50px"}} />
-          </div>
+  return (
+    <Intro>
+      <Grid is_container _className="intro-box">
+        <div className="imgwrap">
+          <img
+            src="/static/landinglogo.png"
+            alt=""
+            style={{ height: "50px" }}
+          />
+        </div>
         <Swipercontainer>
         <SwiperCustom 
         style={swiperStyle}
@@ -70,94 +74,96 @@ const Landing = () => {
                 </div>
               </div>
           </div>
-        </Grid>
-      </Intro>
+        </div>
+      </Grid>
+    </Intro>
   );
 };
 
 export default Landing;
 
 const Intro = styled.div`
-.swiper-pagination-bullet-active {
-    background-color: var(--main-color) ;
-    width: 16px ;
-    border-radius: 4px ;
+  .swiper-pagination-bullet-active {
+    background-color: var(--main-color);
+    width: 16px;
+    border-radius: 4px;
   }
   .intro-box {
     background-color: white;
     width: 100%;
     height: 100vh;
     position: relative;
-    
-    .imgwrap{
+
+    .imgwrap {
       display: flex;
       justify-content: center;
       padding: 55px 20px 40px 20px;
     }
     .login-input-wrap {
-  display: flex;
-  flex-direction: column;
-  padding: 0 16px;
-  .login-btn{
-    background-color: var(--main-color);
-    text-align: center;
-    width: 100%;
-    max-width: 397px;
-    height: 48px;
-    border-radius: 4px;
-    color: white;
-    margin-top: 20px;
-    border: 0px;
-    cursor: pointer;
-  }
-  .kakaobtn{
-    display: flex;
-    text-align: center;
-    flex-direction: column;
-    cursor: pointer;
-    .kakaobubblewrap{
-      width: 100%;
-      height: 48px;
-      background-color: #FEE500;
-      border-radius: 4px;
       display: flex;
-      align-items: center;
-      position: relative;
-      margin-top: 12px;
-      .kakaobubble{
-        width: 20px;
-        height: 20px;
-        margin-left: 16px;
-    }
-    .kakaotext{
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      color: #41231F;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    }
-    .bottomtext{
-      display: flex;
-      max-width: 429px;
-      margin: 0 auto;
-      margin-top: 20px;
-      span{
-        padding: 0px 25px;
-        color: var(--help-color);
-      }
-      span:nth-child(1){
-        border-right: 1px solid var(--help-color);
+      flex-direction: column;
+      padding: 0 16px 50px 16px;
+      background-color: white;
+      .login-btn {
+        background-color: var(--main-color);
+        text-align: center;
+        width: 100%;
+        max-width: 397px;
+        height: 48px;
+        border-radius: 4px;
+        color: white;
+        margin-top: 20px;
+        border: 0px;
         cursor: pointer;
       }
-      span:nth-child(2){
+      .kakaobtn {
+        display: flex;
+        text-align: center;
+        flex-direction: column;
         cursor: pointer;
+        .kakaobubblewrap {
+          width: 100%;
+          height: 48px;
+          background-color: #fee500;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          position: relative;
+          margin-top: 12px;
+          .kakaobubble {
+            width: 20px;
+            height: 20px;
+            margin-left: 16px;
+          }
+          .kakaotext {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #41231f;
+            font-size: 14px;
+            font-weight: 600;
+          }
+        }
+        .bottomtext {
+          display: flex;
+          max-width: 429px;
+          margin: 0 auto;
+          margin-top: 20px;
+          span {
+            padding: 0px 25px;
+            color: var(--help-color);
+          }
+          span:nth-child(1) {
+            border-right: 1px solid var(--help-color);
+            cursor: pointer;
+          }
+          span:nth-child(2) {
+            cursor: pointer;
+          }
+        }
       }
     }
-  }
-}
   }
 `;
 
@@ -167,8 +173,7 @@ const Swipercontainer = styled.div`
   margin: 0 auto;
   overflow: hidden;
   border-radius: 4px;
-
-`
+`;
 
 const SwiperCustom = styled(Swiper)`
 &.swiper{

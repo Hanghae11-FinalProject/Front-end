@@ -176,8 +176,11 @@ const Detail = () => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        console.log(res, "성공");
-        if (res.data.message !== "same room") {
+        // console.log(res, "성공");
+        if (res.data.message === "same room") {
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          history.push("/chatting");
+        } else {
           history.push({
             pathname: `/chat`,
             state: {
@@ -186,9 +189,6 @@ const Detail = () => {
               postId: PostData.postId,
             },
           });
-        } else {
-          window.alert("이미 상대방과의 채팅방이 있습니다.");
-          return;
         }
       })
       .catch((err) => {
