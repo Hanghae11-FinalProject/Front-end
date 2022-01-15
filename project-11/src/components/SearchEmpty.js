@@ -1,10 +1,8 @@
 import React from "react";
 import { Grid } from "../elements";
-
 import styled from "styled-components";
 
 const SearchEmpty = (props) => {
-  console.log(props);
   return (
     <>
       <SearchEmptyBox>
@@ -38,15 +36,16 @@ export default SearchEmpty;
 
 const SearchEmptyBox = styled.div`
   .container-border {
-    height: 90vh;
+    height: 75vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 16px;
     .modal-wrap {
       text-align: center;
       width: 100%;
       .title {
-        margin-bottom: 80px;
+        margin-bottom: 50px;
         p {
           font-size: 24px;
           font-weight: bold;
@@ -56,7 +55,8 @@ const SearchEmptyBox = styled.div`
   }
 `;
 const AppImg = styled.div`
+  margin-bottom: 30px;
   img {
-    width: 90%;
+    width: 70%;
   }
 `;
