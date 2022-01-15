@@ -13,7 +13,7 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
   const dispatch = useDispatch();
   const [Newcomment, setNewComment] = useState();
   const [replyId, setReplyId] = useState(commentid);
-  console.log(comcnt);
+
   //댓글 쓰기
   const writeComment = (e) => {
     if (!token) {
@@ -29,8 +29,10 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
       history.push("/login");
     }
+    if (!Newcomment) {
+      return;
+    }
     dispatch(postActions.add_comment(postid, replyId, Newcomment, comcnt));
-    setNewComment("");
   };
 
   return (
@@ -53,6 +55,7 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
                 e.key === "Enter" && postComment();
               }}
             />
+
             <IoPaperPlane className="add-btn" onClick={postComment} />
           </Grid>
         </Grid>
@@ -74,11 +77,7 @@ const CommentInputBox = styled.div`
     padding: 10px 16px;
     box-sizing: border-box;
 
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
-
     .reply-name {
-      /* padding-bottom: 10px; */
       width: 100%;
       height: 30px;
       font-size: 14px;

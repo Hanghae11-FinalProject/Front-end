@@ -128,7 +128,6 @@ const Write = () => {
         if (hashArr.length === 5) {
           return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
         }
-        console.log("엔터로 된거닝?", e.target.value);
         HashWrapInner.innerHTML = "#" + e.target.value;
         GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
         const tag = { tagName: tagName };
@@ -168,7 +167,6 @@ const Write = () => {
       }
     }
     let imgLocation = forImages[idxLocation]; // 복사한 images배열에서의 지울 파일 위치 지정
-    console.log(imgLocation);
     const deleteImg = forImages.filter((y) => {
       if (y !== imgLocation) {
         return y;
@@ -249,10 +247,8 @@ const Write = () => {
         <Container>
           <Grid is_container _className="border">
             <MainTop>
-              <p className="toptitle">
-                글 작성하기
-              </p>
-              <p 
+              <p className="toptitle">글 작성하기</p>
+              <p
                 className={!active ? "activeBtn" : "unActiveBtn"}
                 disabled={active}
                 onClick={postWrite}
@@ -262,7 +258,6 @@ const Write = () => {
             </MainTop>
             <TitleArea>
               <TitleInput
-                // value={editItems.title}
                 type="text"
                 maxLength={20}
                 placeholder="제목 (20자 이하)"
@@ -275,7 +270,6 @@ const Write = () => {
               <Catediv
                 onClick={modalControl}
                 ref={modalClose}
-                // value={editItems.categoryName}
                 className={
                   is_open === false
                     ? category === "품목 선택"
@@ -369,7 +363,9 @@ const Write = () => {
                 placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
                 onChange={changeContent}
                 onKeyUp={checkActive}
-                rows={19}
+                cols="20"
+                rows="15"
+                wrap="hard"
                 maxLength="300"
               ></ContentInput>
             </ContentArea>
@@ -399,8 +395,6 @@ const Write = () => {
 const Container = styled.div`
   margin: 0 auto;
   .border {
-    height: 100vh;
-    /* border: 1px solid var(--help-color); */
     background-color: #fff;
     .activeBtn {
       color: var(--main-color);
@@ -417,24 +411,22 @@ const MainTop = styled.div`
   height: 50px;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   position: relative;
-  .toptitle{
+  .toptitle {
     font-size: 20px;
     font-weight: bold;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
   }
-  p{
+  p {
     font-size: 20px;
     top: 50%;
     left: 88%;
     position: absolute;
-    transform: translate(0,-50%);
+    transform: translate(0, -50%);
   }
 `;
-
-
 
 const TitleArea = styled.div`
   height: 50px;
@@ -591,31 +583,29 @@ const Preview = styled.img`
 `;
 
 const ContentArea = styled.div`
-  height: 330px;
+  height: 320px;
+  max-height: 320px;
   margin: 16px;
-  /* border-bottom: 1px solid var(--help-color); */
 `;
 
 const ContentInput = styled.textarea`
-  /* width: 24.6rem; */
   width: 100%;
   font-size: 16px;
   resize: none;
   font-family: "NanumSquareRound";
   border: none;
+  outline: none;
   ::placeholder {
     color: var(--help-color);
-  }
-  :focus {
-    outline: none;
   }
 `;
 
 const HashTagArea = styled.div`
-  height: 75px;
+  height: 150px;
   margin: 15px;
   margin-top: 50px;
   border-top: 1px solid var(--help-color);
+  /* border: 1px solid red; */
 `;
 
 const HashInputOuter = styled.div`
