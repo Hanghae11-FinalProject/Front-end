@@ -13,12 +13,11 @@ import { BsArrowReturnRight } from "react-icons/bs";
 
 const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
   const token = getCookie("Token");
-  const curUserName = getCookie("Name");
+  const curUserId = getCookie("Id");
   const dispatch = useDispatch();
   const [is_login, setIs_login] = useState(token ? true : false);
   const [btn, setBtn] = useState(false);
   const replyData = reply;
-
   //댓글 삭제
   const deleteComment = () => {
     let ok = window.confirm("정말 삭제하시겠어요?");
@@ -98,7 +97,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
                   _className={btn ? "inner-menu active" : "inner-menu"}
                   _onClick={Clickbtn}
                 >
-                  {is_login && curUserName === replyData.nickname ? (
+                  {is_login && Number(curUserId) === replyData.userId ? (
                     <>
                       <li onClick={deleteComment}>삭제하기</li>
                     </>
@@ -112,7 +111,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
             </Grid>
             <Comment>{replyData.content}</Comment>
             <Grid padding="5px 0">
-              <span>{replyData.createAt}</span>
+              <span>{replyData.createdAt}</span>
             </Grid>
           </Grid>
         </Grid>

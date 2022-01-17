@@ -43,7 +43,7 @@ const Search = () => {
 
   //onkeyup event
   const handlekeyup = (e) => {
-    setNoresult("검색중입니다");
+    setNoresult("검색어를 입력해주세요");
     if (key && e.key === "Enter") {
       setRecent([e.target.value, ...preWord]);
 

@@ -67,7 +67,6 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
     setNewComment(e.target.value);
   };
 
-
   // 대댓글 추가
   const addChildComment = () => {
     if (!token) {
@@ -172,7 +171,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
             </Grid>
             <Comment>{commentData.content}</Comment>
             <Grid is_flex>
-              <span>{commentData.createAt}</span>
+              <span>{commentData.createdAt}</span>
             </Grid>
             {/* 부모 댓글에 속해 있는 자식 댓글들 */}
             {commentData.children ? (
