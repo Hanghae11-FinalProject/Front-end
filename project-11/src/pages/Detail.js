@@ -89,7 +89,7 @@ const Detail = () => {
     }
   };
 
-  //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
+  //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기에요.
   const has_bookmarks = () => {
     if (bm.length > 0) {
       const bookmarkState = bm.filter((user) => {

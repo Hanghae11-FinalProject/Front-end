@@ -73,7 +73,6 @@ const Landing = () => {
               }}>둘러보기</span>
                 </div>
               </div>
-          </div>
         </div>
       </Grid>
     </Intro>
