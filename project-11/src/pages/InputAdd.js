@@ -89,13 +89,13 @@ const InputAdd = () => {
   return (
     <>
       <InputAddWrap>
-        <Grid is_container _className="border">
+        <Grid is_container _className="border background">
           <MainTop>
             <TopText style={{ marginLeft: "6px" }}>추가 정보 입력</TopText>
           </MainTop>
           <LogoWrap>
             <div className="logowrap">
-              <img className="logo" src="/static/logo.png" alt=""/>
+              <img className="logo" src="/static/logo.png" alt="" />
             </div>
           </LogoWrap>
           <div className="text-box">
@@ -298,14 +298,14 @@ const LocationWrap = styled.div`
 `;
 
 const LogoWrap = styled.div`
-.logowrap{
+  .logowrap {
     display: flex;
     justify-content: center;
     margin-top: 50px;
-    .logo{
-    max-width: 170px;
+    .logo {
+      max-width: 170px;
+    }
   }
-  }
-`
+`;
 
 export default InputAdd;

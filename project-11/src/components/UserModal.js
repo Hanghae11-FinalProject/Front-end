@@ -3,39 +3,33 @@ import ReactModal from "react-modal";
 import { icons } from "../shared/util";
 import { Image, Grid } from "../elements/index";
 import { axiosInstance } from "../shared/api";
-import { getCookie } from "../shared/Cookie";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import styled from "styled-components";
+import "../shared/App.css";
 
 const UserModal = (props) => {
+  const dispatch = useDispatch();
   const { name, isOpen, onCancel } = props;
-
-  const [editName, setEditName] = useState('');
+  const [editName, setEditName] = useState("");
   const [iconList, setIconList] = useState([]);
   const [iconState, setIconState] = useState([]);
-  
-  console.log(name)
-
-
-
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
-  const dispatch = useDispatch();
   const [img, setImg] = useState("");
 
-
-
   const CheckActive = () => {
-    iconState.length !== 0 || editName !== "" && nickDoubleChk === "사용 가능한 닉네임 입니다." ? setActive(false) : setActive(true)
+    iconState.length !== 0 ||
+    (editName !== "" && nickDoubleChk === "사용 가능한 닉네임 입니다.")
+      ? setActive(false)
+      : setActive(true);
   };
-
 
   // 프로필 수정
   const EditProfile = () => {
-    if(editName !== name && nickDoubleChk !== "사용 가능한 닉네임 입니다."){
-      window.alert("중복확인을 해주세요")
-    return;
+    if (editName !== name && nickDoubleChk !== "사용 가능한 닉네임 입니다.") {
+      window.alert("중복확인을 해주세요");
+      return;
     }
     setNickDoubleChk();
     const newList = icons.map((icon, i) => {
@@ -44,7 +38,7 @@ const UserModal = (props) => {
     });
     setIconList(newList);
     dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
-    onCancel();    
+    onCancel();
   };
 
   useEffect(() => {
@@ -52,7 +46,6 @@ const UserModal = (props) => {
       setActive(false);
     }
   }, []);
-
 
   // 닉네임 중복확인
   const nicknameCheck = () => {
@@ -81,7 +74,7 @@ const UserModal = (props) => {
         });
     }
   };
-  
+
   const handleClose = () => {
     onCancel();
     const newList = icons.map((icon, i) => {
@@ -91,7 +84,6 @@ const UserModal = (props) => {
     setIconList(newList);
     setNickDoubleChk();
   };
-
 
   // 프로필 클릭 이벤트
 
@@ -125,18 +117,17 @@ const UserModal = (props) => {
           active: false,
         };
       }
-    })
-    setIconList(newList)
+    });
+    setIconList(newList);
 
-    const arr = newList.filter((item)=>{
-     return item.active === true;
-    })
-    setIconState(arr)
-    if(editName === ""){
-      setEditName(name)
-
+    const arr = newList.filter((item) => {
+      return item.active === true;
+    });
+    setIconState(arr);
+    if (editName === "") {
+      setEditName(name);
     }
-  }
+  };
 
   useEffect(() => {
     CheckActive();
@@ -146,32 +137,9 @@ const UserModal = (props) => {
     <>
       <ReactModal
         isOpen={isOpen}
-        style={{
-          overlay: {
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(255, 255, 255, 0.75)",
-          },
-          content: {
-            width: "410px",
-            height: "490px",
-            position: "absolute",
-            top: "40%",
-            left: " 50%",
-            transform: "translate(-50%, -50%)",
-            border: "1px solid #eee",
-            borderRadius: "15px",
-            background: "#fff",
-            overflow: "auto",
-            WebkitOverflowScrolling: "touch",
-            outline: "none",
-            padding: "20px",
-            textAlign: "center",
-          },
-        }}
+        // 모달 css는 shared folder-App.css 에 포함되어있습니다
+        className="modal-box"
+        overlayClassName="Overlay"
       >
         <TitleWrap>
           <p className="title">프로필 수정</p>
@@ -271,6 +239,14 @@ const ExtraIcon = styled.div`
       transform: scale(1);
     }
   }
+
+  @media screen and (max-width: 376px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media screen and (max-width: 321px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 const TitleWrap = styled.div`
@@ -292,6 +268,10 @@ const BtnBox = styled.div`
   width: 50%;
   padding: 20px 0;
   margin: 0 auto;
+
+  @media screen and (max-width: 321px) {
+    width: 100%;
+  }
 `;
 
 const Btn = styled.button`
@@ -329,6 +309,26 @@ const BtnInputWrap = styled.div`
     outline: 0;
     font-size: 12px;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 376px) {
+    .inputform {
+      width: 80%;
+    }
+
+    .btnck {
+      width: 20%;
+    }
+  }
+
+  @media screen and (max-width: 321px) {
+    .inputform {
+      width: 75%;
+    }
+
+    .btnck {
+      width: 25%;
+    }
   }
 `;
 const IconTitleWrap = styled.div`

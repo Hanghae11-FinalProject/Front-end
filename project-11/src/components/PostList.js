@@ -21,8 +21,6 @@ const PostList = ({ location, category, selected }) => {
   const [cate, setcate] = useState(category);
   let is_select = selected;
 
-  const [state, setState] = useState(false);
-
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
