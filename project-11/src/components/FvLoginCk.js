@@ -4,7 +4,7 @@ import { Grid } from "../elements";
 import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
 
-const LoginCheck = () => {
+const FvLoginCk = () => {
   return (
     <LoginCkWrap>
       <Grid is_container="container" _className="border">
@@ -15,33 +15,42 @@ const LoginCheck = () => {
           <div className="title">
             <p>즐겨찾기 목록이 없어요</p>
           </div>
-          <div className="subtitle">
-            <span
-              onClick={() => {
-                history.push("/");
-              }}
-            >
-              게시물 보러가기!
-            </span>
+          <div
+            className="subtitle"
+            onClick={() => {
+              history.push("/main");
+            }}
+          >
+            <span>게시물 보러가기!</span>
           </div>
         </div>
-        <Nav chatting={"chatting"} />
+        <Nav />
       </Grid>
     </LoginCkWrap>
   );
 };
 
-export default LoginCheck;
+export default FvLoginCk;
 
 const LoginCkWrap = styled.div`
   .border {
-    height: 90vh;
+    /* border: 1px solid var(--help-color); */
+    height: 100vh;
+    background-color: #fff;
+
     display: flex;
     justify-content: center;
     align-items: center;
     .modal-wrap {
       text-align: center;
       width: 100%;
+      .icon-wrap {
+        margin-bottom: 40px;
+        img {
+          width: 63px;
+          height: 63px;
+        }
+      }
       .title {
         margin-bottom: 80px;
         p {
@@ -53,11 +62,11 @@ const LoginCkWrap = styled.div`
         line-height: 48px;
         width: 90%;
         height: 48px;
-        border-radius: 50px;
+        border-radius: 4px;
         background-color: var(--main-color);
         margin: 0 auto;
+        cursor: pointer;
         span {
-          cursor: pointer;
           font-size: 16px;
           color: white;
         }
@@ -67,6 +76,6 @@ const LoginCkWrap = styled.div`
 `;
 const AppImg = styled.div`
   img {
-    width: 90%;
+    width: 60%;
   }
 `;

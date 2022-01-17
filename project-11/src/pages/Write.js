@@ -262,7 +262,7 @@ const Write = () => {
     })
       .then((response) => {
         console.log("작성성공이니~", response);
-        window.location.href = "/";
+        window.location.href = "/main";
       })
       .catch((err) => {
         console.log(err, "에러났니~");
@@ -411,7 +411,7 @@ const Write = () => {
                     placeholder="# 태그 입력"
                   />
                   <button className="add-tag" onClick={addTag}>
-                    추가
+                    등록
                   </button>
                 </div>
               </HashInputOuter>
@@ -639,7 +639,6 @@ const HashTagArea = styled.div`
   margin: 15px;
   margin-top: 50px;
   border-top: 1px solid var(--help-color);
-  /* border: 1px solid red; */
 `;
 
 const HashInputOuter = styled.div`
@@ -647,6 +646,7 @@ const HashInputOuter = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   .input-btn {
+    width: 100%;
     display: flex;
     align-items: center;
     border-bottom: 1px solid var(--help-color);
@@ -667,7 +667,6 @@ const HashInputOuter = styled.div`
     cursor: pointer;
   }
   .add-tag {
-    padding: 5px 28px;
     width: 87px;
     height: 32px;
     border-radius: 4px;
@@ -675,11 +674,12 @@ const HashInputOuter = styled.div`
     font-size: 14px;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 `;
 
 const HashInput = styled.input`
-  width: 310px;
+  width: 100%;
   height: 55px;
   font-size: 16px;
   border-radius: 8px;

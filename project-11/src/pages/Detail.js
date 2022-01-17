@@ -71,17 +71,6 @@ const Detail = () => {
 
   //포스트 삭제하기
   const deletePost = () => {
-    // axiosInstance
-    //   .delete(`api/posts/${params.id}`, {
-    //     headers: {
-    //       Authorization: token,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log("post delete", res);
-    //     history.push("/");
-    //   })
-    //   .catch((err) => console.log(err));
     if (window.confirm("게시물을 삭제 하시겠습니까?")) {
       dispatch(postActions.del_onepost(params.id));
     } else {
@@ -221,16 +210,9 @@ const Detail = () => {
   return (
     <>
       {!PostData ? (
-        <>
-          <Spin>
-            <ScaleLoader
-              height="50px"
-              width="10px"
-              color="#FF626F"
-              radius="8px"
-            />
-          </Spin>
-        </>
+        <Spin>
+          <Spinner />
+        </Spin>
       ) : (
         <>
           <DetailBox key={PostData.postId}>

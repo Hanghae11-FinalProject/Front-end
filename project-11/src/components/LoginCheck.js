@@ -16,12 +16,13 @@ const LoginCheck = () => {
             <p>서비스를 이용하려면</p>
             <p>먼저 로그인이 필요해요!</p>
           </div>
-          <div className="subtitle"
-          onClick={()=>{history.push('/')}}
+          <div
+            className="subtitle"
+            onClick={() => {
+              history.push("/");
+            }}
           >
-            <span>
-              로그인하러 가기
-            </span>
+            <span>로그인하러 가기</span>
           </div>
         </div>
         <Nav />

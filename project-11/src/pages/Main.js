@@ -133,8 +133,12 @@ const Main = () => {
                         setSelected(true);
                       }}
                     >
-                      <IoShirt className="icon" size={28} />
-                      <p>의류</p>
+                      <Grid
+                        _className={is_cate === "의류" ? "active" : "default"}
+                      >
+                        <IoShirt className="icon" size={28} />
+                        <p>의류</p>
+                      </Grid>
                     </CateBtn>
                   </SwiperSlide>
                   <SwiperSlide>
@@ -149,12 +153,8 @@ const Main = () => {
                       <Grid
                         _className={is_cate === "가구" ? "active" : "default"}
                       >
-                        <Grid
-                          _className={is_cate === "가구" ? "active" : "default"}
-                        >
-                          <FaCouch className="icon" />
-                          <p>가구</p>
-                        </Grid>
+                        <FaCouch className="icon" />
+                        <p>가구</p>
                       </Grid>
                     </CateBtn>
                   </SwiperSlide>

@@ -12,8 +12,6 @@ const Login = () => {
   const [input_values, setInputValues] = useState({ user_id: "", user_pw: "" });
   const [loginTrue, setLoginTrue] = useState(true);
 
-
-
   const handleChangeInput = (e) => {
     setInputValues({
       ...input_values,
@@ -68,7 +66,7 @@ const Login = () => {
                 cursor: "pointer",
               }}
               onClick={() => {
-                history.push("/intro");
+                history.push("/");
               }}
             />
             <span className="header-title">로그인</span>
@@ -106,34 +104,6 @@ const Login = () => {
             >
               로그인
             </button>
-
-            <div className="kakaobtn">
-              <div className="kakaobubblewrap" onClick={ClickKakao}>
-                <img
-                  className="kakaobubble"
-                  src="/static/kakaobubble.png"
-                  alt=""
-                />
-                <p className="kakaotext">카카오계정으로 로그인</p>
-              </div>
-              <div className="bottomtext">
-                <span
-                  className="signupbtn"
-                  onClick={() => {
-                    history.push("/signup");
-                  }}
-                >
-                  회원가입
-                </span>
-                <span
-                  onClick={() => {
-                    history.push("/");
-                  }}
-                >
-                  둘러보기
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </Grid>
@@ -188,55 +158,6 @@ const LoginWrap = styled.div`
           border: 1px solid var(--help-color);
           padding-left: 10px;
         }
-        .kakaobtn {
-          display: flex;
-          text-align: center;
-          flex-direction: column;
-          cursor: pointer;
-          .kakaobubblewrap {
-            width: 100%;
-            height: 48px;
-            background-color: #fee500;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            margin-top: 12px;
-            .kakaobubble {
-              width: 20px;
-              height: 20px;
-              margin-left: 16px;
-            }
-            .kakaotext {
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              transform: translate(-50%, -50%);
-              color: #41231f;
-              font-size: 14px;
-              font-weight: 600;
-            }
-          }
-          .bottomtext {
-            display: flex;
-            max-width: 429px;
-            margin: 0 auto;
-            margin-top: 20px;
-            span {
-              padding: 0px 25px;
-              color: var(--help-color);
-            }
-            span:nth-child(1) {
-              border-right: 1px solid var(--help-color);
-              cursor: pointer;
-            }
-            span:nth-child(2) {
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
     .address-wrap {
       display: flex;
       justify-content: space-between;
