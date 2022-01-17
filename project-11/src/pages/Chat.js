@@ -166,7 +166,7 @@ const Chat = (data) => {
   return (
     <>
       <Container>
-        <Grid is_container _className="border">
+        <Grid is_container _className="border background">
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
@@ -235,42 +235,46 @@ const Chat = (data) => {
             </div>
           </div>
           {/* </Header> */}
+
           <ChatBox ref={scrollRef}>
-            {messageList.length === 0 ? (
-              <div className="enter-chat-box">
-                <span className="enter-chat">
-                  {data.location.state.sender.nickname}님과 {nickName}님이
-                  채팅을 시작하였습니다.
-                </span>
-              </div>
-            ) : (
-              ""
-            )}
-            {messageList.map((message, idx) => {
-              if (parseInt(myUserId) === message.senderId) {
-                return (
-                  <MyChat key={idx} nicknames={nicknames} data={message} />
-                );
-              } else {
-                return (
-                  <NotMyChat
-                    key={idx}
-                    nicknames={nicknames}
-                    data={message}
-                    sender={sender}
-                  />
-                );
-              }
-            })}
-            {is_exit === true ? (
-              <div className="exit-chat-box">
-                <span className="exit-chat">
-                  {data.location.state.sender.nickname}님이 채팅방을 나갔습니다.
-                </span>
-              </div>
-            ) : (
-              ""
-            )}
+            <div className="inner-chat-box">
+              {messageList.length === 0 ? (
+                <div className="enter-chat-box">
+                  <span className="enter-chat">
+                    {data.location.state.sender.nickname}님과 {nickName}님이
+                    채팅을 시작하였습니다.
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+              {messageList.map((message, idx) => {
+                if (parseInt(myUserId) === message.senderId) {
+                  return (
+                    <MyChat key={idx} nicknames={nicknames} data={message} />
+                  );
+                } else {
+                  return (
+                    <NotMyChat
+                      key={idx}
+                      nicknames={nicknames}
+                      data={message}
+                      sender={sender}
+                    />
+                  );
+                }
+              })}
+              {is_exit === true ? (
+                <div className="exit-chat-box">
+                  <span className="exit-chat">
+                    {data.location.state.sender.nickname}님이 채팅방을
+                    나갔습니다.
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
             <ChatInput>
               <Grid is_flex _className="input-inner">
                 <BsPlusLg className="plus-icon-active" />
@@ -395,6 +399,9 @@ const ChatBox = styled.div`
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+  .inner-chat-box {
+    margin-bottom: 52px;
+  }
   .enter-chat-box {
     display: flex;
     justify-content: center;
@@ -469,6 +476,7 @@ const ChatInput = styled.div`
   .input-inner {
     display: flex;
     align-items: center;
+    background-color: #fff;
     input {
       width: 305px;
       height: 40px;

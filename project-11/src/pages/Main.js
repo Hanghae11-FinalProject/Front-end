@@ -73,7 +73,7 @@ const Main = () => {
                   flex_align="center"
                 >
                   <p>전체 글 보기</p>
-                  <button onClick={() => history.push("/login")}>로그인</button>
+                  <button onClick={() => history.push("/")}>로그인</button>
                 </Grid>
               </Header>
             </>
@@ -133,14 +133,15 @@ const Main = () => {
                         setSelected(true);
                       }}
                     >
-                       <Grid
+                      <Grid
                         _className={is_cate === "의류" ? "active" : "default"}
                       >
-                      <IoShirt className="icon" size={28} />
-                      <p>의류</p>
+                        <IoShirt className="icon" size={28} />
+                        <p>의류</p>
                       </Grid>
                     </CateBtn>
                   </SwiperSlide>
+
                   <SwiperSlide>
                     <CateBtn
                       onClick={() => {
@@ -156,6 +157,7 @@ const Main = () => {
                           <FaCouch className="icon" />
                           <p>가구</p>
                         </Grid>
+
                     </CateBtn>
                   </SwiperSlide>
                   <SwiperSlide>

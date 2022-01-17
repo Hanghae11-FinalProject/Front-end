@@ -5,6 +5,7 @@ import { axiosInstance } from "../shared/api";
 import PuffLoader from "react-spinners/PuffLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
+import Spinner from "./Spinner";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
@@ -20,8 +21,6 @@ const PostList = ({ location, category, selected }) => {
   const [area, setarea] = useState(location);
   const [cate, setcate] = useState(category);
   let is_select = selected;
-
-  const [state, setState] = useState(false);
 
   //무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
@@ -91,11 +90,12 @@ const PostList = ({ location, category, selected }) => {
           hasMore={hasMore}
         >
           {post_data.posts.length === 0 ? (
-            <>
-              <Spin>
+            <div className="spinner">
+              <Spinner />
+              {/* <Spin>
                 <PuffLoader size="100px" color="var(--main-color)" />
-              </Spin>
-            </>
+              </Spin> */}
+            </div>
           ) : (
             <>
               <Grid _className="post-list">
@@ -113,6 +113,9 @@ const PostList = ({ location, category, selected }) => {
 
 const MainContainer = styled.div`
   padding: 0 16px 60px 16px;
+  .spinner {
+    margin-top: -160px;
+  }
 
   .post-list {
     display: grid;

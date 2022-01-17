@@ -13,7 +13,7 @@ import {
 } from "react-icons/md";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import { IoIosArrowForward, IoMdSettings } from "react-icons/io";
-import { deleteCookie, getCookie } from "../shared/Cookie";
+import { deleteCookie } from "../shared/Cookie";
 import Permit from "../shared/Permit";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 
 const Mypage = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [shadowOpen, setShadowOpen] = useState(false);
 
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.post.profile); // initatilstate에서 데이터를 가져오는 방법
@@ -35,12 +36,13 @@ const Mypage = () => {
 
   const handleClose = () => {
     setModalOpen(false);
+    setShadowOpen(false);
   };
   return (
     <Permit>
       <>
         <MypageBox>
-          <Grid is_container _className="border">
+          <Grid is_container _className="border background">
             <Header>
               <Grid _className="inner" is_container is_flex flex_align="center">
                 <p>마이 페이지</p>
@@ -56,11 +58,20 @@ const Mypage = () => {
                   <p className="profile-email">{userProfile.username}</p>
                 </div>
               </IconBox>
-              <Button Btn _className="btn" _onClick={() => setModalOpen(true)}>
+              <Button
+                Btn
+                _className="btn"
+                _onClick={() => {
+                  setModalOpen(true);
+                  setShadowOpen(true);
+                }}
+              >
                 <p>프로필 수정</p>
               </Button>
             </UserInfo>
 
+            {/* 프로필 수정 모달부분 */}
+            <Grid _className={shadowOpen ? "shadow-active" : "shadow"}></Grid>
             <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
 
             <Grid _className="menu-wrap" padding="30px 16px;">
@@ -192,6 +203,28 @@ const MypageBox = styled.div`
     background-color: #fff;
     padding-top: 30px;
 
+    position: relative;
+
+    .shadow {
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.6);
+      position: absolute;
+      top: 0;
+
+      display: none;
+    }
+
+    .shadow-active {
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.6);
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      display: block;
+    }
+
     .menu-wrap {
       .menu {
         display: flex;
@@ -228,8 +261,6 @@ const Header = styled.div`
   height: 50px;
   position: fixed;
   top: 0;
-
-  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -248,7 +279,6 @@ const Header = styled.div`
     }
   }
 `;
-
 const UserInfo = styled.div`
   padding: 0 16px;
   .btn {

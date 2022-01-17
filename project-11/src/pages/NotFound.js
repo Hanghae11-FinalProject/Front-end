@@ -6,7 +6,7 @@ import { history } from "../redux/configureStore";
 const NotFound = () => {
   return (
     <NotFoundWrap>
-      <Grid is_container="container" _className="container-border">
+      <Grid is_container="container" _className="background">
         <div className="modal-wrap">
           <AppImg>
             <img src="/static/logo.png" alt="logo" />
@@ -17,15 +17,13 @@ const NotFound = () => {
               주소를 다시 확인하고 이용해 주시길 바랍니다
             </span>
           </div>
-          <div className="subtitle"
-          onClick={() => {
-            history.push("/main");
-          }}
+          <div
+            className="subtitle"
+            onClick={() => {
+              history.push("/main");
+            }}
           >
-            <span
-            >
-              메인으로 가기
-            </span>
+            <span>메인으로 가기</span>
           </div>
         </div>
       </Grid>
@@ -34,7 +32,7 @@ const NotFound = () => {
 };
 
 const NotFoundWrap = styled.div`
-  .container-border {
+  .background {
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -68,7 +66,7 @@ const NotFoundWrap = styled.div`
     }
   }
 `;
-const AppImg = styled.div` 
+const AppImg = styled.div`
   img {
     width: 200px;
     height: 200px;

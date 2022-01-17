@@ -41,7 +41,7 @@ const MyPost = () => {
   return (
     <>
       <MyPostBox>
-        <Grid is_container _className="border">
+        <Grid is_container _className="background">
           {is_loading === false && <Spinner />}
           <MainTop>
             <IoIosArrowBack
@@ -76,7 +76,7 @@ const MyPost = () => {
 };
 
 const MyPostBox = styled.div`
-  .border {
+  .background {
     height: 100vh;
     /* border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color); */

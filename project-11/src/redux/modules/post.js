@@ -192,7 +192,7 @@ const del_onepost = (postid) => {
       .then((res) => {
         console.log("post delete", res);
         dispatch(delDetail(postid));
-        window.location.replace("/");
+        window.location.replace("/main");
       })
       .catch((err) => console.log(err));
   };
