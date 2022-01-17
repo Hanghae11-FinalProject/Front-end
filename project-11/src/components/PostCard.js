@@ -23,7 +23,7 @@ const PostCard = ({ item }) => {
 
   //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
   const has_bookmarks = () => {
-    if (bookmark.length > 0) {
+    if (bookmark?.length > 0) {
       const bookmarkState = bookmark.filter((user) => {
         return user.userId === Number(curUserId);
       });
