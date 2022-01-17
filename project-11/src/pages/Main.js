@@ -151,12 +151,13 @@ const Main = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid
-                        _className={is_cate === "가구" ? "active" : "default"}
-                      >
-                        <FaCouch className="icon" />
-                        <p>가구</p>
-                      </Grid>
+                        <Grid
+                          _className={is_cate === "가구" ? "active" : "default"}
+                        >
+                          <FaCouch className="icon" />
+                          <p>가구</p>
+                        </Grid>
+
                     </CateBtn>
                   </SwiperSlide>
                   <SwiperSlide>

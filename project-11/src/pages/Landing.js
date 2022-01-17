@@ -62,6 +62,7 @@ const Landing = () => {
           </SwiperCustom>
         </Swipercontainer>
         <div className="login-input-wrap">
+
           <button
             className="login-btn"
             onClick={() => {
