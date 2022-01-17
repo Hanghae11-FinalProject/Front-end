@@ -40,21 +40,21 @@ const Landing = () => {
           >
             <SwiperSlide>
               <img
-                src="/static/landing1.gif"
+                src="/static/Landing1.gif"
                 style={{ width: "100%", height: "auto" }}
                 alt=""
               />
             </SwiperSlide>
             <SwiperSlide>
               <img
-                src="/static/landing2.gif"
+                src="/static/Landing2.gif"
                 style={{ width: "100%", height: "auto" }}
                 alt=""
               />
             </SwiperSlide>
             <SwiperSlide>
               <img
-                src="/static/landing3.gif"
+                src="/static/Landing3.gif"
                 style={{ width: "100%", height: "auto" }}
                 alt=""
               />

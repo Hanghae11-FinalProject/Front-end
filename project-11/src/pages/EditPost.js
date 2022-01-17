@@ -665,9 +665,9 @@ const Preview = styled.img`
 `;
 
 const ContentArea = styled.div`
-  height: 280px;
+  height: 320px;
+  max-height: 320px;
   margin: 16px;
-  /* border-bottom: 1px solid var(--help-color); */
 `;
 
 const ContentInput = styled.textarea`
@@ -678,6 +678,7 @@ const ContentInput = styled.textarea`
   resize: none;
   font-family: "NanumSquareRound";
   border: none;
+  outline: none;
   ::placeholder {
     color: var(--help-color);
   }
@@ -687,7 +688,7 @@ const ContentInput = styled.textarea`
 `;
 
 const HashTagArea = styled.div`
-  height: 75px;
+  height: 150px;
   margin: 15px;
   margin-top: 50px;
   border-top: 1px solid var(--help-color);

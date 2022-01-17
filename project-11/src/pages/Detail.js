@@ -209,16 +209,9 @@ const Detail = () => {
   return (
     <>
       {!PostData ? (
-        <>
-          <Spin>
-            <ScaleLoader
-              height="50px"
-              width="10px"
-              color="#FF626F"
-              radius="8px"
-            />
-          </Spin>
-        </>
+        <Spin>
+          <Spinner />
+        </Spin>
       ) : (
         <>
           <DetailBox key={PostData.postId}>
