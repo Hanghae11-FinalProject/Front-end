@@ -2,7 +2,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
-import { getCookie } from "../../shared/Cookie";
+import { getCookie, deleteCookie, setCookie } from "../../shared/Cookie";
 
 // *** 액션 타입
 const GET_POST = "GET_POST";
@@ -86,18 +86,20 @@ const getProfileDB = () => {
 };
 
 //마이페이지 - 프로필 수정부분 수정된 데이터 보내기
-const editProfileDB = (img, nickname) => {
+const editProfileDB = (Img, nickname) => {
   return async (dispatch, getState, { history }) => {
     const token = getCookie("Token");
     await axiosInstance
       .put(
         "/api/userInfos",
-        { nickname: nickname, profileImg: img.icons },
+        { nickname: nickname, profileImg: Img },
         { headers: { Authorization: token } }
       )
       .then((response) => {
         console.log(response);
         dispatch(editProfile(response.data));
+        deleteCookie('userImg')
+        setCookie('userImg',response.data.profileImg)
       })
       .catch((err) => {
         console.log(err);

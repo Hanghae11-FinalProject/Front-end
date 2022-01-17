@@ -2,20 +2,24 @@ import React, { useState, useEffect } from "react";
 import { icons } from "../shared/util";
 import { Image, Grid } from "../elements/index";
 import { axiosInstance } from "../shared/api";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import styled from "styled-components";
 import "../shared/App.css";
+import { getCookie} from "../shared/Cookie";
+
 
 const UserModal = (props) => {
   const dispatch = useDispatch();
-  const { name, onCancel } = props;
+  const { name, onCancel} = props;
+  const PrImg = getCookie('Img')
   const [editName, setEditName] = useState("");
   const [iconList, setIconList] = useState([]);
   const [iconState, setIconState] = useState([]);
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
-  const [img, setImg] = useState("");
+  const [Img,setImg] = useState(PrImg);
+
 
   const CheckActive = () => {
     iconState.length !== 0 ||
@@ -36,9 +40,10 @@ const UserModal = (props) => {
       return object;
     });
     setIconList(newList);
-    dispatch(postActions.editProfileDB(img, editName)); // 수정된 값을 보내줘야한다.
+    dispatch(postActions.editProfileDB(Img, editName)); // 수정된 값을 보내줘야한다.
     onCancel();
   };
+  
 
   useEffect(() => {
     if (editName === name) {
@@ -188,7 +193,7 @@ const UserModal = (props) => {
                       key={i}
                       _className={item.active ? "icon" : "noneicon"}
                       _onClick={() => {
-                        setImg(item);
+                        setImg(item.icons);
                         handleClick(i);
                       }}
                     />

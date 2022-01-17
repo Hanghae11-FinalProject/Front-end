@@ -28,6 +28,9 @@ const Mypage = () => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.post.profile); // initatilstate에서 데이터를 가져오는 방법
   const name = userProfile.nickname;
+  const profileImg = userProfile.profileImg
+
+  console.log(profileImg)
 
   useEffect(() => {
     dispatch(postActions.getProfileDB());
@@ -69,7 +72,7 @@ const Mypage = () => {
 
             {/* 프로필 수정 모달부분 */}
             <Grid _className={shadowOpen ? "shadow-active" : "shadow"}>
-              <UserModal onCancel={handleClose} name={name} />
+              <UserModal onCancel={handleClose} name={name} profileImg={profileImg}/>
             </Grid>
 
             <Grid _className="menu-wrap" padding="30px 16px;">
@@ -165,7 +168,10 @@ const Mypage = () => {
               </li>
               <li
                 onClick={() => {
-                  deleteCookie("OK");
+                  deleteCookie("userToken")
+                  deleteCookie("userName")
+                  deleteCookie("userImg")
+                  deleteCookie("userId")
                   window.alert("로그아웃 되었습니다.");
                   history.push("/");
                 }}
