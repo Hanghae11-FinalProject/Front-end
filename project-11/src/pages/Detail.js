@@ -96,10 +96,10 @@ const Detail = () => {
   const addBookmark = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/");
     }
 
-    if (curUserName === PostData.nickname) {
+    if (Number(curUserId) === PostData.userId) {
       window.alert("자신의 게시물은 즐겨찾기를 누르실 수 없어요😀");
     } else {
       setBmCnt(bmCnt + 1);
@@ -126,7 +126,7 @@ const Detail = () => {
   const cancelBookmark = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/");
     }
     setBmCnt(bmCnt - 1);
     setBookmark(false);
@@ -186,6 +186,10 @@ const Detail = () => {
 
   //버튼메뉴 클릭이벤트
   const Clickbtn = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
     if (btnActive) {
       setBtnActive(false);
     } else {
@@ -256,9 +260,7 @@ const Detail = () => {
                         onClick={() => history.goBack()}
                       />
                       <p>자세히 보기</p>
-                      <button onClick={() => history.push("/login")}>
-                        로그인
-                      </button>
+                      <button onClick={() => history.push("/")}>로그인</button>
                     </Grid>
                   </Header>
                 </>

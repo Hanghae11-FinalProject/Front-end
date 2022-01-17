@@ -32,7 +32,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
   const writeCommentBtn = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/");
     }
     if (is_name === false) {
       setIs_Name(true);
@@ -51,6 +51,11 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
 
   //버튼메뉴 클릭이벤트
   const Clickbtn = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
     if (btnActive) {
       setBtnActive(false);
     } else {
@@ -62,17 +67,16 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
   const writeComment = (e) => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/");
     }
     setNewComment(e.target.value);
   };
-
 
   // 대댓글 추가
   const addChildComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/");
     }
 
     if (!Newcomment) {
@@ -100,6 +104,11 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
 
   // 채팅하기
   const goChat = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
     axiosInstance
       .post(
         `/api/room`,
@@ -172,7 +181,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
             </Grid>
             <Comment>{commentData.content}</Comment>
             <Grid is_flex>
-              <span>{commentData.createAt}</span>
+              <span>{commentData.createdAt}</span>
             </Grid>
             {/* 부모 댓글에 속해 있는 자식 댓글들 */}
             {commentData.children ? (

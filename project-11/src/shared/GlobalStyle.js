@@ -112,7 +112,7 @@ img {
     position:fixed;
 top: 150px;
 left: 6.5%;
-z-index: 1;
+z-index: 55;
 font-family: 'NanumSquareRound';
 
 
@@ -148,7 +148,7 @@ button{
 
 
 @media screen and (max-width: 1023px) {
-  body{background: transparent};
+ 
   .bg,
   .landing-logo,
   .landing-btn-box{
@@ -196,7 +196,7 @@ img {
     position:fixed;
 top: 180px;
 left: 8%;
-z-index: 1;
+z-index:55;
 font-family: 'NanumSquareRound';
 
 display: flex;

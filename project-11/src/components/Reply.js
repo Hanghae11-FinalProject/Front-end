@@ -13,7 +13,7 @@ import { BsArrowReturnRight } from "react-icons/bs";
 
 const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
   const token = getCookie("Token");
-  const curUserName = getCookie("Name");
+  const curUserId = getCookie("Id");
   const dispatch = useDispatch();
   const [is_login, setIs_login] = useState(token ? true : false);
   const [btn, setBtn] = useState(false);
@@ -30,6 +30,11 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
   };
 
   const Clickbtn = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
     if (btn) {
       setBtn(false);
     } else {
@@ -98,7 +103,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
                   _className={btn ? "inner-menu active" : "inner-menu"}
                   _onClick={Clickbtn}
                 >
-                  {is_login && curUserName === replyData.nickname ? (
+                  {is_login && Number(curUserId) === replyData.userId ? (
                     <>
                       <li onClick={deleteComment}>삭제하기</li>
                     </>
@@ -112,7 +117,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
             </Grid>
             <Comment>{replyData.content}</Comment>
             <Grid padding="5px 0">
-              <span>{replyData.createAt}</span>
+              <span>{replyData.createdAt}</span>
             </Grid>
           </Grid>
         </Grid>

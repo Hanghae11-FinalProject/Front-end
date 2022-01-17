@@ -23,7 +23,7 @@ const PostCard = ({ item }) => {
 
   //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
   const has_bookmarks = () => {
-    if (bookmark.length > 0) {
+    if (bookmark?.length > 0) {
       const bookmarkState = bookmark.filter((user) => {
         return user.userId === Number(curUserId);
       });
@@ -101,13 +101,10 @@ const PostCard = ({ item }) => {
 
 const Post = styled.div`
   width: 98%;
-  /* border: 1px solid var(--help-color); */
   padding-top: 5px;
   border-radius: 10px;
   margin-left: 1%;
   margin-top: 5px;
-  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
-    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.15) 0px 0px 8px;
   cursor: pointer;

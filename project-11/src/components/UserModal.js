@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactModal from "react-modal";
 import { icons } from "../shared/util";
 import { Image, Grid } from "../elements/index";
 import { axiosInstance } from "../shared/api";
@@ -10,7 +9,7 @@ import "../shared/App.css";
 
 const UserModal = (props) => {
   const dispatch = useDispatch();
-  const { name, isOpen, onCancel } = props;
+  const { name, onCancel } = props;
   const [editName, setEditName] = useState("");
   const [iconList, setIconList] = useState([]);
   const [iconState, setIconState] = useState([]);
@@ -135,81 +134,118 @@ const UserModal = (props) => {
 
   return (
     <>
-      <ReactModal
-        isOpen={isOpen}
-        // 모달 css는 shared folder-App.css 에 포함되어있습니다
-        className="modal-box"
-        overlayClassName="Overlay"
-      >
-        <TitleWrap>
-          <p className="title">프로필 수정</p>
-          <p className="nickname">닉네임</p>
-        </TitleWrap>
-        <BtnInputWrap>
-          <input
-            type="text"
-            className="inputform"
-            defaultValue={name}
-            placeholder="한글 또는 영문 10자이내"
-            onKeyUp={CheckActive}
-            onChange={(e) => setEditName(e.target.value)}
-          />
-          <button className="btnck" onClick={nicknameCheck}>
-            중복확인
-          </button>
-        </BtnInputWrap>
-        {nickDoubleChk && (
-          <span
-            style={{
-              display: "flex",
-              marginTop: "5px",
-              color: "red",
-              fontSize: "13px",
-            }}
-          >
-            {nickDoubleChk}
-          </span>
-        )}
-        <div>
-          <IconTitleWrap>
-            <p className="icontitle">프로필 아이콘</p>
-          </IconTitleWrap>
-        </div>
-        <ExtraIcon>
-          {iconList &&
-            iconList.map((item, i) => {
-              return (
-                <Grid>
-                  <Image
-                    size="50"
-                    shape="circle"
-                    src={item.icons}
-                    key={i}
-                    _className={item.active ? "icon" : "noneicon"}
-                    _onClick={() => {
-                      setImg(item);
-                      handleClick(i);
-                    }}
-                  />
-                </Grid>
-              );
-            })}
-        </ExtraIcon>
+      <Modal>
+        <Grid _className="modal-box">
+          {/* <ReactModal
+          isOpen={isOpen}
+          // 모달 css는 shared folder-App.css 에 포함되어있습니다
+          className="modal-box"
+          overlayClassName="Overlay"
+        > */}
+          <TitleWrap>
+            <p className="title">프로필 수정</p>
+            <p className="nickname">닉네임</p>
+          </TitleWrap>
+          <BtnInputWrap>
+            <input
+              type="text"
+              className="inputform"
+              defaultValue={name}
+              placeholder="한글 또는 영문 10자이내"
+              onKeyUp={CheckActive}
+              onChange={(e) => setEditName(e.target.value)}
+            />
+            <button className="btnck" onClick={nicknameCheck}>
+              중복확인
+            </button>
+          </BtnInputWrap>
+          {nickDoubleChk && (
+            <span
+              style={{
+                display: "flex",
+                marginTop: "5px",
+                color: "red",
+                fontSize: "13px",
+              }}
+            >
+              {nickDoubleChk}
+            </span>
+          )}
+          <div>
+            <IconTitleWrap>
+              <p className="icontitle">프로필 아이콘</p>
+            </IconTitleWrap>
+          </div>
+          <ExtraIcon>
+            {iconList &&
+              iconList.map((item, i) => {
+                return (
+                  <Grid>
+                    <Image
+                      size="50"
+                      shape="circle"
+                      src={item.icons}
+                      key={i}
+                      _className={item.active ? "icon" : "noneicon"}
+                      _onClick={() => {
+                        setImg(item);
+                        handleClick(i);
+                      }}
+                    />
+                  </Grid>
+                );
+              })}
+          </ExtraIcon>
 
-        <BtnBox>
-          <Btn onClick={EditProfile} disabled={active}>
-            완료
-          </Btn>
+          <BtnBox>
+            <Btn onClick={EditProfile} disabled={active}>
+              완료
+            </Btn>
 
-          <Btn onClick={handleClose}>닫기</Btn>
-        </BtnBox>
-      </ReactModal>
+            <Btn onClick={handleClose}>닫기</Btn>
+          </BtnBox>
+          {/* </ReactModal> */}
+        </Grid>
+      </Modal>
     </>
   );
 };
 
 export default UserModal;
 
+const Modal = styled.div`
+  max-width: 429px;
+  height: 100vh;
+  position: relative;
+
+  .modal-box {
+    width: 410px;
+    height: 490px;
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -48%);
+    border-radius: 15px;
+    background: #fff;
+    overflow: auto;
+    box-shadow: rgba(255, 98, 111, 0.3) 0px 7px 29px 0px;
+    -webkit-overflow-scrolling: "touch";
+    outline: none;
+    padding: 20px;
+    text-align: center;
+    z-index: 50;
+
+    @media screen and (max-width: 376px) {
+      width: 350px;
+      height: 550px;
+    }
+
+    @media screen and (max-width: 321px) {
+      width: 300px;
+      height: 550px;
+    }
+  }
+`;
 const ExtraIcon = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
