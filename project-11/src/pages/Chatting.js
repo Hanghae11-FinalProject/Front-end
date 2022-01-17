@@ -149,7 +149,7 @@ const Chatting = () => {
   return (
     <Permit>
       <ChattingWrap>
-        <Grid is_container="is_container" _className="grid-border">
+        <Grid is_container="is_container" _className="grid-border background">
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">

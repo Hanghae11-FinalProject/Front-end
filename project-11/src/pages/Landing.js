@@ -5,18 +5,17 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Autoplay, Navigation } from "swiper";
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
-
 import "swiper/css";
 import "swiper/css/pagination";
 
 SwiperCore.use([Pagination, Autoplay, Navigation]);
 
 const Landing = () => {
-  const swiperStyle ={
-    position:'relative',
-    width:"100%",
-    height:"auto",
-  }
+  const swiperStyle = {
+    position: "relative",
+    width: "100%",
+    height: "auto",
+  };
 
   const ClickKakao = () => {
     window.location.href = KAKAO_AUTH_URL;
@@ -24,7 +23,7 @@ const Landing = () => {
 
   return (
     <Intro>
-      <Grid is_container _className="intro-box">
+      <Grid is_container _className="intro-box background">
         <div className="imgwrap">
           <img
             src="/static/landinglogo.png"
@@ -33,46 +32,70 @@ const Landing = () => {
           />
         </div>
         <Swipercontainer>
-        <SwiperCustom 
-        style={swiperStyle}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 2200 }}
-        >
-          <SwiperSlide>
-            <img src="/static/landing1.gif" style={{width:"100%",height:"auto"}} alt=""/>
-          </SwiperSlide>
-          <SwiperSlide>
-          <img src="/static/landing2.gif" style={{width:"100%",height:"auto"}} alt=""/>
-          </SwiperSlide>
-          <SwiperSlide>
-          <img src="/static/landing3.gif" style={{width:"100%",height:"auto"}} alt=""/>
-          </SwiperSlide>
-        </SwiperCustom>
+          <SwiperCustom
+            style={swiperStyle}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 2200 }}
+          >
+            <SwiperSlide>
+              <img
+                src="/static/landing1.gif"
+                style={{ width: "100%", height: "auto" }}
+                alt=""
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img
+                src="/static/landing2.gif"
+                style={{ width: "100%", height: "auto" }}
+                alt=""
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img
+                src="/static/landing3.gif"
+                style={{ width: "100%", height: "auto" }}
+                alt=""
+              />
+            </SwiperSlide>
+          </SwiperCustom>
         </Swipercontainer>
         <div className="login-input-wrap">
-            <button
-              className="login-btn"
-              onClick={()=>{history.push('/login')}}
-            >
-              로그인하러가기
-            </button>
-              <div className="kakaobtn">
-                <div className="kakaobubblewrap" onClick={ClickKakao}>
-                  <img className="kakaobubble" src="/static/kakaobubble.png" alt=""/>
-                  <p className="kakaotext">카카오계정으로 로그인</p>
-                </div>
-                <div className="bottomtext">
-                  <span 
-                  className="signupbtn"
-                  onClick={() => {
-                history.push("/signup");
-              }}>회원가입</span>
-                  <span onClick={() => {
-                history.push("/main");
-              }}>둘러보기</span>
-                </div>
-              </div>
+          <button
+            className="login-btn"
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            로그인하러가기
+          </button>
+          <div className="kakaobtn">
+            <div className="kakaobubblewrap" onClick={ClickKakao}>
+              <img
+                className="kakaobubble"
+                src="/static/kakaobubble.png"
+                alt=""
+              />
+              <p className="kakaotext">카카오계정으로 로그인</p>
+            </div>
+            <div className="bottomtext">
+              <span
+                className="signupbtn"
+                onClick={() => {
+                  history.push("/signup");
+                }}
+              >
+                회원가입
+              </span>
+              <span
+                onClick={() => {
+                  history.push("/main");
+                }}
+              >
+                둘러보기
+              </span>
+            </div>
           </div>
         </div>
       </Grid>
@@ -176,15 +199,13 @@ const Swipercontainer = styled.div`
 `;
 
 const SwiperCustom = styled(Swiper)`
-&.swiper{
-  /* margin-top:-20px; */
-}
-.swiper-horizontal>
-.swiper-pagination-bullets, 
-.swiper-pagination-bullets
-.swiper-pagination-horizontal, 
-.swiper-pagination-custom, 
-.swiper-pagination-fraction{
-  bottom: 10px;
-}
-`
+  &.swiper {
+    /* margin-top:-20px; */
+  }
+  .swiper-horizontal > .swiper-pagination-bullets,
+  .swiper-pagination-bullets .swiper-pagination-horizontal,
+  .swiper-pagination-custom,
+  .swiper-pagination-fraction {
+    bottom: 10px;
+  }
+`;
