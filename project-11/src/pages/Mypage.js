@@ -97,7 +97,11 @@ const Mypage = () => {
             </Grid>
 
             <ul className="icon-wrap">
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <MdLock
                     style={{
@@ -110,7 +114,11 @@ const Mypage = () => {
                 </p>
                 <span>계정</span>
               </li>
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <IoMdSettings
                     style={{
@@ -123,7 +131,11 @@ const Mypage = () => {
                 </p>
                 <span>앱 설정</span>
               </li>
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <BsQuestionCircleFill
                     style={{
@@ -136,7 +148,11 @@ const Mypage = () => {
                 </p>
                 <span>이용안내</span>
               </li>
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <MdFeedback
                     style={{
@@ -170,7 +186,7 @@ const Mypage = () => {
               </li>
               <li
                 onClick={() => {
-                  window.alert("응 못나가");
+                  window.alert("Comming soon :)");
                 }}
               >
                 <p>

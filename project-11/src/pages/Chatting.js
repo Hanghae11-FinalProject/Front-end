@@ -70,7 +70,6 @@ const Chatting = () => {
             setCompleteRooms(com);
           }
         }
-        // if(res.data.cur)
       })
       .catch((err) => {
         console.log(err, "에러");

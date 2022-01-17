@@ -125,7 +125,7 @@ const getPostAction = (area, cate, count, is_select) => {
         console.log("통신 후 리듀스 저장 전 목록", res.data, count);
         let is_next = null;
 
-        if (res.data.data.length < 6) {
+        if (res.data.data.content.length < 6) {
           is_next = false;
         } else {
           is_next = true;
@@ -133,28 +133,28 @@ const getPostAction = (area, cate, count, is_select) => {
 
         if (is_select || count === 0) {
           let _post_data = {
-            posts: res.data.data,
+            posts: res.data.data.content,
             page: count + 1,
             next: is_next,
           };
           dispatch(getCate(_post_data));
-        } else if (count === 0 && res.data.data.length < 7) {
+        } else if (count === 0 && res.data.data.content.length < 7) {
           let _post_data = {
-            posts: res.data.data,
+            posts: res.data.data.content,
             page: count + 1,
             next: is_next,
           };
           dispatch(getCate(_post_data));
-        } else if (count === 0 && res.data.data.length < 7) {
+        } else if (count === 0 && res.data.data.content.length < 7) {
           let _post_data = {
-            posts: res.data.data,
+            posts: res.data.data.content,
             page: count + 1,
             next: is_next,
           };
           dispatch(getCate(_post_data));
         } else {
           let _post_data = {
-            posts: res.data.data,
+            posts: res.data.data.content,
             page: count + 1,
             next: is_next,
           };

@@ -3,7 +3,6 @@ import { Grid } from "../elements";
 import styled from "styled-components";
 
 const SearchEmpty = (props) => {
-
   return (
     <>
       <SearchEmptyBox>
@@ -13,7 +12,7 @@ const SearchEmpty = (props) => {
               <img src="/static/pingpong00.png" alt="logo" />
             </AppImg>
             <div className="title">
-              {props.result === "검색중입니다" ? (
+              {props.result === "검색어를 입력해주세요" ? (
                 <>
                   <p>{props.result}</p>
                 </>

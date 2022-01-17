@@ -21,7 +21,7 @@ const OAuthRedirect = () => {
         const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=Bearer ${response.data.token}`;
         setCookie("OK", loginInfo);
         if (address !== null) {
-          history.push("/");
+          history.push("/main");
         } else {
           history.push("/address");
         }
