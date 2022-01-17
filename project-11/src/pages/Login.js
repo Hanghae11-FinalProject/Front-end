@@ -56,7 +56,7 @@ const Login = () => {
 
   return (
     <LoginWrap>
-      <Grid is_container="is_container" _className="grid-border">
+      <Grid is_container="is_container" _className="grid-border background">
         <div className="login-wrap">
           <div className="login-header-wrap">
             <IoIosArrowBack
@@ -158,40 +158,26 @@ const LoginWrap = styled.div`
           border: 1px solid var(--help-color);
           padding-left: 10px;
         }
-    .address-wrap {
-      display: flex;
-      justify-content: space-between;
-      .select-wrap {
-        width: 191px;
-        height: 48px;
-        outline: none;
-        border: 1px solid var(--help-color);
-      }
-      .select-city-wrap {
-        width: 191px;
-        height: 48px;
-        outline: none;
-        border: 1px solid var(--help-color);
-      }
-    }
-    .login-btn {
-      background-color: var(--main-color);
-      text-align: center;
-      width: 100%;
-      max-width: 397px;
-      height: 48px;
-      border-radius: 4px;
-      color: white;
-      margin-top: 48px;
-      border: 0px;
-      cursor: pointer;
-      :disabled {
-        cursor: not-allowed;
-        pointer-events: none;
-        background-color: var(--help-color);
-      }
-      &:hover {
-        opacity: 1;
+        .login-btn {
+          background-color: var(--main-color);
+          text-align: center;
+          width: 100%;
+          max-width: 397px;
+          height: 48px;
+          border-radius: 4px;
+          color: white;
+          margin-top: 48px;
+          border: 0px;
+          cursor: pointer;
+          :disabled {
+            cursor: not-allowed;
+            pointer-events: none;
+            background-color: var(--help-color);
+          }
+          &:hover {
+            opacity: 1;
+          }
+        }
       }
     }
   }

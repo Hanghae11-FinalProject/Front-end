@@ -166,7 +166,7 @@ const Chat = (data) => {
   return (
     <>
       <Container>
-        <Grid is_container _className="border">
+        <Grid is_container _className="border background">
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">

@@ -7,7 +7,7 @@ import Nav from "../shared/Nav";
 const LoginCheck = () => {
   return (
     <LoginCkWrap>
-      <Grid is_container="container" _className="border">
+      <Grid is_container="container" _className="border background">
         <div className="modal-wrap">
           <AppImg>
             <img src="/static/pingpong00.png" alt="logo" />

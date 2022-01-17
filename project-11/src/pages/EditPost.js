@@ -332,7 +332,7 @@ const EditPost = (items) => {
   return (
     <React.Fragment>
       <Container>
-        <Grid is_container _className="border">
+        <Grid is_container _className="border background">
           <MainTop>
             <CgChevronLeft
               cursor={"pointer"}

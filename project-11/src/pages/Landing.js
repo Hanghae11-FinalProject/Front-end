@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Autoplay, Navigation } from "swiper";
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
-
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -24,7 +23,7 @@ const Landing = () => {
 
   return (
     <Intro>
-      <Grid is_container _className="intro-box">
+      <Grid is_container _className="intro-box background">
         <div className="imgwrap">
           <img
             src="/static/landinglogo.png"

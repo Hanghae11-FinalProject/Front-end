@@ -273,7 +273,7 @@ const Write = () => {
     <Permit>
       <React.Fragment>
         <Container>
-          <Grid is_container _className="border">
+          <Grid is_container _className="border background">
             <MainTop>
               <p className="toptitle">글 작성하기</p>
               <p

@@ -33,7 +33,7 @@ const Favorite = () => {
 
   return (
     <FavoriteWrap>
-      <Grid is_container="is_container" _className="grid-border">
+      <Grid is_container="is_container" _className="grid-border background">
         {is_loading === false && <Spinner />}
         <div className="Favorite-wrap">
           <div className="Favorite-header-wrap">
