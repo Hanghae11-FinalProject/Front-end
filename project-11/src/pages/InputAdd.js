@@ -79,7 +79,7 @@ const InputAdd = () => {
       )
       .then((res) => {
         console.log("주소입력 완료", res);
-        history.push("/");
+        history.push("/main");
       })
       .catch((err) => {
         console.log("주소입력 실패", err);
