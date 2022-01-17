@@ -445,6 +445,7 @@ const SignupWrap = styled.div`
           :hover {
             background-color: var(--main-color);
             color: white;
+            border: none;
           }
         }
       }
