@@ -18,8 +18,12 @@ const OAuthRedirect = () => {
         // console.log(response);
         const address = response.data.address;
         // console.log(address);
-        const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=Bearer ${response.data.token}`;
-        setCookie("OK", loginInfo);
+        // const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=Bearer ${response.data.token}`;
+        // setCookie("OK", loginInfo);
+        setCookie("userId", response.data.userId);        
+        setCookie("userImg", response.data.profileImg);       
+        setCookie("userName", response.data.nickName);
+        setCookie("userToken", `Bearer ${response.data.token}`);
         if (address !== null) {
           history.push("/main");
         } else {
