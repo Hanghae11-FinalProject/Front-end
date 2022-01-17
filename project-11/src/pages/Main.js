@@ -27,10 +27,6 @@ SwiperCore.use([Pagination, Autoplay]);
 const Main = () => {
   const token = getCookie("Token");
 
-  useEffect(() => {
-    console.log(token);
-  }, []);
-
   //지역 카테고리 선택
   const [is_open, setIs_open] = useState(false);
   const [is_location, setIs_Location] = useState("위치 설정하기");

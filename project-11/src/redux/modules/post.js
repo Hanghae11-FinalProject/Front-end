@@ -3,7 +3,6 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { axiosInstance } from "../../shared/api";
 import { getCookie } from "../../shared/Cookie";
-import { IoNewspaperOutline } from "react-icons/io5";
 
 // *** 액션 타입
 const GET_POST = "GET_POST";
@@ -109,13 +108,10 @@ const editProfileDB = (img, nickname) => {
 
 //메인 게시글 조회
 const getPostAction = (area, cate, count, is_select) => {
-  console.log(area, cate, count, is_select);
   if (is_select) {
     count = 0;
   }
   return async (dispatch, getState, { history }) => {
-    console.log("미들웨어에 넘어온 값 (장소,카테,페이지) ", count);
-
     axiosInstance
       .post(`api/category?page=${count}`, {
         categoryName: [cate],
@@ -123,6 +119,11 @@ const getPostAction = (area, cate, count, is_select) => {
       })
       .then((res) => {
         console.log("통신 후 리듀스 저장 전 목록", res.data, count);
+        console.log(
+          "통신 후 리듀스 저장 전 목록",
+          res.data.data.content,
+          count
+        );
         let is_next = null;
 
         if (res.data.data.content.length < 6) {
@@ -197,22 +198,6 @@ const del_onepost = (postid) => {
       .catch((err) => console.log(err));
   };
 };
-
-//게시글 댓글만 가져오기 (마지막에 다 되면 삭제)
-// const get_Comment = (postid) => {
-//   return (dispatch, getState, { history }) => {
-//     axiosInstance
-//       .get(`/api/posts/${postid}`)
-//       .then((res) => {
-//         console.log("redux detail ", res.data.comments);
-//         const _data = res.data.comments;
-//         dispatch(getOnePost(_data));
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-//};
 
 //게시글 상세 페이지 댓글 쓰기
 const add_comment = (id, replyId, Newcomment, comcnt) => {
@@ -355,15 +340,6 @@ export default handleActions(
         console.log("hello");
         draft.posts.push(...action.payload._post_data.posts);
 
-        // draft.posts = draft.posts.reduce((acc, cur) => {
-        //   if (acc.findIndex((a) => a.postId === cur.postId) === -1) {
-        //     return [...acc, cur];
-        //   } else {
-        //     acc[acc.findIndex((a) => a.postId === cur.postId)] = cur;
-        //     return acc;
-        //   }
-        // }, []);
-
         if (action.payload._post_data.page) {
           draft.page = action.payload._post_data.page;
         }
@@ -373,7 +349,7 @@ export default handleActions(
     [GET_CATE]: (state, action) =>
       produce(state, (draft) => {
         draft.posts = [...action.payload._post_data.posts];
-        // draft.posts.push(...action.payload._post_data.posts);
+
         if (action.payload._post_data.page) {
           draft.page = action.payload._post_data.page;
         }
@@ -391,7 +367,7 @@ export default handleActions(
         const arr = draft.posts.findIndex(
           (p, idx) => p.postId === action.payload.dataid
         );
-        console.log(arr, "arr");
+
         draft.posts = draft.posts.splice(arr);
       }),
     //댓글 개수 관리해주는 부분
@@ -428,7 +404,7 @@ export default handleActions(
         const newComment = draft.post.comments.filter(
           (co, id) => co.id !== action.payload.commentid
         );
-        console.log(newComment, "newcomment");
+
         draft.post.comments = [...newComment];
       }),
 
@@ -448,9 +424,6 @@ export default handleActions(
     //거래완료부분 변경해주는
     [EXCHAGE_STATE]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.postid);
-        console.log(action.payload.curState);
-
         const idxNum = draft.posts.findIndex(
           (p, idx) => p.postId === Number(action.payload.postid)
         );
@@ -464,7 +437,6 @@ export default handleActions(
       produce(state, (draft) => {
         // action.payload는 위에서 전달하는 데이터가 들어있다. dispatch 부분
         draft.profile = action.payload.profile;
-        console.log(action.payload.profile);
       }),
 
     [EDIT_PROFILE]: (state, action) =>
@@ -473,12 +445,10 @@ export default handleActions(
       }),
     [EDIT_STAR]: (state, action) =>
       produce(state, (draft) => {
-        // draft.posts = action.payload.star.productId;
-        console.log(action.payload.star);
         const idx = draft.posts.findIndex(
           (p) => p.postId === action.payload.star.postId
         );
-        // draft.posts[idx] = { ...draft.posts[idx], ...action.payload.star };
+
         draft.posts[idx] = action.payload.star;
       }),
   },

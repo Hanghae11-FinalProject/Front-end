@@ -23,7 +23,6 @@ import { actionCreators as postActions } from "../redux/modules/post";
 // initialstate에 profile에 넣어둔 데이터
 
 const Mypage = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const [shadowOpen, setShadowOpen] = useState(false);
 
   const dispatch = useDispatch();
@@ -35,7 +34,6 @@ const Mypage = () => {
   }, []);
 
   const handleClose = () => {
-    setModalOpen(false);
     setShadowOpen(false);
   };
   return (
@@ -62,7 +60,6 @@ const Mypage = () => {
                 Btn
                 _className="btn"
                 _onClick={() => {
-                  setModalOpen(true);
                   setShadowOpen(true);
                 }}
               >
@@ -71,8 +68,9 @@ const Mypage = () => {
             </UserInfo>
 
             {/* 프로필 수정 모달부분 */}
-            <Grid _className={shadowOpen ? "shadow-active" : "shadow"}></Grid>
-            <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
+            <Grid _className={shadowOpen ? "shadow-active" : "shadow"}>
+              <UserModal onCancel={handleClose} name={name} />
+            </Grid>
 
             <Grid _className="menu-wrap" padding="30px 16px;">
               <Grid

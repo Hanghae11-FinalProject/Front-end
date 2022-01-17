@@ -13,12 +13,12 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
   const dispatch = useDispatch();
   const [Newcomment, setNewComment] = useState();
   const [replyId, setReplyId] = useState(commentid);
-  
+
   //댓글 쓰기
   const writeComment = (e) => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/");
     }
     setNewComment(e.target.value);
   };
@@ -27,7 +27,7 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
   const postComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/login");
+      history.push("/");
     }
     if (!Newcomment) {
       return;

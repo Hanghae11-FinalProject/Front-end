@@ -29,6 +29,11 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
   };
 
   const Clickbtn = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
     if (btn) {
       setBtn(false);
     } else {
