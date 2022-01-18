@@ -26,6 +26,7 @@ const Detail = () => {
   const token = getCookie("Token");
   const curUserName = getCookie("Name");
   const curUserId = getCookie("Id");
+  console.log(curUserId)
   const params = useParams();
   const dispatch = useDispatch();
   const [is_loading, setIs_loading] = useState(false);

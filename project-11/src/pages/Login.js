@@ -27,7 +27,9 @@ const Login = () => {
       })
       .then((response) => {
         console.log("로그인 완료", response);
-        // const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}userName=${response.data.nickName}userToken=${response.headers.authorization}`;
+        // const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}
+        // userName=${response.data.nickName}userToken=${response.headers.authorization}`;
+        // setCookie("OK", loginInfo);
         setCookie("userId", response.data.userId);        
         setCookie("userImg", response.data.profileImg);       
         setCookie("userName", response.data.nickName);
