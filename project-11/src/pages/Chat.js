@@ -37,6 +37,7 @@ const Chat = (data) => {
   const [items, setItems] = useState([]);
   console.log(messageList);
   const receiverId = data.location.state.sender.userId;
+  console.log(data);
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
   const nicknames = {
