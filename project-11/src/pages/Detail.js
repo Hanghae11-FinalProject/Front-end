@@ -164,19 +164,19 @@ const Detail = () => {
       )
       .then((res) => {
         console.log(res, "성공");
-        // if (res.data.message === "same room") {
-        //   window.alert("이미 상대방과의 채팅방이 있습니다.");
-        //   history.push("/chatting");
-        // } else {
-        //   history.push({
-        //     pathname: `/chat`,
-        //     state: {
-        //       roomName: res.data.roomName,
-        //       sender: res.data.user,
-        //       postId: PostData.postId,
-        //     },
-        //   });
-        // }
+        if (res.data.message === "same room") {
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          history.push("/chatting");
+        } else {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: PostData.postId,
+            },
+          });
+        }
       })
       .catch((err) => {
         console.log(err, "에러");

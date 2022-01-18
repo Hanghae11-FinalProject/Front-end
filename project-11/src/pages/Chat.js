@@ -27,7 +27,9 @@ const Chat = (data) => {
   const nickName = decodeURIComponent(Name);
   const token = getCookie("Token");
 
-  // console.log(data);
+  const myUserId = getCookie("Id");
+
+  const [stompClient, setStompClient] = useState();
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -36,7 +38,6 @@ const Chat = (data) => {
   const [is_exit, setIs_exit] = useState(false);
 
   const scrollRef = useRef();
-  const myUserId = getCookie("Id");
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [items, setItems] = useState([]);
@@ -50,7 +51,6 @@ const Chat = (data) => {
     nickName: nickName,
   };
   // console.log(data.location);
-
   React.useEffect(() => {
     axios
       .post(
@@ -64,8 +64,6 @@ const Chat = (data) => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        console.log(res.data, "성공");
-        let x = res.data.message;
         // console.log(x);
         setMessageList(res.data.message);
         setItems(res.data.post);
@@ -73,6 +71,8 @@ const Chat = (data) => {
       .catch((err) => {
         console.log(err);
       });
+    let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+    let stompClient = Stomp.over(sockjs);
     stompClient.connect({}, () => {
       stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
 
@@ -87,6 +87,7 @@ const Chat = (data) => {
         // console.log(messageList);
       });
     });
+    setStompClient(stompClient);
   }, []); // setSearches(searches => searches.concat(query))
 
   const sendMessage = () => {
