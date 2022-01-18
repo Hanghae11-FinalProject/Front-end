@@ -15,8 +15,10 @@ import { getCookie } from "../shared/Cookie";
 let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
   let stompClient = Stomp.over(sockjs);
 
+
 const Chatting = () => {
-  
+  let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+  let stompClient = Stomp.over(sockjs);
 
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
@@ -51,9 +53,10 @@ const Chatting = () => {
         data[i].lastMessage.createdAt = newMsgData.createdAt;
       }
     }
+    // console.log(newMsgData);
     setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??
   }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
-
+  // console.log(rooms);
   React.useEffect(() => {
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
@@ -81,7 +84,7 @@ const Chatting = () => {
         stompClient.subscribe(`/sub/${myUserId}`, (data) => {
           const onMessage = JSON.parse(data.body);
           setNewMsgData(onMessage);
-          console.log(onMessage);
+          // console.log(onMessage);
           axiosInstance
             .post(
               `/api/roomcount`,
@@ -212,17 +215,6 @@ const Chatting = () => {
               )}
             </div>
             <div className="chat-item">
-              {/* {rooms.map((p, idx) => {
-                return (
-                  <ChattingItem
-                    testOne={testOne}
-                    stompClient={stompClient}
-                    stomp={stomp}
-                    roomData={p}
-                    key={idx}
-                  />
-                );
-              })} */}
               {is_every &&
                 rooms.map((p, idx) => {
                   return (

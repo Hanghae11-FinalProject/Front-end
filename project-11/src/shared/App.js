@@ -26,7 +26,7 @@ import NotFound from "../pages/NotFound";
 
 function App() {
   const currentUrl = window.location.href;
-  const pollUrl = 'https://forms.gle/EpUzumV4FEQ7g47w7'
+  const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
   const Clickpoll = () => {
     window.location.href = pollUrl;
   };
@@ -36,7 +36,12 @@ function App() {
       <GlobalStyles />
       <div className="wrap">
         <div className="landing-logo">
-          <img src="/static/logo.png" alt="logo" />
+          <img
+            src="/static/pingpong_logo_symbol-01.svg"
+            alt="logoSymbol"
+            className="symbol"
+          />
+          <img src="/static/pingpong.png" alt="logo" />
         </div>
         <div className="landing-btn-box">
           <p>

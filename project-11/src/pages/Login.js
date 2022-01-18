@@ -30,9 +30,11 @@ const Login = () => {
         // const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}
         // userName=${response.data.nickName}userToken=${response.headers.authorization}`;
         // setCookie("OK", loginInfo);
-        setCookie("userId", response.data.userId);        
-        setCookie("userImg", response.data.profileImg);       
-        setCookie("userName", response.data.nickName);
+
+        setCookie("userId", response.data.userId);
+        setCookie("userImg", response.data.profileImg);
+        let name = encodeURIComponent(response.data.nickName);
+        setCookie("userName", name);
         setCookie("userToken", response.headers.authorization);
         history.push("/main");
       })

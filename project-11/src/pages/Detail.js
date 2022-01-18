@@ -12,7 +12,6 @@ import ProductImg from "../components/ProductImg";
 import CommentList from "../components/CommentList";
 import CommentInput from "../components/CommentInput";
 import Spinner from "../components/Spinner";
-import ScaleLoader from "react-spinners/ScaleLoader";
 
 import styled from "styled-components";
 import { FiStar } from "react-icons/fi";
@@ -20,12 +19,12 @@ import { FaStar } from "react-icons/fa";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsChat } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
-import { createAction } from "redux-actions";
 
 const Detail = () => {
   const token = getCookie("Token");
-  const curUserName = getCookie("Name");
   const curUserId = getCookie("Id");
+
+  console.log(curUserId);
   const params = useParams();
   const dispatch = useDispatch();
   const [is_loading, setIs_loading] = useState(false);
@@ -60,10 +59,10 @@ const Detail = () => {
       setPostdata(res.data);
       setItems(res.data);
       setCheckBm(res.data.bookMarks);
-      setBmCnt(res.data.bookMarkCount);
+      setBmCnt(res.data.bookmarkCnt);
       setProductId(res.data.postId);
       setState(res.data.currentState);
-      setcomCnt(res.data.commentCount);
+      setcomCnt(res.data.commentCnt);
     } catch (err) {
       console.log("상세 페이지 조회 실패", err);
     }
@@ -164,7 +163,7 @@ const Detail = () => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        // console.log(res, "성공");
+        console.log(res, "성공");
         if (res.data.message === "same room") {
           window.alert("이미 상대방과의 채팅방이 있습니다.");
           history.push("/chatting");

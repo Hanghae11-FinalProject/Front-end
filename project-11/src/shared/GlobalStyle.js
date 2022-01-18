@@ -72,7 +72,22 @@ const GlobalStyles = createGlobalStyle`
   }
 
 
-  @media screen and (min-width: 1024px) {
+@media screen and (max-width: 1023px) {
+  .bg,
+  .landing-logo,
+  .landing-btn-box{
+    display:none;
+  }
+
+  .page-container{
+    left: 0%;
+  }
+}
+  
+
+
+
+@media screen and (min-width: 1024px) {
     body{background: transparent};
     .background{
       box-shadow: rgba(255, 98, 111, 0.25) 0px 7px 29px 0px;
@@ -99,20 +114,29 @@ const GlobalStyles = createGlobalStyle`
   }
 
   .landing-logo{
-position:fixed;
-top: 0;
-left:4%;
-z-index: 1;
-img {
-  width:180px;
-}
+    position:fixed;
+    top: 40px;
+    left:5.5%;
+    z-index: 1;
+
+    width: 176px;
+
+
+    img {
+      width:100%;
+    }
+
+    .symbol{
+      width: 60%;
+      margin-left: 20%;
+    }
   }
 
   .landing-btn-box{
     position:fixed;
 top: 150px;
 left: 6.5%;
-z-index: 55;
+z-index: 1;
 font-family: 'NanumSquareRound';
 
 
@@ -121,7 +145,7 @@ flex-direction: column;
 
 p{
   color:#FF626F;
-  font-size: 28px;
+  font-size: 24px;
   margin-bottom: 30px;
   margin-top: 50px;
 
@@ -130,11 +154,11 @@ p{
   }
 }
 button{
-  width: 290px;
-  height: 64px;
+  width: 242px;
+  height: 50px;
   color:#FF626F;
   background-color:#fff;
-  font-size: 20px;
+  font-size: 16px;
   border: 0;
   outline:0;
   box-shadow: rgba(255, 98, 111, 0.3) 0px 7px 29px 0px;
@@ -146,20 +170,6 @@ button{
   }
 }
 
-
-@media screen and (max-width: 1023px) {
- 
-  .bg,
-  .landing-logo,
-  .landing-btn-box{
-    display:none;
-  }
-
-  .page-container{
-    left: 0%;
-  }
-}
-  
 @media screen and (min-width: 1440px) {
   body{background: transparent};
   .bg {
@@ -183,50 +193,58 @@ button{
   }
 
   .landing-logo{
-position:fixed;
-top: 0;
-left:6%;
-z-index: 1;
-img {
-  width:200px;
-}
+    position:fixed;
+    top: 40px;
+    left:7.5%;
+    z-index: 1;
+    width:176px;
+
+    img {
+      width:100%;
+    
+    }
+
+    .symbol{
+      width: 60%;
+      margin-left: 20%;
+    }
   }
 
   .landing-btn-box{
     position:fixed;
-top: 180px;
-left: 8%;
-z-index:55;
-font-family: 'NanumSquareRound';
+    top: 150px;
+    left: 8%;
+    z-index:1;
+    font-family: 'NanumSquareRound';
 
-display: flex;
-flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-p{
-  color:#FF626F;
-  font-size: 32px;
-  margin-bottom: 30px;
-  margin-top: 50px;
+    p{
+      color:#FF626F;
+      font-size: 24px;
+      margin-bottom: 30px;
+      margin-top: 50px;
 
-  span{
-    font-weight: bold;
-  }
+      span{
+        font-weight: bold;
+      }
 }
-button{
-  width: 327px;
-  height: 64px;
-  color:#FF626F;
-  background-color:#fff;
-  font-size: 24px;
-  border: 0;
-  outline:0;
-  box-shadow: rgba(255, 98, 111, 0.3) 0px 7px 29px 0px;
-  margin: 10px 0;
-  cursor:pointer;
-  font-family: 'NanumSquareRound';
-  border-radius: 4px;
-}
-  }
+    button{
+      width:242px;
+      height: 50px;
+      color:#FF626F;
+      background-color:#fff;
+      font-size: 16px;
+      border: 0;
+      outline:0;
+      box-shadow: rgba(255, 98, 111, 0.3) 0px 7px 29px 0px;
+      margin: 10px 0;
+      cursor:pointer;
+      font-family: 'NanumSquareRound';
+      border-radius: 4px;
+    }
+      }
  
 }
 
@@ -235,6 +253,61 @@ button{
   .bg {
     background-position-y: -120px;
   }
+
+  .landing-logo{
+    position:fixed;
+    top: 40px;
+    left:7.5%;
+    z-index: 1;
+    width:180px;
+
+    img {
+      width:100%;
+    
+    }
+
+    .symbol{
+      width: 60%;
+      margin-left: 20%;
+    }
+  }
+
+  .landing-btn-box{
+    position:fixed;
+    top: 150px;
+    left: 8%;
+    z-index:1;
+    font-family: 'NanumSquareRound';
+
+    display: flex;
+    flex-direction: column;
+
+    p{
+      color:#FF626F;
+      font-size: 24px;
+      margin-bottom: 30px;
+      margin-top: 50px;
+
+      span{
+        font-weight: bold;
+      }
+}
+    button{
+      width:242px;
+      height: 50px;
+      color:#FF626F;
+      background-color:#fff;
+      font-size: 16px;
+      border: 0;
+      outline:0;
+      box-shadow: rgba(255, 98, 111, 0.3) 0px 7px 29px 0px;
+      margin: 10px 0;
+      cursor:pointer;
+      font-family: 'NanumSquareRound';
+      border-radius: 4px;
+    }
+      }
+ 
 }
 
 

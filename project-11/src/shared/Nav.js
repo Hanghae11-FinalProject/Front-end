@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements";
 import { MdHome } from "react-icons/md";
@@ -48,7 +48,7 @@ const Nav = (props) => {
               }}
             />
           </PlusMenu>
-          <Menu>
+          <Menu style={{ position: "relative" }}>
             <HiOutlineChatAlt2
               size="24"
               className={props.chatting === "chatting" ? "active" : "icon"}
@@ -56,6 +56,9 @@ const Nav = (props) => {
                 history.push("/chatting");
               }}
             />
+            {/* <div className={MsgCnt !== 0 ? "chatting-cnt" : "cnt-zero"}>
+              {MsgCnt !== 0 ? MsgCnt : ""}
+            </div> */}
           </Menu>
           <Menu>
             <RiUserFill
@@ -84,11 +87,34 @@ const NavBox = styled.div`
   position: fixed;
   bottom: 0;
   border-top: 1px solid var(--help-color);
-  /* border-right: 1px solid var(--help-color);
-  border-left: 1px solid var(--help-color); */
 
   background-color: #fff;
-  z-index: 9999;
+  z-index: 7000;
+
+  .chatting-cnt {
+    position: fixed;
+    bottom: 26px;
+    right: 109px;
+    background-color: #ff626f;
+    width: 22px;
+    height: 22px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    z-index: 9999;
+  }
+  .cnt-zero {
+    position: fixed;
+    bottom: 26px;
+    right: 109px;
+    background-color: #fff;
+    width: 22px;
+    height: 22px;
+    z-index: 9999;
+  }
 `;
 
 const PlusMenu = styled.div`
