@@ -119,7 +119,6 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        // console.log(res, "성공");
         if (res.data.message === "same room") {
           window.alert("이미 상대방과의 채팅방이 있습니다.");
           history.push("/chatting");
