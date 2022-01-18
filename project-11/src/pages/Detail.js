@@ -26,7 +26,6 @@ const Detail = () => {
   const token = getCookie("Token");
   const curUserName = getCookie("Name");
   const curUserId = getCookie("Id");
-  console.log(curUserId)
   const params = useParams();
   const dispatch = useDispatch();
   const [is_loading, setIs_loading] = useState(false);
@@ -155,7 +154,6 @@ const Detail = () => {
       window.alert("이미 거래가 완료된 게시글 입니다.");
       return;
     }
-    console.log(PostData.postId, PostData.userId);
     axiosInstance
       .post(
         `/api/room`,
@@ -166,20 +164,20 @@ const Detail = () => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        console.log(res, "성공");
-        // if (res.data.message === "same room") {
-        //   window.alert("이미 상대방과의 채팅방이 있습니다.");
-        //   history.push("/chatting");
-        // } else {
-        //   history.push({
-        //     pathname: `/chat`,
-        //     state: {
-        //       roomName: res.data.roomName,
-        //       sender: res.data.user,
-        //       postId: PostData.postId,
-        //     },
-        //   });
-        // }
+        // console.log(res, "성공");
+        if (res.data.message === "same room") {
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          history.push("/chatting");
+        } else {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: PostData.postId,
+            },
+          });
+        }
       })
       .catch((err) => {
         console.log(err, "에러");

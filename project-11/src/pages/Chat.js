@@ -16,12 +16,13 @@ import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
 
 let List = [];
+let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+let stompClient = Stomp.over(sockjs);
 
 const Chat = (data) => {
   const nickName = getCookie("Name");
   const token = getCookie("Token");
-  let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
-  let stompClient = Stomp.over(sockjs);
+
   // console.log(data);
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
@@ -49,7 +50,7 @@ const Chat = (data) => {
   React.useEffect(() => {
     axios
       .post(
-        `http://52.78.32.4/api/message`,
+        `https://whereshallwemeet.shop/api/message`,
         {
           roomName: roomName,
           postId: data.location.state.postId,
