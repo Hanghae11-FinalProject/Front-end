@@ -59,7 +59,7 @@ const PostCard = ({ item }) => {
           </Grid>
           <PostImg>
             <Grid _className="imgbox">
-              {item.images.length !== 0 ? (
+              {item.images ? (
                 <img src={item.images[0].imageUrl} alt="PostImg" />
               ) : (
                 <img src="/static/defaultImg.jpg" alt="defaultImg" />
