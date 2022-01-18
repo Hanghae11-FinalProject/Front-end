@@ -23,6 +23,7 @@ import { IoIosArrowBack } from "react-icons/io";
 const Detail = () => {
   const token = getCookie("Token");
   const curUserId = getCookie("Id");
+
   console.log(curUserId);
   const params = useParams();
   const dispatch = useDispatch();
@@ -152,7 +153,6 @@ const Detail = () => {
       window.alert("이미 거래가 완료된 게시글 입니다.");
       return;
     }
-    console.log(PostData.postId, PostData.userId);
     axiosInstance
       .post(
         `/api/room`,

@@ -12,6 +12,8 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
+let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+  let stompClient = Stomp.over(sockjs);
 
 
 const Chatting = () => {

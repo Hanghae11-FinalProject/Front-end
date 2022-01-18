@@ -98,7 +98,9 @@ const editProfileDB = (Img, nickname) => {
       .then((response) => {
         console.log(response);
         dispatch(editProfile(response.data));
+        // 디폴트 이미지를 쿠키에서 지워줌
         deleteCookie('userImg')
+        // response로 받아온 img를 set쿠키로 다시 담아줌
         setCookie('userImg',response.data.profileImg)
       })
       .catch((err) => {

@@ -27,6 +27,7 @@ const Chat = (data) => {
   const nickName = decodeURIComponent(Name);
   const token = getCookie("Token");
 
+
   const myUserId = getCookie("Id");
 
   const [stompClient, setStompClient] = useState();
