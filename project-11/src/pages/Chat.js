@@ -1,29 +1,35 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Grid } from "../elements/index";
+import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
+import MyChat from "../components/MyChat";
+import NotMyChat from "../components/NotMyChat";
+import Nav from "../shared/Nav";
+
+import axios from "axios";
+
 import styled from "styled-components";
 import { IoPaperPlane } from "react-icons/io5";
 import { BsPlusLg } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CgArrowsHAlt } from "react-icons/cg";
+
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { getCookie } from "../shared/Cookie";
-import MyChat from "../components/MyChat";
-import NotMyChat from "../components/NotMyChat";
-import axios from "axios";
-import { history } from "../redux/configureStore";
-import Nav from "../shared/Nav";
 
 let List = [];
+let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+let stompClient = Stomp.over(sockjs);
 
 const Chat = (data) => {
-  const nickName = getCookie("Name");
+  const Name = getCookie("Name");
+  const nickName = decodeURIComponent(Name);
   const token = getCookie("Token");
+
   const myUserId = getCookie("Id");
 
   const [stompClient, setStompClient] = useState();
-
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -58,7 +64,6 @@ const Chat = (data) => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        // console.log(res.data, "성공");
         // console.log(x);
         setMessageList(res.data.message);
         setItems(res.data.post);
