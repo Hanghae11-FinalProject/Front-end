@@ -13,10 +13,10 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 
-const Chatting = () => {
-  let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
-  let stompClient = Stomp.over(sockjs);
+let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+let stompClient = Stomp.over(sockjs);
 
+const Chatting = () => {
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);

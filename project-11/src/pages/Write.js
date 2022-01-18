@@ -253,7 +253,7 @@ const Write = () => {
     }
     await axios({
       method: "post",
-      url: "http://52.78.32.4/api/posts",
+      url: "https://whereshallwemeet.shop/api/posts",
       data: formData,
       headers: {
         "Content-type": "multipart/form-data",

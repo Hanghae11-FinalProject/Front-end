@@ -1,27 +1,32 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Grid } from "../elements/index";
+import { history } from "../redux/configureStore";
+import { getCookie } from "../shared/Cookie";
+import MyChat from "../components/MyChat";
+import NotMyChat from "../components/NotMyChat";
+import Nav from "../shared/Nav";
+
+import axios from "axios";
+
 import styled from "styled-components";
 import { IoPaperPlane } from "react-icons/io5";
 import { BsPlusLg } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CgArrowsHAlt } from "react-icons/cg";
+
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { getCookie } from "../shared/Cookie";
-import MyChat from "../components/MyChat";
-import NotMyChat from "../components/NotMyChat";
-import axios from "axios";
-import { history } from "../redux/configureStore";
-import Nav from "../shared/Nav";
 
 let List = [];
+let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+let stompClient = Stomp.over(sockjs);
 
 const Chat = (data) => {
-  const nickName = getCookie("Name");
+  const Name = getCookie("Name");
+  const nickName = decodeURIComponent(Name);
   const token = getCookie("Token");
-  let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
-  let stompClient = Stomp.over(sockjs);
+
   // console.log(data);
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
@@ -35,9 +40,9 @@ const Chat = (data) => {
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [items, setItems] = useState([]);
-  console.log(messageList);
+  // console.log(messageList);
   const receiverId = data.location.state.sender.userId;
-  console.log(data);
+  // console.log(data);
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
   const nicknames = {
@@ -49,7 +54,7 @@ const Chat = (data) => {
   React.useEffect(() => {
     axios
       .post(
-        `http://52.78.32.4/api/message`,
+        `https://whereshallwemeet.shop/api/message`,
         {
           roomName: roomName,
           postId: data.location.state.postId,
@@ -61,7 +66,7 @@ const Chat = (data) => {
       .then((res) => {
         console.log(res.data, "성공");
         let x = res.data.message;
-        console.log(x);
+        // console.log(x);
         setMessageList(res.data.message);
         setItems(res.data.post);
       })
@@ -72,7 +77,7 @@ const Chat = (data) => {
       stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
 
       stompClient.subscribe(`/sub/${roomName}`, (data) => {
-        console.log(JSON.parse(data.body).type);
+        // console.log(JSON.parse(data.body).type);
         const onMessage = JSON.parse(data.body);
         setMessageList((messageList) => messageList.concat(onMessage));
         if (onMessage.type === "Exit") {
