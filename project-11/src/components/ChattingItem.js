@@ -8,7 +8,6 @@ const ChattingItem = (p) => {
   React.useEffect(() => {
     p.testOne();
   }, [p]);
-  // console.log(p.stomp);
 
   const goChat = () => {
     p.stomp.unsubscribe(`/sub/${myUserId}`);

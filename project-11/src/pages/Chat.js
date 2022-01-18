@@ -20,9 +20,10 @@ let List = [];
 const Chat = (data) => {
   const nickName = getCookie("Name");
   const token = getCookie("Token");
-  let sockjs = new SockJS("http://52.78.32.4:8080/webSocket");
-  let stompClient = Stomp.over(sockjs);
-  // console.log(data);
+  const myUserId = getCookie("Id");
+
+  const [stompClient, setStompClient] = useState();
+
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -31,13 +32,12 @@ const Chat = (data) => {
   const [is_exit, setIs_exit] = useState(false);
 
   const scrollRef = useRef();
-  const myUserId = getCookie("Id");
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [items, setItems] = useState([]);
-  console.log(messageList);
+  // console.log(messageList);
   const receiverId = data.location.state.sender.userId;
-  console.log(data);
+  // console.log(data);
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
   const nicknames = {
@@ -45,11 +45,10 @@ const Chat = (data) => {
     nickName: nickName,
   };
   // console.log(data.location);
-
   React.useEffect(() => {
     axios
       .post(
-        `http://52.78.32.4/api/message`,
+        `https://whereshallwemeet.shop/api/message`,
         {
           roomName: roomName,
           postId: data.location.state.postId,
@@ -59,20 +58,21 @@ const Chat = (data) => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        console.log(res.data, "성공");
-        let x = res.data.message;
-        console.log(x);
+        // console.log(res.data, "성공");
+        // console.log(x);
         setMessageList(res.data.message);
         setItems(res.data.post);
       })
       .catch((err) => {
         console.log(err);
       });
+    let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+    let stompClient = Stomp.over(sockjs);
     stompClient.connect({}, () => {
       stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
 
       stompClient.subscribe(`/sub/${roomName}`, (data) => {
-        console.log(JSON.parse(data.body).type);
+        // console.log(JSON.parse(data.body).type);
         const onMessage = JSON.parse(data.body);
         setMessageList((messageList) => messageList.concat(onMessage));
         if (onMessage.type === "Exit") {
@@ -82,6 +82,7 @@ const Chat = (data) => {
         // console.log(messageList);
       });
     });
+    setStompClient(stompClient);
   }, []); // setSearches(searches => searches.concat(query))
 
   const sendMessage = () => {
