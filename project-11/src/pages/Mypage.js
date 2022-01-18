@@ -24,13 +24,14 @@ import { actionCreators as postActions } from "../redux/modules/post";
 
 const Mypage = () => {
   const [shadowOpen, setShadowOpen] = useState(false);
+  const pollUrl = 'https://forms.gle/EpUzumV4FEQ7g47w7'
+  const Clickpoll = () => {
+    window.location.href = pollUrl;
+  };
 
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.post.profile); // initatilstate에서 데이터를 가져오는 방법
   const name = userProfile.nickname;
-  const profileImg = userProfile.profileImg
-
-  console.log(profileImg)
 
   useEffect(() => {
     dispatch(postActions.getProfileDB());
@@ -72,7 +73,7 @@ const Mypage = () => {
 
             {/* 프로필 수정 모달부분 */}
             <Grid _className={shadowOpen ? "shadow-active" : "shadow"}>
-              <UserModal onCancel={handleClose} name={name} profileImg={profileImg}/>
+              <UserModal onCancel={handleClose} name={name}/>
             </Grid>
 
             <Grid _className="menu-wrap" padding="30px 16px;">
@@ -150,9 +151,7 @@ const Mypage = () => {
                 <span>이용안내</span>
               </li>
               <li
-                onClick={() => {
-                  window.alert("Comming soon :)");
-                }}
+                onClick={Clickpoll}
               >
                 <p>
                   <MdFeedback

@@ -12,12 +12,12 @@ import { getCookie} from "../shared/Cookie";
 const UserModal = (props) => {
   const dispatch = useDispatch();
   const { name, onCancel} = props;
-  const PrImg = getCookie('Img')
   const [editName, setEditName] = useState("");
   const [iconList, setIconList] = useState([]);
   const [iconState, setIconState] = useState([]);
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
+  const PrImg = getCookie('Img')
   const [Img,setImg] = useState(PrImg);
 
 

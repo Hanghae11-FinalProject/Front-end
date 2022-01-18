@@ -26,6 +26,10 @@ import NotFound from "../pages/NotFound";
 
 function App() {
   const currentUrl = window.location.href;
+  const pollUrl = 'https://forms.gle/EpUzumV4FEQ7g47w7'
+  const Clickpoll = () => {
+    window.location.href = pollUrl;
+  };
 
   return (
     <div className="App">
@@ -38,7 +42,7 @@ function App() {
           <p>
             현대인을 위한 <span>교환 플랫폼 - 핑퐁!</span>
           </p>
-          <button>핑퐁팀에게 피드백 남기기</button>
+          <button onClick={Clickpoll}>핑퐁팀에게 피드백 남기기</button>
           <CopyToClipboard text={currentUrl}>
             <button onClick={() => alert("링크가 복사되었어요!")}>
               좋은 서비스 널리 알리기
