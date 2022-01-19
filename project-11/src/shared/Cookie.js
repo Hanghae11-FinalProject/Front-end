@@ -7,7 +7,7 @@ const setCookie = (name, value, exp = 5) => {
   document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
 };
 
-//쿠키에서 필요한 유저 인포를 가져오기 위한 함수
+//쿠키에서 필요한 유저 인포를 가져오기 위한 함수                   
 const getCookie = (type) => {
   const cookieStr = document.cookie;
   let value = cookieStr
