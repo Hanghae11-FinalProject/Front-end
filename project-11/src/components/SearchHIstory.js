@@ -60,7 +60,6 @@ const Keyword = styled.div`
   display: flex;
   align-items: center;
 
-  cursor: pointer;
   span {
     margin-top: 2px;
     cursor: pointer;
