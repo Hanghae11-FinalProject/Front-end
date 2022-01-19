@@ -32,7 +32,8 @@ const Login = () => {
         // setCookie("OK", loginInfo);
 
         setCookie("userId", response.data.userId);
-        setCookie("userImg", response.data.profileImg);
+        let profileImg = encodeURIComponent(response.data.profileImg);
+        setCookie("userImg", profileImg);
         let name = encodeURIComponent(response.data.nickName);
         setCookie("userName", name);
         setCookie("userToken", response.headers.authorization);
