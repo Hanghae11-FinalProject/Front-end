@@ -40,6 +40,15 @@ const Mypage = () => {
   const handleClose = () => {
     setShadowOpen(false);
   };
+
+  const logout = () => {
+    deleteCookie("userToken");
+    deleteCookie("userName");
+    deleteCookie("userImg");
+    deleteCookie("userId");
+    window.alert("로그아웃 되었습니다.");
+    history.push("/");
+  };
   return (
     <Permit>
       <>
@@ -163,16 +172,7 @@ const Mypage = () => {
                 </p>
                 <span>피드백</span>
               </li>
-              <li
-                onClick={() => {
-                  deleteCookie("userToken");
-                  deleteCookie("userName");
-                  deleteCookie("userImg");
-                  deleteCookie("userId");
-                  window.alert("로그아웃 되었습니다.");
-                  history.push("/");
-                }}
-              >
+              <li onClick={logout}>
                 <p>
                   <MdExitToApp
                     style={{
