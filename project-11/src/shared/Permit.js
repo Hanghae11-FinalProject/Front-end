@@ -7,6 +7,8 @@ const Permit = (props) => {
   const user = getCookie("Name");
   //safari에서 한글깨짐을 방지하기 위한 decodeURI
   const name = decodeURIComponent(user);
+
+  console.log(user, name);
   const token = getCookie("Token");
 
   if (name && token) {
