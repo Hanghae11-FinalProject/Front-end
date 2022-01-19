@@ -43,26 +43,28 @@ const Search = () => {
 
   //onClick event
   const handleClick = () => {
-    setNoresult("검색어를 입력해주세요");
-    setRecent([key, ...preWord]);
+    if (inputRef.current.value !== "") {
+      setNoresult("검색어를 입력해주세요");
+      setRecent([key, ...preWord]);
 
-    //검색리스트 가져오는 api
-    //처음 검색어가 검색되었을 때 처음 로드되는 0번 페이지 데이터
-    let searchdata;
-    axiosInstance
-      .post(`api/search?page=0`, { keyword: [key] })
-      .then((res) => {
-        console.log("검색완료", res);
-        searchdata = res.data.data.posts;
-        setPostcnt(res.data.data.postCnt);
-        setSearch_data(searchdata);
-        if (res.data.data.postCnt === 0) {
-          setNoresult("일치하는 내용이 없어요");
-        }
-      })
-      .catch((err) => {
-        console.log("검색실패", err);
-      });
+      //검색리스트 가져오는 api
+      //처음 검색어가 검색되었을 때 처음 로드되는 0번 페이지 데이터
+      let searchdata;
+      axiosInstance
+        .post(`api/search?page=0`, { keyword: [key] })
+        .then((res) => {
+          console.log("검색완료", res);
+          searchdata = res.data.data.posts;
+          setPostcnt(res.data.data.postCnt);
+          setSearch_data(searchdata);
+          if (res.data.data.postCnt === 0) {
+            setNoresult("일치하는 내용이 없어요");
+          }
+        })
+        .catch((err) => {
+          console.log("검색실패", err);
+        });
+    }
 
     if (!key) {
       setSearch_data([]);
