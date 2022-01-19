@@ -18,7 +18,8 @@ const OAuthRedirect = () => {
         console.log(response);
         const address = response.data.address;
         setCookie("userId", response.data.userId);
-        setCookie("userImg", response.data.profileImg);
+        let profileImg = encodeURIComponent(response.data.profileImg);
+        setCookie("userImg", profileImg);
         let name = encodeURIComponent(response.data.nickName);
         setCookie("userName", name);
         setCookie("userToken", `Bearer ${response.data.token}`);
