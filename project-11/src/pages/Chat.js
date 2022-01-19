@@ -14,11 +14,12 @@ import NotMyChat from "../components/NotMyChat";
 import axios from "axios";
 import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
+import Spinner from "../components/Spinner";
 
 let List = [];
 
 const Chat = (data) => {
-  const nickName = getCookie("Name");
+  const nickName = decodeURIComponent(getCookie("Name"));
   const token = getCookie("Token");
   const myUserId = getCookie("Id");
 
@@ -30,6 +31,7 @@ const Chat = (data) => {
   const [is_open, setIs_open] = useState(false);
   const [active, setActive] = useState(false);
   const [is_exit, setIs_exit] = useState(false);
+  const [is_loading, setIs_Loading] = useState(false);
 
   const scrollRef = useRef();
   const [currentMes, setCurrentMes] = useState("");
@@ -62,6 +64,7 @@ const Chat = (data) => {
         // console.log(x);
         setMessageList(res.data.message);
         setItems(res.data.post);
+        setIs_Loading(true);
       })
       .catch((err) => {
         console.log(err);
@@ -169,6 +172,7 @@ const Chat = (data) => {
     <>
       <Container>
         <Grid is_container _className="border background">
+          {is_loading === false && <Spinner />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
