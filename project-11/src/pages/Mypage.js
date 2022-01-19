@@ -24,7 +24,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 
 const Mypage = () => {
   const [shadowOpen, setShadowOpen] = useState(false);
-  const pollUrl = 'https://forms.gle/EpUzumV4FEQ7g47w7'
+  const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
   const Clickpoll = () => {
     window.location.href = pollUrl;
   };
@@ -73,7 +73,7 @@ const Mypage = () => {
 
             {/* 프로필 수정 모달부분 */}
             <Grid _className={shadowOpen ? "shadow-active" : "shadow"}>
-              <UserModal onCancel={handleClose} name={name}/>
+              <UserModal onCancel={handleClose} name={name} />
             </Grid>
 
             <Grid _className="menu-wrap" padding="30px 16px;">
@@ -150,9 +150,7 @@ const Mypage = () => {
                 </p>
                 <span>이용안내</span>
               </li>
-              <li
-                onClick={Clickpoll}
-              >
+              <li onClick={Clickpoll}>
                 <p>
                   <MdFeedback
                     style={{
@@ -167,10 +165,10 @@ const Mypage = () => {
               </li>
               <li
                 onClick={() => {
-                  deleteCookie("userToken")
-                  deleteCookie("userName")
-                  deleteCookie("userImg")
-                  deleteCookie("userId")
+                  deleteCookie("userToken");
+                  deleteCookie("userName");
+                  deleteCookie("userImg");
+                  deleteCookie("userId");
                   window.alert("로그아웃 되었습니다.");
                   history.push("/");
                 }}

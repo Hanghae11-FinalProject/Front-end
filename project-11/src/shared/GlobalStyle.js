@@ -21,6 +21,7 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
+
   button, input{
     outline: 0;
     font-family: 'Noto Sans KR', sans-serif;

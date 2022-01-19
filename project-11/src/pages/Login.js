@@ -91,6 +91,7 @@ const Login = () => {
               onChange={handleChangeInput}
               onKeyUp={handleKeyEnter}
               placeholder="abc@email.com"
+              autocomplete="off"
             />
             <span>비밀번호</span>
             <input
@@ -99,6 +100,7 @@ const Login = () => {
               onKeyUp={handleKeyEnter}
               type="password"
               placeholder="영문, 숫자 포함 8자 이상"
+              autocomplete="off"
             />
             {!loginTrue && (
               <p className="alert-msg" style={{ color: "red" }}>
