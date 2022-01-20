@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { history } from "../redux/configureStore";
 
@@ -18,6 +18,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
   const [is_login, setIs_login] = useState(token ? true : false);
   const [btn, setBtn] = useState(false);
   const replyData = reply;
+
   //댓글 삭제
   const deleteComment = () => {
     let ok = window.confirm("정말 삭제하시겠어요?");
@@ -28,6 +29,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
     }
   };
 
+  //대댓글 메뉴버튼 이벤트
   const Clickbtn = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
@@ -41,6 +43,7 @@ const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
     }
   };
 
+  //대댓글 작성자랑 채팅연결
   const goChat = () => {
     axiosInstance
       .post(

@@ -13,8 +13,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-  let stompClient = Stomp.over(sockjs);
-
+let stompClient = Stomp.over(sockjs);
 
 const Chatting = () => {
   let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
@@ -253,7 +252,7 @@ const Chatting = () => {
                 })}
             </div>
           </div>
-          <Nav chatting={"chatting"} />
+          <Nav rooms={rooms} chatting={"chatting"} />
         </Grid>
       </ChattingWrap>
     </Permit>

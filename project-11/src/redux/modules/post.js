@@ -99,9 +99,9 @@ const editProfileDB = (Img, nickname) => {
         console.log(response);
         dispatch(editProfile(response.data));
         // 디폴트 이미지를 쿠키에서 지워줌
-        deleteCookie('userImg')
+        deleteCookie("userImg");
         // response로 받아온 img를 set쿠키로 다시 담아줌
-        setCookie('userImg',response.data.profileImg)
+        setCookie("userImg", response.data.profileImg);
       })
       .catch((err) => {
         console.log(err);
@@ -123,14 +123,9 @@ const getPostAction = (area, cate, count, is_select) => {
       })
       .then((res) => {
         console.log("통신 후 리듀스 저장 전 목록", res.data, count);
-        console.log(
-          "통신 후 리듀스 저장 전 목록",
-          res.data.data.content,
-          count
-        );
         let is_next = null;
 
-        if (res.data.data.content.length < 6) {
+        if (res.data.data.length < 6) {
           is_next = false;
         } else {
           is_next = true;
@@ -138,28 +133,28 @@ const getPostAction = (area, cate, count, is_select) => {
 
         if (is_select || count === 0) {
           let _post_data = {
-            posts: res.data.data.content,
+            posts: res.data.data,
             page: count + 1,
             next: is_next,
           };
           dispatch(getCate(_post_data));
-        } else if (count === 0 && res.data.data.content.length < 7) {
+        } else if (count === 0 && res.data.data.length < 7) {
           let _post_data = {
-            posts: res.data.data.content,
+            posts: res.data.data,
             page: count + 1,
             next: is_next,
           };
           dispatch(getCate(_post_data));
-        } else if (count === 0 && res.data.data.content.length < 7) {
+        } else if (count === 0 && res.data.data.length < 7) {
           let _post_data = {
-            posts: res.data.data.content,
+            posts: res.data.data,
             page: count + 1,
             next: is_next,
           };
           dispatch(getCate(_post_data));
         } else {
           let _post_data = {
-            posts: res.data.data.content,
+            posts: res.data.data,
             page: count + 1,
             next: is_next,
           };

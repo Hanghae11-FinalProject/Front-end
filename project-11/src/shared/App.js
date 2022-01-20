@@ -28,7 +28,7 @@ function App() {
   const currentUrl = window.location.href;
   const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
   const Clickpoll = () => {
-    window.location.href = pollUrl;
+    window.open(pollUrl);
   };
 
   return (

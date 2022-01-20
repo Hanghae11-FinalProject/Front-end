@@ -24,13 +24,10 @@ const Detail = () => {
   const token = getCookie("Token");
   const curUserId = getCookie("Id");
 
-  console.log(curUserId);
   const params = useParams();
   const dispatch = useDispatch();
-  const [is_loading, setIs_loading] = useState(false);
 
   const [items, setItems] = useState(); // 지우면 안대용~ for Write page
-  const [user_id, setUser_id] = useState(false);
 
   //게시글 전체 데이터 저장
   const [PostData, setPostdata] = useState();
@@ -40,27 +37,23 @@ const Detail = () => {
 
   //즐겨찾기 state관리
   const [bmCnt, setBmCnt] = useState();
-  const [bookmark, setBookmark] = useState();
   const [bm, setCheckBm] = useState([]);
+  const [user_id, setUser_id] = useState(false);
 
   //댓글 갯수 관리
   const [comCnt, setcomCnt] = useState();
-
-  const [productId, setProductId] = useState();
   const [btnActive, setBtnActive] = useState(false);
   const [state, setState] = useState();
 
   // 포스트id로 포스트 가져오기
   const getPostData = async () => {
     try {
-      setIs_loading(true);
       const res = await axiosInstance.get(`/api/posts/${params.id}`);
       console.log("상세 페이지 조회 성공", res);
       setPostdata(res.data);
       setItems(res.data);
       setCheckBm(res.data.bookMarks);
       setBmCnt(res.data.bookmarkCnt);
-      setProductId(res.data.postId);
       setState(res.data.currentState);
       setcomCnt(res.data.commentCnt);
     } catch (err) {
@@ -86,7 +79,6 @@ const Detail = () => {
 
       if (bookmarkState.length === 1) {
         setUser_id(true);
-        setBookmark(true);
       }
     }
   };
@@ -102,7 +94,6 @@ const Detail = () => {
       window.alert("자신의 게시물은 즐겨찾기를 누르실 수 없어요😀");
     } else {
       setBmCnt(bmCnt + 1);
-      setBookmark(true);
       setUser_id(true);
       axiosInstance
         .post(
@@ -128,7 +119,6 @@ const Detail = () => {
       history.push("/");
     }
     setBmCnt(bmCnt - 1);
-    setBookmark(false);
     setUser_id(false);
     axiosInstance
       .delete(`api/bookmark/${params.id}`, {
@@ -148,6 +138,7 @@ const Detail = () => {
     dispatch(postActions.exchange_state(params.id));
   };
 
+  //글작성자와 채팅 연결하기
   const goChat = () => {
     if (PostData.currentState === "Complete") {
       window.alert("이미 거래가 완료된 게시글 입니다.");
@@ -201,10 +192,12 @@ const Detail = () => {
     //댓글 개수를 실시간 체크하기 위해서 의존값으로 댓글리스트를 걸어뒀습니다
   }, [commentlist]);
 
+  //즐겨찾기 갯수관리하기
   useEffect(() => {
     has_bookmarks();
   }, [bm]);
 
+  // 게시물 데이터가져오기
   useEffect(() => {
     dispatch(postActions.get_onepost(params.id));
   }, []);
@@ -382,7 +375,7 @@ const Detail = () => {
                     );
                   })}
                 </Grid>
-                {/* 라이크버튼  */}
+                {/* 즐겨찾기 버튼  */}
                 <Grid is_flex _className="btn-box">
                   <Grid is_flex _className="like-btn" flex_align="center">
                     {user_id ? (
@@ -398,7 +391,6 @@ const Detail = () => {
                   </Grid>
                   <Grid is_flex _className="chat-btn" flex_align="center">
                     <BsChat className="icon" />
-                    {/* <span>댓글 {commentlist?.length}</span> */}
                     <span>댓글 {comCnt}</span>
                   </Grid>
                 </Grid>
@@ -441,8 +433,6 @@ export default Detail;
 const DetailBox = styled.div`
   .border {
     padding-top: 60px;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     height: 100vh;
     padding-bottom: 110px;
     background-color: #fff;
@@ -556,7 +546,6 @@ const Header = styled.div`
   height: 50px;
   position: fixed;
   top: 0;
-  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;

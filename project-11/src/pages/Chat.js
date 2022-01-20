@@ -429,55 +429,11 @@ const ChatBox = styled.div`
   .message {
     margin: 15px 0;
   }
-  .profileimg {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  }
-
-  .chat-mes {
-    padding: 8px 10px;
-    border-radius: 12px;
-    /* color: black; */
-  }
-
-  .chat-info {
-    span {
-      font-size: 14px;
-      margin: 5px 5px;
-    }
-  }
-  #you .chat-mes {
-    background-color: var(--main-color);
-    /* color: #fff; */
-  }
-
-  #me .chat-line {
-    display: flex;
-    justify-content: end;
-  }
-
-  #me .profileimg {
-    order: 1;
-  }
-  #me .chat-mes {
-    background-color: var(--help-color);
-    color: var(--active-color);
-
-    order: 2;
-  }
 `;
 
 const ChatInput = styled.div`
   position: fixed;
-  bottom: 57px;
+  bottom: 53px;
 
   .input-inner {
     display: flex;
@@ -491,6 +447,18 @@ const ChatInput = styled.div`
       border-radius: 20px;
       padding: 5px 10px;
       background-color: #0000000d;
+      @media screen and (max-width: 415px) {
+        width: 293px;
+      }
+      @media screen and (max-width: 405px) {
+        width: 280px;
+      }
+      @media screen and (max-width: 390px) {
+        width: 266px;
+      }
+      @media screen and (max-width: 375px) {
+        width: 250px;
+      }
     }
     .plus-icon-active {
       padding: 8px 0;
