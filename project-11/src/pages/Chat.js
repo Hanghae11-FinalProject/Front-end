@@ -482,7 +482,7 @@ const ChatInput = styled.div`
   .input-inner {
     display: flex;
     align-items: center;
-    background-color: #fff;
+    background-color: black;
     input {
       width: 305px;
       height: 40px;
