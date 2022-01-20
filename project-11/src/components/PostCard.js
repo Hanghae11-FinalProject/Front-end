@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
+
 import styled from "styled-components";
 import { Grid } from "../elements/index";
 import { RiArrowLeftRightLine } from "react-icons/ri";
@@ -15,7 +16,6 @@ const PostCard = ({ item }) => {
   );
   const [user_id, setUser_id] = useState(false);
   const [bookmark, setBookmark] = useState(item.bookMarks);
-  const [checkBm, setCheckBm] = useState();
 
   const MoveToDetail = () => {
     history.push(`/detail/${item.postId}`);
@@ -30,7 +30,6 @@ const PostCard = ({ item }) => {
 
       if (bookmarkState.length === 1) {
         setUser_id(true);
-        setCheckBm(true);
       }
     }
   };
@@ -74,7 +73,6 @@ const PostCard = ({ item }) => {
 
           <PostContent>
             <Grid is_flex _className="exchange-box">
-              {/* <span>{item.myItem}</span> */}
               <RiArrowLeftRightLine className="icon" />
               <span>{item.exchangeItem}</span>
             </Grid>
@@ -220,14 +218,11 @@ const PostContent = styled.div`
       margin: 5px;
       font-size: 14px;
       font-weight: bold;
-      /* color: var(--main-color); */
     }
 
     span {
       font-size: 14px;
       color: var(--main-font-color);
-      /* width: 47%;
-      text-align: center; */
     }
   }
 `;

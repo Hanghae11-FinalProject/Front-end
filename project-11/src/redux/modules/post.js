@@ -123,7 +123,6 @@ const getPostAction = (area, cate, count, is_select) => {
       })
       .then((res) => {
         console.log("통신 후 리듀스 저장 전 목록", res.data, count);
-        console.log("통신 후 리듀스 저장 전 목록", res.data.data, count);
         let is_next = null;
 
         if (res.data.data.length < 6) {

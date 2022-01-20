@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { Grid } from "../elements/index";
 import { history } from "../redux/configureStore";
@@ -204,6 +204,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
               <></>
             )}
           </Grid>
+          {/* 댓글의 아이디를 넘겨 받으면 대댓글 인풋창 오픈 */}
           {is_name === true && (
             <>
               <ReplyInput>
@@ -248,8 +249,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
           )}
         </CommentBox>
       </>
-      {/* 코멘트 인풋창 */}
-      {/* 대댓글없이 쓰는 인풋창 */}
+      {/* 대댓글없이 쓰는 댓글 인풋창 */}
       <CommentInput postid={postid} comcnt={comcnt} />
     </>
   );

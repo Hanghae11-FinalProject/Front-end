@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
-import PuffLoader from "react-spinners/PuffLoader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 import Spinner from "./Spinner";
@@ -37,19 +36,16 @@ const PostList = ({ location, category, selected }) => {
     }
   };
 
+  //지역구 설정, 카테고리 변경시 페이지 0으로 초기화
   useEffect(() => {
     curLocation();
     setpage(0);
   }, [location, category]);
 
   useEffect(() => {
-    // console.log("랜더링2");
-    // console.log("미들웨어로 넘기는 값", area, cate, page); //로딩시 불러오는 데이터
     if (page !== 0) {
       is_select = false;
     }
-    // console.log(page);
-
     dispatch(postActions.getPostAction(area, category, page, is_select));
   }, [area, category, page]);
 
@@ -67,14 +63,12 @@ const PostList = ({ location, category, selected }) => {
       .then((res) => {
         data = res.data.data;
 
-        // //데이터가 사이즈보다 작을 경우
+        //다음 페이지 데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 6) {
-          // console.log("사이즈가 작나?");
           sethasMore(false);
           setItems([...items, ...data]);
         } else {
-          //데이터가 사이즈만큼 넘어왔을 때
-          // console.log("사이즈가 큰가?");
+          //다음 페이지 데이터가 사이즈만큼 넘어왔을 때
           setItems([...items, ...data]);
         }
         setpage(count);
@@ -92,9 +86,6 @@ const PostList = ({ location, category, selected }) => {
           {post_data.posts.length === 0 ? (
             <div className="spinner">
               <Spinner />
-              {/* <Spin>
-                <PuffLoader size="100px" color="var(--main-color)" />
-              </Spin> */}
             </div>
           ) : (
             <>
@@ -129,11 +120,4 @@ const MainContainer = styled.div`
   }
 `;
 
-const Spin = styled.div`
-  height: 65vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center; ;
-`;
 export default PostList;

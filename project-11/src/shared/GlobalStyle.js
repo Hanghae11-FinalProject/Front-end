@@ -87,8 +87,6 @@ const GlobalStyles = createGlobalStyle`
 
   
 
-
-
 @media screen and (min-width: 1024px) {
     body{background: transparent};
     .background{
