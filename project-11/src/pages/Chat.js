@@ -446,6 +446,18 @@ const ChatInput = styled.div`
       border-radius: 20px;
       padding: 5px 10px;
       background-color: #0000000d;
+      @media screen and (max-width: 415px) {
+        width: 293px;
+      }
+      @media screen and (max-width: 405px) {
+        width: 280px;
+      }
+      @media screen and (max-width: 390px) {
+        width: 266px;
+      }
+      @media screen and (max-width: 375px) {
+        width: 250px;
+      }
     }
     .plus-icon-active {
       padding: 8px 0;

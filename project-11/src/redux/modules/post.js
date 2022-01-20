@@ -134,7 +134,6 @@ const getPostAction = (area, cate, count, is_select) => {
         if (is_select || count === 0) {
           let _post_data = {
             posts: res.data.data,
-
             page: count + 1,
             next: is_next,
           };

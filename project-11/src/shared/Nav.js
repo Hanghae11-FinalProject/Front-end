@@ -6,10 +6,30 @@ import { BsPlusLg } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
+import { axiosInstance } from "./api";
+import { getCookie } from "./Cookie";
 
 import styled from "styled-components";
 
 const Nav = (props) => {
+  const [MsgCnt, setMsgCnt] = React.useState(0);
+  const token = getCookie("Token");
+  useEffect(() => {
+    axiosInstance
+      .get("/api/messageCount", {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        // console.log(res);
+        setMsgCnt(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  // console.log(MsgCnt);
   return (
     <>
       <NavBox>
@@ -56,9 +76,14 @@ const Nav = (props) => {
                 history.push("/chatting");
               }}
             />
-            {/* <div className={MsgCnt !== 0 ? "chatting-cnt" : "cnt-zero"}>
+            <div
+              className={MsgCnt !== 0 ? "chatting-cnt" : "cnt-zero"}
+              onClick={() => {
+                history.push("/chatting");
+              }}
+            >
               {MsgCnt !== 0 ? MsgCnt : ""}
-            </div> */}
+            </div>
           </Menu>
           <Menu>
             <RiUserFill
@@ -90,31 +115,6 @@ const NavBox = styled.div`
 
   background-color: #fff;
   z-index: 7000;
-
-  .chatting-cnt {
-    position: fixed;
-    bottom: 26px;
-    right: 109px;
-    background-color: #ff626f;
-    width: 22px;
-    height: 22px;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 22px;
-    border-radius: 50%;
-    text-align: center;
-    z-index: 9999;
-  }
-  .cnt-zero {
-    position: fixed;
-    bottom: 26px;
-    right: 109px;
-    background-color: #fff;
-    width: 22px;
-    height: 22px;
-    z-index: 9999;
-  }
 `;
 
 const PlusMenu = styled.div`
@@ -141,6 +141,25 @@ const PlusMenu = styled.div`
 const Menu = styled.div`
   width: 20%;
   font-size: 20px;
+  .chatting-cnt {
+    position: absolute;
+    bottom: 20px;
+    left: 45px;
+    background-color: #ff626f;
+    width: 22px;
+    height: 22px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+    z-index: 9999;
+  }
+  .cnt-zero {
+    display: none;
+  }
   .icon {
     cursor: pointer;
   }

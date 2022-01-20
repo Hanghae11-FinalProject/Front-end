@@ -84,6 +84,7 @@ const GlobalStyles = createGlobalStyle`
     left: 0%;
   }
 }
+
   
 
 @media screen and (min-width: 1024px) {
@@ -308,8 +309,6 @@ button{
       }
  
 }
-
-
 
 `;
 
