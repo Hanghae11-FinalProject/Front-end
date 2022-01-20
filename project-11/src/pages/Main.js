@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { history } from "../redux/configureStore";
-import PostList from "../components/PostList";
-import Nav from "../shared/Nav";
 import { getCookie } from "../shared/Cookie";
 import { Grid } from "../elements/index";
+import PostList from "../components/PostList";
+import Nav from "../shared/Nav";
 
+// 카테고리 carousel
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
 
 import { ImSpoonKnife } from "react-icons/im";
 import { MdMenuBook } from "react-icons/md";
@@ -18,9 +21,6 @@ import { BiSmile } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 
 import styled from "styled-components";
-// style
-import "swiper/css";
-import "swiper/css/pagination";
 
 SwiperCore.use([Pagination, Autoplay]);
 
@@ -32,6 +32,7 @@ const Main = () => {
   const [is_location, setIs_Location] = useState("위치 설정하기");
   const [is_cate, setIs_Cate] = useState("");
   const [selected, setSelected] = useState(false);
+
   //지역 옵션
   const locations = [
     { id: 1, locationName: "전체" },
@@ -245,6 +246,7 @@ const Main = () => {
                 </Swiper>
               </Slider>
             </Category>
+            {/* 지역 설정 */}
             <LocationBox>
               <Grid
                 is_flex
@@ -281,12 +283,14 @@ const Main = () => {
               )}
             </LocationBox>
 
+            {/* 상품 리스트 */}
             <PostList
               location={is_location}
               category={is_cate}
               selected={selected}
             />
           </div>
+          {/* 메뉴 */}
           <Nav home={"home"} />
         </Grid>
       </Container>
