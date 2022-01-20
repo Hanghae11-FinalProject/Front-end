@@ -14,12 +14,14 @@ const MyChat = (props) => {
 
 const MyChatBox = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: right;
   margin: 12px 0px;
+
   .out-chat-box {
     display: flex;
     justify-content: center;
     margin-top: 30px;
+
     .out-chat {
       font-size: 14px;
       color: var(--main-color);

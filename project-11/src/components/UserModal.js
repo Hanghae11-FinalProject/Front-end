@@ -139,12 +139,6 @@ const UserModal = (props) => {
     <>
       <Modal>
         <Grid _className="modal-box">
-          {/* <ReactModal
-          isOpen={isOpen}
-          // 모달 css는 shared folder-App.css 에 포함되어있습니다
-          className="modal-box"
-          overlayClassName="Overlay"
-        > */}
           <TitleWrap>
             <p className="title">프로필 수정</p>
             <p className="nickname">닉네임</p>

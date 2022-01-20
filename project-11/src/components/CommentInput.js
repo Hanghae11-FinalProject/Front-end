@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { Grid } from "../elements/index";
 import { getCookie } from "../shared/Cookie";
@@ -23,7 +23,7 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
     setNewComment(e.target.value);
   };
 
-  // 새 댓글 서버로 보내기
+  // 새 댓글 쓰기
   const postComment = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
