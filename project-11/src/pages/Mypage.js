@@ -26,7 +26,7 @@ const Mypage = () => {
   const [shadowOpen, setShadowOpen] = useState(false);
   const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
   const Clickpoll = () => {
-    window.location.href = pollUrl;
+    window.open(pollUrl);
   };
 
   const dispatch = useDispatch();

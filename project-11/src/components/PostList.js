@@ -65,7 +65,7 @@ const PostList = ({ location, category, selected }) => {
         address: [area],
       })
       .then((res) => {
-        data = res.data.data.content;
+        data = res.data.data;
 
         // //데이터가 사이즈보다 작을 경우
         if (data.length === 0 || data.length < 6) {

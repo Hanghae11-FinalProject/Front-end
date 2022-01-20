@@ -84,6 +84,7 @@ const GlobalStyles = createGlobalStyle`
     left: 0%;
   }
 }
+
   
 
 
@@ -310,8 +311,6 @@ button{
       }
  
 }
-
-
 
 `;
 
