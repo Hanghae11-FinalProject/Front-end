@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Permit from "../shared/Permit";
 import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
@@ -7,17 +7,20 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { history } from "../redux/configureStore";
 
+import { actionCreators as chatActions } from "../redux/modules/chat";
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-let stompClient = Stomp.over(sockjs);
+import { useDispatch, useSelector } from "react-redux";
+
+// let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+// let stompClient = Stomp.over(sockjs);
 
 const Chatting = () => {
-  let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-  let stompClient = Stomp.over(sockjs);
+  const dispatch = useDispatch();
+  const stompClient = useSelector((data) => data.chat.stompClient);
 
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
@@ -45,14 +48,17 @@ const Chatting = () => {
 
   React.useEffect(() => {
     let data = rooms;
+    let cnt = 0;
     for (let i = 0; i < data.length; i++) {
       if (data[i].roomName === newMsgData.roomName) {
         data[i].notReadingMessageCount = data[i].notReadingMessageCount + 1;
         data[i].lastMessage.content = newMsgData.message;
         data[i].lastMessage.createdAt = newMsgData.createdAt;
       }
+      cnt = cnt + data[i].notReadingMessageCount;
     }
-    // console.log(newMsgData);
+    // console.log(cnt);
+    // dispatch(chatActions.getChat(cnt));
     setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??
   }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
   // console.log(rooms);
@@ -60,7 +66,7 @@ const Chatting = () => {
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setRooms(res.data);
         let ing = [];
         let com = [];
@@ -83,7 +89,7 @@ const Chatting = () => {
         stompClient.subscribe(`/sub/${myUserId}`, (data) => {
           const onMessage = JSON.parse(data.body);
           setNewMsgData(onMessage);
-          // console.log(onMessage);
+          console.log(onMessage);
           axiosInstance
             .post(
               `/api/roomcount`,

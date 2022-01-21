@@ -21,7 +21,7 @@ const FvLoginCk = () => {
               history.push("/main");
             }}
           >
-            <span>게시물 보러가기!</span>
+            <span>게시물 보러가기</span>
           </div>
         </div>
         <Nav />

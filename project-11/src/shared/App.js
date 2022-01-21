@@ -1,10 +1,13 @@
+import React from "react";
 import { Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/configureStore";
 import { Switch } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { getCookie } from "../shared/Cookie";
+// import { getCookie } from "../shared/Cookie";
 import "swiper/css/bundle";
+// import { useSelector } from "react-redux";
+// import { axiosInstance } from "./api";
 
 import GlobalStyles from "./GlobalStyle";
 import Main from "../pages/Main";
@@ -25,11 +28,43 @@ import OAuthRedirect from "../components/OAuthRedirect";
 import NotFound from "../pages/NotFound";
 
 function App() {
+  // const myUserId = getCookie("Id");
+  // const token = getCookie("Token");
+  // const [newMsgData, setNewMsgData] = React.useState("");
+  // const stompClient = useSelector((state) => state.chat.stompClient);
+  // const cnt = useSelector((state) => state.chat);
+  // console.log(cnt);
   const currentUrl = window.location.href;
   const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
   const Clickpoll = () => {
     window.open(pollUrl);
   };
+
+  // React.useEffect(() => {
+  //   if (token) {
+  //     console.log("hi");
+  //     stompClient.connect({}, () => {
+  //       stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
+  //       stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+  //         const onMessage = JSON.parse(data.body);
+  //         setNewMsgData(onMessage);
+  //         console.log(onMessage);
+  //         axiosInstance
+  //           .post(
+  //             `/api/roomcount`,
+  //             { roomName: onMessage.roomName, userId: myUserId },
+  //             { headers: { Authorization: token } }
+  //           )
+  //           .then((res) => {
+  //             console.log(res, "성공");
+  //           })
+  //           .catch((err) => {
+  //             console.log(err, "에러");
+  //           });
+  //       });
+  //     });
+  //   }
+  // }, []);
 
   return (
     <div className="App">

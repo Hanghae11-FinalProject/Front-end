@@ -2,22 +2,26 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
+import { useSelector } from "react-redux";
 
 const ChattingItem = (p) => {
+  const stompClient = useSelector((data) => data.chat.stompClient);
   const myUserId = getCookie("Id");
   React.useEffect(() => {
     p.testOne();
   }, [p]);
-  // console.log(p);
+  const roomData = p.roomData; // Chat.js에 채팅카운트 넘겨주기 위한 props
+
   const goChat = () => {
-    p.stomp.unsubscribe(`/sub/${myUserId}`);
-    p.stompClient.disconnect();
+    stompClient.unsubscribe(`/sub/${myUserId}`);
+    stompClient.disconnect();
     history.push({
       pathname: `/chat`,
       state: {
         roomName: p.roomData.roomName,
         sender: p.roomData.user,
         postId: p.roomData.postId,
+        roomData: roomData,
       },
     });
   };
