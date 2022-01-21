@@ -4,14 +4,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
 import { Grid } from "../elements/index";
-import { actionCreators as postActions } from "../redux/modules/post";
 
 import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
-import Spinner2 from "../components/Spinner2";
+import Spinner from "../components/Spinner";
 import Permit from "../shared/Permit";
 
 // style
@@ -19,7 +18,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import axios from "axios";
-import { truncate } from "lodash";
 
 SwiperCore.use([Pagination, Navigation]);
 
@@ -281,7 +279,7 @@ const Write = () => {
         <Container>
           <Grid is_container _className="border background">
             {loading ? (
-              <Spinner2 />
+              <Spinner />
             ) : (
               <>
                 <MainTop>

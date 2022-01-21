@@ -9,7 +9,7 @@ import FvLoginCk from "../components/FvLoginCk";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
-import Spinner2 from "../components/Spinner2";
+import Spinner from "../components/Spinner";
 
 const Favorite = () => {
   const token = getCookie("Token");
@@ -33,7 +33,7 @@ const Favorite = () => {
   return (
     <FavoriteWrap>
       <Grid is_container="is_container" _className="grid-border background">
-        {is_loading === false && <Spinner2 />}
+        {is_loading === false && <Spinner />}
         <div className="Favorite-wrap">
           <div className="Favorite-header-wrap">
             <IoIosArrowBack
@@ -69,7 +69,6 @@ const FavoriteWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
-    /* border: 1px solid var(--help-color); */
     background-color: #fff;
     padding-bottom: 50px;
 

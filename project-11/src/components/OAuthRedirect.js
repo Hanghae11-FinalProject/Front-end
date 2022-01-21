@@ -1,6 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import Spinner2 from "./Spinner2";
+import Spinner from "./Spinner";
 import { history } from "../redux/configureStore";
 import { axiosInstance } from "../shared/api";
 import { setCookie } from "../shared/Cookie";
@@ -35,7 +34,7 @@ const OAuthRedirect = () => {
       });
   }, []);
 
-  return <Spinner2 />;
+  return <Spinner />;
 };
 
 export default OAuthRedirect;

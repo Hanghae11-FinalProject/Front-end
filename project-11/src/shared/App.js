@@ -26,8 +26,6 @@ import MyPost from "../pages/MyPost";
 import EditPost from "../pages/EditPost";
 import OAuthRedirect from "../components/OAuthRedirect";
 import NotFound from "../pages/NotFound";
-import Spinner2 from "../components/Spinner2";
-import Spinner3 from "../components/Spinner3";
 
 function App() {
   // const myUserId = getCookie("Id");
@@ -108,10 +106,6 @@ function App() {
               <Route path="/search" exact component={Search}></Route>
               <Route path="/chatting" exact component={Chatting}></Route>
               <Route path="/chat" exact component={Chat}></Route>
-              <Route path="/spinner2" exact component={Spinner2}></Route> 
-              <Route path="/spinner3" exact component={Spinner3}></Route> 
-
-
               <Route
                 path="/oauth/callback/kakao"
                 exact
