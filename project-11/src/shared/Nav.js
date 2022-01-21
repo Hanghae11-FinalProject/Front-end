@@ -22,7 +22,7 @@ const Nav = (props) => {
   const [newMsgData, setNewMsgData] = React.useState();
   const [msgCnt, setMsgCnt] = React.useState();
   const [rooms, setRooms] = React.useState([]);
-  const stompClient = useSelector((state) => state.chat.stompClient);
+  const stomp = useSelector((state) => state.chat.stompClient);
 
   const chat = props.chat;
   const eachMsgCnt = Number(props.messageCnt);
@@ -60,6 +60,7 @@ const Nav = (props) => {
         console.log(err, "에러");
       });
     // const stompClient = stomp;
+    let stompClient = stomp;
     console.log(stompClient);
     stompClient.connect({}, () => {
       console.log("아님여기?");
@@ -68,18 +69,18 @@ const Nav = (props) => {
         const onMessage = JSON.parse(data.body);
         setNewMsgData(onMessage);
         console.log(onMessage);
-        axiosInstance
-          .post(
-            `/api/roomcount`,
-            { roomName: onMessage.roomName, userId: myUserId },
-            { headers: { Authorization: token } }
-          )
-          .then((res) => {
-            console.log(res, "성공");
-          })
-          .catch((err) => {
-            console.log(err, "에러");
-          });
+        // axiosInstance
+        //   .post(
+        //     `/api/roomcount`,
+        //     { roomName: onMessage.roomName, userId: myUserId },
+        //     { headers: { Authorization: token } }
+        //   )
+        //   .then((res) => {
+        //     console.log(res, "성공");
+        //   })
+        //   .catch((err) => {
+        //     console.log(err, "에러");
+        //   });
       });
     });
   }, []);
