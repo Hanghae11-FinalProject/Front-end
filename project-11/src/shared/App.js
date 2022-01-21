@@ -28,43 +28,11 @@ import OAuthRedirect from "../components/OAuthRedirect";
 import NotFound from "../pages/NotFound";
 
 function App() {
-  // const myUserId = getCookie("Id");
-  // const token = getCookie("Token");
-  // const [newMsgData, setNewMsgData] = React.useState("");
-  // const stompClient = useSelector((state) => state.chat.stompClient);
-  // const cnt = useSelector((state) => state.chat);
-  // console.log(cnt);
   const currentUrl = window.location.href;
   const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
   const Clickpoll = () => {
     window.open(pollUrl);
   };
-
-  // React.useEffect(() => {
-  //   if (token) {
-  //     console.log("hi");
-  //     stompClient.connect({}, () => {
-  //       stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
-  //       stompClient.subscribe(`/sub/${myUserId}`, (data) => {
-  //         const onMessage = JSON.parse(data.body);
-  //         setNewMsgData(onMessage);
-  //         console.log(onMessage);
-  //         axiosInstance
-  //           .post(
-  //             `/api/roomcount`,
-  //             { roomName: onMessage.roomName, userId: myUserId },
-  //             { headers: { Authorization: token } }
-  //           )
-  //           .then((res) => {
-  //             console.log(res, "성공");
-  //           })
-  //           .catch((err) => {
-  //             console.log(err, "에러");
-  //           });
-  //       });
-  //     });
-  //   }
-  // }, []);
 
   return (
     <div className="App">
@@ -106,7 +74,6 @@ function App() {
               <Route path="/search" exact component={Search}></Route>
               <Route path="/chatting" exact component={Chatting}></Route>
               <Route path="/chat" exact component={Chat}></Route>
-
 
               <Route
                 path="/oauth/callback/kakao"
