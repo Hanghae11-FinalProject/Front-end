@@ -10,7 +10,7 @@ import { Grid } from "../elements";
 import Nav from "../shared/Nav";
 import MyPostCard from "../components/MyPostCard";
 import MpLoginCk from "../components/MpLoginCk";
-import Spinner from "../components/Spinner";
+import Spinner2 from "../components/Spinner2";
 
 const MyPost = () => {
   const token = getCookie("Token");
@@ -42,7 +42,7 @@ const MyPost = () => {
     <>
       <MyPostBox>
         <Grid is_container _className="background">
-          {is_loading === false && <Spinner />}
+          {is_loading === false && <Spinner2 />}
           <MainTop>
             <IoIosArrowBack
               size="30"
