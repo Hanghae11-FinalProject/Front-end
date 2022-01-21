@@ -1,35 +1,89 @@
 import React, { useEffect } from "react";
 import { history } from "../redux/configureStore";
+import { useSelector } from "react-redux";
 import { Grid } from "../elements";
 import { MdHome } from "react-icons/md";
 import { BsPlusLg } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { RiUserFill } from "react-icons/ri";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
-import { axiosInstance } from "./api";
-import { getCookie } from "./Cookie";
-
 import styled from "styled-components";
+import { getCookie } from "./Cookie";
+import { axiosInstance } from "./api";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+
+// const sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+// const stompClient = Stomp.over(sockjs);
 
 const Nav = (props) => {
-  const [MsgCnt, setMsgCnt] = React.useState(0);
+  const myUserId = getCookie("Id");
   const token = getCookie("Token");
-  useEffect(() => {
+  const [newMsgData, setNewMsgData] = React.useState();
+  const [msgCnt, setMsgCnt] = React.useState();
+  const [rooms, setRooms] = React.useState([]);
+  const stompClient = useSelector((state) => state.chat.stompClient);
+
+  const chat = props.chat;
+  const eachMsgCnt = Number(props.messageCnt);
+
+  React.useEffect(() => {
+    let data = rooms;
+    let cnt = 0;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].roomName === newMsgData?.roomName) {
+        data[i].notReadingMessageCount = data[i].notReadingMessageCount + 1;
+      }
+      cnt = cnt + data[i].notReadingMessageCount;
+    }
+    // console.log(cnt);
+    setMsgCnt(cnt);
+  }, [newMsgData]);
+
+  React.useEffect(() => {
     axiosInstance
-      .get("/api/messageCount", {
-        headers: {
-          Authorization: token,
-        },
-      })
+      .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
         // console.log(res);
-        setMsgCnt(res.data);
+        setRooms(res.data);
+        let initialCount = 0;
+        for (let i = 0; i < res.data?.length; i++) {
+          initialCount = initialCount + res.data[i].notReadingMessageCount;
+        }
+        if (eachMsgCnt !== 0 && chat === "chat") {
+          setMsgCnt(initialCount - eachMsgCnt);
+        } else {
+          setMsgCnt(initialCount);
+        }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err, "에러");
       });
+    // const stompClient = stomp;
+    console.log(stompClient);
+    stompClient.connect({}, () => {
+      console.log("아님여기?");
+      stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
+      stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+        const onMessage = JSON.parse(data.body);
+        setNewMsgData(onMessage);
+        console.log(onMessage);
+        axiosInstance
+          .post(
+            `/api/roomcount`,
+            { roomName: onMessage.roomName, userId: myUserId },
+            { headers: { Authorization: token } }
+          )
+          .then((res) => {
+            console.log(res, "성공");
+          })
+          .catch((err) => {
+            console.log(err, "에러");
+          });
+      });
+    });
   }, []);
-  // console.log(MsgCnt);
+
   return (
     <>
       <NavBox>
@@ -77,12 +131,12 @@ const Nav = (props) => {
               }}
             />
             <div
-              className={MsgCnt !== 0 ? "chatting-cnt" : "cnt-zero"}
+              className={msgCnt > 0 ? "chatting-cnt" : "cnt-zero"}
               onClick={() => {
                 history.push("/chatting");
               }}
             >
-              {MsgCnt !== 0 ? MsgCnt : ""}
+              {msgCnt > 0 ? msgCnt : ""}
             </div>
           </Menu>
           <Menu>

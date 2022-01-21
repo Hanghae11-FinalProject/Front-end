@@ -22,9 +22,9 @@ const Chat = (data) => {
   const nickName = decodeURIComponent(getCookie("Name"));
   const token = getCookie("Token");
   const myUserId = getCookie("Id");
-
+  const chat = "chat"; // 채팅방 들어왔는지 인식하기 위한 변수(Nav에 넘겨줄것)
   const [stompClient, setStompClient] = useState();
-
+  const messageCnt = data.location.state.roomData?.notReadingMessageCount;
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -301,7 +301,7 @@ const Chat = (data) => {
               </Grid>
             </ChatInput>
           </ChatBox>
-          <Nav />
+          <Nav chat={chat} messageCnt={messageCnt} />
         </Grid>
       </Container>
     </>
@@ -434,11 +434,15 @@ const ChatBox = styled.div`
 const ChatInput = styled.div`
   position: fixed;
   bottom: 50px;
+  padding: 0px 16px 6px 16px;
+  margin-left: -16px;
+  background-color: white;
   .input-inner {
     display: flex;
     align-items: center;
-    background-color: black;
+
     justify-content: space-between;
+
     input {
       width: 305px;
       height: 40px;
