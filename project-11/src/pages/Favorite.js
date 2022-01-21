@@ -69,7 +69,6 @@ const FavoriteWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
-    /* border: 1px solid var(--help-color); */
     background-color: #fff;
     padding-bottom: 50px;
 

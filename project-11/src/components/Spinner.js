@@ -37,12 +37,16 @@ const Spinner2 = () => {
 export default Spinner2;
 
 const Wrap = styled.div`
+
   height: 100vh;
+
   .cssload-dots {
     width: 0;
     height: 0;
     position: absolute;
+
     top: 0;
+
     left: 0;
     bottom: 0;
     right: 0;
