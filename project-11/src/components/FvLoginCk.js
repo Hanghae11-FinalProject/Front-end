@@ -10,10 +10,10 @@ const FvLoginCk = () => {
       <Grid is_container="container" _className="border">
         <div className="modal-wrap">
           <AppImg>
-            <img src="/static/pingpong00.png" alt="logo" />
+            <img src="/static/pong.png" alt="logo" />
           </AppImg>
           <div className="title">
-            <p>즐겨찾기 목록이 없어요</p>
+            <p>즐겨찾기한 글이 없어요</p>
           </div>
           <div
             className="subtitle"
@@ -21,7 +21,7 @@ const FvLoginCk = () => {
               history.push("/main");
             }}
           >
-            <span>게시물 보러가기</span>
+            <span>메인으로 돌아가기</span>
           </div>
         </div>
         <Nav />
@@ -34,7 +34,6 @@ export default FvLoginCk;
 
 const LoginCkWrap = styled.div`
   .border {
-    /* border: 1px solid var(--help-color); */
     height: 100vh;
     background-color: #fff;
 
@@ -54,7 +53,7 @@ const LoginCkWrap = styled.div`
       .title {
         margin-bottom: 80px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
         }
       }
@@ -75,7 +74,10 @@ const LoginCkWrap = styled.div`
   }
 `;
 const AppImg = styled.div`
+  width: 78px;
+  margin: 0 auto;
+  margin-bottom: 30px;
   img {
-    width: 60%;
+    width: 100%;
   }
 `;

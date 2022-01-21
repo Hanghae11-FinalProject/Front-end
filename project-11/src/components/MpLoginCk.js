@@ -10,7 +10,7 @@ const MpLoginCk = () => {
       <Grid is_container="container" _className="container-border">
         <div className="modal-wrap">
           <AppImg>
-            <img src="/static/pingpong00.png" alt="logo" />
+            <img src="/static/pong.png" alt="logo" />
           </AppImg>
           <div className="title">
             <p>내가 작성한 글이 없어요</p>
@@ -51,8 +51,12 @@ const LoginCkWrap = styled.div`
       .title {
         margin-bottom: 80px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
+          margin-bottom: 5px;
+        }
+        span {
+          font-size: 14px;
         }
       }
       .subtitle {
@@ -72,7 +76,10 @@ const LoginCkWrap = styled.div`
   }
 `;
 const AppImg = styled.div`
+  width: 78px;
+  margin: 0 auto;
+  margin-bottom: 30px;
   img {
-    width: 60%;
+    width: 100%;
   }
 `;
