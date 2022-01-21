@@ -11,7 +11,7 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
-import Spinner from "../components/Spinner";
+import Spinner2 from "../components/Spinner2";
 import Permit from "../shared/Permit";
 
 // style
@@ -281,7 +281,7 @@ const Write = () => {
         <Container>
           <Grid is_container _className="border background">
             {loading ? (
-              <Spinner />
+              <Spinner2 />
             ) : (
               <>
                 <MainTop>

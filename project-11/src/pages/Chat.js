@@ -14,7 +14,7 @@ import NotMyChat from "../components/NotMyChat";
 import axios from "axios";
 import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
-import Spinner from "../components/Spinner";
+import Spinner2 from "../components/Spinner2";
 
 let List = [];
 
@@ -171,8 +171,8 @@ const Chat = (data) => {
   return (
     <>
       <Container>
-        <Grid is_container _className="border background">
-          {is_loading === false && <Spinner />}
+        <Grid is_container _className="border-background">
+          {is_loading === false && <Spinner2 />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
@@ -312,7 +312,7 @@ export default Chat;
 
 const Container = styled.div`
   margin: 0 auto;
-  .border {
+  .border-background {
     height: 100vh;
     padding-top: 70px;
     background-color: white;
@@ -433,8 +433,7 @@ const ChatBox = styled.div`
 
 const ChatInput = styled.div`
   position: fixed;
-  bottom: 53px;
-
+  bottom: 50px;
   .input-inner {
     display: flex;
     align-items: center;
@@ -458,6 +457,9 @@ const ChatInput = styled.div`
       }
       @media screen and (max-width: 375px) {
         width: 250px;
+      }
+      @media screen and (max-width: 320px) {
+        width: 200px;
       }
     }
     .plus-icon-active {
