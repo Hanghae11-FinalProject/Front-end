@@ -83,7 +83,7 @@ const Chatting = () => {
         stompClient.subscribe(`/sub/${myUserId}`, (data) => {
           const onMessage = JSON.parse(data.body);
           setNewMsgData(onMessage);
-          // console.log(onMessage);
+
           axiosInstance
             .post(
               `/api/roomcount`,

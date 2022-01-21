@@ -9,7 +9,7 @@ const SearchEmpty = (props) => {
         <Grid is_container _className="container-border">
           <div className="modal-wrap">
             <AppImg>
-              <img src="/static/pingpong00.png" alt="logo" />
+              <img src="/static/ping.png" alt="logo" />
             </AppImg>
             <div className="title">
               {props.result === "검색어를 입력해주세요" ? (
@@ -47,16 +47,22 @@ const SearchEmptyBox = styled.div`
       .title {
         margin-bottom: 50px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
+          margin-bottom: 5px;
+        }
+        span {
+          font-size: 14px;
         }
       }
     }
   }
 `;
 const AppImg = styled.div`
+  width: 78px;
+  margin: 0 auto;
   margin-bottom: 30px;
   img {
-    width: 70%;
+    width: 100%;
   }
 `;

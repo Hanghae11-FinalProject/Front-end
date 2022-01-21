@@ -5,7 +5,7 @@ import { axiosInstance } from "../../shared/api";
 import { getCookie, deleteCookie, setCookie } from "../../shared/Cookie";
 
 // 액션 타입
-const GET_CHAT = "SET_CHAT";
+const GET_CHAT = "GET_CHAT";
 
 // 액션 생성 함수
 const getChat = createAction(GET_CHAT, (data) => ({ data }));
