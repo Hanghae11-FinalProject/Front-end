@@ -301,7 +301,7 @@ const UserInfo = styled.div`
   .btn {
     background-color: white;
     border: 1px solid var(--main-color);
-    border-radius: 18px;
+    border-radius: 4px;
     width: 100%;
     height: 36px;
     p {
@@ -322,11 +322,11 @@ const IconBox = styled.div`
     height: 70px;
     border-radius: 50%;
     margin-right: 15px;
-    background-color: #ffd8d8;
+    background-color: white;
 
     img {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
     }
   }
