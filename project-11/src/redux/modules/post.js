@@ -447,7 +447,6 @@ export default handleActions(
         const idx = draft.posts.findIndex(
           (p) => p.postId === action.payload.star.postId
         );
-
         draft.posts[idx] = action.payload.star;
       }),
   },
