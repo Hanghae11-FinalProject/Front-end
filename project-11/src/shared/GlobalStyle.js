@@ -99,7 +99,7 @@ const GlobalStyles = createGlobalStyle`
     z-index: 0;
     width: 100%;
     height: 100vh;
-    background: url('/static/bg-original.png');
+    background: url('/static/globalbg.png');
     background-size: 150%;
     background-position-y: 0px;
     
@@ -170,6 +170,8 @@ button{
   }
 }
 
+
+
 @media screen and (min-width: 1440px) {
   body{background: transparent};
   .bg {
@@ -179,7 +181,6 @@ button{
     z-index: 0;
     width: 100%;
     height: 100vh;
-    background: url('/static/bg-original.png');
     background-size: 100%;
     background-position-y: 0px;
     

@@ -14,7 +14,7 @@ const NotFound = () => {
           <div className="title">
             <p>잘못된 경로로 접근하셨어요</p>
             <span style={{ fontColor: "#00000099" }}>
-              주소를 다시 확인하고 이용해 주시길 바랍니다
+              경로를 다시 확인하시고 이용해 주시길 바랍니다
             </span>
           </div>
           <div
@@ -46,8 +46,13 @@ const NotFoundWrap = styled.div`
       .title {
         margin-bottom: 80px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
+          margin-bottom: 5px;
+        }
+
+        span {
+          font-size: 14px;
         }
       }
       .subtitle {

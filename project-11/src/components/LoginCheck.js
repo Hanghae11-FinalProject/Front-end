@@ -10,7 +10,7 @@ const LoginCheck = () => {
       <Grid is_container="container" _className="border background">
         <div className="modal-wrap">
           <AppImg>
-            <img src="/static/pingpong00.png" alt="logo" />
+            <img src="/static/ping.png" alt="logo" />
           </AppImg>
           <div className="title">
             <p>서비스를 이용하려면</p>
@@ -35,7 +35,6 @@ export default LoginCheck;
 
 const LoginCkWrap = styled.div`
   .border {
-    /* border: 1px solid var(--help-color); */
     height: 100vh;
     background-color: #fff;
 
@@ -55,7 +54,7 @@ const LoginCkWrap = styled.div`
       .title {
         margin-bottom: 80px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
         }
       }
@@ -76,7 +75,10 @@ const LoginCkWrap = styled.div`
   }
 `;
 const AppImg = styled.div`
+  width: 80px;
+  margin: 0 auto;
+  margin-bottom: 30px;
   img {
-    width: 60%;
+    width: 100%;
   }
 `;
