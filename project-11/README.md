@@ -2,22 +2,22 @@
 
 현대인을 위한 물물교환 서비스 '핑퐁'
 <br></br>
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/ping.gif?resize=640%2C357&ssl=1" alt="front" />
+<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/ping.gif?resize=640%2C357&ssl=1" alt="front"  width="90%"/>
 <br></br>
 
-# 핑퐁팀
+# '핑퐁' 팀원 소개
 
 ### FrontEnd
 
-- [우민기](#https://github.com/WooMinGy) 👨🏻‍✈️(팀장)
-- [이주형](#https://github.com/leejh4197)
-- [정민경](#https://github.com/keimindev)
+- [우민기](https://github.com/WooMinGy) 👨🏻‍✈️
+- [이주형](https://github.com/leejh4197)
+- [정민경](https://github.com/keimindev)
 
 ### BackEnd
 
-- [김우진](#https://github.com/woojin126)
-- [서유리](#https://github.com/uriseozz)
-- [정영빈](#https://github.com/jybin96)
+- [김우진](https://github.com/woojin126)
+- [서유리](https://github.com/uriseozz)
+- [정영빈](https://github.com/jybin96)
 
 ### Designer
 
@@ -28,17 +28,17 @@
 
 # 개발 기간
 
-### 프로젝트 : 핑퐁
+#### 프로젝트 : 핑퐁
 
-### 기획 & 개발 기간 : 21.12.27 - 22.01.23
+#### 기획 & 개발 기간 : 21.12.27 - 22.01.23
 
-### 개발 인원 총 8 명
+#### 개발 인원 총 8 명
 
-### 프론트 개발 언어 : Javascript
+#### 프론트 개발 언어 : Javascript
 
-### 프론트 개발 라이브러리 : React.js , Redux
+#### 프론트 개발 라이브러리 : React.js , Redux
 
-### 프론트 Tool : VSC, git, figma
+#### 프론트 Tool : VSC, git, figma
 
 <br></br>
 
@@ -57,6 +57,8 @@
 
 # 프로젝트 구조
 
+<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/KakaoTalk_20220122_160559834.jpg?resize=768%2C432&ssl=1" alt="architecture"  width="90%">
+<br></br>
 <br></br>
 
 # 프로젝트 주요 기능
@@ -65,7 +67,7 @@
 2. 게시물 CRUD
 3. 게시물 카테고리, 지역별 필터 기능
 4. [게시물 검색](#게시물-검색)
-5. 게시물 댓글, 대댓글, 해시태그,즐겨찾기 추가
+5. [게시물 댓글, 대댓글, 해시태그,즐겨찾기 추가](#게시물-댓글,-대댓글,-해시태그,즐겨찾기-추가)
 6. 유저 프로필 변경
 7. 실시간 채팅
    <br></br>
@@ -87,9 +89,16 @@
   <br></br>
   <br></br>
 
+# 게시물 댓글, 대댓글, 해시태그,즐겨찾기 추가
+
+- 채팅을 하지 않더라도 물물교환을 원하는 사용자가 게시글 작성자에게 궁금한 것들을 댓글로 물어볼 수 있고, 게시글 작성자는 답을 해줄 수 있게 사용자들의 편의성을 위해서 댓글과 대댓글을 구현했습니다.
+- 관심있는 게시물을 즐겨찾기로 추가해두고 마이 페이지에서 확인하실 수 있습니다
+  <br></br>
+  <br></br>
+
 # User Flow Chart
 
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/userflow.png?resize=768%2C782&ssl=1" alt="flowchart" />
+<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/userflow-1.png?resize=768%2C782&ssl=1" alt="flowchart" width="90%"/>
 <br></br>
 <br></br>
 
