@@ -4,10 +4,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/configureStore";
 import { Switch } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-// import { getCookie } from "../shared/Cookie";
 import "swiper/css/bundle";
-// import { useSelector } from "react-redux";
-// import { axiosInstance } from "./api";
 
 import GlobalStyles from "./GlobalStyle";
 import Main from "../pages/Main";

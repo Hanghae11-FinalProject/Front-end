@@ -283,7 +283,7 @@ const Chat = (data) => {
             </div>
             <ChatInput>
               <Grid is_flex _className="input-inner">
-                <BsPlusLg className="plus-icon-active" />
+                {/* <BsPlusLg className="plus-icon-active" /> */}
                 <input
                   type="text"
                   value={currentMes}
@@ -295,7 +295,7 @@ const Chat = (data) => {
                 />
                 <IoPaperPlane
                   className="send-chat-icon"
-                  size="34"
+                  size="30"
                   onClick={sendMessage}
                 />
               </Grid>
@@ -444,38 +444,27 @@ const ChatInput = styled.div`
     justify-content: space-between;
 
     input {
-      width: 305px;
+      width: 355px;
       height: 40px;
       border: none;
-      border-radius: 20px;
+      border-radius: 4px;
       padding: 5px 10px;
       background-color: #0000000d;
       @media screen and (max-width: 415px) {
-        width: 293px;
+        width: 345px;
       }
       @media screen and (max-width: 405px) {
-        width: 280px;
+        width: 340px;
       }
       @media screen and (max-width: 390px) {
-        width: 266px;
+        width: 320px;
       }
       @media screen and (max-width: 375px) {
-        width: 250px;
+        width: 305px;
       }
       @media screen and (max-width: 320px) {
-        width: 200px;
+        width: 250px;
       }
-    }
-    .plus-icon-active {
-      padding: 8px 0;
-      margin: 0 16px 0 0;
-      font-weight: bold;
-      width: 34px;
-      height: 34px;
-      color: #fff;
-      border-radius: 36px;
-      cursor: pointer;
-      background-color: var(--main-color);
     }
     .send-chat-icon {
       margin: 0 0 4px 8px;

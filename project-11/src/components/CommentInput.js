@@ -105,7 +105,7 @@ const CommentInputBox = styled.div`
       margin: 0 auto;
       padding: 3px 10px;
       background-color: var(--light-color);
-      border-radius: 18px;
+      border-radius: 4px;
 
       input {
         width: 92%;
