@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { history } from "../redux/configureStore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "../elements";
 import { MdHome } from "react-icons/md";
 import { BsPlusLg } from "react-icons/bs";
@@ -13,16 +13,15 @@ import { axiosInstance } from "./api";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-// const sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-// const stompClient = Stomp.over(sockjs);
-
 const Nav = (props) => {
+  const sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+  const stompClient = Stomp.over(sockjs);
+  const dispatch = useDispatch();
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [newMsgData, setNewMsgData] = React.useState();
   const [msgCnt, setMsgCnt] = React.useState();
   const [rooms, setRooms] = React.useState([]);
-  const stomp = useSelector((state) => state.chat.stompClient);
 
   const chat = props.chat;
   const eachMsgCnt = Number(props.messageCnt);
@@ -37,10 +36,16 @@ const Nav = (props) => {
       cnt = cnt + data[i].notReadingMessageCount;
     }
     // console.log(cnt);
+    if (chat === "chat") {
+      return;
+    }
     setMsgCnt(cnt);
   }, [newMsgData]);
 
   React.useEffect(() => {
+    if (chat === "chat") {
+      return;
+    }
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
@@ -59,16 +64,13 @@ const Nav = (props) => {
       .catch((err) => {
         console.log(err, "에러");
       });
-    // const stompClient = stomp;
-    let stompClient = stomp;
-    console.log(stompClient);
     stompClient.connect({}, () => {
-      console.log("아님여기?");
+      // console.log("아님여기?");
       stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
       stompClient.subscribe(`/sub/${myUserId}`, (data) => {
         const onMessage = JSON.parse(data.body);
         setNewMsgData(onMessage);
-        console.log(onMessage);
+        // console.log(onMessage);
         // axiosInstance
         //   .post(
         //     `/api/roomcount`,

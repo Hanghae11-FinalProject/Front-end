@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Spinner2 = () => {
+const Spinner = () => {
   return (
     <Wrap>
       <div className="cssload-dots">
@@ -34,10 +34,9 @@ const Spinner2 = () => {
   );
 };
 
-export default Spinner2;
+export default Spinner;
 
 const Wrap = styled.div`
-
   height: 100vh;
 
   .cssload-dots {
