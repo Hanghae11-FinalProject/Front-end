@@ -5,22 +5,17 @@ import Nav from "../shared/Nav";
 import { Grid } from "../elements";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { history } from "../redux/configureStore";
 
-import { actionCreators as chatActions } from "../redux/modules/chat";
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-import { useDispatch, useSelector } from "react-redux";
-
-// let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-// let stompClient = Stomp.over(sockjs);
+import { useDispatch } from "react-redux";
 
 const Chatting = () => {
-  const dispatch = useDispatch();
-  const stompClient = useSelector((data) => data.chat.stompClient);
+  let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+  let stompClient = Stomp.over(sockjs);
 
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
@@ -96,7 +91,7 @@ const Chatting = () => {
               { headers: { Authorization: token } }
             )
             .then((res) => {
-              console.log(res, "성공");
+              // console.log(res, "성공");
             })
             .catch((err) => {
               console.log(err, "에러");

@@ -2,10 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
-import { useSelector } from "react-redux";
 
 const ChattingItem = (p) => {
-  const stompClient = useSelector((data) => data.chat.stompClient);
+  const stompClient = p.stompClient;
   const myUserId = getCookie("Id");
   React.useEffect(() => {
     p.testOne();
