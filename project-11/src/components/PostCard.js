@@ -61,7 +61,7 @@ const PostCard = ({ item }) => {
               {item.images.length !== 0 ? (
                 <img src={item.images[0].imageUrl} alt="PostImg" />
               ) : (
-                <img src="/static/defaultImg.jpg" alt="defaultImg" />
+                <img src="/static/default.png" alt="defaultImg" />
               )}
             </Grid>
             <ChipDiv>

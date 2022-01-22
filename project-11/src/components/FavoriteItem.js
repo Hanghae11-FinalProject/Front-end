@@ -54,7 +54,7 @@ const FavoriteItem = (props) => {
             {props.image !== null ? (
               <img src={props.image} alt="" />
             ) : (
-              <img src="/static/defaultImg.jpg" alt="" />
+              <img src="/static/default.png" alt="" />
             )}
           </div>
           <div className="deal-content">

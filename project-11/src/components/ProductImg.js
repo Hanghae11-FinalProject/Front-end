@@ -34,7 +34,7 @@ const ProductImg = ({ img }) => {
       ) : (
         <div className="default-img-box">
           <img
-            src="/static/defaultImg.jpg"
+            src="/static/default.png"
             alt="defaultImg"
             className="default-img"
           />

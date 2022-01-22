@@ -337,6 +337,7 @@ const EditPost = (items) => {
         <Grid is_container _className="border background">
           {loading ? (
             <Spinner/>
+
           ) : (
             <>
               <MainTop>

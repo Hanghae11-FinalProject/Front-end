@@ -85,7 +85,7 @@ const PostList = ({ location, category, selected }) => {
         >
           {post_data.posts.length === 0 ? (
             <div className="spinner">
-              <Spinner/>
+              <Spinner />
             </div>
           ) : (
             <>

@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
 import { Grid } from "../elements/index";
-import { actionCreators as postActions } from "../redux/modules/post";
 
 import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
@@ -19,7 +18,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import axios from "axios";
-import { truncate } from "lodash";
 
 SwiperCore.use([Pagination, Navigation]);
 
