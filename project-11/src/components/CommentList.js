@@ -348,63 +348,7 @@ const Comment = styled.div`
   padding-left: 5px;
 `;
 
-// 코멘트 인풋
-const CommentInputBox = styled.div`
-  .out-box {
-    position: fixed;
-    bottom: 50px;
-    width: 100%;
-    max-width: 428px;
-    background-color: #fff;
-    padding: 10px 16px;
-    box-sizing: border-box;
-
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
-
-    //대댓글창
-    /* .reply-name {
-      padding-bottom: 10px;
-      font-size: 14px;
-      color: var(--main-color);
-      p {
-        width: 95%;
-      }
-
-      span {
-        color: var(--inactive-icon-color);
-        .close-btn {
-          font-size: 10px;
-          color: var(--inactive-icon-color);
-          cursor: pointer;
-        }
-      }
-    } */
-    .comment-box {
-      margin: 0 auto;
-      padding: 3px 10px;
-      background-color: var(--light-color);
-      border-radius: 18px;
-      display: none;
-
-      input {
-        width: 92%;
-        padding: 5px 10px;
-        outline: none;
-        border: 0;
-        background-color: transparent;
-      }
-
-      .add-btn {
-        color: var(--main-color);
-        font-size: 26px;
-
-        cursor: pointer;
-      }
-    }
-  }
-`;
-
+// 대댓글 인풋
 const ReplyInput = styled.div`
   display: flex;
   margin: 5px 0 10px 0;
@@ -414,7 +358,7 @@ const ReplyInput = styled.div`
     margin-left: 10px;
     padding: 5px 5px 5px 5px;
     background-color: var(--light-color);
-    border-radius: 6px;
+    border-radius: 4px;
 
     .reply-name {
       padding: 5px 10px;
