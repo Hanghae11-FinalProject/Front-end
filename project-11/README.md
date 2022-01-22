@@ -2,7 +2,7 @@
 
 현대인을 위한 물물교환 서비스 '핑퐁'
 <br></br>
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/ping.gif?resize=640%2C357&ssl=1" alt="front" width="100%" />
+<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/ping.gif?resize=640%2C357&ssl=1" alt="front"  width="90%"/>
 <br></br>
 
 # '핑퐁' 팀원 소개
@@ -57,7 +57,7 @@
 
 # 프로젝트 구조
 
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/KakaoTalk_20220122_160559834.jpg?resize=768%2C432&ssl=1" alt="architecture">
+<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/KakaoTalk_20220122_160559834.jpg?resize=768%2C432&ssl=1" alt="architecture"  width="90%">
 <br></br>
 <br></br>
 
@@ -98,7 +98,7 @@
 
 # User Flow Chart
 
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/userflow-1.png?resize=768%2C782&ssl=1" alt="flowchart" width="100%"/>
+<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/userflow-1.png?resize=768%2C782&ssl=1" alt="flowchart" width="90%"/>
 <br></br>
 <br></br>
 
