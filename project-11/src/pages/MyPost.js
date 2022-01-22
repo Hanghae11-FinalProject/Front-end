@@ -42,7 +42,7 @@ const MyPost = () => {
     <>
       <MyPostBox>
         <Grid is_container _className="background">
-          {is_loading === false && <Spinner />}
+          {is_loading === false && <Spinner/>}
           <MainTop>
             <IoIosArrowBack
               size="30"

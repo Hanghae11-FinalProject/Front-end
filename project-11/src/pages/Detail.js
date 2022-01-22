@@ -206,7 +206,8 @@ const Detail = () => {
     <>
       {!PostData ? (
         <Spin>
-          <Spinner />
+          <Spinner/>
+
         </Spin>
       ) : (
         <>

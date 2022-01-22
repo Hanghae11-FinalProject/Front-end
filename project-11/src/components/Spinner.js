@@ -23,7 +23,7 @@ const Spinner = () => {
             <feColorMatrix
               in="blur"
               mode="matrix"
-              values="1 0 0 0 0	0 1 0 0 0	0 0 1 0 0	0 0 0 18 -7"
+              values="1 0 0 0 0   0 1 0 0 0   0 0 1 0 0   0 0 0 18 -7"
               result="goo"
             ></feColorMatrix>
             {/* <feBlend in2="goo" in="SourceGraphic" result="mix" ></feBlend> */}
