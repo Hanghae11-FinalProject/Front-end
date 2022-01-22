@@ -4,7 +4,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import { axiosInstance } from "../shared/api";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
-import Spinner2 from "./Spinner2";
+import Spinner from "./Spinner";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
@@ -85,7 +85,7 @@ const PostList = ({ location, category, selected }) => {
         >
           {post_data.posts.length === 0 ? (
             <div className="spinner">
-              <Spinner2/>
+              <Spinner/>
             </div>
           ) : (
             <>

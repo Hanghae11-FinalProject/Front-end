@@ -14,7 +14,7 @@ import NotMyChat from "../components/NotMyChat";
 import axios from "axios";
 import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
-import Spinner2 from "../components/Spinner2";
+import Spinner from "../components/Spinner";
 
 let List = [];
 
@@ -172,7 +172,7 @@ const Chat = (data) => {
     <>
       <Container>
         <Grid is_container _className="border-background">
-          {is_loading === false && <Spinner2 />}
+          {is_loading === false && <Spinner />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">

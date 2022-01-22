@@ -12,7 +12,7 @@ import { MdOutlineCameraAlt } from "react-icons/md";
 import { CgChevronLeft } from "react-icons/cg";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
-import Spinner2 from "../components/Spinner2";
+import Spinner from "../components/Spinner";
 // style
 import "swiper/css";
 import "swiper/css/pagination";
@@ -336,7 +336,7 @@ const EditPost = (items) => {
       <Container>
         <Grid is_container _className="border background">
           {loading ? (
-            <Spinner2 />
+            <Spinner/>
           ) : (
             <>
               <MainTop>

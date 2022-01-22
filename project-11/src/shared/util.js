@@ -1,7 +1,6 @@
 export const icons = [
   "https://media.vlpt.us/images/leejh4197/post/5a806d62-4cc7-423f-8262-43087384514c/KakaoTalk_20220122_002028413_01.png",
   "https://media.vlpt.us/images/leejh4197/post/020fe273-f2c7-4c84-9cd5-a81ce6ea39f3/KakaoTalk_20220122_002028413.png",
-  "https://media.vlpt.us/images/leejh4197/post/0132c67a-e5ba-4feb-8630-ab49d939338b/KakaoTalk_20220122_002028413_01.png",
   "https://media.vlpt.us/images/leejh4197/post/65c76e62-bef3-4577-b222-64d548717bcb/KakaoTalk_20220122_002028413_02.png",
   "https://media.vlpt.us/images/leejh4197/post/dda2c646-90be-456a-9e00-e46a7f8e2c12/KakaoTalk_20220122_002028413_03.png",
   "https://media.vlpt.us/images/leejh4197/post/2988892f-7561-45b3-8ed4-e9d64655aad0/KakaoTalk_20220122_002028413_04.png",

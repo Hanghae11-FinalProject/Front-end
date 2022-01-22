@@ -11,7 +11,7 @@ import Nav from "../shared/Nav";
 import ProductImg from "../components/ProductImg";
 import CommentList from "../components/CommentList";
 import CommentInput from "../components/CommentInput";
-import Spinner2 from "../components/Spinner2";
+import Spinner from "../components/Spinner";
 
 import styled from "styled-components";
 import { FiStar } from "react-icons/fi";
@@ -206,7 +206,7 @@ const Detail = () => {
     <>
       {!PostData ? (
         <Spin>
-          <Spinner2 />
+          <Spinner/>
         </Spin>
       ) : (
         <>
