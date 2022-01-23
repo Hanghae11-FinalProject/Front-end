@@ -369,14 +369,14 @@ const Slider = styled.div`
   display: flex;
 
   .CateBtn-Container {
-    padding-right: 12px;
+    padding-left: 5px;
   }
   .swiper-slide:nth-child(1) {
     margin-left: 12px;
   }
 
   .CateBtn-Container {
-    padding-right: 10px;
+    padding-right: 25px;
   }
 
   .swiper-pagination.swiper-pagination-clickable {

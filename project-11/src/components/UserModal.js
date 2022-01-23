@@ -55,7 +55,7 @@ const UserModal = (props) => {
     const check = RegNick.test(editName);
     if (!check) {
       console.log(check, "유효성 노 통과");
-      setNickDoubleChk("한글, 영문, 숫자 조합 2~10자로 입력하세요");
+      setNickDoubleChk("2자 이상 10자 이하로 입력해주세요.");
       return;
     } else {
       console.log(check, "유효성 통과");
