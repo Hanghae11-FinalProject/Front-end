@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 const Chatting = () => {
   let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
   let stompClient = Stomp.over(sockjs);
-
+  // const chatting
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);
