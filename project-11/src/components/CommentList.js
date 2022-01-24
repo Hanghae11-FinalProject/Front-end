@@ -333,7 +333,7 @@ const Profile = styled.div`
   border-radius: 50%;
   background-color: var(--help-color);
   margin-right: 10px;
-  background-color: #ffd8d8;
+  background-color: #fff1f1;
 
   display: flex;
   justify-content: center;

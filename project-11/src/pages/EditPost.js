@@ -336,8 +336,7 @@ const EditPost = (items) => {
       <Container>
         <Grid is_container _className="border background">
           {loading ? (
-            <Spinner/>
-
+            <Spinner />
           ) : (
             <>
               <MainTop>
@@ -715,7 +714,7 @@ const HashInputOuter = styled.div`
   }
   .HashWrapInner {
     margin-top: 5px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--main-color);
     padding: 4px 6px;
     color: var(--main-color);

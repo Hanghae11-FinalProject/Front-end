@@ -76,6 +76,7 @@ const CommentInputBox = styled.div`
     background-color: #fff;
     padding: 10px 16px;
     box-sizing: border-box;
+    z-index: 9999;
 
     .reply-name {
       width: 100%;
