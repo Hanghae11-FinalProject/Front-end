@@ -301,6 +301,7 @@ const CommentBox = styled.div`
           background-color: #fff;
           border: 1px solid var(--help-color);
           display: none;
+          border-radius: 4px;
           z-index: 5;
           li {
             color: var(--active-color);

@@ -42,7 +42,7 @@ const MyPost = () => {
     <>
       <MyPostBox>
         <Grid is_container _className="background">
-          {is_loading === false && <Spinner/>}
+          {is_loading === false && <Spinner />}
           <MainTop>
             <IoIosArrowBack
               size="30"
@@ -104,7 +104,7 @@ const MainTop = styled.div`
   position: relative;
   .icon {
     position: absolute;
-    left: 0;
+    left: 6px;
     cursor: pointer;
   }
 `;
