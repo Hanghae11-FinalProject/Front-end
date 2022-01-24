@@ -206,8 +206,7 @@ const Detail = () => {
     <>
       {!PostData ? (
         <Spin>
-          <Spinner/>
-
+          <Spinner />
         </Spin>
       ) : (
         <>
@@ -482,6 +481,7 @@ const DetailBox = styled.div`
         border: 1px solid var(--help-color);
         display: none;
         z-index: 10;
+        border-radius: 4px;
         li {
           color: var(--active-color);
           padding: 8px 10px;
@@ -553,6 +553,7 @@ const Header = styled.div`
   .inner {
     height: 50px;
     margin: 0 auto;
+    padding-left: 6px;
     p {
       width: 90%;
       position: absolute;
