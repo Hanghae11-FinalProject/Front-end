@@ -24,7 +24,6 @@ import EditPost from "../pages/EditPost";
 import OAuthRedirect from "../components/OAuthRedirect";
 import NotFound from "../pages/NotFound";
 
-
 function App() {
   const currentUrl = window.location.href;
   const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
