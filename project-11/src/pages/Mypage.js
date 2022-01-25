@@ -13,9 +13,9 @@ import {
 } from "react-icons/md";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import { IoIosArrowForward, IoMdSettings } from "react-icons/io";
-import { deleteCookie, getCookie } from "../shared/Cookie";
+import { deleteCookie } from "../shared/Cookie";
 import Permit from "../shared/Permit";
-import { axiosInstance } from "../shared/api";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 
@@ -23,8 +23,11 @@ import { actionCreators as postActions } from "../redux/modules/post";
 // initialstate에 profile에 넣어둔 데이터
 
 const Mypage = () => {
-  const token = getCookie("Token");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [shadowOpen, setShadowOpen] = useState(false);
+  const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
+  const Clickpoll = () => {
+    window.open(pollUrl);
+  };
 
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.post.profile); // initatilstate에서 데이터를 가져오는 방법
@@ -35,13 +38,22 @@ const Mypage = () => {
   }, []);
 
   const handleClose = () => {
-    setModalOpen(false);
+    setShadowOpen(false);
+  };
+
+  const logout = () => {
+    deleteCookie("userToken");
+    deleteCookie("userName");
+    deleteCookie("userImg");
+    deleteCookie("userId");
+    window.alert("로그아웃 되었습니다.");
+    history.push("/");
   };
   return (
     <Permit>
       <>
         <MypageBox>
-          <Grid is_container _className="border">
+          <Grid is_container _className="border background">
             <Header>
               <Grid _className="inner" is_container is_flex flex_align="center">
                 <p>마이 페이지</p>
@@ -57,12 +69,21 @@ const Mypage = () => {
                   <p className="profile-email">{userProfile.username}</p>
                 </div>
               </IconBox>
-              <Button Btn _className="btn" _onClick={() => setModalOpen(true)}>
+              <Button
+                Btn
+                _className="btn"
+                _onClick={() => {
+                  setShadowOpen(true);
+                }}
+              >
                 <p>프로필 수정</p>
               </Button>
             </UserInfo>
 
-            <UserModal isOpen={modalOpen} onCancel={handleClose} name={name} />
+            {/* 프로필 수정 모달부분 */}
+            <Grid _className={shadowOpen ? "shadow-active" : "shadow"}>
+              <UserModal onCancel={handleClose} name={name} />
+            </Grid>
 
             <Grid _className="menu-wrap" padding="30px 16px;">
               <Grid
@@ -87,7 +108,11 @@ const Mypage = () => {
             </Grid>
 
             <ul className="icon-wrap">
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <MdLock
                     style={{
@@ -100,7 +125,11 @@ const Mypage = () => {
                 </p>
                 <span>계정</span>
               </li>
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <IoMdSettings
                     style={{
@@ -113,7 +142,11 @@ const Mypage = () => {
                 </p>
                 <span>앱 설정</span>
               </li>
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <BsQuestionCircleFill
                     style={{
@@ -126,7 +159,7 @@ const Mypage = () => {
                 </p>
                 <span>이용안내</span>
               </li>
-              <li>
+              <li onClick={Clickpoll}>
                 <p>
                   <MdFeedback
                     style={{
@@ -139,13 +172,7 @@ const Mypage = () => {
                 </p>
                 <span>피드백</span>
               </li>
-              <li
-                onClick={() => {
-                  deleteCookie("OK");
-                  window.alert("로그아웃 되었습니다.");
-                  history.push("/intro");
-                }}
-              >
+              <li onClick={logout}>
                 <p>
                   <MdExitToApp
                     style={{
@@ -158,12 +185,13 @@ const Mypage = () => {
                 </p>
                 <span>로그아웃</span>
               </li>
-              <li>
+              <li
+                onClick={() => {
+                  window.alert("Comming soon :)");
+                }}
+              >
                 <p>
                   <MdPersonRemoveAlt1
-                    onClick={() => {
-                      window.alert("응 못나가");
-                    }}
                     style={{
                       width: "24px",
                       height: "24px",
@@ -188,14 +216,33 @@ export default Mypage;
 const MypageBox = styled.div`
   .border {
     height: 100vh;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     text-align: center;
     background-color: #fff;
     padding-top: 30px;
 
+    position: relative;
+
+    .shadow {
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.6);
+      position: absolute;
+      top: 0;
+
+      display: none;
+    }
+
+    .shadow-active {
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.6);
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      display: block;
+    }
+
     .menu-wrap {
-      margin-bottom: 20px;
       .menu {
         display: flex;
         justify-content: space-between;
@@ -231,8 +278,6 @@ const Header = styled.div`
   height: 50px;
   position: fixed;
   top: 0;
-
-  /* border-bottom: 1px solid var(--help-color); */
   background-color: #fff;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -251,13 +296,12 @@ const Header = styled.div`
     }
   }
 `;
-
 const UserInfo = styled.div`
   padding: 0 16px;
   .btn {
     background-color: white;
     border: 1px solid var(--main-color);
-    border-radius: 18px;
+    border-radius: 4px;
     width: 100%;
     height: 36px;
     p {
@@ -278,11 +322,11 @@ const IconBox = styled.div`
     height: 70px;
     border-radius: 50%;
     margin-right: 15px;
-    background-color: #ffd8d8;
+    background-color: white;
 
     img {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
     }
   }

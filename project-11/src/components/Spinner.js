@@ -1,26 +1,27 @@
-import ScaleLoader from "react-spinners/ScaleLoader";
-import { Grid } from "../elements/index";
-import styled from "styled-components";
+import React from 'react';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { MutatingDots } from  'react-loader-spinner'
+import styled from 'styled-components';
 
 const Spinner = () => {
-  return (
-    <>
-      <SpinnerBox>
-        <ScaleLoader height="50px" width="10px" color="#FF626F" radius="8px" />
-      </SpinnerBox>
-    </>
-  );
+    return (
+        <Wrap>
+            <div className='spinners'>
+            <MutatingDots color='#FF8B95' secondaryColor='#FF626F' height={100} width={100} />
+            </div>
+        </Wrap>
+
+        
+    );
 };
 
 export default Spinner;
-
-const SpinnerBox = styled.div`
-  width: 100%;
-  max-width: 429px;
-  height: 100vh;
-  margin: 0 auto;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Wrap = styled.div`
+    height: 100vh;
+    .spinners{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    }
 `;

@@ -5,8 +5,11 @@ const MyChat = (props) => {
   return (
     <React.Fragment>
       <MyChatBox>
-        <span className="createdAt">{props.data.createdAt}</span>
-        <p className="messages">{props.data.message}</p>
+        <div></div>
+        <div className="chat-box">
+          <span className="createdAt">{props.data.createdAt}</span>
+          <p className="messages">{props.data.message}</p>
+        </div>
       </MyChatBox>
     </React.Fragment>
   );
@@ -14,8 +17,12 @@ const MyChat = (props) => {
 
 const MyChatBox = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   margin: 12px 0px;
+
+  .chat-box {
+    display: flex;
+  }
   .messages {
     display: inline-block;
     padding: 8px 12px;
@@ -23,6 +30,7 @@ const MyChatBox = styled.div`
     text-align: left;
     line-height: 24px;
     background-color: var(--main-color);
+
     font-size: 16px;
     color: white;
     max-width: 278px;

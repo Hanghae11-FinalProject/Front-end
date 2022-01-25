@@ -7,25 +7,22 @@ import Nav from "../shared/Nav";
 const LoginCheck = () => {
   return (
     <LoginCkWrap>
-      <Grid is_container="container" _className="border">
+      <Grid is_container="container" _className="border background">
         <div className="modal-wrap">
-          <div className="icon-wrap">
-            <img src="/static/핑이 기본.png" alt="default" />
-            <img src="/static/핑이 분노.png" alt="default" />
-            <img src="/static/핑이 행복.png" alt="default" />
-          </div>
+          <AppImg>
+            <img src="/static/ping.png" alt="logo" />
+          </AppImg>
           <div className="title">
             <p>서비스를 이용하려면</p>
-            <p>먼저 로그인이 필요해요!</p>
+            <p>먼저 로그인이 필요해요</p>
           </div>
-          <div className="subtitle">
-            <span
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              로그인하러 가기
-            </span>
+          <div
+            className="subtitle"
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            <span>로그인하러 가기</span>
           </div>
         </div>
         <Nav />
@@ -38,7 +35,6 @@ export default LoginCheck;
 
 const LoginCkWrap = styled.div`
   .border {
-    /* border: 1px solid var(--help-color); */
     height: 100vh;
     background-color: #fff;
 
@@ -58,7 +54,7 @@ const LoginCkWrap = styled.div`
       .title {
         margin-bottom: 80px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
         }
       }
@@ -66,15 +62,23 @@ const LoginCkWrap = styled.div`
         line-height: 48px;
         width: 90%;
         height: 48px;
-        border-radius: 50px;
+        border-radius: 4px;
         background-color: var(--main-color);
         margin: 0 auto;
+        cursor: pointer;
         span {
-          cursor: pointer;
           font-size: 16px;
           color: white;
         }
       }
     }
+  }
+`;
+const AppImg = styled.div`
+  width: 80px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  img {
+    width: 100%;
   }
 `;

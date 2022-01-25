@@ -8,6 +8,7 @@ import { connectRouter } from "connected-react-router";
 
 // *** 모듈 import
 import Post from "./modules/post";
+import Chat from "./modules/chat";
 
 // *** 스토어에 히스토리 넣어주기 (리듀서랑 히스토리 연결하기)
 export const history = createBrowserHistory();
@@ -15,6 +16,7 @@ export const history = createBrowserHistory();
 // *** rootReducer 만들기
 const rootReducer = combineReducers({
   post: Post,
+  chat: Chat,
   router: connectRouter(history),
 });
 

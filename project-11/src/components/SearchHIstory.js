@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 
 import { MdOutlineClose } from "react-icons/md";
 
 const SearchHIstory = ({ list, onRemoveKeyword }) => {
-  const [key, setKey] = useState();
-  const [search_data, setSearch_data] = useState([]);
-
   if (list.length === 0) {
     return <HistoryContainer>최근 검색된 기록이 없습니다.</HistoryContainer>;
   }
@@ -63,7 +60,6 @@ const Keyword = styled.div`
   display: flex;
   align-items: center;
 
-  cursor: pointer;
   span {
     margin-top: 2px;
     cursor: pointer;

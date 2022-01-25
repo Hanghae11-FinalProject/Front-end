@@ -4,40 +4,39 @@ import { Grid } from "../elements";
 import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
 
-const LoginCheck = () => {
+const FvLoginCk = () => {
   return (
     <LoginCkWrap>
       <Grid is_container="container" _className="border">
         <div className="modal-wrap">
-          <div className="icon-wrap">
-            <img src="/static/핑이 기본.png" />
-            <img src="/static/핑이 분노.png" />
-            <img src="/static/핑이 행복.png" />
-          </div>
+          <AppImg>
+            <img src="/static/pong.png" alt="logo" />
+          </AppImg>
           <div className="title">
-            <p>즐겨찾기 목록이 없어요</p>
+            <p>즐겨찾기한 글이 없어요</p>
           </div>
-          <div className="subtitle">
-            <span
-              onClick={() => {
-                history.push("/");
-              }}
-            >
-              게시물 보러가기!
-            </span>
+          <div
+            className="subtitle"
+            onClick={() => {
+              history.push("/main");
+            }}
+          >
+            <span>메인으로 돌아가기</span>
           </div>
         </div>
-        <Nav chatting={"chatting"} />
+        <Nav />
       </Grid>
     </LoginCkWrap>
   );
 };
 
-export default LoginCheck;
+export default FvLoginCk;
 
 const LoginCkWrap = styled.div`
   .border {
-    height: 90vh;
+    height: 100vh;
+    background-color: #fff;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,7 +53,7 @@ const LoginCkWrap = styled.div`
       .title {
         margin-bottom: 80px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
         }
       }
@@ -62,15 +61,23 @@ const LoginCkWrap = styled.div`
         line-height: 48px;
         width: 90%;
         height: 48px;
-        border-radius: 50px;
+        border-radius: 4px;
         background-color: var(--main-color);
         margin: 0 auto;
+        cursor: pointer;
         span {
-          cursor: pointer;
           font-size: 16px;
           color: white;
         }
       }
     }
+  }
+`;
+const AppImg = styled.div`
+  width: 78px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  img {
+    width: 100%;
   }
 `;

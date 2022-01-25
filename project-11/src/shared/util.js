@@ -1,29 +1,14 @@
-import styled from "styled-components";
-
 export const icons = [
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc5sXof%2FbtrpQSjrN1i%2FK5lwGk9FVONRvTksAYvyJ1%2Fimg.png",
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdb14Hv%2FbtrpPwOHpZj%2FSWlrCCeQrXqmckgCBqTtek%2Fimg.png",
-  "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FU810H%2FbtrpW7zBU2n%2F1OdQ7ZOldieLRjz5ICVaik%2Fimg.png",
-  "https://media.vlpt.us/images/leejh4197/post/68adb8ab-468e-4cc1-aa5f-c2bdf81be0cc/KakaoTalk_20220107_120404067.png",
-  "https://media.vlpt.us/images/leejh4197/post/fe6efcab-ec14-4c34-84f5-9ca8cc235049/KakaoTalk_20220107_120404067_01.png",
-  "https://media.vlpt.us/images/leejh4197/post/a00a22a8-04d3-4945-aa44-5470c001517e/KakaoTalk_20220107_120404067_02.png",
-  "https://media.vlpt.us/images/leejh4197/post/f7757e02-4451-486c-b7ff-ccc8fb89e0e0/KakaoTalk_20220107_120404067_03.png",
-  "https://media.vlpt.us/images/leejh4197/post/9d33fa8d-b67a-4263-a02f-d1a77f24afa7/KakaoTalk_20220107_120404067_04.png",
-  "https://media.vlpt.us/images/leejh4197/post/e4d92909-3a20-4419-8478-1c364d712982/KakaoTalk_20220107_120404067_06.png",
-  "https://media.vlpt.us/images/leejh4197/post/06cf25d1-c814-4d1e-89d3-f53e8b38b489/KakaoTalk_20220107_120404067_08.png",
-  "https://media.vlpt.us/images/leejh4197/post/02d079f1-ddab-49fb-8f59-628d5c7fd1bf/KakaoTalk_20220107_120404067_05.png",
-  "https://media.vlpt.us/images/leejh4197/post/4c4d3417-5906-40fe-bdb2-9616d87ee679/KakaoTalk_20220107_120404067_09.png",
-  "https://media.vlpt.us/images/leejh4197/post/87971bdc-51ba-468c-9171-935f01966df2/KakaoTalk_20220107_120404067_07.png",
-
+  "https://media.vlpt.us/images/leejh4197/post/5a806d62-4cc7-423f-8262-43087384514c/KakaoTalk_20220122_002028413_01.png",
+  "https://media.vlpt.us/images/leejh4197/post/020fe273-f2c7-4c84-9cd5-a81ce6ea39f3/KakaoTalk_20220122_002028413.png",
+  "https://media.vlpt.us/images/leejh4197/post/65c76e62-bef3-4577-b222-64d548717bcb/KakaoTalk_20220122_002028413_02.png",
+  "https://media.vlpt.us/images/leejh4197/post/dda2c646-90be-456a-9e00-e46a7f8e2c12/KakaoTalk_20220122_002028413_03.png",
+  "https://media.vlpt.us/images/leejh4197/post/2988892f-7561-45b3-8ed4-e9d64655aad0/KakaoTalk_20220122_002028413_04.png",
+  "https://media.vlpt.us/images/leejh4197/post/bbded96b-1971-4bf4-8cae-ceea9dbeb8ea/KakaoTalk_20220122_002028413_05.png",
+  "https://media.vlpt.us/images/leejh4197/post/d67ebec4-36b1-42f1-a46a-dbe4a40a01e2/KakaoTalk_20220122_002028413_06.png",
+  "https://media.vlpt.us/images/leejh4197/post/b7ee5dba-7728-4a0b-9042-a6c5ce484a3a/KakaoTalk_20220122_002028413_07.png",
+  "https://media.vlpt.us/images/leejh4197/post/b7825164-10a5-4d0f-b33b-da7bf811e5af/KakaoTalk_20220122_002028413_08.png",
+  "https://media.vlpt.us/images/leejh4197/post/cab5aac4-a3ff-4857-964f-ea75cfb62507/KakaoTalk_20220122_002028413_09.png",
+  "https://media.vlpt.us/images/leejh4197/post/a0c2f25b-e656-4af7-b1fd-18f93ed6f278/KakaoTalk_20220122_002028413_10.png",
+  "https://media.vlpt.us/images/leejh4197/post/b347fa2b-be44-4e3d-97eb-f0c5c26bb9d9/KakaoTalk_20220122_002028413_11.png",
 ];
-
-export const copyUrlToClip = () => {
-  const dummy = document.createElement("input");
-  const text = window.location.href;
-  document.body.appendChild(dummy);
-  dummy.value = text;
-  dummy.select();
-  document.execCommand("copy");
-  document.body.removeChild(dummy);
-};
-

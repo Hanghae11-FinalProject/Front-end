@@ -4,21 +4,22 @@ import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 
 const ChattingItem = (p) => {
+  const stompClient = p.stompClient;
   const myUserId = getCookie("Id");
   React.useEffect(() => {
     p.testOne();
   }, [p]);
-  // console.log(p.stomp);
+  const roomData = p.roomData; // Chat.js에 채팅카운트 넘겨주기 위한 props
 
   const goChat = () => {
-    p.stomp.unsubscribe(`/sub/${myUserId}`);
-    p.stompClient.disconnect();
+    stompClient.unsubscribe(`/sub/${myUserId}`);
     history.push({
       pathname: `/chat`,
       state: {
         roomName: p.roomData.roomName,
         sender: p.roomData.user,
         postId: p.roomData.postId,
+        roomData: roomData,
       },
     });
   };
@@ -33,7 +34,7 @@ const ChattingItem = (p) => {
             <h1 className="nickname">{p.roomData.user.nickname}</h1>
             <span>{p.roomData.lastMessage.createdAt}</span>
           </div>
-          <p>{p.roomData.lastMessage.content}</p>
+          <p className="content">{p.roomData.lastMessage.content}</p>
         </div>
         <div
           className={
@@ -56,6 +57,13 @@ const ChattingWrap = styled.div`
   max-width: 428px;
   border-bottom: 3px solid #ededed;
   cursor: pointer;
+  .content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
   .chatting-item-wrap {
     display: flex;
     align-items: center;
@@ -64,8 +72,8 @@ const ChattingWrap = styled.div`
       height: 70px;
       margin-right: 20px;
       border-radius: 50%;
-      background-color: black;
-      border: 1px solid gray;
+      /* background-color: black; */
+      /* border: 1px solid gray; */
       img {
         width: 100%;
         height: 100%;

@@ -6,7 +6,11 @@ const NotMyChat = (props) => {
     <>
       <NotMineBox>
         <div className="imgBox">
-          <img src={props.sender.profileImg} className="profileImg"></img>
+          <img
+            src={props.sender.profileImg}
+            className="profileImg"
+            alt="profileImg"
+          ></img>
         </div>
         <p className="messages">{props.data.message}</p>
         <span className="createdAt">{props.data.createdAt}</span>
@@ -26,7 +30,7 @@ const NotMineBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffd8d8;
+    background-color: #fff1f1;
     .profileImg {
       width: 35px;
       height: 35px;

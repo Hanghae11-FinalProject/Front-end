@@ -9,11 +9,11 @@ import FvLoginCk from "../components/FvLoginCk";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { Grid } from "../elements";
+import Spinner from "../components/Spinner";
 
 const Favorite = () => {
   const token = getCookie("Token");
-  const userid = getCookie("Name");
-  console.log(userid);
+  const [is_loading, setIs_loading] = React.useState(false);
 
   const [favorite_list, setFavoriteList] = useState([]);
 
@@ -21,8 +21,9 @@ const Favorite = () => {
     axiosInstance
       .get("/api/bookmark", { headers: { Authorization: token } })
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response);
         setFavoriteList(response.data.data);
+        setIs_loading(true);
       });
   };
   useEffect(() => {
@@ -31,7 +32,9 @@ const Favorite = () => {
 
   return (
     <FavoriteWrap>
-      <Grid is_container="is_container" _className="grid-border">
+      <Grid is_container="is_container" _className="grid-border background">
+        {is_loading === false && <Spinner />}
+
         <div className="Favorite-wrap">
           <div className="Favorite-header-wrap">
             <IoIosArrowBack
@@ -39,6 +42,7 @@ const Favorite = () => {
                 width: "30px",
                 height: "30px",
                 cursor: "pointer",
+                marginLeft: "6px",
               }}
               onClick={() => history.goBack()}
             />
@@ -67,7 +71,6 @@ const FavoriteWrap = styled.div`
   .grid-border {
     width: 100%;
     height: 100vh;
-    /* border: 1px solid var(--help-color); */
     background-color: #fff;
     padding-bottom: 50px;
 

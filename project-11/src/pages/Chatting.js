@@ -1,86 +1,129 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Permit from "../shared/Permit";
 import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { history } from "../redux/configureStore";
+import NoChattingList from "../components/NoChattingList";
+import Spinner from "../components/Spinner";
 
 import styled from "styled-components";
-import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
+import { useDispatch, useSelector } from "react-redux";
 
-const Chatting = () => {
-  let sockjs = new SockJS("http://13.125.250.43:8080/webSocket");
-  let stompClient = Stomp.over(sockjs);
+const Chatting = (props) => {
+  const stompClient = useSelector((state) => state.chat.stompClient);
 
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);
-  const [rooms, setRooms] = useState([]);
+  const [rooms, setRooms] = useState([]); // 전체
+  const [ingRooms, setIngRooms] = useState([]); // 거래중
+  const [completeRooms, setCompleteRooms] = useState([]); // 거래완료
+  const [is_every, setIs_Every] = useState(true); // 전체 클릭 감지
+  const [is_ing, setIs_Ing] = useState(false); // 거래중 클릭 감지
+  const [is_complete, setIs_Complete] = useState(false); // 거래완료 클릭 감지
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
   const [newMsgData, setNewMsgData] = useState("");
   const [test, setTest] = useState(true);
   const [stomp, setStomp] = useState();
+  const [is_loading, setIs_Loading] = useState(false);
+  const chatting = "chatting";
 
   const testOne = () => {
     setTest(false);
   };
+
   React.useEffect(() => {
     setTest(true);
   }, [test]);
 
   React.useEffect(() => {
-    console.log(newMsgData);
-    console.log(rooms);
     let data = rooms;
+    let cnt = 0;
     for (let i = 0; i < data.length; i++) {
       if (data[i].roomName === newMsgData.roomName) {
         data[i].notReadingMessageCount = data[i].notReadingMessageCount + 1;
         data[i].lastMessage.content = newMsgData.message;
+        data[i].lastMessage.createdAt = newMsgData.createdAt;
       }
+      cnt = cnt + data[i].notReadingMessageCount;
     }
-    setRooms(data);
-  }, [newMsgData]);
-
+    // console.log(cnt);
+    // dispatch(chatActions.getChat(cnt));
+    setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??
+  }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
+  // console.log(rooms);
   React.useEffect(() => {
+    setIs_Loading(true);
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setRooms(res.data);
+        setIs_Loading(false);
+        let ing = [];
+        let com = [];
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].currentState === "Proceeding") {
+            ing = [...ing, res.data[i]];
+            setIngRooms(ing);
+          } else if (res.data[i].currentState === "Complete") {
+            com = [...com, res.data[i]];
+            setCompleteRooms(com);
+          }
+        }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
       });
-    stompClient.connect({}, () => {
-      stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
-      setStomp(
-        stompClient.subscribe(`/sub/${myUserId}`, (data) => {
-          const onMessage = JSON.parse(data.body);
-          setNewMsgData(onMessage);
-          console.log(onMessage);
-          axiosInstance
-            .post(
-              `/api/roomcount`,
-              { roomName: onMessage.roomName, toUserId: onMessage.senderId },
-              { headers: { Authorization: token } }
-            )
-            .then((res) => {
-              console.log(res, "성공");
-            })
-            .catch((err) => {
-              console.log(err, "에러");
-            });
+    stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+      const onMessage = JSON.parse(data.body);
+      setNewMsgData(onMessage);
+      axiosInstance
+        .post(
+          `/api/roomcount`,
+          { roomName: onMessage.roomName, userId: myUserId },
+          { headers: { Authorization: token } }
+        )
+        .then((res) => {
+          // console.log(res, "성공");
         })
-      );
+        .catch((err) => {
+          // console.log(err, "에러");
+        });
     });
+    // stompClient.connect({}, () => {
+    //   stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
+    //   setStomp(
+    //     stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+    //       const onMessage = JSON.parse(data.body);
+    //       setNewMsgData(onMessage);
+    //       axiosInstance
+    //         .post(
+    //           `/api/roomcount`,
+    //           { roomName: onMessage.roomName, userId: myUserId },
+    //           { headers: { Authorization: token } }
+    //         )
+    //         .then((res) => {
+    //           // console.log(res, "성공");
+    //         })
+    //         .catch((err) => {
+    //           // console.log(err, "에러");
+    //         });
+    //     })
+    //   );
+    // });
+    // return () => {
+    //   //       stompClient.unsubscribe(`/sub/${myUserId}`);
+    //   // stompClient.disconnect();
+    // };
   }, []);
 
   const OptionOneControl = () => {
@@ -133,18 +176,11 @@ const Chatting = () => {
   return (
     <Permit>
       <ChattingWrap>
-        <Grid is_container="is_container" _className="grid-border">
+        <Grid is_container="is_container" _className="grid-border background">
+          {is_loading === true && <Spinner />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
-                <div className="arrow-back">
-                  <IoIosArrowBack
-                    size="30"
-                    onClick={() => {
-                      history.goBack();
-                    }}
-                  />
-                </div>
                 <p className="header-title">채팅</p>
                 {/* <Grid _className="ct-wrap"> */}
                 <BiDotsVerticalRounded
@@ -152,6 +188,7 @@ const Chatting = () => {
                   style={{
                     width: "25px",
                     height: "25px",
+                    marginLeft: "6px",
                   }}
                   className="point-icon"
                 />
@@ -166,6 +203,9 @@ const Chatting = () => {
                       onClick={() => {
                         OptionOneControl();
                         ModalControl();
+                        setIs_Every(true);
+                        setIs_Ing(false);
+                        setIs_Complete(false);
                       }}
                     >
                       전체
@@ -176,6 +216,9 @@ const Chatting = () => {
                       onClick={() => {
                         ModalControl();
                         OptionTwoControl();
+                        setIs_Every(false);
+                        setIs_Ing(true);
+                        setIs_Complete(false);
                       }}
                     >
                       거래중
@@ -186,6 +229,9 @@ const Chatting = () => {
                       onClick={() => {
                         ModalControl();
                         OptionThreeControl();
+                        setIs_Every(false);
+                        setIs_Ing(false);
+                        setIs_Complete(true);
                       }}
                     >
                       거래완료
@@ -195,20 +241,49 @@ const Chatting = () => {
               )}
             </div>
             <div className="chat-item">
-              {rooms.map((p, idx) => {
-                return (
-                  <ChattingItem
-                    testOne={testOne}
-                    stompClient={stompClient}
-                    stomp={stomp}
-                    roomData={p}
-                    key={idx}
-                  />
-                );
-              })}
+              {rooms.length === 0 &&
+                ingRooms.length === 0 &&
+                completeRooms.length === 0 &&
+                is_loading === false && <NoChattingList />}
+              {is_every &&
+                rooms.map((p, idx) => {
+                  return (
+                    <ChattingItem
+                      testOne={testOne}
+                      stompClient={stompClient}
+                      stomp={stomp}
+                      roomData={p}
+                      key={idx}
+                    />
+                  );
+                })}
+              {is_ing &&
+                ingRooms.map((p, idx) => {
+                  return (
+                    <ChattingItem
+                      testOne={testOne}
+                      stompClient={stompClient}
+                      stomp={stomp}
+                      roomData={p}
+                      key={idx}
+                    />
+                  );
+                })}
+              {is_complete &&
+                completeRooms.map((p, idx) => {
+                  return (
+                    <ChattingItem
+                      testOne={testOne}
+                      stompClient={stompClient}
+                      stomp={stomp}
+                      roomData={p}
+                      key={idx}
+                    />
+                  );
+                })}
             </div>
           </div>
-          <Nav chatting={"chatting"} />
+          <Nav rooms={rooms} chatting={chatting} />
         </Grid>
       </ChattingWrap>
     </Permit>
@@ -220,10 +295,8 @@ export default Chatting;
 const ChattingWrap = styled.div`
   .grid-border {
     width: 100%;
-    height: 100vh;
+    height: 120vh;
     background-color: white;
-    /* min-height: 926px; */
-    /* border: 1px solid var(--help-color); */
     position: relative;
 
     .chatting-wrap {
@@ -245,13 +318,22 @@ const ChattingWrap = styled.div`
           display: flex;
           justify-content: space-between;
           align-items: center;
+          /* position: relative; */
 
           .header-title {
             font-size: 20px;
             font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
           }
           .point-icon {
             cursor: pointer;
+            position: absolute;
+            left: 90%;
+            top: 50%;
+            transform: translate(0, -50%);
           }
           .arrow-back {
             width: 30px;
@@ -271,14 +353,15 @@ const ChattingWrap = styled.div`
           background-color: rgba(0, 0, 0, 0.25);
         }
         .drop-chat {
-          height: 207px;
-          width: 303px;
-          border-radius: 24px;
+          height: 165px;
+          width: 260px;
+
+          border-radius: 12px;
           background-color: white;
           position: absolute;
-          top: 110%;
+          top: 150%;
           left: 50%;
-          transform: translate(-50%, 110%);
+          transform: translate(-50%, 150%);
           display: flex;
           flex-direction: column;
           justify-content: space-evenly;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
+
 import styled from "styled-components";
 import { Grid } from "../elements/index";
 import { RiArrowLeftRightLine } from "react-icons/ri";
@@ -13,10 +14,8 @@ const PostCard = ({ item }) => {
   const [state, setState] = useState(
     item.currentState === "Proceeding" ? "거래중" : "거래완료"
   );
-
   const [user_id, setUser_id] = useState(false);
   const [bookmark, setBookmark] = useState(item.bookMarks);
-  const [checkBm, setCheckBm] = useState();
 
   const MoveToDetail = () => {
     history.push(`/detail/${item.postId}`);
@@ -24,14 +23,13 @@ const PostCard = ({ item }) => {
 
   //로그인된 유저가 즐겨찾기 한 포스트인지 비교하기
   const has_bookmarks = () => {
-    if (bookmark.length > 0) {
+    if (bookmark?.length > 0) {
       const bookmarkState = bookmark.filter((user) => {
         return user.userId === Number(curUserId);
       });
 
       if (bookmarkState.length === 1) {
         setUser_id(true);
-        setCheckBm(true);
       }
     }
   };
@@ -60,7 +58,11 @@ const PostCard = ({ item }) => {
           </Grid>
           <PostImg>
             <Grid _className="imgbox">
-              <img src={item.images[0].imageUrl} alt="PostImg" />
+              {item.images.length !== 0 ? (
+                <img src={item.images[0].imageUrl} alt="PostImg" />
+              ) : (
+                <img src="/static/default.png" alt="defaultImg" />
+              )}
             </Grid>
             <ChipDiv>
               <Grid _className={state === "거래중" ? "ing" : "stop"}>
@@ -71,7 +73,6 @@ const PostCard = ({ item }) => {
 
           <PostContent>
             <Grid is_flex _className="exchange-box">
-              {/* <span>{item.myItem}</span> */}
               <RiArrowLeftRightLine className="icon" />
               <span>{item.exchangeItem}</span>
             </Grid>
@@ -98,13 +99,10 @@ const PostCard = ({ item }) => {
 
 const Post = styled.div`
   width: 98%;
-  /* border: 1px solid var(--help-color); */
   padding-top: 5px;
   border-radius: 10px;
   margin-left: 1%;
   margin-top: 5px;
-  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
-    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px; */
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.15) 0px 0px 8px;
   cursor: pointer;
@@ -220,14 +218,11 @@ const PostContent = styled.div`
       margin: 5px;
       font-size: 14px;
       font-weight: bold;
-      /* color: var(--main-color); */
     }
 
     span {
       font-size: 14px;
       color: var(--main-font-color);
-      /* width: 47%;
-      text-align: center; */
     }
   }
 `;

@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-import { axiosInstance } from "../shared/api";
-import { Grid } from "../elements";
 import { history } from "../redux/configureStore";
+
+import { Grid } from "../elements";
 import { getCookie } from "../shared/Cookie";
+import { axiosInstance } from "../shared/api";
 
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsArrowReturnRight } from "react-icons/bs";
 
-const Reply = ({ reply, postid, postuser }) => {
+const Reply = ({ reply, parentid, postuser, comcnt, postid }) => {
   const token = getCookie("Token");
-  const curUserName = getCookie("Name");
+  const curUserId = getCookie("Id");
   const dispatch = useDispatch();
   const [is_login, setIs_login] = useState(token ? true : false);
   const [btn, setBtn] = useState(false);
@@ -22,16 +23,55 @@ const Reply = ({ reply, postid, postuser }) => {
   const deleteComment = () => {
     let ok = window.confirm("정말 삭제하시겠어요?");
     if (ok) {
-      dispatch(postActions.del_comment(replyData.id));
+      dispatch(
+        postActions.del_childcomment(replyData.id, parentid, postid, comcnt)
+      );
     }
   };
 
+  //대댓글 메뉴버튼 이벤트
   const Clickbtn = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
     if (btn) {
       setBtn(false);
     } else {
       setBtn(true);
     }
+  };
+
+  //대댓글 작성자랑 채팅연결
+  const goChat = () => {
+    axiosInstance
+      .post(
+        `/api/room`,
+        {
+          postId: postid,
+          toUserId: replyData.userId,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((res) => {
+        if (res.data.message === "same room") {
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          history.push("/chatting");
+        } else {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: postid,
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        // console.log(err, "에러");
+      });
   };
 
   return (
@@ -41,7 +81,13 @@ const Reply = ({ reply, postid, postuser }) => {
           <BsArrowReturnRight className="arrow" />
           <Grid _className="reply-box">
             <Grid is_flex flex_align="center" _className="user">
-              <Profile></Profile>
+              <Profile>
+                <img
+                  className="profile-img"
+                  src={replyData.profileImg}
+                  alt="profileImg"
+                />
+              </Profile>
               {replyData.nickname === postuser ? (
                 <p>
                   {replyData.nickname} <span className="chip">작성자</span>
@@ -59,13 +105,13 @@ const Reply = ({ reply, postid, postuser }) => {
                   _className={btn ? "inner-menu active" : "inner-menu"}
                   _onClick={Clickbtn}
                 >
-                  {is_login && curUserName === replyData.nickname ? (
+                  {is_login && Number(curUserId) === replyData.userId ? (
                     <>
                       <li onClick={deleteComment}>삭제하기</li>
                     </>
                   ) : (
                     <>
-                      <li>채팅하기</li>
+                      <li onClick={goChat}>채팅하기</li>
                     </>
                   )}
                 </Grid>
@@ -73,7 +119,7 @@ const Reply = ({ reply, postid, postuser }) => {
             </Grid>
             <Comment>{replyData.content}</Comment>
             <Grid padding="5px 0">
-              <span>{replyData.createAt}</span>
+              <span>{replyData.createdAt}</span>
             </Grid>
           </Grid>
         </Grid>
@@ -171,11 +217,19 @@ const ReplyBox = styled.div`
 `;
 
 const Profile = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background-color: var(--help-color);
+  /* background-color: var(--help-color); */
   margin-right: 10px;
+  background-color: #fff1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .profile-img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const Comment = styled.div`

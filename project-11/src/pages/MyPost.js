@@ -10,12 +10,12 @@ import { Grid } from "../elements";
 import Nav from "../shared/Nav";
 import MyPostCard from "../components/MyPostCard";
 import MpLoginCk from "../components/MpLoginCk";
+import Spinner from "../components/Spinner";
 
 const MyPost = () => {
   const token = getCookie("Token");
-
   const [my_List, setMy_List] = React.useState([]);
-
+  const [is_loading, setIs_loading] = React.useState(false);
   useEffect(() => {
     axiosInstance
       .get(`/api/myposts`, {
@@ -24,22 +24,25 @@ const MyPost = () => {
         },
       })
       .then((res) => {
-        console.log("성공쓰~", res);
-        console.log(res.data);
+        // console.log("성공쓰~", res);
+        // console.log(res.data);
         setMy_List(res.data);
+        setIs_loading(true);
       })
       .catch((err) => {
-        console.log("에러네용", err);
+        // console.log("에러네용", err);
       });
   }, []);
-  useEffect(() => {
-    console.log(my_List);
-  }, [my_List]);
+
+  // useEffect(() => {
+  //   console.log(my_List);
+  // }, [my_List]);
 
   return (
     <>
       <MyPostBox>
-        <Grid is_container _className="border">
+        <Grid is_container _className="background">
+          {is_loading === false && <Spinner />}
           <MainTop>
             <IoIosArrowBack
               size="30"
@@ -73,7 +76,7 @@ const MyPost = () => {
 };
 
 const MyPostBox = styled.div`
-  .border {
+  .background {
     height: 100vh;
     /* border-right: 1px solid var(--help-color);
     border-left: 1px solid var(--help-color); */
@@ -101,7 +104,7 @@ const MainTop = styled.div`
   position: relative;
   .icon {
     position: absolute;
-    left: 0;
+    left: 6px;
     cursor: pointer;
   }
 `;

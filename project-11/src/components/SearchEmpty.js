@@ -1,22 +1,18 @@
 import React from "react";
 import { Grid } from "../elements";
-
 import styled from "styled-components";
 
 const SearchEmpty = (props) => {
-  console.log(props);
   return (
     <>
       <SearchEmptyBox>
         <Grid is_container _className="container-border">
           <div className="modal-wrap">
-            <div className="icon-wrap">
-              <img src="/static/핑이 기본.png" alt="default" />
-              <img src="/static/핑이 분노.png" alt="default" />
-              <img src="/static/핑이 행복.png" alt="default" />
-            </div>
+            <AppImg>
+              <img src="/static/ping.png" alt="logo" />
+            </AppImg>
             <div className="title">
-              {props.result === "검색중입니다" ? (
+              {props.result === "검색어를 입력해주세요" ? (
                 <>
                   <p>{props.result}</p>
                 </>
@@ -40,27 +36,33 @@ export default SearchEmpty;
 
 const SearchEmptyBox = styled.div`
   .container-border {
-    height: 90vh;
+    height: 75vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 16px;
     .modal-wrap {
       text-align: center;
       width: 100%;
-      .icon-wrap {
-        margin-bottom: 40px;
-        img {
-          width: 63px;
-          height: 63px;
-        }
-      }
       .title {
-        margin-bottom: 80px;
+        margin-bottom: 50px;
         p {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: bold;
+          margin-bottom: 5px;
+        }
+        span {
+          font-size: 14px;
         }
       }
     }
+  }
+`;
+const AppImg = styled.div`
+  width: 78px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  img {
+    width: 100%;
   }
 `;

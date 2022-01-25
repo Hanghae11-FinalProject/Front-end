@@ -1,114 +1,212 @@
 import React from "react";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
-import { RiKakaoTalkFill } from "react-icons/ri";
 import styled from "styled-components";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Pagination, Autoplay, Navigation } from "swiper";
 import { KAKAO_AUTH_URL } from "../shared/OAuth";
+import "swiper/css";
+import "swiper/css/pagination";
+
+SwiperCore.use([Pagination, Autoplay, Navigation]);
 
 const Landing = () => {
-  const ClikKakao = () => {
+  const swiperStyle = {
+    position: "relative",
+    width: "100%",
+    height: "auto",
+  };
+
+  const ClickKakao = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
-    <>
-      <Intro>
-        <Grid is_container padding="16px" _className="intro-box">
-          <Grid _className="intro-anime">
-            <Logo>
-              <img src="/static/logo.png" alt="logo" />
-            </Logo>
-            <AppImg>
-              <img src="/static/pingpong00.png" alt="logo" />
-            </AppImg>
-          </Grid>
-          <BTNS>
-            <button
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              로그인
-            </button>
-            <button
-              onClick={() => {
-                history.push("/signup");
-              }}
-            >
-              회원가입
-            </button>
-            <button
-              onClick={() => {
-                history.push("/");
-              }}
-            >
-              둘러보기
-            </button>
-            <KakaoBtn onClick={ClikKakao}>
-              <RiKakaoTalkFill size="38" />
-            </KakaoBtn>
-          </BTNS>
-        </Grid>
-      </Intro>
-    </>
+    <Intro>
+      <Grid is_container _className="intro-box background">
+        <div className="imgwrap">
+          <img
+            src="/static/landinglogo.png"
+            alt=""
+            style={{ height: "50px" }}
+          />
+        </div>
+        <Swipercontainer>
+          <SwiperCustom
+            style={swiperStyle}
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 2200 }}
+          >
+            <SwiperSlide>
+              <img
+                src="/static/boarding1.png"
+                style={{ width: "100%", height: "auto" }}
+                alt=""
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img
+                src="/static/boarding2.png"
+                style={{ width: "100%", height: "auto" }}
+                alt=""
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img
+                src="/static/boarding3.png"
+                style={{ width: "100%", height: "auto" }}
+                alt=""
+              />
+            </SwiperSlide>
+          </SwiperCustom>
+        </Swipercontainer>
+        <div className="login-input-wrap">
+
+          <button
+            className="login-btn"
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            로그인하러가기
+          </button>
+          <div className="kakaobtn">
+            <div className="kakaobubblewrap" onClick={ClickKakao}>
+              <img
+                className="kakaobubble"
+                src="/static/kakaobubble.png"
+                alt=""
+              />
+              <p className="kakaotext">카카오계정으로 로그인</p>
+            </div>
+            <div className="bottomtext">
+              <span
+                className="signupbtn"
+                onClick={() => {
+                  history.push("/signup");
+                }}
+              >
+                회원가입
+              </span>
+              <span
+                onClick={() => {
+                  history.push("/main");
+                }}
+              >
+                둘러보기
+              </span>
+            </div>
+          </div>
+        </div>
+      </Grid>
+    </Intro>
   );
 };
 
 export default Landing;
 
 const Intro = styled.div`
+  .swiper-pagination-bullet-active {
+    background-color: var(--main-color);
+    width: 16px;
+    border-radius: 4px;
+  }
   .intro-box {
-    padding: 80px 0 30px 0;
-    background: #fff1f1;
-    .intro-anime {
-      text-align: center;
+    background-color: white;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+
+    .imgwrap {
+      display: flex;
+      justify-content: center;
+      padding: 55px 20px 40px 20px;
+    }
+    .login-input-wrap {
+      display: flex;
+      flex-direction: column;
+      padding: 0 16px 50px 16px;
+      background-color: white;
+      .login-btn {
+        background-color: var(--main-color);
+        text-align: center;
+        width: 100%;
+        max-width: 397px;
+        height: 48px;
+        border-radius: 4px;
+        color: white;
+        margin-top: 20px;
+        border: 0px;
+        cursor: pointer;
+      }
+      .kakaobtn {
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        cursor: pointer;
+        .kakaobubblewrap {
+          width: 100%;
+          height: 48px;
+          background-color: #fee500;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          position: relative;
+          margin-top: 12px;
+          .kakaobubble {
+            width: 20px;
+            height: 20px;
+            margin-left: 16px;
+          }
+          .kakaotext {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #41231f;
+            font-size: 14px;
+            font-weight: 600;
+          }
+        }
+        .bottomtext {
+          display: flex;
+          max-width: 429px;
+          margin: 0 auto;
+          margin-top: 20px;
+          span {
+            padding: 0px 25px;
+            color: var(--help-color);
+          }
+          span:nth-child(1) {
+            border-right: 1px solid var(--help-color);
+            cursor: pointer;
+          }
+          span:nth-child(2) {
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 `;
 
-const Logo = styled.div`
-  img {
-    width: 60%;
+const Swipercontainer = styled.div`
+  width: calc(100% - 32px);
+  max-height: 650px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 4px;
+`;
+
+const SwiperCustom = styled(Swiper)`
+  &.swiper {
+    /* margin-top:-20px; */
   }
-`;
-const AppImg = styled.div`
-  img {
-    width: 90%;
-  }
-`;
-const KakaoBtn = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 64px;
-  background-color: rgba(255, 255, 255, 0.3);
-  background-color: #ffd600;
-  /* border: 1px solid var(--help-color); */
-  /* box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1); */
-  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-    rgba(17, 17, 26, 0.15) 0px 0px 8px;
-
-  margin: 20px auto;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-const BTNS = styled.div`
-  margin-top: 40px;
-  padding: 0 40px;
-  button {
-    width: 100%;
-    border-radius: 24px;
-    height: 48px;
-    background-color: var(--main-color);
-    color: #fff;
-    font-size: 16px;
-
-    outline: 0;
-    border: 0;
-    margin: 5px 0;
-    cursor: pointer;
+  .swiper-horizontal > .swiper-pagination-bullets,
+  .swiper-pagination-bullets .swiper-pagination-horizontal,
+  .swiper-pagination-custom,
+  .swiper-pagination-fraction {
+    bottom: 10px;
   }
 `;

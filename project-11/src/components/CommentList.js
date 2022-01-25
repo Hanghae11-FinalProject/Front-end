@@ -1,48 +1,61 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { Grid } from "../elements/index";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
 import CommentInput from "./CommentInput";
 import Reply from "./Reply";
+import { axiosInstance } from "../shared/api";
 
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import { IoPaperPlane } from "react-icons/io5";
+import { GrClose } from "react-icons/gr";
+import { BsArrowReturnRight } from "react-icons/bs";
 
-const CommentList = ({ comment, postid, postuser }) => {
+const CommentList = ({ comment, postid, postuser, comcnt }) => {
   const token = getCookie("Token");
   const curUserId = getCookie("Id");
-  const userProfile = useSelector((state) => state.post.profile);
-  console.log(userProfile);
+
   const dispatch = useDispatch();
 
   const [is_login, setIs_login] = useState(token ? true : false);
-  const [name, setName] = useState(false);
+  const [is_name, setIs_Name] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
-
+  const [Newcomment, setNewComment] = useState();
+  const [controlRpl, setControlRpl] = useState(false);
   const commentData = comment;
-  console.log(commentData);
-  //댓글 쓰기
+  let nickChange = commentData.nickname;
 
-  const writeComment = () => {
+  //댓글 쓰기
+  const writeCommentBtn = () => {
     if (!token) {
       window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
-      history.push("/intro");
+      history.push("/");
     }
-    setName(commentData.nickname);
+    if (is_name === false) {
+      setIs_Name(true);
+    } else if (is_name === true) {
+      setIs_Name(false);
+    }
   };
 
   //댓글 삭제
   const deleteComment = () => {
     let ok = window.confirm("정말 삭제하시겠어요?");
     if (ok) {
-      dispatch(postActions.del_comment(commentData.id));
+      dispatch(postActions.del_comment(commentData.id, postid, comcnt));
     }
   };
 
   //버튼메뉴 클릭이벤트
   const Clickbtn = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
     if (btnActive) {
       setBtnActive(false);
     } else {
@@ -50,11 +63,86 @@ const CommentList = ({ comment, postid, postuser }) => {
     }
   };
 
+  //댓글 쓰기 onChange
+  const writeComment = (e) => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+    setNewComment(e.target.value);
+  };
+
+  // 대댓글 추가
+  const addChildComment = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
+    if (!Newcomment) {
+      return;
+    }
+    dispatch(
+      postActions.add_childcomment(postid, commentData.id, Newcomment, comcnt)
+    );
+    setNewComment("");
+    setIs_Name(false);
+  };
+
+  useEffect(() => {
+    if (controlRpl) {
+      setControlRpl(false);
+    } else {
+      setControlRpl(true);
+    }
+  }, [is_name]);
+
+  // 댓글 취소 (삭제아님)
+  const cancleReply = () => {
+    setIs_Name(false);
+  };
+
+  // 채팅하기
+  const goChat = () => {
+    if (!token) {
+      window.alert("로그인을 안 하셨군요! 로그인부터 해주세요 😀");
+      history.push("/");
+    }
+
+    axiosInstance
+      .post(
+        `/api/room`,
+        {
+          postId: postid,
+          toUserId: comment.userId,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((res) => {
+        if (res.data.message === "same room") {
+          window.alert("이미 상대방과의 채팅방이 있습니다.");
+          history.push("/chatting");
+        } else {
+          history.push({
+            pathname: `/chat`,
+            state: {
+              roomName: res.data.roomName,
+              sender: res.data.user,
+              postId: postid,
+            },
+          });
+        }
+      })
+      .catch((err) => {
+        // console.log(err, "에러");
+      });
+  };
+
   return (
     <>
       <>
         <CommentBox key={commentData.id}>
-          <Grid is_container _className="comment-box">
+          <Grid is_container _className="comments-box">
             <Grid is_flex flex_align="center" _className="user">
               <Profile>
                 <img src={commentData.profileImg} alt="UserImg" />
@@ -82,9 +170,9 @@ const CommentList = ({ comment, postid, postuser }) => {
                     </>
                   ) : (
                     <>
-                      <li onClick={writeComment}>댓글달기</li>
-                      <li>채팅하기</li>
-                      <li onClick={deleteComment}>신고하기</li>
+                      <li onClick={writeCommentBtn}>댓글달기</li>
+                      <li onClick={goChat}>채팅하기</li>
+                      <li>신고하기</li>
                     </>
                   )}
                 </Grid>
@@ -92,7 +180,7 @@ const CommentList = ({ comment, postid, postuser }) => {
             </Grid>
             <Comment>{commentData.content}</Comment>
             <Grid is_flex>
-              <span>{commentData.createAt}</span>
+              <span>{commentData.createdAt}</span>
             </Grid>
             {/* 부모 댓글에 속해 있는 자식 댓글들 */}
             {commentData.children ? (
@@ -101,10 +189,12 @@ const CommentList = ({ comment, postid, postuser }) => {
                   return (
                     <>
                       <Reply
-                        postid={postid}
+                        parentid={commentData.id}
                         reply={reply}
                         key={reply.id}
                         postuser={postuser}
+                        comcnt={comcnt}
+                        postid={postid}
                       />
                     </>
                   );
@@ -114,20 +204,53 @@ const CommentList = ({ comment, postid, postuser }) => {
               <></>
             )}
           </Grid>
+          {/* 댓글의 아이디를 넘겨 받으면 대댓글 인풋창 오픈 */}
+          {is_name === true && (
+            <>
+              <ReplyInput>
+                <BsArrowReturnRight className="arrow" />
+                <Grid _className="reply-input-box">
+                  <Grid
+                    is_container
+                    is_flex
+                    flex_align="center"
+                    flex_justify="space-between"
+                    _className="reply-name"
+                  >
+                    <p>@{nickChange}님에게 답글다는 중...</p>
+                    <span>
+                      <GrClose className="close-btn" onClick={cancleReply} />
+                    </span>
+                  </Grid>
+                  <Grid
+                    is_container
+                    is_flex
+                    flex_align="center"
+                    _className="reply-box"
+                  >
+                    <input
+                      type="text"
+                      placeholder={`댓글을 입력해주세요`}
+                      onChange={writeComment}
+                      disabled={token ? false : true}
+                      onKeyPress={(e) => {
+                        e.key === "Enter" && addChildComment();
+                      }}
+                    />
+
+                    <IoPaperPlane
+                      className="add-btn"
+                      onClick={addChildComment}
+                    />
+                  </Grid>
+                </Grid>
+              </ReplyInput>
+            </>
+          )}
         </CommentBox>
       </>
-
-      {/* 코멘트 인풋창 */}
-      {/* comment list가 있을때는 name이 붙는 인풋으로 아니면 디폴트 인풋창으로 */}
-      {name && (
-        <CommentInput
-          name={commentData.nickname}
-          postid={postid}
-          // parent id
-          commentid={commentData.id}
-        />
-      )}
-      <CommentInput postid={postid} />
+      {/* 대댓글없이 쓰는 댓글 인풋창 */}
+      <CommentInput postid={postid} comcnt={comcnt} />
     </>
   );
 };
@@ -138,7 +261,7 @@ const CommentBox = styled.div`
   font-size: 14px;
   padding: 0 16px;
 
-  .comment-box {
+  .comments-box {
     .user {
       height: 40px;
 
@@ -178,7 +301,8 @@ const CommentBox = styled.div`
           background-color: #fff;
           border: 1px solid var(--help-color);
           display: none;
-          z-index: 10;
+          border-radius: 4px;
+          z-index: 5;
           li {
             color: var(--active-color);
             padding: 8px 10px;
@@ -210,7 +334,7 @@ const Profile = styled.div`
   border-radius: 50%;
   background-color: var(--help-color);
   margin-right: 10px;
-  background-color: #ffd8d8;
+  background-color: #fff1f1;
 
   display: flex;
   justify-content: center;
@@ -223,4 +347,50 @@ const Profile = styled.div`
 
 const Comment = styled.div`
   padding-left: 5px;
+`;
+
+// 대댓글 인풋
+const ReplyInput = styled.div`
+  display: flex;
+  margin: 5px 0 10px 0;
+
+  .reply-input-box {
+    width: 95%;
+    margin-left: 10px;
+    padding: 5px 5px 5px 5px;
+    background-color: var(--light-color);
+    border-radius: 4px;
+
+    .reply-name {
+      padding: 5px 10px;
+      p {
+        color: var(--main-color);
+        width: 95%;
+      }
+
+      .close-btn {
+        cursor: pointer;
+      }
+    }
+
+    .reply-box {
+      padding: 0px 10px;
+      background-color: rgba(255, 255, 255, 0.55);
+
+      input {
+        width: 100%;
+        height: 40px;
+        border: 0;
+        outline: 0;
+        background-color: transparent;
+      }
+
+      .add-btn {
+        color: var(--main-color);
+        font-size: 26px;
+        height: 40px;
+        cursor: pointer;
+      }
+    }
+  }
 `;

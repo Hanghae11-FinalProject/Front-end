@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { axiosInstance } from "../shared/api";
 import Nav from "../shared/Nav";
 import SearchHIstory from "../components/SearchHIstory";
 import PostCard from "../components/PostCard";
 import SearchEmpty from "../components/SearchEmpty";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { getCookie } from "../shared/Cookie";
 import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
@@ -11,6 +12,7 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiSearch } from "react-icons/bi";
+import { MdOutlineClose } from "react-icons/md";
 
 const Search = () => {
   const token = getCookie("Token");
@@ -19,45 +21,49 @@ const Search = () => {
   const [key, setKey] = useState("");
   const [search_data, setSearch_data] = useState([]);
   const [noresult, setNoresult] = useState();
-  const [page, setPage] = useState(1);
   const [recommend, setRecommend] = useState([]);
   const [postcnt, setPostcnt] = useState(0);
+  const inputRef = useRef(null);
+  //무한 스크롤 동작을 감지 하기 위한 상태값 관리
+  const [hasMore, sethasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
   const getTrendKeyword = () => {
     //인기검색어 가져오는 api
     axiosInstance
       .get(`api/search/rank`)
       .then((res) => {
-        console.log("인기검색어", res);
-        setRecommend(res.data.searchRankList);
+        // console.log("인기검색어", res);
+        setRecommend(res.data);
       })
       .catch((err) => {
-        console.log("인기검색어 조회 실패", err);
+        // console.log("인기검색어 조회 실패", err);
       });
   };
 
-  //onkeyup event
-  const handlekeyup = (e) => {
-    setNoresult("검색중입니다");
-    if (key && e.key === "Enter") {
-      console.log(e.target.value);
-      setRecent([e.target.value, ...preWord]);
+  //onClick event
+  const handleClick = () => {
+    if (inputRef.current.value !== "") {
+      setNoresult("검색어를 입력해주세요");
+      setRecent([key, ...preWord]);
+
       //검색리스트 가져오는 api
+      //처음 검색어가 검색되었을 때 처음 로드되는 0번 페이지 데이터
+      let searchdata;
       axiosInstance
-        .post(`api/search`, { keyword: [key] })
+        .post(`api/search?page=0`, { keyword: [key] })
         .then((res) => {
-          console.log("검색완료", res);
-          setSearch_data(res.data.data.posts);
+          // console.log("검색완료", res);
+          searchdata = res.data.data.posts;
           setPostcnt(res.data.data.postCnt);
+          setSearch_data(searchdata);
           if (res.data.data.postCnt === 0) {
             setNoresult("일치하는 내용이 없어요");
           }
-          // setKey("");
         })
         .catch((err) => {
-          console.log("검색실패", err);
+          // console.log("검색실패", err);
         });
-      // setKey("");
     }
 
     if (!key) {
@@ -65,24 +71,88 @@ const Search = () => {
     }
   };
 
-  //최근 검색어 5개 제한
-  const list = recent.slice(0, 5);
+  //onkeyup event
+  const handlekeyup = (e) => {
+    setNoresult("검색어를 입력해주세요");
+    if (key && e.key === "Enter") {
+      setRecent([e.target.value, ...preWord]);
+
+      //검색리스트 가져오는 api
+      //처음 검색어가 검색되었을 때 처음 로드되는 0번 페이지 데이터
+      let searchdata;
+      axiosInstance
+        .post(`api/search?page=0`, { keyword: [key] })
+        .then((res) => {
+          // console.log("검색완료", res);
+          searchdata = res.data.data.posts;
+          setPostcnt(res.data.data.postCnt);
+          setSearch_data(searchdata);
+          if (res.data.data.postCnt === 0) {
+            setNoresult("일치하는 내용이 없어요");
+          }
+        })
+        .catch((err) => {
+          // console.log("검색실패", err);
+        });
+    }
+
+    if (!key) {
+      setSearch_data([]);
+    }
+  };
+
+  //무한 스크롤을 동작과 데이터 로드를 위한 함수
+  //스크롤 동작이 들어갔을 때부터 받아와지는 페이지 0번 이후의 데이터들
+  const onScroll = () => {
+    let searchdata;
+    let count;
+
+    axiosInstance
+      .post(`api/search?page=${page}`, { keyword: [key] })
+      .then((res) => {
+        // console.log("검색완료", res);
+        searchdata = res.data.data.posts;
+        setSearch_data(searchdata);
+        //데이터가 사이즈보다 작을 경우
+        if (searchdata.length === 0 || searchdata.length < 6) {
+          sethasMore(false);
+          setSearch_data([...search_data, ...searchdata]);
+        } else {
+          //데이터가 사이즈만큼 넘어왔을 때
+          setSearch_data([...search_data, ...searchdata]);
+          count = page + 1;
+        }
+        setPage(count);
+      })
+      .catch((err) => {
+        // console.log("검색실패", err);
+      });
+  };
+  //최근 검색어 5개 제한 (중복되는 단어도 제거)
+  const set = new Set(recent);
+  const list = [...set].slice(0, 5);
 
   //검색어 삭제
   const handleRemoveKeyword = (i) => {
-    console.log("click", i);
     const nextKeyword = list.filter((word, idx) => {
       return list.indexOf(word) !== i;
     });
     setRecent(nextKeyword);
   };
 
+  //검색바에 입력한 검색어를 초기화 시키는 부분
+  const reset = () => {
+    setKey("");
+    inputRef.current.value = "";
+    setSearch_data([]);
+  };
+
   useEffect(() => {
-    localStorage.setItem("recent", JSON.stringify(recent));
+    localStorage.setItem("recent", JSON.stringify(list));
     getTrendKeyword();
   }, [recent]);
 
-  //인기 검색어 나누기
+  //인기 검색어 리스트가 양사이드로 나뉘어 들어가져서 5개로 나눴음
   const recommendkeywordTop = recommend.slice(0, 5);
   const recommendkeywordBottom = recommend.slice(5, 10);
 
@@ -90,6 +160,7 @@ const Search = () => {
     <>
       <SearchList>
         <Grid is_container _className="border">
+          <Grid _className="background"></Grid>
           {/* header */}
           {token ? (
             <>
@@ -100,14 +171,6 @@ const Search = () => {
                   is_flex
                   flex_align="center"
                 >
-                  <IoIosArrowBack
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => history.goBack()}
-                  />
                   <p>검색</p>
                 </Grid>
               </Header>
@@ -130,7 +193,7 @@ const Search = () => {
                     onClick={() => history.goBack()}
                   />
                   <p>검색</p>
-                  <button onClick={() => history.push("/intro")}>로그인</button>
+                  <button onClick={() => history.push("/")}>로그인</button>
                 </Grid>
               </Header>
             </>
@@ -143,12 +206,21 @@ const Search = () => {
               is_flex
               flex_align="center"
             >
-              <InputForm
-                type="text"
-                onKeyUp={handlekeyup}
-                onChange={(e) => setKey(e.target.value)}
-              />
-              <BiSearch className="search-icon" />
+              <Grid _className="input-form-inner">
+                <InputForm
+                  type="text"
+                  onKeyUp={handlekeyup}
+                  onChange={(e) => setKey(e.target.value)}
+                  max-length={25}
+                  ref={inputRef}
+                />
+
+                <MdOutlineClose
+                  className={key ? "close-btn btn-active" : "close-btn "}
+                  onClick={reset}
+                />
+              </Grid>
+              <BiSearch className="search-icon" onClick={() => handleClick()} />
             </Grid>
           </SearchInput>
           <Grid
@@ -171,7 +243,7 @@ const Search = () => {
                               >
                                 {idx + 1}
                               </p>
-                              <Keyword key={idx}>{item}</Keyword>
+                              <Keyword key={idx}>{item.rank_Keyword}</Keyword>
                             </Grid>
                           </>
                         );
@@ -187,7 +259,7 @@ const Search = () => {
                               >
                                 {idx + 6}
                               </p>
-                              <Keyword key={idx}>{item}</Keyword>
+                              <Keyword key={idx}>{item.rank_Keyword}</Keyword>
                             </Grid>
                           </>
                         );
@@ -215,11 +287,17 @@ const Search = () => {
               {/* 검색한 데이터가 있을 경우 */}
               <Grid is_container padding="30px 16px 0 16px">
                 <Result>검색 결과 총 {postcnt}건</Result>
-                <PostList>
-                  {search_data.map((item, idx) => {
-                    return <PostCard key={idx} item={item} />;
-                  })}
-                </PostList>
+                <InfiniteScroll
+                  dataLength={search_data.length} //This is important field to render the next data
+                  next={onScroll}
+                  hasMore={hasMore}
+                >
+                  <PostList>
+                    {search_data.map((item, idx) => {
+                      return <PostCard key={idx} item={item} />;
+                    })}
+                  </PostList>
+                </InfiniteScroll>
               </Grid>
             </>
           )}
@@ -234,17 +312,18 @@ export default Search;
 
 const SearchList = styled.div`
   .border {
-    height: 100vh;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     background-color: #fff;
     padding: 60px 0px 10px 0px;
 
-    .input-form {
-      width: 98%;
-      padding: 10px 10px;
-      margin: 0px auto;
+    .background {
+      width: 100%;
+      max-width: 429px;
+      height: 100vh;
       background-color: #fff;
+
+      position: fixed;
+      top: 0;
+      z-index: -10;
     }
 
     .recommend-box {
@@ -265,6 +344,7 @@ const SearchList = styled.div`
 
     .search-icon {
       font-size: 26px;
+      cursor: pointer;
       color: var(--main-color);
     }
 
@@ -283,9 +363,10 @@ const Header = styled.div`
   width: 100%;
   max-width: 428px;
   height: 50px;
+
+  background-color: #fff;
   position: fixed;
   top: 0;
-
   z-index: 10;
   .inner {
     height: 50px;
@@ -339,14 +420,40 @@ const Header = styled.div`
   }
 `;
 
-const SearchInput = styled.div``;
+const SearchInput = styled.div`
+  .input-form {
+    width: 98%;
+    padding: 10px 10px;
+    margin: 0px auto;
+    background-color: #fff;
+
+    .input-form-inner {
+      width: 95%;
+      display: flex;
+      align-items: center;
+      background-color: var(--light-color);
+      border-radius: 4px;
+      padding-right: 10px;
+      margin-right: 10px;
+      .close-btn {
+        color: #000;
+        font-size: 18px;
+        cursor: pointer;
+        display: none;
+      }
+
+      .btn-active {
+        display: block;
+      }
+    }
+  }
+`;
 const InputForm = styled.input`
   width: 95%;
   padding: 8px 10px;
   border: 0;
   background-color: var(--light-color);
-  border-radius: 16px;
-  margin-right: 5px;
+  border-radius: 4px;
 `;
 
 const Title = styled.div`
@@ -354,15 +461,8 @@ const Title = styled.div`
   margin: 5px 0;
 `;
 const Keyword = styled.div`
-  padding: 5px 10px;
-
-  border-radius: 16px;
+  padding: 0px 10px;
   margin: 10px 10px 0 0;
-  font-size: 14px;
-  cursor: pointer;
-  span {
-    cursor: pointer;
-  }
 `;
 
 const RemcommendBox = styled.div`

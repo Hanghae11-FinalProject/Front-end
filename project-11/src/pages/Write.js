@@ -1,19 +1,16 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
 import { useDispatch } from "react-redux";
-import { history } from "../redux/configureStore";
 import { Grid } from "../elements/index";
-import { actionCreators as postActions } from "../redux/modules/post";
 
 import { getCookie } from "../shared/Cookie";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { MdOutlineCameraAlt } from "react-icons/md";
-import { CgChevronLeft } from "react-icons/cg";
-import { IoIosArrowBack } from "react-icons/io";
 import { TiDelete } from "react-icons/ti";
 import Nav from "../shared/Nav";
+import Spinner from "../components/Spinner";
 import Permit from "../shared/Permit";
 
 // style
@@ -27,7 +24,8 @@ SwiperCore.use([Pagination, Navigation]);
 const Write = () => {
   const dispatch = useDispatch();
   const token = getCookie("Token"); // 토큰 가져오기
-
+  const inputRef = useRef(null); //해시태그 input
+  const [loading, setLoading] = React.useState(false); //글작성 완료시 스피너걸기 위한
   const [title, setTitle] = React.useState(""); // 제목
   const [content, setContent] = React.useState(""); // 내용
   const [myItem, setMyItem] = React.useState(""); // 교환할 물품
@@ -62,7 +60,7 @@ const Write = () => {
     return () => {
       document.removeEventListener("click", clickCloseModal);
     }; // 여기서 click을 쓴 이유는 mousedown은 클릭하는 순간 이벤트 발생,
-  }); // click은 클릭이 끝나는 순간 이벤트가 동작 또한 클릭을 떼는 경우도 이벤트 동작 x
+  }); // click은 클릭이 끝나는 순간 이벤트가 동작 && 클릭을 떼는 경우는 이벤트 동작 x
 
   // 모달 바깥 클릭 했을 시에 발생시킬 이벤트
   const clickCloseModal = (e) => {
@@ -128,16 +126,45 @@ const Write = () => {
         if (hashArr.length === 5) {
           return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
         }
-        console.log("엔터로 된거닝?", e.target.value);
+        // console.log("엔터로 된거닝?", e.target.value);
+
         HashWrapInner.innerHTML = "#" + e.target.value;
         GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
         const tag = { tagName: tagName };
         setHashArr((hashArr) => [...hashArr, tag]);
         setHashtag(""); // 태그를 추가한 뒤 새로운 태그를 추가하기 위해 tagName을 다시 빈 값으로 만들어준다.
+        inputRef.current.value = "";
       }
     },
     [tagName, hashArr]
   );
+
+  const addTag = () => {
+    const GetHashContent = document.querySelector(".HashInputOuter");
+    const HashWrapInner = document.createElement("div");
+    HashWrapInner.className = "HashWrapInner";
+
+    HashWrapInner.addEventListener("click", () => {
+      GetHashContent?.removeChild(HashWrapInner);
+      // console.log(HashWrapInner.innerHTML);
+      setHashArr(hashArr.filter((tagName) => tagName)); // filter()는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환
+    });
+
+    // input에서 enter로 태그 생성 enter의 키 코드는 13 이다!
+    if (tagName.trim() !== "") {
+      // trim()은 문자열 좌우에서 공백을 제거하는 함수
+      if (hashArr.length === 5) {
+        return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
+      }
+      // console.log("엔터로 된거닝?", e.target.value);
+      HashWrapInner.innerHTML = "#" + tagName;
+      GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
+      const tag = { tagName: tagName };
+      setHashArr((hashArr) => [...hashArr, tag]);
+      setHashtag(""); // 태그를 추가한 뒤 새로운 태그를 추가하기 위해 tagName을 다시 빈 값으로 만들어준다.
+      inputRef.current.value = "";
+    }
+  };
 
   // 이미지, preview이미지
   const addImage = (e) => {
@@ -168,7 +195,6 @@ const Write = () => {
       }
     }
     let imgLocation = forImages[idxLocation]; // 복사한 images배열에서의 지울 파일 위치 지정
-    console.log(imgLocation);
     const deleteImg = forImages.filter((y) => {
       if (y !== imgLocation) {
         return y;
@@ -205,6 +231,10 @@ const Write = () => {
 
   // 게시글 작성
   const postWrite = async () => {
+    if (active) {
+      return;
+    }
+    setLoading(true);
     const formData = new FormData();
     // console.log(images);
     for (let i = 0; i < images.length; i++) {
@@ -223,11 +253,11 @@ const Write = () => {
       })
     );
     for (let value of formData.values()) {
-      console.log(value);
+      // console.log(value);
     }
     await axios({
       method: "post",
-      url: "http://13.125.250.43/api/posts",
+      url: "https://whereshallwemeet.shop/api/posts",
       data: formData,
       headers: {
         "Content-type": "multipart/form-data",
@@ -235,11 +265,11 @@ const Write = () => {
       },
     })
       .then((response) => {
-        console.log("작성성공이니~", response);
-        window.location.href = "/";
+        // console.log("작성성공이니~", response);
+        window.location.href = "/main";
       })
       .catch((err) => {
-        console.log(err, "에러났니~");
+        // console.log(err, "에러났니~");
       });
   };
 
@@ -247,162 +277,158 @@ const Write = () => {
     <Permit>
       <React.Fragment>
         <Container>
-          <Grid is_container _className="border">
-            <MainTop>
-              <IoIosArrowBack
-                cursor={"pointer"}
-                size="30"
-                onClick={() => {
-                  history.goBack();
-                }}
-              />
-              <TopText
-                style={{
-                  marginLeft: "6px",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                }}
-              >
-                글 작성하기
-              </TopText>
-              <TopText
-                style={{ padding: "6px", fontSize: "16px" }}
-                className={!active ? "activeBtn" : "unActiveBtn"}
-                disabled={active}
-                onClick={postWrite}
-              >
-                완료
-              </TopText>
-            </MainTop>
-            <TitleArea>
-              <TitleInput
-                // value={editItems.title}
-                type="text"
-                maxLength={20}
-                placeholder="제목 (20자 이하)"
-                onChange={changeTitle}
-                onKeyUp={checkActive}
-              ></TitleInput>
-            </TitleArea>
+          <Grid is_container _className="border background">
+            {loading ? (
+              <Spinner />
+            ) : (
+              <>
+                <MainTop>
+                  <p className="toptitle">글 작성하기</p>
+                  <p
+                    className={!active ? "activeBtn" : "unActiveBtn"}
+                    disabled={active}
+                    onClick={postWrite}
+                  >
+                    완료
+                  </p>
+                </MainTop>
+                <TitleArea>
+                  <TitleInput
+                    type="text"
+                    maxLength={20}
+                    placeholder="제목 (20자 이하)"
+                    onChange={changeTitle}
+                    onKeyUp={checkActive}
+                  ></TitleInput>
+                </TitleArea>
 
-            <CateArea>
-              <Catediv
-                onClick={modalControl}
-                ref={modalClose}
-                // value={editItems.categoryName}
-                className={
-                  is_open === false
-                    ? category === "품목 선택"
-                      ? "default"
-                      : "selected"
-                    : "active"
-                }
-              >
-                <div>{category}</div>
-                {is_open ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
-              </Catediv>
-              {is_open && (
-                <>
-                  <Grid _className="category-option">
-                    {cateOption.map((options, idx) => {
-                      return (
-                        <p
-                          key={idx}
-                          onClick={() => {
-                            setCategory(options);
-                            setIs_open(false);
-                          }}
-                        >
-                          {options}
-                        </p>
-                      );
-                    })}
-                  </Grid>
-                </>
-              )}
-            </CateArea>
+                <CateArea>
+                  <Catediv
+                    onClick={modalControl}
+                    ref={modalClose}
+                    className={
+                      is_open === false
+                        ? category === "품목 선택"
+                          ? "default"
+                          : "selected"
+                        : "active"
+                    }
+                  >
+                    <div>{category}</div>
+                    {is_open ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
+                  </Catediv>
+                  {is_open && (
+                    <>
+                      <Grid _className="category-option">
+                        {cateOption.map((options, idx) => {
+                          return (
+                            <p
+                              key={idx}
+                              onClick={() => {
+                                setCategory(options);
+                                setIs_open(false);
+                              }}
+                            >
+                              {options}
+                            </p>
+                          );
+                        })}
+                      </Grid>
+                    </>
+                  )}
+                </CateArea>
 
-            <TradeDiv>
-              <TradeInput
-                // value={editItems.myItem}
-                onChange={changeMyItem}
-                maxLength="10"
-                placeholder="교환할 물품 (1개 입력)"
-              ></TradeInput>
-              <CenterLine />
-              <TradeInput
-                // value={editItems.exchangeItem}
-                onChange={changeYourItem}
-                maxLength="10"
-                placeholder="교환받을 물품 (1개 입력)"
-              ></TradeInput>
-            </TradeDiv>
+                <TradeDiv>
+                  <TradeInput
+                    // value={editItems.myItem}
+                    onChange={changeMyItem}
+                    maxLength="10"
+                    placeholder="교환할 물품 (1개 입력)"
+                  ></TradeInput>
+                  <CenterLine />
+                  <TradeInput
+                    // value={editItems.exchangeItem}
+                    onChange={changeYourItem}
+                    maxLength="10"
+                    placeholder="교환받을 물품 (1개 입력)"
+                  ></TradeInput>
+                </TradeDiv>
 
-            <ImgArea>
-              <label htmlFor="input-file" className="input-Btn-Css">
-                <MdOutlineCameraAlt size={30} />
-                {preImg.length} / 5
-                <input
-                  type="file"
-                  onChange={addImage}
-                  // max={5}
-                  encType="multipart/form-data"
-                  multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
-                  id="input-file" // 커스텀 디자인을 위한 라벨링
-                  className="input-Btn"
-                />
-              </label>
-              <Slider>
-                <Swiper
-                  className="Img-Preview"
-                  spaceBetween={0}
-                  slidesPerView={3}
-                  pagination={{ clickable: true }}
-                >
-                  {preImg.map((x, index) => {
-                    return (
-                      <SwiperSlide key={index} className="slide">
-                        <TiDelete
-                          size="25px"
-                          className="deleteBtn"
-                          onClick={() => {
-                            deleteImages(x);
-                          }}
-                        />
-                        <Preview src={x} />
-                      </SwiperSlide>
-                    );
-                  })}
-                </Swiper>
-              </Slider>
-            </ImgArea>
+                <ImgArea>
+                  <label htmlFor="input-file" className="input-Btn-Css">
+                    <MdOutlineCameraAlt size={30} />
+                    {preImg.length} / 5
+                    <input
+                      type="file"
+                      onChange={addImage}
+                      // max={5}
+                      encType="multipart/form-data"
+                      multiple="multiple" // multiple을 통해 여러개의 파일을 올릴 수 있다
+                      id="input-file" // 커스텀 디자인을 위한 라벨링
+                      className="input-Btn"
+                    />
+                  </label>
+                  <Slider>
+                    <Swiper
+                      className="Img-Preview"
+                      spaceBetween={0}
+                      slidesPerView={3}
+                      pagination={{ clickable: true }}
+                    >
+                      {preImg.map((x, index) => {
+                        return (
+                          <SwiperSlide key={index} className="slide">
+                            <TiDelete
+                              size="25px"
+                              className="deleteBtn"
+                              onClick={() => {
+                                deleteImages(x);
+                              }}
+                            />
+                            <Preview src={x} />
+                          </SwiperSlide>
+                        );
+                      })}
+                    </Swiper>
+                  </Slider>
+                </ImgArea>
 
-            <ContentArea>
-              <ContentInput
-                // value={editItems.content}
-                placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
-                onChange={changeContent}
-                onKeyUp={checkActive}
-                rows={19}
-                maxLength="300"
-              ></ContentInput>
-            </ContentArea>
+                <ContentArea>
+                  <ContentInput
+                    // value={editItems.content}
+                    placeholder="게시글 내용을 작성해주세요. 허위품목 및 판매금지품목은 게시가 제한될 수 있어요."
+                    onChange={changeContent}
+                    onKeyUp={checkActive}
+                    cols="20"
+                    rows="15"
+                    wrap="hard"
+                    maxLength="300"
+                  ></ContentInput>
+                </ContentArea>
 
-            <HashTagArea className="HashWrap">
-              <HashInputOuter className="HashInputOuter">
-                {/* 동적으로 생성되는 태그를 담을 div */}
-                <HashInput
-                  className="HashInput"
-                  type="text"
-                  defaultValue={tagName}
-                  onChange={onChangeHashtag}
-                  onKeyUp={createTag}
-                  placeholder="# 태그 입력"
-                />
-              </HashInputOuter>
-            </HashTagArea>
+                <HashTagArea className="HashWrap">
+                  <HashInputOuter className="HashInputOuter">
+                    {/* 동적으로 생성되는 태그를 담을 div */}
+                    <div className="input-btn">
+                      <HashInput
+                        className="HashInput"
+                        type="text"
+                        // defaultValue={tagName}
+                        onChange={onChangeHashtag}
+                        onKeyUp={createTag}
+                        placeholder="# 태그 입력(5개 이하)"
+                        ref={inputRef}
+                      />
+                      <button className="add-tag" onClick={addTag}>
+                        등록
+                      </button>
+                    </div>
+                  </HashInputOuter>
+                </HashTagArea>
 
-            <Nav write={"write"} />
+                <Nav write={"write"} />
+              </>
+            )}
           </Grid>
         </Container>
       </React.Fragment>
@@ -413,8 +439,6 @@ const Write = () => {
 const Container = styled.div`
   margin: 0 auto;
   .border {
-    height: 100vh;
-    /* border: 1px solid var(--help-color); */
     background-color: #fff;
     .activeBtn {
       color: var(--main-color);
@@ -430,14 +454,22 @@ const Container = styled.div`
 const MainTop = styled.div`
   height: 50px;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const TopText = styled.p`
-  font-size: 20px;
+  position: relative;
+  .toptitle {
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  p {
+    font-size: 20px;
+    top: 50%;
+    left: 88%;
+    position: absolute;
+    transform: translate(0, -50%);
+  }
 `;
 
 const TitleArea = styled.div`
@@ -469,11 +501,10 @@ const CateArea = styled.div`
   .category-option {
     width: 100%;
     max-width: 25.2rem;
-    height: 361px;
-    margin-top: 2px;
+    height: 397px;
+    margin-top: -6px;
     position: absolute;
     background-color: #ffffff;
-
     border: 1px solid var(--disabled-color);
     border-radius: 6px;
     cursor: pointer;
@@ -596,28 +627,26 @@ const Preview = styled.img`
 `;
 
 const ContentArea = styled.div`
-  height: 330px;
+  height: 320px;
+  max-height: 320px;
   margin: 16px;
-  /* border-bottom: 1px solid var(--help-color); */
 `;
 
 const ContentInput = styled.textarea`
-  /* width: 24.6rem; */
   width: 100%;
+  height: 280px;
   font-size: 16px;
   resize: none;
   font-family: "NanumSquareRound";
   border: none;
+  outline: none;
   ::placeholder {
     color: var(--help-color);
-  }
-  :focus {
-    outline: none;
   }
 `;
 
 const HashTagArea = styled.div`
-  height: 75px;
+  height: 150px;
   margin: 15px;
   margin-top: 50px;
   border-top: 1px solid var(--help-color);
@@ -626,9 +655,16 @@ const HashTagArea = styled.div`
 const HashInputOuter = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  .input-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--help-color);
+  }
   .HashWrapInner {
     margin-top: 5px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--main-color);
     padding: 4px 6px;
     color: var(--main-color);
@@ -641,11 +677,21 @@ const HashInputOuter = styled.div`
     margin-right: 5px;
     cursor: pointer;
   }
+  .add-tag {
+    width: 87px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const HashInput = styled.input`
-  width: 365px;
-  height: 40px;
+  width: 100%;
+  height: 55px;
   font-size: 16px;
   border-radius: 8px;
   border: none;
