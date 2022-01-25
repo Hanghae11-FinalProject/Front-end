@@ -13,11 +13,7 @@ const FavoriteItem = (props) => {
 
   const goChat = () => {
     if (props.currentState === "Complete") {
-<<<<<<< HEAD
       window.alert("이미 거래가 완료된 게시글 입니다.");
-=======
-      window.alert("이미 거래가 완료된 게시글입니다.");
->>>>>>> develop
       return;
     }
     axiosInstance
