@@ -33,11 +33,11 @@ const Search = () => {
     axiosInstance
       .get(`api/search/rank`)
       .then((res) => {
-        console.log("인기검색어", res);
+        // console.log("인기검색어", res);
         setRecommend(res.data);
       })
       .catch((err) => {
-        console.log("인기검색어 조회 실패", err);
+        // console.log("인기검색어 조회 실패", err);
       });
   };
 
@@ -53,7 +53,7 @@ const Search = () => {
       axiosInstance
         .post(`api/search?page=0`, { keyword: [key] })
         .then((res) => {
-          console.log("검색완료", res);
+          // console.log("검색완료", res);
           searchdata = res.data.data.posts;
           setPostcnt(res.data.data.postCnt);
           setSearch_data(searchdata);
@@ -62,7 +62,7 @@ const Search = () => {
           }
         })
         .catch((err) => {
-          console.log("검색실패", err);
+          // console.log("검색실패", err);
         });
     }
 
@@ -83,7 +83,7 @@ const Search = () => {
       axiosInstance
         .post(`api/search?page=0`, { keyword: [key] })
         .then((res) => {
-          console.log("검색완료", res);
+          // console.log("검색완료", res);
           searchdata = res.data.data.posts;
           setPostcnt(res.data.data.postCnt);
           setSearch_data(searchdata);
@@ -92,7 +92,7 @@ const Search = () => {
           }
         })
         .catch((err) => {
-          console.log("검색실패", err);
+          // console.log("검색실패", err);
         });
     }
 
@@ -110,7 +110,7 @@ const Search = () => {
     axiosInstance
       .post(`api/search?page=${page}`, { keyword: [key] })
       .then((res) => {
-        console.log("검색완료", res);
+        // console.log("검색완료", res);
         searchdata = res.data.data.posts;
         setSearch_data(searchdata);
         //데이터가 사이즈보다 작을 경우
@@ -125,7 +125,7 @@ const Search = () => {
         setPage(count);
       })
       .catch((err) => {
-        console.log("검색실패", err);
+        // console.log("검색실패", err);
       });
   };
   //최근 검색어 5개 제한 (중복되는 단어도 제거)

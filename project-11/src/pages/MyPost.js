@@ -24,19 +24,19 @@ const MyPost = () => {
         },
       })
       .then((res) => {
-        console.log("성공쓰~", res);
-        console.log(res.data);
+        // console.log("성공쓰~", res);
+        // console.log(res.data);
         setMy_List(res.data);
         setIs_loading(true);
       })
       .catch((err) => {
-        console.log("에러네용", err);
+        // console.log("에러네용", err);
       });
   }, []);
 
-  useEffect(() => {
-    console.log(my_List);
-  }, [my_List]);
+  // useEffect(() => {
+  //   console.log(my_List);
+  // }, [my_List]);
 
   return (
     <>

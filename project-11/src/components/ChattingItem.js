@@ -13,7 +13,6 @@ const ChattingItem = (p) => {
 
   const goChat = () => {
     stompClient.unsubscribe(`/sub/${myUserId}`);
-    stompClient.disconnect();
     history.push({
       pathname: `/chat`,
       state: {

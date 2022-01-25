@@ -253,7 +253,7 @@ const Write = () => {
       })
     );
     for (let value of formData.values()) {
-      console.log(value);
+      // console.log(value);
     }
     await axios({
       method: "post",
@@ -265,11 +265,11 @@ const Write = () => {
       },
     })
       .then((response) => {
-        console.log("작성성공이니~", response);
+        // console.log("작성성공이니~", response);
         window.location.href = "/main";
       })
       .catch((err) => {
-        console.log(err, "에러났니~");
+        // console.log(err, "에러났니~");
       });
   };
 

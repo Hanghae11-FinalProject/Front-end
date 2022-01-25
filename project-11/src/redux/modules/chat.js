@@ -6,9 +6,9 @@ import { getCookie, deleteCookie, setCookie } from "../../shared/Cookie";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-// let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-// let stompClient = Stomp.over(sockjs);
-
+let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
+let stompClient = Stomp.over(sockjs);
+stompClient.debug = null;
 // 액션 타입
 const GET_CHAT = "GET_CHAT";
 const SET_STOMP = "SET_STOMP";
@@ -20,7 +20,7 @@ const setStomp = createAction(SET_STOMP, (data) => ({ data }));
 // 초기값
 const initialState = {
   notReadingMessageCount: 0,
-  stompClient: [],
+  stompClient: stompClient,
 };
 
 // 토큰

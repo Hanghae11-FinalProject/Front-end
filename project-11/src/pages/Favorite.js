@@ -21,7 +21,7 @@ const Favorite = () => {
     axiosInstance
       .get("/api/bookmark", { headers: { Authorization: token } })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setFavoriteList(response.data.data);
         setIs_loading(true);
       });

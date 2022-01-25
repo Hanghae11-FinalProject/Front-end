@@ -19,14 +19,14 @@ const Login = () => {
     });
   };
   const handleClickLoginBtn = () => {
-    console.log(input_values.user_pw);
+    // console.log(input_values.user_pw);
     axiosInstance
       .post("user/login", {
         username: input_values.user_id,
         password: input_values.user_pw,
       })
       .then((response) => {
-        console.log("로그인 완료", response);
+        // console.log("로그인 완료", response);
         // const loginInfo = `userId=${response.data.userId}userImg=${response.data.profileImg}
         // userName=${response.data.nickName}userToken=${response.headers.authorization}`;
         // setCookie("OK", loginInfo);

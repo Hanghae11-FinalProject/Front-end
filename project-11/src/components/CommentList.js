@@ -134,7 +134,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
         }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
       });
   };
 

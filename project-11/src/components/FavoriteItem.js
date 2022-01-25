@@ -13,7 +13,7 @@ const FavoriteItem = (props) => {
 
   const goChat = () => {
     if (props.currentState === "Complete") {
-      window.alert("이미 거래가 완료된 게시글입니다.");
+      window.alert("이미 거래가 완료된 게시글 입니다.");
       return;
     }
     axiosInstance
@@ -41,7 +41,7 @@ const FavoriteItem = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
         window.alert("이미 상대방과의 채팅방이 있습니다.");
       });
   };

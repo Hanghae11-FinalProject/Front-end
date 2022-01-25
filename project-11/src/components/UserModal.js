@@ -54,23 +54,23 @@ const UserModal = (props) => {
     let RegNick = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{2,10}$/;
     const check = RegNick.test(editName);
     if (!check) {
-      console.log(check, "유효성 노 통과");
+      // console.log(check, "유효성 노 통과");
       setNickDoubleChk("2자 이상 10자 이하로 입력해주세요.");
       return;
     } else {
-      console.log(check, "유효성 통과");
+      // console.log(check, "유효성 통과");
 
       axiosInstance
         .post("/user/nicknameCheck", {
           nickname: editName,
         })
         .then((response) => {
-          console.log("닉넴 중복확인 성공!", response.data);
+          // console.log("닉넴 중복확인 성공!", response.data);
           if (response.data === "") {
-            console.log("사용가능한 닉네임");
+            // console.log("사용가능한 닉네임");
             setNickDoubleChk("사용 가능한 닉네임 입니다.");
           } else {
-            console.log(response.data.message);
+            // console.log(response.data.message);
             setNickDoubleChk(response.data.message);
           }
         });

@@ -94,9 +94,9 @@ const EditPost = (items) => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    console.log(myItem);
-    console.log(exchangeItem);
-    console.log(title);
+    // console.log(myItem);
+    // console.log(exchangeItem);
+    // console.log(title);
   };
 
   // 교환할 물품 onChange 함수
@@ -165,7 +165,7 @@ const EditPost = (items) => {
         if (hashArr.length === 5) {
           return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
         }
-        console.log("엔터로 된거닝?", e.target.value);
+        // console.log("엔터로 된거닝?", e.target.value);
         HashWrapInner.innerHTML = "#" + e.target.value;
         GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
         const tag = { tagName: tagName };
@@ -245,7 +245,7 @@ const EditPost = (items) => {
         idxLocation = i;
       }
     }
-    console.log(idxLocation - compare.length); // 위치 비교를 위한 배열의 길이만큼 빼준다
+    // console.log(idxLocation - compare.length); // 위치 비교를 위한 배열의 길이만큼 빼준다
     let imgLocation = forImages[idxLocation - compare.length]; // 복사한 images배열에서의 지울 파일 위치 지정
     const deleteImg = forImages.filter((y) => {
       if (y !== imgLocation) {
@@ -312,7 +312,7 @@ const EditPost = (items) => {
       })
     );
     for (let value of formData.values()) {
-      console.log(value);
+      // console.log(value);
     }
     await axios({
       method: "put",
@@ -323,11 +323,11 @@ const EditPost = (items) => {
       },
     })
       .then((response) => {
-        console.log("수정 완료", response);
+        // console.log("수정 완료", response);
         history.push(`/detail/${postId}`);
       })
       .catch((err) => {
-        console.log(err, "에러났니~");
+        // console.log(err, "에러났니~");
       });
   };
 
