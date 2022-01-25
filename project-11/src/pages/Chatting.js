@@ -151,8 +151,8 @@ const Chatting = () => {
   return (
     <Permit>
       <ChattingWrap>
-        <Grid is_container="is_container" _className="grid-border background">
-          <div className="color-wrap">
+        <Grid is_container="is_container" _className="grid-border">
+          <div className="color-wrap background">
             안녕하세요
           </div>
           <div className="chatting-wrap">
@@ -268,24 +268,24 @@ const ChattingWrap = styled.div`
 
   .grid-border {
     width: 100%;
+    height: auto;
     background-color: white;
     position: relative;
+    padding-bottom: 50px;
     .color-wrap{
-      background-color: black;
+      background-color: white;
       height: 100vh;
       width: 100%;
       position: absolute;
+      z-index: -1;
     }
     .chatting-wrap {
-      border: 1px solid red;
       .chatting-header {
-
         width: 100%;
         max-width: 428px;
         height: 50px;
         background-color: white;
         box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-
         position: fixed;
         top: 0;
         z-index: 10;
