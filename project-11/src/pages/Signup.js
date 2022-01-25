@@ -83,11 +83,11 @@ const Signup = () => {
     if (passNick !== checknickname && actNic === true) {
       setNickDoubleChk("중복확인을 다시 해주세요.");
     }
-    console.log(actNic, actId);
+    // console.log(actNic, actId);
   }, [checknickname]);
 
   const onSubmit = (data) => {
-    console.log(is_location);
+    // console.log(is_location);
     axiosInstance
       .post("user/signup", {
         username: data.email,
@@ -97,7 +97,7 @@ const Signup = () => {
         address: is_location,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (!response.data.code) {
           window.alert("축하합니다 회원가입에 성공하셨습니다.");
           history.push("/login");
@@ -110,53 +110,53 @@ const Signup = () => {
         }
       })
       .catch((err) => {
-        console.log("회원가입 실패", err);
+        // console.log("회원가입 실패", err);
       });
   };
 
   const idCheck = () => {
-    console.log(is_location);
+    // console.log(is_location);
     let RegId = /^\S+@\S+$/i;
     const check = RegId.test(checkemail);
     if (!check) {
       // 유효성 통과 못 한거
-      console.log(check, "유효성 노 통과");
+      // console.log(check, "유효성 노 통과");
       setIsDoubleChk("이메일 형식에 맞지 않습니다.");
       return;
     } else {
-      console.log(check, "유효성 통과");
+      // console.log(check, "유효성 통과");
       //유효성 통과 한거
       //axios
       axiosInstance
         .post("/user/idCheck", { username: checkemail })
         .then((response) => {
-          console.log("중복확인 성공!", response);
+          // console.log("중복확인 성공!", response);
           setActId(true);
           if (response.data.message === "이미 존재하는 이메일 입니다") {
             setActId(false);
           }
           setPassId(checkemail);
           if (response.data === "") {
-            console.log("사용가능한 이메일");
+            // console.log("사용가능한 이메일");
             setIsDoubleChk("사용 가능한 이메일 입니다.");
           } else {
-            console.log(response.data.message);
+            // console.log(response.data.message);
             setIsDoubleChk(response.data.message);
           }
         });
     }
   };
   const nicknameCheck = () => {
-    console.log(is_location);
+    // console.log(is_location);
     let RegNick = /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{2,10}$/;
     const check = RegNick.test(checknickname);
     if (!check) {
       // 유효성 통과 못 한거
-      console.log(check, "유효성 노 통과");
+      // console.log(check, "유효성 노 통과");
       setNickDoubleChk("한글, 영문, 숫자 조합 2~10자로 입력하세요");
       return;
     } else {
-      console.log(check, "유효성 통과");
+      // console.log(check, "유효성 통과");
       //유효성 통과 한거
       //axios
 
@@ -170,12 +170,12 @@ const Signup = () => {
             setActNic(false);
           }
           setPassNick(checknickname);
-          console.log("닉넴 중복확인 성공!", response.data);
+          // console.log("닉넴 중복확인 성공!", response.data);
           if (response.data === "") {
-            console.log("사용가능한 닉네임");
+            // console.log("사용가능한 닉네임");
             setNickDoubleChk("사용 가능한 닉네임 입니다.");
           } else {
-            console.log(response.data.message);
+            // console.log(response.data.message);
             setNickDoubleChk(response.data.message);
           }
         });
@@ -188,11 +188,11 @@ const Signup = () => {
     const check = RegPw.test(checkpw);
 
     if (!check) {
-      console.log(check, "유효성 노 통과");
+      // console.log(check, "유효성 노 통과");
       setPwDoubleChk("영문, 숫자, 특수문자 포함 8~16자로 입력해주세요");
     } else {
       setPwDoubleChk("");
-      console.log(check, "유효성 통과");
+      // console.log(check, "유효성 통과");
     }
   };
 
@@ -530,6 +530,27 @@ const SignupWrap = styled.div`
         opacity: 1;
       }
     }
+    @media screen and (max-width: 414px) {
+      .address-wrap {
+        .select-wrap {
+          width: 185px;
+        }
+        .select-city-wrap {
+          width: 185px;
+        }
+        .drop-location {
+          width: 187px;
+        }
+      }
+      .doubleinput {
+        justify-content: space-between;
+        input {
+          margin-right: 10px;
+        }
+        input:focus {
+          border: 1px solid var(--main-color);
+        }
+      }
     @media screen and (max-width: 376px) {
       .address-wrap {
         .select-wrap {
@@ -537,6 +558,9 @@ const SignupWrap = styled.div`
         }
         .select-city-wrap {
           width: 165px;
+        }
+        .drop-location {
+          width: 167px;
         }
       }
       .doubleinput {
@@ -555,6 +579,9 @@ const SignupWrap = styled.div`
           }
           .select-city-wrap {
             width: 140px;
+          }
+          .drop-location {
+            width: 142px;
           }
         }
       }

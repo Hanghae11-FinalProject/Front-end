@@ -74,13 +74,13 @@ const getProfileDB = () => {
   return async (dispatch, getState, { history }) => {
     const token = getCookie("Token");
     await axiosInstance
-      .get("/api/userInfos", { headers: { Authorization: token } })
+      .get("api/userInfos", { headers: { Authorization: token } })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch(getProfile(response.data));
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };
@@ -91,12 +91,12 @@ const editProfileDB = (Img, nickname) => {
     const token = getCookie("Token");
     await axiosInstance
       .put(
-        "/api/userInfos",
+        "api/userInfos",
         { nickname: nickname, profileImg: Img },
         { headers: { Authorization: token } }
       )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch(editProfile(response.data));
         // 디폴트 이미지를 쿠키에서 지워줌
         deleteCookie("userImg");
@@ -104,7 +104,7 @@ const editProfileDB = (Img, nickname) => {
         setCookie("userImg", response.data.profileImg);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };
@@ -122,7 +122,7 @@ const getPostAction = (area, cate, count, is_select) => {
         address: [area],
       })
       .then((res) => {
-        console.log("통신 후 리듀스 저장 전 목록", res.data, count);
+        // console.log("통신 후 리듀스 저장 전 목록", res.data, count);
         let is_next = null;
 
         if (res.data.data.length < 6) {
@@ -132,13 +132,6 @@ const getPostAction = (area, cate, count, is_select) => {
         }
 
         if (is_select || count === 0) {
-          let _post_data = {
-            posts: res.data.data,
-            page: count + 1,
-            next: is_next,
-          };
-          dispatch(getCate(_post_data));
-        } else if (count === 0 && res.data.data.length < 7) {
           let _post_data = {
             posts: res.data.data,
             page: count + 1,
@@ -168,14 +161,14 @@ const getPostAction = (area, cate, count, is_select) => {
 const get_onepost = (postid) => {
   return (dispatch, getState, { history }) => {
     axiosInstance
-      .get(`/api/posts/${postid}`)
+      .get(`api/posts/${postid}`)
       .then((res) => {
-        console.log("redux detail post", res.data);
+        // console.log("redux detail post", res.data);
         const _data = res.data;
         dispatch(getDetail(_data));
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 };
@@ -190,11 +183,13 @@ const del_onepost = (postid) => {
         },
       })
       .then((res) => {
-        console.log("post delete", res);
+        // console.log("post delete", res);
         dispatch(delDetail(postid));
         window.location.replace("/main");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // console.log(err)
+      });
   };
 };
 
@@ -205,7 +200,7 @@ const add_comment = (id, replyId, Newcomment, comcnt) => {
 
     axiosInstance
       .post(
-        `/api/comments/`,
+        `api/comments/`,
         {
           postId: id,
           parentId: "",
@@ -218,13 +213,13 @@ const add_comment = (id, replyId, Newcomment, comcnt) => {
         }
       )
       .then((res) => {
-        console.log("댓글 쓰기 성공", res);
+        // console.log("댓글 쓰기 성공", res);
         dispatch(addComment(res));
         let newNum = comcnt + 1;
         dispatch(getCommentcnt(newNum, id));
       })
       .catch((err) => {
-        console.log("댓글 쓰기 실패", err);
+        // console.log("댓글 쓰기 실패", err);
       });
   };
 };
@@ -237,7 +232,7 @@ const add_childcomment = (id, replyId, Newcomment, comcnt) => {
 
     axiosInstance
       .post(
-        `/api/comments/`,
+        `api/comments/`,
         {
           postId: id,
           parentId: replyId,
@@ -250,14 +245,14 @@ const add_childcomment = (id, replyId, Newcomment, comcnt) => {
         }
       )
       .then((res) => {
-        console.log("댓글 쓰기 성공", res);
-        console.log(parentid);
+        // console.log("댓글 쓰기 성공", res);
+        // console.log(parentid);
         dispatch(addchildcomment(res, parentid));
         let newNum = comcnt + 1;
         dispatch(getCommentcnt(newNum, id));
       })
       .catch((err) => {
-        console.log("댓글 쓰기 실패", err);
+        // console.log("댓글 쓰기 실패", err);
       });
   };
 };
@@ -268,20 +263,22 @@ const del_comment = (commentid, postid, comcnt) => {
     const token = getCookie("Token");
 
     axiosInstance
-      .delete(`/api/comments/${commentid}`, {
+      .delete(`api/comments/${commentid}`, {
         headers: {
           Authorization: token,
         },
       })
       .then((res) => {
         //삭제되는 댓글 정보를 받는다.
-        console.log("delete sucess", res);
+        // console.log("delete sucess", res);
         //받아오는 정보중 id값만을 이용한다
         dispatch(delComment(res.data));
         let newNum = comcnt - 1;
         dispatch(getCommentcnt(newNum, postid));
       })
-      .catch((err) => console.log("delete fail", err));
+      .catch((err) => {
+        // console.log("delete fail", err)
+      });
   };
 };
 
@@ -291,20 +288,22 @@ const del_childcomment = (commentid, postid, id, comcnt) => {
     const token = getCookie("Token");
 
     axiosInstance
-      .delete(`/api/comments/${commentid}`, {
+      .delete(`api/comments/${commentid}`, {
         headers: {
           Authorization: token,
         },
       })
       .then((res) => {
         //삭제되는 댓글 정보를 받는다.
-        console.log("delete sucess", res);
+        // console.log("delete sucess", res);
         //받아오는 정보중 id값만을 이용한다
         dispatch(delchildcomment(res.data, postid));
         let newNum = comcnt - 1;
         dispatch(getCommentcnt(newNum, id));
       })
-      .catch((err) => console.log("delete fail", err));
+      .catch((err) => {
+        //  console.log("delete fail", err)
+      });
   };
 };
 
@@ -323,10 +322,12 @@ const exchange_state = (postid) => {
       )
       .then((res) => {
         let curState = "Complete";
-        console.log("거래완료 버튼 성공", res);
+        // console.log("거래완료 버튼 성공", res);
         dispatch(exchangeState(postid, curState));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // console.log(err)
+      });
   };
 };
 
@@ -336,7 +337,7 @@ export default handleActions(
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
         //카테고리를 셀렉해주기 위해서 push대신에 하지만 무한스크롤을 위해push해야함
-        console.log("hello");
+        // console.log("hello");
         draft.posts.push(...action.payload._post_data.posts);
 
         if (action.payload._post_data.page) {
@@ -362,7 +363,7 @@ export default handleActions(
 
     [DEL_DETAIL]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.dataid);
+        // console.log(action.payload.dataid);
         const arr = draft.posts.findIndex(
           (p, idx) => p.postId === action.payload.dataid
         );

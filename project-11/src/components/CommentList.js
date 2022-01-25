@@ -134,7 +134,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
         }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
       });
   };
 
@@ -301,6 +301,7 @@ const CommentBox = styled.div`
           background-color: #fff;
           border: 1px solid var(--help-color);
           display: none;
+          border-radius: 4px;
           z-index: 5;
           li {
             color: var(--active-color);
@@ -333,7 +334,7 @@ const Profile = styled.div`
   border-radius: 50%;
   background-color: var(--help-color);
   margin-right: 10px;
-  background-color: #ffd8d8;
+  background-color: #fff1f1;
 
   display: flex;
   justify-content: center;

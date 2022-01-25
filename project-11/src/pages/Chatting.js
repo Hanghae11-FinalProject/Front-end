@@ -5,18 +5,19 @@ import Nav from "../shared/Nav";
 import { Grid } from "../elements";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import NoChattingList from "../components/NoChattingList";
+import Spinner from "../components/Spinner";
 
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const Chatting = () => {
-  let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-  let stompClient = Stomp.over(sockjs);
-  // const chatting
+const Chatting = (props) => {
+  const stompClient = useSelector((state) => state.chat.stompClient);
+
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);
@@ -32,6 +33,8 @@ const Chatting = () => {
   const [newMsgData, setNewMsgData] = useState("");
   const [test, setTest] = useState(true);
   const [stomp, setStomp] = useState();
+  const [is_loading, setIs_Loading] = useState(false);
+  const chatting = "chatting";
 
   const testOne = () => {
     setTest(false);
@@ -58,11 +61,13 @@ const Chatting = () => {
   }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
   // console.log(rooms);
   React.useEffect(() => {
+    setIs_Loading(true);
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
         // console.log(res);
         setRooms(res.data);
+        setIs_Loading(false);
         let ing = [];
         let com = [];
         for (let i = 0; i < res.data.length; i++) {
@@ -76,29 +81,49 @@ const Chatting = () => {
         }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
       });
-    stompClient.connect({}, () => {
-      stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
-      setStomp(
-        stompClient.subscribe(`/sub/${myUserId}`, (data) => {
-          const onMessage = JSON.parse(data.body);
-          setNewMsgData(onMessage);
-          axiosInstance
-            .post(
-              `/api/roomcount`,
-              { roomName: onMessage.roomName, userId: myUserId },
-              { headers: { Authorization: token } }
-            )
-            .then((res) => {
-              // console.log(res, "성공");
-            })
-            .catch((err) => {
-              console.log(err, "에러");
-            });
+    stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+      const onMessage = JSON.parse(data.body);
+      setNewMsgData(onMessage);
+      axiosInstance
+        .post(
+          `/api/roomcount`,
+          { roomName: onMessage.roomName, userId: myUserId },
+          { headers: { Authorization: token } }
+        )
+        .then((res) => {
+          // console.log(res, "성공");
         })
-      );
+        .catch((err) => {
+          // console.log(err, "에러");
+        });
     });
+    // stompClient.connect({}, () => {
+    //   stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
+    //   setStomp(
+    //     stompClient.subscribe(`/sub/${myUserId}`, (data) => {
+    //       const onMessage = JSON.parse(data.body);
+    //       setNewMsgData(onMessage);
+    //       axiosInstance
+    //         .post(
+    //           `/api/roomcount`,
+    //           { roomName: onMessage.roomName, userId: myUserId },
+    //           { headers: { Authorization: token } }
+    //         )
+    //         .then((res) => {
+    //           // console.log(res, "성공");
+    //         })
+    //         .catch((err) => {
+    //           // console.log(err, "에러");
+    //         });
+    //     })
+    //   );
+    // });
+    // return () => {
+    //   //       stompClient.unsubscribe(`/sub/${myUserId}`);
+    //   // stompClient.disconnect();
+    // };
   }, []);
 
   const OptionOneControl = () => {
@@ -152,9 +177,8 @@ const Chatting = () => {
     <Permit>
       <ChattingWrap>
         <Grid is_container="is_container" _className="grid-border">
-          <div className="color-wrap background">
-            안녕하세요
-          </div>
+          <div className="color-wrap background"/>
+    {is_loading === true && <Spinner />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
@@ -165,6 +189,7 @@ const Chatting = () => {
                   style={{
                     width: "25px",
                     height: "25px",
+                    marginLeft: "6px",
                   }}
                   className="point-icon"
                 />
@@ -217,6 +242,10 @@ const Chatting = () => {
               )}
             </div>
             <div className="chat-item">
+              {rooms.length === 0 &&
+                ingRooms.length === 0 &&
+                completeRooms.length === 0 &&
+                is_loading === false && <NoChattingList />}
               {is_every &&
                 rooms.map((p, idx) => {
                   return (
@@ -255,7 +284,7 @@ const Chatting = () => {
                 })}
             </div>
           </div>
-          <Nav rooms={rooms} chatting={"chatting"} />
+          <Nav rooms={rooms} chatting={chatting} />
         </Grid>
       </ChattingWrap>
     </Permit>
@@ -265,7 +294,6 @@ const Chatting = () => {
 export default Chatting;
 
 const ChattingWrap = styled.div`
-
   .grid-border {
     width: 100%;
     height: auto;

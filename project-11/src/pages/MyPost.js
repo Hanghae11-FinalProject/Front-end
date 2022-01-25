@@ -24,25 +24,25 @@ const MyPost = () => {
         },
       })
       .then((res) => {
-        console.log("성공쓰~", res);
-        console.log(res.data);
+        // console.log("성공쓰~", res);
+        // console.log(res.data);
         setMy_List(res.data);
         setIs_loading(true);
       })
       .catch((err) => {
-        console.log("에러네용", err);
+        // console.log("에러네용", err);
       });
   }, []);
 
-  useEffect(() => {
-    console.log(my_List);
-  }, [my_List]);
+  // useEffect(() => {
+  //   console.log(my_List);
+  // }, [my_List]);
 
   return (
     <>
       <MyPostBox>
         <Grid is_container _className="background">
-          {is_loading === false && <Spinner/>}
+          {is_loading === false && <Spinner />}
           <MainTop>
             <IoIosArrowBack
               size="30"
@@ -104,7 +104,7 @@ const MainTop = styled.div`
   position: relative;
   .icon {
     position: absolute;
-    left: 0;
+    left: 6px;
     cursor: pointer;
   }
 `;

@@ -78,11 +78,11 @@ const InputAdd = () => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        console.log("주소입력 완료", res);
+        // console.log("주소입력 완료", res);
         history.push("/main");
       })
       .catch((err) => {
-        console.log("주소입력 실패", err);
+        // console.log("주소입력 실패", err);
       });
   };
 
@@ -212,7 +212,7 @@ const InputAddWrap = styled.div`
       background-color: var(--disabled-color);
     }
     &:hover {
-      opacity: 1;
+      /* opacity: 1; */
     }
   }
 `;
@@ -248,6 +248,7 @@ const AddressBox = styled.div`
     justify-content: space-between;
     padding: 0 10px;
     cursor: pointer;
+    position: relative;
   }
 
   .drop-city {
@@ -255,9 +256,10 @@ const AddressBox = styled.div`
     height: 37.5px;
     border: 1px solid var(--help-color);
     position: absolute;
-    top: 5.3vh;
+    top: 51px;
     background-color: #fff;
     cursor: pointer;
+    z-index: 9999;
 
     .loc-wrap {
       padding: 8px 8px;
@@ -273,9 +275,10 @@ const AddressBox = styled.div`
     height: 162px;
     border: 1px solid var(--help-color);
     position: absolute;
-    top: 5.3vh;
+    top: 51px;
     background-color: #fff;
     cursor: pointer;
+    z-index: 9999;
 
     .loc-wrap {
       padding: 8px 8px;

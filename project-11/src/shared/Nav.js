@@ -14,15 +14,15 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
 const Nav = (props) => {
-  const sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-  const stompClient = Stomp.over(sockjs);
-  const dispatch = useDispatch();
+  const stompClient = useSelector((state) => state.chat.stompClient);
+
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
+
   const [newMsgData, setNewMsgData] = React.useState();
   const [msgCnt, setMsgCnt] = React.useState();
   const [rooms, setRooms] = React.useState([]);
-
+  const chatting = props.chatting;
   const chat = props.chat;
   const eachMsgCnt = Number(props.messageCnt);
 
@@ -36,16 +36,10 @@ const Nav = (props) => {
       cnt = cnt + data[i].notReadingMessageCount;
     }
     // console.log(cnt);
-    if (chat === "chat") {
-      return;
-    }
     setMsgCnt(cnt);
   }, [newMsgData]);
 
   React.useEffect(() => {
-    if (chat === "chat") {
-      return;
-    }
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
@@ -55,6 +49,7 @@ const Nav = (props) => {
         for (let i = 0; i < res.data?.length; i++) {
           initialCount = initialCount + res.data[i].notReadingMessageCount;
         }
+        // console.log(initialCount);
         if (eachMsgCnt !== 0 && chat === "chat") {
           setMsgCnt(initialCount - eachMsgCnt);
         } else {
@@ -62,29 +57,31 @@ const Nav = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
       });
-    stompClient.connect({}, () => {
-      // console.log("아님여기?");
+    // if (chat === "chat" || chatting === "chatting") {
+    //   return;
+    // }
+    if (stompClient.connected === true) {
+      stompClient.unsubscribe(`/sub/${myUserId}`);
       stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
       stompClient.subscribe(`/sub/${myUserId}`, (data) => {
         const onMessage = JSON.parse(data.body);
         setNewMsgData(onMessage);
-        // console.log(onMessage);
-        // axiosInstance
-        //   .post(
-        //     `/api/roomcount`,
-        //     { roomName: onMessage.roomName, userId: myUserId },
-        //     { headers: { Authorization: token } }
-        //   )
-        //   .then((res) => {
-        //     console.log(res, "성공");
-        //   })
-        //   .catch((err) => {
-        //     console.log(err, "에러");
-        //   });
+        axiosInstance
+          .post(
+            `/api/roomcount`,
+            { roomName: onMessage.roomName, userId: myUserId },
+            { headers: { Authorization: token } }
+          )
+          .then((res) => {
+            // console.log(res, "성공");
+          })
+          .catch((err) => {
+            // console.log(err, "에러");
+          });
       });
-    });
+    }
   }, []);
 
   return (

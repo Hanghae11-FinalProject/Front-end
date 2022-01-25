@@ -49,7 +49,7 @@ const Detail = () => {
   const getPostData = async () => {
     try {
       const res = await axiosInstance.get(`/api/posts/${params.id}`);
-      console.log("상세 페이지 조회 성공", res);
+      // console.log("상세 페이지 조회 성공", res);
       setPostdata(res.data);
       setItems(res.data);
       setCheckBm(res.data.bookMarks);
@@ -57,7 +57,7 @@ const Detail = () => {
       setState(res.data.currentState);
       setcomCnt(res.data.commentCnt);
     } catch (err) {
-      console.log("상세 페이지 조회 실패", err);
+      // console.log("상세 페이지 조회 실패", err);
     }
   };
 
@@ -106,10 +106,12 @@ const Detail = () => {
           }
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           dispatch(postActions.editStar(res.data));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          // console.log(err)
+        });
     }
   };
   //즐겨찾기 버튼 취소
@@ -127,10 +129,12 @@ const Detail = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch(postActions.editStar(res.data));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        // console.log(err)
+      });
   };
 
   //거래완료버튼 변경
@@ -154,7 +158,7 @@ const Detail = () => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        console.log(res, "성공");
+        // console.log(res, "성공");
         if (res.data.message === "same room") {
           window.alert("이미 상대방과의 채팅방이 있습니다.");
           history.push("/chatting");
@@ -170,7 +174,7 @@ const Detail = () => {
         }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
       });
   };
 
@@ -206,8 +210,7 @@ const Detail = () => {
     <>
       {!PostData ? (
         <Spin>
-          <Spinner/>
-
+          <Spinner />
         </Spin>
       ) : (
         <>
@@ -223,14 +226,22 @@ const Detail = () => {
                       is_flex
                       flex_align="center"
                     >
-                      <IoIosArrowBack
+                      <div
                         style={{
+                          cursor: "pointer",
+                          display: "flex",
                           width: "30px",
                           height: "30px",
-                          cursor: "pointer",
                         }}
                         onClick={() => history.goBack()}
-                      />
+                      >
+                        <IoIosArrowBack
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                          }}
+                        />
+                      </div>
                       <p>자세히 보기</p>
                     </Grid>
                   </Header>
@@ -482,6 +493,7 @@ const DetailBox = styled.div`
         border: 1px solid var(--help-color);
         display: none;
         z-index: 10;
+        border-radius: 4px;
         li {
           color: var(--active-color);
           padding: 8px 10px;
@@ -553,10 +565,11 @@ const Header = styled.div`
   .inner {
     height: 50px;
     margin: 0 auto;
+    padding-left: 6px;
     p {
       width: 90%;
       position: absolute;
-      left: 5%;
+      left: 7%;
       text-align: center;
       font-size: 20px;
       font-weight: bold;

@@ -60,7 +60,7 @@ const Write = () => {
     return () => {
       document.removeEventListener("click", clickCloseModal);
     }; // 여기서 click을 쓴 이유는 mousedown은 클릭하는 순간 이벤트 발생,
-  }); // click은 클릭이 끝나는 순간 이벤트가 동작 또한 클릭을 떼는 경우도 이벤트 동작 x
+  }); // click은 클릭이 끝나는 순간 이벤트가 동작 && 클릭을 떼는 경우는 이벤트 동작 x
 
   // 모달 바깥 클릭 했을 시에 발생시킬 이벤트
   const clickCloseModal = (e) => {
@@ -253,7 +253,7 @@ const Write = () => {
       })
     );
     for (let value of formData.values()) {
-      console.log(value);
+      // console.log(value);
     }
     await axios({
       method: "post",
@@ -265,11 +265,11 @@ const Write = () => {
       },
     })
       .then((response) => {
-        console.log("작성성공이니~", response);
+        // console.log("작성성공이니~", response);
         window.location.href = "/main";
       })
       .catch((err) => {
-        console.log(err, "에러났니~");
+        // console.log(err, "에러났니~");
       });
   };
 
@@ -664,7 +664,7 @@ const HashInputOuter = styled.div`
   }
   .HashWrapInner {
     margin-top: 5px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--main-color);
     padding: 4px 6px;
     color: var(--main-color);

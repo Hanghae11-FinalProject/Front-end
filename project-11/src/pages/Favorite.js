@@ -21,7 +21,7 @@ const Favorite = () => {
     axiosInstance
       .get("/api/bookmark", { headers: { Authorization: token } })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setFavoriteList(response.data.data);
         setIs_loading(true);
       });
@@ -33,7 +33,7 @@ const Favorite = () => {
   return (
     <FavoriteWrap>
       <Grid is_container="is_container" _className="grid-border background">
-        {is_loading === false && <Spinner/>}
+        {is_loading === false && <Spinner />}
 
         <div className="Favorite-wrap">
           <div className="Favorite-header-wrap">
@@ -42,6 +42,7 @@ const Favorite = () => {
                 width: "30px",
                 height: "30px",
                 cursor: "pointer",
+                marginLeft: "6px",
               }}
               onClick={() => history.goBack()}
             />

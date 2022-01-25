@@ -23,14 +23,24 @@ import MyPost from "../pages/MyPost";
 import EditPost from "../pages/EditPost";
 import OAuthRedirect from "../components/OAuthRedirect";
 import NotFound from "../pages/NotFound";
-
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as chatActions } from "../redux/modules/chat";
+// import SockJS from "sockjs-client";
+// import Stomp from "stompjs";
 
 function App() {
+  const dispatch = useDispatch();
   const currentUrl = window.location.href;
   const pollUrl = "https://forms.gle/EpUzumV4FEQ7g47w7";
   const Clickpoll = () => {
     window.open(pollUrl);
   };
+  const stompClient = useSelector((state) => state.chat.stompClient);
+  React.useEffect(() => {
+    stompClient.connect({}, () => {
+      dispatch(chatActions.setStomp(stompClient));
+    });
+  }, []);
 
   return (
     <div className="App">
@@ -59,19 +69,69 @@ function App() {
           <ConnectedRouter history={history}>
             <Switch>
               <Route path="/" exact component={Landing}></Route>
-              <Route path="/main" exact component={Main}></Route>
+              <Route
+                path="/main"
+                exact
+                component={Main}
+                // stompClient={stompClient}
+              ></Route>
               <Route path="/address" exact component={InputAdd}></Route>
               <Route path="/login" exact component={Login}></Route>
               <Route path="/signup" exact component={Signup}></Route>
-              <Route path="/mypage" exact component={Mypage}></Route>
-              <Route path="/favorite" exact component={Favorite}></Route>
-              <Route path="/mypost" exact component={MyPost}></Route>
-              <Route path="/write" exact component={Write}></Route>
-              <Route path="/write/:id" exact component={EditPost} />
-              <Route path="/detail/:id" exact component={Detail}></Route>
-              <Route path="/search" exact component={Search}></Route>
-              <Route path="/chatting" exact component={Chatting}></Route>
-              <Route path="/chat" exact component={Chat}></Route>
+              <Route
+                path="/mypage"
+                exact
+                component={Mypage}
+                // stompClient={stompClient}
+              ></Route>
+              <Route
+                path="/favorite"
+                exact
+                component={Favorite}
+                // stompClient={stompClient}
+              ></Route>
+              <Route
+                path="/mypost"
+                exact
+                component={MyPost}
+                // stompClient={stompClient}
+              ></Route>
+              <Route
+                path="/write"
+                exact
+                component={Write}
+                // stompClient={stompClient}
+              ></Route>
+              <Route
+                path="/write/:id"
+                exact
+                component={EditPost}
+                // stompClient={stompClient}
+              />
+              <Route
+                path="/detail/:id"
+                exact
+                component={Detail}
+                // stompClient={stompClient}
+              ></Route>
+              <Route
+                path="/search"
+                exact
+                component={Search}
+                // stompClient={stompClient}
+              ></Route>
+              <Route
+                path="/chatting"
+                exact
+                component={Chatting}
+                // stompClient={stompClient}
+              ></Route>
+              <Route
+                path="/chat"
+                exact
+                component={Chat}
+                // stompClient={stompClient}
+              ></Route>
 
               <Route
                 path="/oauth/callback/kakao"
