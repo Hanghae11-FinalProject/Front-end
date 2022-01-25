@@ -12,6 +12,10 @@ const FavoriteItem = (props) => {
   const toUserId = props.postUserId;
 
   const goChat = () => {
+    if (props.currentState === "Complete") {
+      window.alert("이미 거래가 완료된 게시글입니다.");
+      return;
+    }
     axiosInstance
       .post(
         `/api/room`,
