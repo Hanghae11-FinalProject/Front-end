@@ -244,7 +244,7 @@ const Chat = (data) => {
 
           <ChatBox ref={scrollRef}>
             <div className="inner-chat-box">
-              {messageList.length === 0 ? (
+              {messageList?.length === 0 ? (
                 <div className="enter-chat-box">
                   <span className="enter-chat">
                     {data.location.state.sender.nickname}님과 {nickName}님이

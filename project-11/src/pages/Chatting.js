@@ -5,6 +5,7 @@ import Nav from "../shared/Nav";
 import { Grid } from "../elements";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import NoChattingList from "../components/NoChattingList";
 
 import styled from "styled-components";
 import { BiDotsVerticalRounded } from "react-icons/bi";
@@ -16,7 +17,6 @@ import { useDispatch } from "react-redux";
 const Chatting = () => {
   let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
   let stompClient = Stomp.over(sockjs);
-  // const chatting
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
   const [is_open, setIs_open] = useState(false);
@@ -32,7 +32,8 @@ const Chatting = () => {
   const [newMsgData, setNewMsgData] = useState("");
   const [test, setTest] = useState(true);
   const [stomp, setStomp] = useState();
-
+  const chatting = "chatting";
+  console.log(rooms.length);
   const testOne = () => {
     setTest(false);
   };
@@ -217,6 +218,9 @@ const Chatting = () => {
               )}
             </div>
             <div className="chat-item">
+              {rooms.length === 0 &&
+                ingRooms.length === 0 &&
+                completeRooms.length === 0 && <NoChattingList />}
               {is_every &&
                 rooms.map((p, idx) => {
                   return (
@@ -255,7 +259,7 @@ const Chatting = () => {
                 })}
             </div>
           </div>
-          <Nav rooms={rooms} chatting={"chatting"} />
+          <Nav rooms={rooms} chatting={chatting} />
         </Grid>
       </ChattingWrap>
     </Permit>

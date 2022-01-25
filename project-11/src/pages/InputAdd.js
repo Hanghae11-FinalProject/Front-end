@@ -255,7 +255,7 @@ const AddressBox = styled.div`
     height: 37.5px;
     border: 1px solid var(--help-color);
     position: absolute;
-    top: 5.3vh;
+    top: 5.4vh;
     background-color: #fff;
     cursor: pointer;
 
@@ -273,7 +273,7 @@ const AddressBox = styled.div`
     height: 162px;
     border: 1px solid var(--help-color);
     position: absolute;
-    top: 5.3vh;
+    top: 5.4vh;
     background-color: #fff;
     cursor: pointer;
 

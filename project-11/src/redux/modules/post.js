@@ -74,7 +74,7 @@ const getProfileDB = () => {
   return async (dispatch, getState, { history }) => {
     const token = getCookie("Token");
     await axiosInstance
-      .get("/api/userInfos", { headers: { Authorization: token } })
+      .get("api/userInfos", { headers: { Authorization: token } })
       .then((response) => {
         console.log(response);
         dispatch(getProfile(response.data));
@@ -91,7 +91,7 @@ const editProfileDB = (Img, nickname) => {
     const token = getCookie("Token");
     await axiosInstance
       .put(
-        "/api/userInfos",
+        "api/userInfos",
         { nickname: nickname, profileImg: Img },
         { headers: { Authorization: token } }
       )
@@ -168,7 +168,7 @@ const getPostAction = (area, cate, count, is_select) => {
 const get_onepost = (postid) => {
   return (dispatch, getState, { history }) => {
     axiosInstance
-      .get(`/api/posts/${postid}`)
+      .get(`api/posts/${postid}`)
       .then((res) => {
         console.log("redux detail post", res.data);
         const _data = res.data;
@@ -205,7 +205,7 @@ const add_comment = (id, replyId, Newcomment, comcnt) => {
 
     axiosInstance
       .post(
-        `/api/comments/`,
+        `api/comments/`,
         {
           postId: id,
           parentId: "",
@@ -237,7 +237,7 @@ const add_childcomment = (id, replyId, Newcomment, comcnt) => {
 
     axiosInstance
       .post(
-        `/api/comments/`,
+        `api/comments/`,
         {
           postId: id,
           parentId: replyId,
@@ -268,7 +268,7 @@ const del_comment = (commentid, postid, comcnt) => {
     const token = getCookie("Token");
 
     axiosInstance
-      .delete(`/api/comments/${commentid}`, {
+      .delete(`api/comments/${commentid}`, {
         headers: {
           Authorization: token,
         },
@@ -291,7 +291,7 @@ const del_childcomment = (commentid, postid, id, comcnt) => {
     const token = getCookie("Token");
 
     axiosInstance
-      .delete(`/api/comments/${commentid}`, {
+      .delete(`api/comments/${commentid}`, {
         headers: {
           Authorization: token,
         },

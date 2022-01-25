@@ -30,7 +30,7 @@ const NotMineBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ffd8d8;
+    background-color: #fff1f1;
     .profileImg {
       width: 35px;
       height: 35px;
