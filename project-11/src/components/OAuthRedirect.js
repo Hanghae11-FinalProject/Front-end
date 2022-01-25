@@ -15,7 +15,7 @@ const OAuthRedirect = () => {
     axiosInstance
       .get(`/oauth/callback/kakao?code=${code}`)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         const address = response.data.address;
         setCookie("userId", response.data.userId);
         let profileImg = encodeURIComponent(response.data.profileImg);
@@ -23,7 +23,7 @@ const OAuthRedirect = () => {
         let name = encodeURIComponent(response.data.nickName);
         setCookie("userName", name);
         setCookie("userToken", `Bearer ${response.data.token}`);
-        console.log(address);
+        // console.log(address);
         if (address !== null) {
           history.push("/main");
         } else {
@@ -31,7 +31,7 @@ const OAuthRedirect = () => {
         }
       })
       .catch((err) => {
-        console.log("에러발생", err);
+        // console.log("에러발생", err);
       });
   }, []);
 

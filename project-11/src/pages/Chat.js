@@ -15,15 +15,17 @@ import axios from "axios";
 import { history } from "../redux/configureStore";
 import Nav from "../shared/Nav";
 import Spinner from "../components/Spinner";
+import { useSelector } from "react-redux";
 
 let List = [];
 
 const Chat = (data) => {
+  const stompClient = useSelector((state) => state.chat.stompClient);
   const nickName = decodeURIComponent(getCookie("Name"));
   const token = getCookie("Token");
   const myUserId = getCookie("Id");
   const chat = "chat"; // 채팅방 들어왔는지 인식하기 위한 변수(Nav에 넘겨줄것)
-  const [stompClient, setStompClient] = useState();
+  // const [stompClient, setStompClient] = useState();
   const messageCnt = data.location.state.roomData?.notReadingMessageCount;
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
@@ -67,26 +69,24 @@ const Chat = (data) => {
         setIs_Loading(true);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
-    let sockjs = new SockJS("https://whereshallwemeet.shop/webSocket");
-    let stompClient = Stomp.over(sockjs);
-    stompClient.connect({}, () => {
-      stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
-
-      stompClient.subscribe(`/sub/${roomName}`, (data) => {
-        // console.log(JSON.parse(data.body).type);
-        const onMessage = JSON.parse(data.body);
-        setMessageList((messageList) => messageList.concat(onMessage));
-        if (onMessage.type === "Exit") {
-          setActive(true);
-          setIs_exit(true);
-        }
-        // console.log(messageList);
-      });
+    // stompClient.connect({}, () => {
+    stompClient.unsubscribe(`/sub/${myUserId}`);
+    stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
+    stompClient.subscribe(`/sub/${roomName}`, (data) => {
+      // console.log(JSON.parse(data.body).type);
+      const onMessage = JSON.parse(data.body);
+      setMessageList((messageList) => messageList.concat(onMessage));
+      if (onMessage.type === "Exit") {
+        setActive(true);
+        setIs_exit(true);
+      }
     });
-    setStompClient(stompClient);
-  }, []); // setSearches(searches => searches.concat(query))
+    return () => {
+      stompClient.unsubscribe(`/sub/${roomName}`);
+    };
+  }, []);
 
   const sendMessage = () => {
     // console.log(receiverId);
@@ -179,6 +179,9 @@ const Chat = (data) => {
                 <div className="arrow-back">
                   <IoIosArrowBack
                     size="30"
+                    style={{
+                      marginLeft: "6px",
+                    }}
                     onClick={() => {
                       history.goBack();
                     }}
@@ -193,6 +196,7 @@ const Chat = (data) => {
                   style={{
                     width: "25px",
                     height: "25px",
+                    marginRight: "12px",
                   }}
                   className="point-icon"
                 />
@@ -230,12 +234,12 @@ const Chat = (data) => {
               )}
             </div>
             <div className="item-bar">
-              {items.myItem === "" && items.exchangeItem === "" ? (
+              {items?.myItem === "" && items.exchangeItem === "" ? (
                 <p>이미 삭제된 게시물 입니다</p>
               ) : (
                 <p>
-                  {items.myItem} <CgArrowsHAlt size="12" />
-                  {items.exchangeItem}
+                  {items?.myItem} <CgArrowsHAlt size="12" />{" "}
+                  {items?.exchangeItem}
                 </p>
               )}
             </div>
@@ -254,7 +258,7 @@ const Chat = (data) => {
               ) : (
                 ""
               )}
-              {messageList.map((message, idx) => {
+              {messageList?.map((message, idx) => {
                 if (parseInt(myUserId) === message.senderId) {
                   return (
                     <MyChat key={idx} nicknames={nicknames} data={message} />
@@ -340,6 +344,7 @@ const Container = styled.div`
         .header-title {
           font-size: 20px;
           font-weight: bold;
+          margin-left: 12px;
         }
         .point-icon {
           cursor: pointer;
@@ -411,7 +416,7 @@ const ChatBox = styled.div`
   .enter-chat-box {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 12px;
     .enter-chat {
       font-size: 14px;
       color: var(--main-color);
@@ -434,7 +439,7 @@ const ChatBox = styled.div`
 const ChatInput = styled.div`
   position: fixed;
   bottom: 50px;
-  padding: 0px 16px 6px 16px;
+  padding: 6px 16px;
   margin-left: -16px;
   background-color: white;
   .input-inner {

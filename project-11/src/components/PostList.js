@@ -5,6 +5,7 @@ import { axiosInstance } from "../shared/api";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "./PostCard";
 import Spinner from "./Spinner";
+import NoPost from "./NoPost";
 
 import { Grid } from "../elements/index";
 import styled from "styled-components";
@@ -25,6 +26,7 @@ const PostList = ({ location, category, selected }) => {
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
 
+  const [is_loading, setIs_Loading] = useState(false);
   //api로 넘겨줘야 할 값들
   //동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
   //따로 조건문을 써서 값을 정해주었습니다.
@@ -43,10 +45,12 @@ const PostList = ({ location, category, selected }) => {
   }, [location, category]);
 
   useEffect(() => {
+    setIs_Loading(true);
     if (page !== 0) {
       is_select = false;
     }
     dispatch(postActions.getPostAction(area, category, page, is_select));
+    setIs_Loading(false);
   }, [area, category, page]);
 
   //scroll event
@@ -78,14 +82,15 @@ const PostList = ({ location, category, selected }) => {
   return (
     <React.Fragment>
       <MainContainer>
+        {is_loading === true && post_data.posts.length === 0 && <Spinner />}
         <InfiniteScroll
           dataLength={post_data.posts.length} //This is important field to render the next data
           next={getData}
           hasMore={hasMore}
         >
-          {post_data.posts.length === 0 ? (
-            <div className="spinner">
-              <Spinner />
+          {post_data.posts.length === 0 && is_loading === false ? (
+            <div className="no-post">
+              <NoPost />
             </div>
           ) : (
             <>
@@ -117,6 +122,10 @@ const MainContainer = styled.div`
 
   .empty {
     height: 100vh;
+  }
+
+  .no-post {
+    margin-top: -100px;
   }
 `;
 

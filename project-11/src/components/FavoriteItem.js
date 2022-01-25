@@ -37,7 +37,7 @@ const FavoriteItem = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err, "에러");
+        // console.log(err, "에러");
         window.alert("이미 상대방과의 채팅방이 있습니다.");
       });
   };
