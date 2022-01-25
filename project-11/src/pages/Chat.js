@@ -287,7 +287,6 @@ const Chat = (data) => {
             </div>
             <ChatInput>
               <Grid is_flex _className="input-inner">
-                {/* <BsPlusLg className="plus-icon-active" /> */}
                 <input
                   type="text"
                   value={currentMes}
@@ -355,6 +354,7 @@ const Container = styled.div`
           display: flex;
           align-items: center;
           cursor: pointer;
+          margin-left: 6px;
         }
       }
 
