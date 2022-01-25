@@ -4,8 +4,8 @@ const setCookie = (name, value, exp = 5) => {
   // 날짜를 만들어줍니다.
   date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
   // 저장!
-  document.cookie = `${name}=${value};expires=${date.toUTCString()};Domain=pingpong-market.shop;path=/;`;
-  // document.cookie = `${name}=${value};expires=${date.toUTCString()};localhost:3000;path=/;`;
+  // document.cookie = `${name}=${value};expires=${date.toUTCString()};Domain=pingpong-market.shop;path=/;`;
+  document.cookie = `${name}=${value};expires=${date.toUTCString()};localhost:3000;path=/;`;
 };
 
 //쿠키에서 필요한 유저 인포를 가져오기 위한 함수
