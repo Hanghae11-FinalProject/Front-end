@@ -152,8 +152,9 @@ const Chatting = (props) => {
     <Permit>
       <ChattingWrap>
         <Grid is_container="is_container" _className="grid-border">
-          <div className="color-wrap background"></div>
-          {is_loading === true && <Spinner />}
+
+          <div className="color-wrap background"/>
+    {is_loading === true && <Spinner />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
@@ -271,10 +272,13 @@ export default Chatting;
 const ChattingWrap = styled.div`
   .grid-border {
     width: 100%;
+    height: auto;
     background-color: white;
     position: relative;
-    .color-wrap {
-      background-color: #fff;
+    padding-bottom: 50px;
+    .color-wrap{
+      background-color: white;
+      height: 100vh;
       width: 100%;
       height: 100vh;
       position: absolute;
@@ -287,7 +291,6 @@ const ChattingWrap = styled.div`
         height: 50px;
         background-color: white;
         box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-
         position: fixed;
         top: 0;
         z-index: 10;
