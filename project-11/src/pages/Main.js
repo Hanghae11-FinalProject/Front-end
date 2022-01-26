@@ -83,7 +83,6 @@ const Main = () => {
                   spaceBetween={10}
                   slidesPerView={4.3}
                   pagination={{ clickable: true }}
-                  // autoplay={{ delay: 50000 }}
                 >
                   <SwiperSlide>
                     <CateBtn

@@ -32,7 +32,6 @@ const Nav = (props) => {
       }
       cnt = cnt + data[i].notReadingMessageCount;
     }
-    // console.log(cnt);
     setMsgCnt(cnt);
   }, [newMsgData]);
 
@@ -40,13 +39,11 @@ const Nav = (props) => {
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
-        // console.log(res);
         setRooms(res.data);
         let initialCount = 0;
         for (let i = 0; i < res.data?.length; i++) {
           initialCount = initialCount + res.data[i].notReadingMessageCount;
         }
-        // console.log(initialCount);
         if (eachMsgCnt !== 0 && chat === "chat") {
           setMsgCnt(initialCount - eachMsgCnt);
         } else {

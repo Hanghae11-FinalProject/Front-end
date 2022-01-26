@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components";
 
@@ -14,8 +14,8 @@ import Spinner from "../components/Spinner";
 
 const MyPost = () => {
   const token = getCookie("Token");
-  const [my_List, setMy_List] = React.useState([]);
-  const [is_loading, setIs_loading] = React.useState(false);
+  const [my_List, setMy_List] = useState([]);
+  const [is_loading, setIs_loading] = useState(false);
   useEffect(() => {
     axiosInstance
       .get(`/api/myposts`, {
@@ -25,7 +25,6 @@ const MyPost = () => {
       })
       .then((res) => {
         // console.log("성공쓰~", res);
-        // console.log(res.data);
         setMy_List(res.data);
         setIs_loading(true);
       })
@@ -33,10 +32,6 @@ const MyPost = () => {
         // console.log("에러네용", err);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log(my_List);
-  // }, [my_List]);
 
   return (
     <>

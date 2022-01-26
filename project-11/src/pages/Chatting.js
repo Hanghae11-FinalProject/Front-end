@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Permit from "../shared/Permit";
 import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
 import NoChattingList from "../components/NoChattingList";
 import Spinner from "../components/Spinner";
 
@@ -13,9 +11,9 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-const Chatting = (props) => {
+const Chatting = () => {
   const stompClient = useSelector((state) => state.chat.stompClient);
 
   const myUserId = getCookie("Id");
@@ -27,6 +25,8 @@ const Chatting = (props) => {
   const [is_every, setIs_Every] = useState(true); // 전체 클릭 감지
   const [is_ing, setIs_Ing] = useState(false); // 거래중 클릭 감지
   const [is_complete, setIs_Complete] = useState(false); // 거래완료 클릭 감지
+
+  // 모달창 버튼
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -40,34 +40,32 @@ const Chatting = (props) => {
     setTest(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTest(true);
   }, [test]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let data = rooms;
-    let cnt = 0;
     for (let i = 0; i < data.length; i++) {
       if (data[i].roomName === newMsgData.roomName) {
         data[i].notReadingMessageCount = data[i].notReadingMessageCount + 1;
         data[i].lastMessage.content = newMsgData.message;
         data[i].lastMessage.createdAt = newMsgData.createdAt;
       }
-      cnt = cnt + data[i].notReadingMessageCount;
     }
-    // console.log(cnt);
-    // dispatch(chatActions.getChat(cnt));
     setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??
   }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
   // console.log(rooms);
-  React.useEffect(() => {
+  useEffect(() => {
     setIs_Loading(true);
+    // 채팅 목록 받아오는 부분
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
         // console.log(res);
         setRooms(res.data);
         setIs_Loading(false);
+
         let ing = [];
         let com = [];
         for (let i = 0; i < res.data.length; i++) {
@@ -86,6 +84,7 @@ const Chatting = (props) => {
     stompClient.subscribe(`/sub/${myUserId}`, (data) => {
       const onMessage = JSON.parse(data.body);
       setNewMsgData(onMessage);
+      // 영빈님한테 질문
       axiosInstance
         .post(
           `/api/roomcount`,
@@ -152,14 +151,12 @@ const Chatting = (props) => {
     <Permit>
       <ChattingWrap>
         <Grid is_container="is_container" _className="grid-border">
-
-          <div className="color-wrap background"/>
-    {is_loading === true && <Spinner />}
+          <div className="color-wrap background" />
+          {is_loading === true && <Spinner />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
                 <p className="header-title">채팅</p>
-                {/* <Grid _className="ct-wrap"> */}
                 <BiDotsVerticalRounded
                   onClick={ModalControl}
                   style={{
@@ -169,7 +166,6 @@ const Chatting = (props) => {
                   }}
                   className="point-icon"
                 />
-                {/* </Grid> */}
               </div>
               {is_open && (
                 <>
@@ -276,7 +272,7 @@ const ChattingWrap = styled.div`
     background-color: white;
     position: relative;
     padding-bottom: 50px;
-    .color-wrap{
+    .color-wrap {
       background-color: white;
       height: 100vh;
       width: 100%;
@@ -302,7 +298,6 @@ const ChattingWrap = styled.div`
           display: flex;
           justify-content: space-between;
           align-items: center;
-          /* position: relative; */
 
           .header-title {
             font-size: 20px;
