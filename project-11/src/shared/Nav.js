@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Grid } from "../elements";
 import { MdHome } from "react-icons/md";
 import { BsPlusLg } from "react-icons/bs";
@@ -10,8 +10,6 @@ import { HiOutlineChatAlt2 } from "react-icons/hi";
 import styled from "styled-components";
 import { getCookie } from "./Cookie";
 import { axiosInstance } from "./api";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
 
 const Nav = (props) => {
   const stompClient = useSelector((state) => state.chat.stompClient);
@@ -19,14 +17,13 @@ const Nav = (props) => {
   const myUserId = getCookie("Id");
   const token = getCookie("Token");
 
-  const [newMsgData, setNewMsgData] = React.useState();
-  const [msgCnt, setMsgCnt] = React.useState();
-  const [rooms, setRooms] = React.useState([]);
-  const chatting = props.chatting;
+  const [newMsgData, setNewMsgData] = useState();
+  const [msgCnt, setMsgCnt] = useState();
+  const [rooms, setRooms] = useState([]);
   const chat = props.chat;
   const eachMsgCnt = Number(props.messageCnt);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let data = rooms;
     let cnt = 0;
     for (let i = 0; i < data.length; i++) {
@@ -39,7 +36,7 @@ const Nav = (props) => {
     setMsgCnt(cnt);
   }, [newMsgData]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
@@ -59,9 +56,7 @@ const Nav = (props) => {
       .catch((err) => {
         // console.log(err, "에러");
       });
-    // if (chat === "chat" || chatting === "chatting") {
-    //   return;
-    // }
+
     if (stompClient.connected === true) {
       stompClient.unsubscribe(`/sub/${myUserId}`);
       stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));

@@ -54,10 +54,10 @@ const Search = () => {
         .post(`api/search?page=0`, { keyword: [key] })
         .then((res) => {
           // console.log("검색완료", res);
-          searchdata = res.data.data.posts;
-          setPostcnt(res.data.data.postCnt);
+          searchdata = res.data.data.content;
+          setPostcnt(res.data.data.totalElements);
           setSearch_data(searchdata);
-          if (res.data.data.postCnt === 0) {
+          if (res.data.data.totalElements === 0) {
             setNoresult("일치하는 내용이 없어요");
           }
         })
@@ -84,10 +84,10 @@ const Search = () => {
         .post(`api/search?page=0`, { keyword: [key] })
         .then((res) => {
           // console.log("검색완료", res);
-          searchdata = res.data.data.posts;
-          setPostcnt(res.data.data.postCnt);
+          searchdata = res.data.data.content;
+          setPostcnt(res.data.data.totalElements);
           setSearch_data(searchdata);
-          if (res.data.data.postCnt === 0) {
+          if (res.data.data.totalElements === 0) {
             setNoresult("일치하는 내용이 없어요");
           }
         })
@@ -111,7 +111,7 @@ const Search = () => {
       .post(`api/search?page=${page}`, { keyword: [key] })
       .then((res) => {
         // console.log("검색완료", res);
-        searchdata = res.data.data.posts;
+        searchdata = res.data.data.content;
         setSearch_data(searchdata);
         //데이터가 사이즈보다 작을 경우
         if (searchdata.length === 0 || searchdata.length < 6) {
@@ -147,6 +147,7 @@ const Search = () => {
     setSearch_data([]);
   };
 
+  //최근 검색어가 새로 생길때 마다 업데이트
   useEffect(() => {
     localStorage.setItem("recent", JSON.stringify(list));
     getTrendKeyword();

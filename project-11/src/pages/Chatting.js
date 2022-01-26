@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Permit from "../shared/Permit";
 import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
@@ -99,31 +99,6 @@ const Chatting = (props) => {
           // console.log(err, "에러");
         });
     });
-    // stompClient.connect({}, () => {
-    //   stompClient.send("/pub/join", {}, JSON.stringify(`${myUserId}`));
-    //   setStomp(
-    //     stompClient.subscribe(`/sub/${myUserId}`, (data) => {
-    //       const onMessage = JSON.parse(data.body);
-    //       setNewMsgData(onMessage);
-    //       axiosInstance
-    //         .post(
-    //           `/api/roomcount`,
-    //           { roomName: onMessage.roomName, userId: myUserId },
-    //           { headers: { Authorization: token } }
-    //         )
-    //         .then((res) => {
-    //           // console.log(res, "성공");
-    //         })
-    //         .catch((err) => {
-    //           // console.log(err, "에러");
-    //         });
-    //     })
-    //   );
-    // });
-    // return () => {
-    //   //       stompClient.unsubscribe(`/sub/${myUserId}`);
-    //   // stompClient.disconnect();
-    // };
   }, []);
 
   const OptionOneControl = () => {
@@ -176,15 +151,9 @@ const Chatting = (props) => {
   return (
     <Permit>
       <ChattingWrap>
-        <Grid is_container="is_container" _className="grid-border background">
-<<<<<<< HEAD
-          <div className="color-wrap">
-          </div>
-    {is_loading === true && <Spinner />}
-=======
-          <div className="color-wrap"></div>
+        <Grid is_container="is_container" _className="grid-border">
+          <div className="color-wrap background"></div>
           {is_loading === true && <Spinner />}
->>>>>>> develop
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
@@ -305,13 +274,13 @@ const ChattingWrap = styled.div`
     background-color: white;
     position: relative;
     .color-wrap {
-      background-color: black;
-      height: 100vh;
+      background-color: #fff;
       width: 100%;
+      height: 100vh;
       position: absolute;
+      z-index: -1;
     }
     .chatting-wrap {
-      border: 1px solid red;
       .chatting-header {
         width: 100%;
         max-width: 428px;
