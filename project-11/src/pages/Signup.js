@@ -241,7 +241,7 @@ const Signup = () => {
                   })}
                   placeholder="이메일을 입력하세요"
                   onKeyUp={checkActive}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
                 <button type="button" className="doublecheck" onClick={idCheck}>
                   중복확인
@@ -270,7 +270,7 @@ const Signup = () => {
                     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                 })}
                 placeholder="영문, 숫자, 특수문자 포함 8~16자 이상"
-                autocomplete="off"
+                autoComplete="off"
               />
               {pwDoubleChk && <p className="password">{pwDoubleChk}</p>}
               <span>비밀번호 재확인</span>
@@ -283,7 +283,7 @@ const Signup = () => {
                   validate: (value) => value === password.current,
                 })}
                 placeholder="영문, 숫자, 특수문자 포함 8~16자 이상"
-                autocomplete="off"
+                autoComplete="off"
               />
               {pwChk && <p className="password-confirm">{pwChk}</p>}
               <span>닉네임</span>
@@ -300,7 +300,7 @@ const Signup = () => {
                     pattern: /^[a-zA-Zㄱ-힣0-9][a-zA-Zㄱ-힣0-9]{2,10}$/,
                   })}
                   placeholder="한글, 영문, 숫자 조합 2~10자 이상"
-                  autocomplete="off"
+                  autoComplete="off"
                 />
                 <button
                   type="button"
