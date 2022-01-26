@@ -3,10 +3,7 @@ import Permit from "../shared/Permit";
 import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
-<<<<<<< HEAD
 
-=======
->>>>>>> 123c9415b6c10b3ec6b773cdc1f57980eac3ab78
 import NoChattingList from "../components/NoChattingList";
 import Spinner from "../components/Spinner";
 
