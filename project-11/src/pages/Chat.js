@@ -15,34 +15,35 @@ import Spinner from "../components/Spinner";
 import { useSelector } from "react-redux";
 
 const Chat = (data) => {
-  const stompClient = useSelector((state) => state.chat.stompClient);
+  const stompClient = useSelector((state) => state.chat.stompClient); // 리덕스에서 선언한 client 객체
   const nickName = decodeURIComponent(getCookie("Name"));
   const token = getCookie("Token");
   const myUserId = getCookie("Id");
   const chat = "chat"; // 채팅방 들어왔는지 인식하기 위한 변수(Nav에 넘겨줄것)
 
   const messageCnt = data.location.state.roomData?.notReadingMessageCount;
+
+  // 모달창 버튼 클릭시 모달창 닫아주기 위한 state
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
   const [is_open, setIs_open] = useState(false);
-  const [active, setActive] = useState(false);
-  const [is_exit, setIs_exit] = useState(false);
-  const [is_loading, setIs_Loading] = useState(false);
 
+  const [active, setActive] = useState(false); // 인풋 액티브
+  const [is_exit, setIs_exit] = useState(false); // 상대방 나갔는지 판단
+  const [is_loading, setIs_Loading] = useState(false); // 스피너
   const scrollRef = useRef();
   const [currentMes, setCurrentMes] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [items, setItems] = useState([]);
 
   const receiverId = data.location.state.sender.userId;
-  // console.log(data);
   const roomName = data.location.state.roomName;
   const sender = data.location.state.sender;
   const nicknames = {
     senderName: data.location.state.sender.nickname,
     nickName: nickName,
   };
-  // console.log(data.location);
+
   useEffect(() => {
     axios
       .post(
@@ -56,8 +57,6 @@ const Chat = (data) => {
         { headers: { Authorization: token } }
       )
       .then((res) => {
-        // console.log(res.data, "성공");
-        // console.log(x);
         setMessageList(res.data.message);
         setItems(res.data.post);
         setIs_Loading(true);
@@ -65,11 +64,10 @@ const Chat = (data) => {
       .catch((err) => {
         // console.log(err);
       });
-    // stompClient.connect({}, () => {
+    // 새 메시지가 올때마다 onMessage에 담겨서 온다
     stompClient.unsubscribe(`/sub/${myUserId}`);
     stompClient.send("/pub/join", {}, JSON.stringify(`${roomName}`));
     stompClient.subscribe(`/sub/${roomName}`, (data) => {
-      // console.log(JSON.parse(data.body).type);
       const onMessage = JSON.parse(data.body);
       setMessageList((messageList) => messageList.concat(onMessage));
       if (onMessage.type === "Exit") {
@@ -93,11 +91,10 @@ const Chat = (data) => {
     if (currentMes === "") {
       return;
     } else if (active === true) {
-      return; // 이렇게하면 그 다음에 다시 채팅방 들어오면 다시 채팅 가능할듯?(다시 한번 체크)
+      return;
     }
     stompClient.send("/pub/message", {}, JSON.stringify(box));
     setCurrentMes("");
-    // console.log(is_exit, active);
   };
 
   const scrollToBottom = () => {

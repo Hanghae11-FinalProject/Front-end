@@ -19,7 +19,6 @@ const Login = () => {
     });
   };
   const handleClickLoginBtn = () => {
-    // console.log(input_values.user_pw);
     axiosInstance
       .post("user/login", {
         username: input_values.user_id,

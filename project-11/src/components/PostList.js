@@ -11,25 +11,27 @@ import { Grid } from "../elements/index";
 import styled from "styled-components";
 
 const PostList = ({ location, category, selected }) => {
-  //redux 가져오기
+  // redux 가져오기
   const dispatch = useDispatch();
   const post_data = useSelector((state) => state.post);
 
   // console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
-  //지역, 카테고리 값 state로 관리
+  // 지역, 카테고리 값 state로 관리
   const [page, setpage] = useState(post_data.page);
   const [area, setarea] = useState(location);
   const [cate, setcate] = useState(category);
   let is_select = selected;
 
-  //무한 스크롤 동작을 감지 하기 위한 상태값 관리
+  // 무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
 
+  // 스피너
   const [is_loading, setIs_Loading] = useState(false);
-  //api로 넘겨줘야 할 값들
-  //동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
-  //따로 조건문을 써서 값을 정해주었습니다.
+
+  // api로 넘겨줘야 할 값들
+  // 동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
+  // 따로 조건문을 써서 값을 정해주었습니다.
   const curLocation = () => {
     if (location === "위치 설정하기" || location === "전체") {
       return setarea("");
@@ -38,12 +40,13 @@ const PostList = ({ location, category, selected }) => {
     }
   };
 
-  //지역구 설정, 카테고리 변경시 페이지 0으로 초기화
+  // 지역구 설정, 카테고리 변경시 페이지 0으로 초기화
   useEffect(() => {
     curLocation();
     setpage(0);
   }, [location, category]);
 
+  // 게시물 불러오기 및 스피너 컨트롤
   useEffect(() => {
     setIs_Loading(true);
     if (page !== 0) {

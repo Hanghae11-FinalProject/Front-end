@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
@@ -25,20 +25,20 @@ const Write = () => {
   const dispatch = useDispatch();
   const token = getCookie("Token"); // 토큰 가져오기
   const inputRef = useRef(null); //해시태그 input
-  const [loading, setLoading] = React.useState(false); //글작성 완료시 스피너걸기 위한
-  const [title, setTitle] = React.useState(""); // 제목
-  const [content, setContent] = React.useState(""); // 내용
-  const [myItem, setMyItem] = React.useState(""); // 교환할 물품
-  const [exchangeItem, setExchangeItem] = React.useState(""); // 교환받을 물품
-  const [category, setCategory] = React.useState("품목 선택"); // 카테고리
-  const [tagName, setHashtag] = React.useState(""); // 해쉬태그 onChange로 관리할 문자열
-  const [hashArr, setHashArr] = React.useState([]); // 해시태그 담을 배열
-  const [images, setImages] = React.useState([]); // 이미지 aixos 통신용
-  const [preImg, setPreImg] = React.useState([]); // preview용 이미지
-  const [active, setActive] = React.useState(true); // 버튼 액티브
-  const [currentState, setCurrentState] = React.useState("Proceeding"); // currentState 기본값 넘겨주기
-  const [is_open, setIs_open] = React.useState(false); // 모달창 활성화/비활성화 여부
-  const modalClose = React.useRef(); // 모달 바깥 눌렀을 때 닫아줄 용도
+  const [loading, setLoading] = useState(false); //글작성 완료시 스피너걸기 위한
+  const [title, setTitle] = useState(""); // 제목
+  const [content, setContent] = useState(""); // 내용
+  const [myItem, setMyItem] = useState(""); // 교환할 물품
+  const [exchangeItem, setExchangeItem] = useState(""); // 교환받을 물품
+  const [category, setCategory] = useState("품목 선택"); // 카테고리
+  const [tagName, setHashtag] = useState(""); // 해쉬태그 onChange로 관리할 문자열
+  const [hashArr, setHashArr] = useState([]); // 해시태그 담을 배열
+  const [images, setImages] = useState([]); // 이미지 aixos 통신용
+  const [preImg, setPreImg] = useState([]); // preview용 이미지
+  const [active, setActive] = useState(true); // 버튼 액티브
+  const [currentState, setCurrentState] = useState("Proceeding"); // currentState 기본값 넘겨주기
+  const [is_open, setIs_open] = useState(false); // 모달창 활성화/비활성화 여부
+  const modalClose = useRef(); // 모달 바깥 눌렀을 때 닫아줄 용도
   // useRef 함수는 current 속성을 가지고 있는 객체를 반환하는데,
   // 인자로 넘어온 초기값을 current속성에 할당한다. (여기선 e.target 값을 가져오는 용도)
 
@@ -55,7 +55,7 @@ const Write = () => {
   ];
 
   // 모달 바깥을 click 했을 때 클릭 이벤트 발생 시키기 위한 useEffect
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("click", clickCloseModal);
     return () => {
       document.removeEventListener("click", clickCloseModal);
@@ -225,7 +225,7 @@ const Write = () => {
   };
 
   // 카테고리 액티브
-  React.useEffect(() => {
+  useEffect(() => {
     checkActive();
   }, [category]);
 
