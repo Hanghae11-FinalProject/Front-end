@@ -1,7 +1,6 @@
 import React from "react";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
-
 import { MdOutlineClose } from "react-icons/md";
 
 const SearchHIstory = ({ list, onRemoveKeyword }) => {

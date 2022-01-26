@@ -44,7 +44,6 @@ const Signup = () => {
   };
 
   // disabled 체크
-
   const checkActive = () => {
     if (
       actNic === true &&

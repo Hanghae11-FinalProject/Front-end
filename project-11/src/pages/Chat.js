@@ -24,6 +24,7 @@ const Chat = (data) => {
   const messageCnt = data.location.state.roomData?.notReadingMessageCount;
 
   // 모달창 버튼 클릭시 모달창 닫아주기 위한 state
+
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
   const [is_open, setIs_open] = useState(false);

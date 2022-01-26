@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+
 import styled from "styled-components";
 
 import { axiosInstance } from "../shared/api";
@@ -202,9 +203,6 @@ const InputAddWrap = styled.div`
       cursor: not-allowed;
       pointer-events: none;
       background-color: var(--disabled-color);
-    }
-    &:hover {
-      /* opacity: 1; */
     }
   }
 `;

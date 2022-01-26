@@ -137,7 +137,6 @@ const EditPost = (items) => {
       // 태그 클릭 시 태그 삭제
       HashWrapInner.addEventListener("click", () => {
         GetHashContent?.removeChild(HashWrapInner);
-        // console.log(HashWrapInner.innerHTML);
         setHashArr(hashArr.filter((tagName) => tagName)); // filter()는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환
       });
 
@@ -147,7 +146,7 @@ const EditPost = (items) => {
         if (hashArr.length === 5) {
           return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
         }
-        // console.log("엔터로 된거닝?", e.target.value);
+
         HashWrapInner.innerHTML = "#" + e.target.value;
         GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
         const tag = { tagName: tagName };
@@ -166,7 +165,6 @@ const EditPost = (items) => {
 
     HashWrapInner.addEventListener("click", () => {
       GetHashContent?.removeChild(HashWrapInner);
-      // console.log(HashWrapInner.innerHTML);
       setHashArr(hashArr.filter((tagName) => tagName)); // filter()는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환
     });
 
@@ -176,7 +174,7 @@ const EditPost = (items) => {
       if (hashArr.length === 5) {
         return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
       }
-      // console.log("엔터로 된거닝?", e.target.value);
+
       HashWrapInner.innerHTML = "#" + tagName;
       GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
       const tag = { tagName: tagName };
@@ -188,7 +186,6 @@ const EditPost = (items) => {
 
   // 이미지, preview이미지 추가
   const addImage = (e) => {
-    // console.log(e.target.files);
     const nowSelectImgList = e.target.files; // 이미지파일 리스트 (object)
 
     if (images.length !== 0) {
@@ -197,7 +194,7 @@ const EditPost = (items) => {
       // !!!*** 이미지를 추가한 뒤 중간에 또 추가하면 갯수가 리셋되는거
       setImages(e.target.files); // axios통신용으로 따로 한번 저장 해주고!
     }
-    // console.log(images);
+
     const nowImgURLList = [...preImg]; // 현재의 preImg 복사
 
     for (let i = 0; i < nowSelectImgList.length; i++) {

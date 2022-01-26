@@ -73,8 +73,6 @@ const MyPost = () => {
 const MyPostBox = styled.div`
   .background {
     height: 100vh;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     background: #fff;
     text-align: center;
   }
