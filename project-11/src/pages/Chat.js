@@ -89,7 +89,6 @@ const Chat = (data) => {
   }, []);
 
   const sendMessage = () => {
-    // console.log(receiverId);
     const box = {
       type: "Talk", //타입
       message: currentMes, //메세지
