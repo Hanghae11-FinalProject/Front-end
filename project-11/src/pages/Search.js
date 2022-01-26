@@ -16,7 +16,7 @@ import { MdOutlineClose } from "react-icons/md";
 
 const Search = () => {
   const token = getCookie("Token");
-  const preWord = JSON.parse(localStorage.getItem("recent"));
+  const preWord = JSON.parse(localStorage.getItem("recent")); // 최신 검색어 로컬에서 꺼내오기
   const [recent, setRecent] = useState(preWord || []);
   const [key, setKey] = useState("");
   const [search_data, setSearch_data] = useState([]);

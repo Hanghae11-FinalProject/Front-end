@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
@@ -61,7 +61,7 @@ const EditPost = (items) => {
   ];
 
   // 모달 바깥을 click 했을 때 클릭 이벤트 발생 시키기 위한 useEffect
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("click", clickCloseModal);
     return () => {
       document.removeEventListener("click", clickCloseModal);
@@ -94,9 +94,6 @@ const EditPost = (items) => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    // console.log(myItem);
-    // console.log(exchangeItem);
-    // console.log(title);
   };
 
   // 교환할 물품 onChange 함수
@@ -115,7 +112,7 @@ const EditPost = (items) => {
   };
 
   // 수정하기 image preview 및 데이터 불러오기
-  React.useEffect(() => {
+  useEffect(() => {
     let editPre = [];
     for (let i = 0; i < editItems.images.length; i++) {
       editPre.push(editItems.images[i].imageUrl);
@@ -127,21 +124,6 @@ const EditPost = (items) => {
     setMyItem(editItems.myItem);
     setExchangeItem(editItems.exchangeItem);
     setCategory(editItems.categoryName);
-
-    // const GetHashContent = document.querySelector(".HashInputOuter"); //HashInputOuter클라스에서 입력하는 요소를 불러온다!
-    // const HashWrapInner = document.createElement("div"); // div 만들기
-    // HashWrapInner.className = "HashWrapInner";
-
-    // let editTag = [];
-    // if (is_edit) {
-    //   for (let i = 0; i < editItems.tags.length; i++) {
-    //     const tags = { tagName: editItems.tags[i].tagName };
-    //     HashWrapInner.innerHTML = "#" + editItems.tags[i].tagName;
-    //     GetHashContent?.appendChild(HashWrapInner);
-    //     editTag.push(tags);
-    //   } // console.log(hashArr); < 넣어지는거 확인함
-    //   setHashArr(...editTag);
-    // }
   }, []);
 
   // 해시태그 onKeyup 함수
@@ -282,12 +264,12 @@ const EditPost = (items) => {
   };
 
   // 카테고리 액티브
-  React.useEffect(() => {
+  useEffect(() => {
     checkActive();
   }, [category]);
 
   // 수정 페이지 처음 들어올때 액티브 함수 실행
-  React.useEffect(() => {
+  useEffect(() => {
     checkActive();
   }, []);
 

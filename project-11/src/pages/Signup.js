@@ -8,12 +8,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { history } from "../redux/configureStore";
 
 const Signup = () => {
-  const {
-    register,
-    watch,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+  const { register, watch, handleSubmit } = useForm();
   const password = useRef();
 
   const [is_open, setIs_open] = useState(false);
@@ -115,7 +110,6 @@ const Signup = () => {
   };
 
   const idCheck = () => {
-    // console.log(is_location);
     let RegId = /^\S+@\S+$/i;
     const check = RegId.test(checkemail);
     if (!check) {
@@ -159,7 +153,6 @@ const Signup = () => {
       // console.log(check, "유효성 통과");
       //유효성 통과 한거
       //axios
-
       axiosInstance
         .post("/user/nicknameCheck", {
           nickname: checknickname,
