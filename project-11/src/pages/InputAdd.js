@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { axiosInstance } from "../shared/api";
 import { Grid } from "../elements";
-import {
-  IoMdArrowDropdown,
-  IoMdArrowDropup,
-  IoIosArrowBack,
-} from "react-icons/io";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { useHistory } from "react-router-dom";
 import { getCookie } from "../shared/Cookie";
 
@@ -16,10 +12,10 @@ const InputAdd = () => {
   const history = useHistory();
   const modalClose = React.useRef();
   // disabled 활성화 여부
-  const [active, setActive] = React.useState(true);
+  const [active, setActive] = useState(true);
 
-  const [is_Open, setIs_Open] = React.useState(false);
-  const [is_city, setIs_city] = React.useState("시/도");
+  const [is_Open, setIs_Open] = useState(false);
+  const [is_city, setIs_city] = useState("시/도");
   const cities = ["서울시"];
 
   const ModalControl = () => {
@@ -30,8 +26,8 @@ const InputAdd = () => {
     }
   };
 
-  const [is_open, setIs_open] = React.useState(false);
-  const [is_location, setIs_Location] = React.useState("시/군/구");
+  const [is_open, setIs_open] = useState(false);
+  const [is_location, setIs_Location] = useState("시/군/구");
   const locations = ["성북구", "서대문구", "마포구", "동대문구"];
 
   const modalControl = () => {
@@ -42,7 +38,7 @@ const InputAdd = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("click", clickCloseModal);
     return () => {
       document.removeEventListener("click", clickCloseModal);
@@ -65,7 +61,7 @@ const InputAdd = () => {
     is_location !== "시/군/구" ? setActive(false) : setActive(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkActive();
   }, [is_location]);
 
@@ -184,8 +180,6 @@ const InputAdd = () => {
 const InputAddWrap = styled.div`
   .border {
     height: 100vh;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     text-align: center;
     background-color: #fff;
   }
@@ -210,9 +204,6 @@ const InputAddWrap = styled.div`
       cursor: not-allowed;
       pointer-events: none;
       background-color: var(--disabled-color);
-    }
-    &:hover {
-      /* opacity: 1; */
     }
   }
 `;

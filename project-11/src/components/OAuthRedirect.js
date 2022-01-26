@@ -1,5 +1,4 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
 import Spinner from "./Spinner";
 import { history } from "../redux/configureStore";
 import { axiosInstance } from "../shared/api";
@@ -9,9 +8,7 @@ const OAuthRedirect = () => {
   // 인가코드
   let code = new URL(window.location.href).searchParams.get("code");
 
-  // console.log(code);
-
-  React.useEffect(() => {
+  useEffect(() => {
     axiosInstance
       .get(`/oauth/callback/kakao?code=${code}`)
       .then((response) => {

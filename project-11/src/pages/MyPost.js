@@ -25,7 +25,6 @@ const MyPost = () => {
       })
       .then((res) => {
         // console.log("성공쓰~", res);
-        // console.log(res.data);
         setMy_List(res.data);
         setIs_loading(true);
       })
@@ -33,11 +32,6 @@ const MyPost = () => {
         // console.log("에러네용", err);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log(my_List);
-  // }, [my_List]);
-
   return (
     <>
       <MyPostBox>
@@ -78,8 +72,6 @@ const MyPost = () => {
 const MyPostBox = styled.div`
   .background {
     height: 100vh;
-    /* border-right: 1px solid var(--help-color);
-    border-left: 1px solid var(--help-color); */
     background: #fff;
     text-align: center;
   }

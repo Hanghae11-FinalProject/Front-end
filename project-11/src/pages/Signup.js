@@ -8,12 +8,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { history } from "../redux/configureStore";
 
 const Signup = () => {
-  const {
-    register,
-    watch,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+  const { register, watch, handleSubmit } = useForm();
   const password = useRef();
 
   const [is_open, setIs_open] = useState(false);
@@ -49,7 +44,6 @@ const Signup = () => {
   };
 
   // disabled 체크
-
   const checkActive = () => {
     if (
       actNic === true &&

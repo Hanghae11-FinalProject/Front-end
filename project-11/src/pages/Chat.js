@@ -1,13 +1,10 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Grid } from "../elements/index";
 import styled from "styled-components";
 import { IoPaperPlane } from "react-icons/io5";
-import { BsPlusLg } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { CgArrowsHAlt } from "react-icons/cg";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
 import { getCookie } from "../shared/Cookie";
 import MyChat from "../components/MyChat";
 import NotMyChat from "../components/NotMyChat";
@@ -17,17 +14,14 @@ import Nav from "../shared/Nav";
 import Spinner from "../components/Spinner";
 import { useSelector } from "react-redux";
 
-let List = [];
-
 const Chat = (data) => {
   const stompClient = useSelector((state) => state.chat.stompClient);
   const nickName = decodeURIComponent(getCookie("Name"));
   const token = getCookie("Token");
   const myUserId = getCookie("Id");
   const chat = "chat"; // 채팅방 들어왔는지 인식하기 위한 변수(Nav에 넘겨줄것)
-  // const [stompClient, setStompClient] = useState();
+
   const messageCnt = data.location.state.roomData?.notReadingMessageCount;
-  const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
   const [is_open, setIs_open] = useState(false);
@@ -49,7 +43,7 @@ const Chat = (data) => {
     nickName: nickName,
   };
   // console.log(data.location);
-  React.useEffect(() => {
+  useEffect(() => {
     axios
       .post(
         `https://whereshallwemeet.shop/api/message`,
@@ -130,7 +124,6 @@ const Chat = (data) => {
   };
 
   const OptionTwoControl = () => {
-    setOptionOne(false);
     setOptionThree(false);
     if (optionTwo) {
       setOptionTwo(false);
@@ -141,7 +134,6 @@ const Chat = (data) => {
 
   const OptionThreeControl = () => {
     setOptionTwo(false);
-    setOptionOne(false);
     if (optionThree) {
       setOptionThree(false);
     } else {

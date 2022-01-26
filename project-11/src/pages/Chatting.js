@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Permit from "../shared/Permit";
 import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+
 import NoChattingList from "../components/NoChattingList";
 import Spinner from "../components/Spinner";
 
@@ -13,7 +12,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Chatting = (props) => {
   const stompClient = useSelector((state) => state.chat.stompClient);
@@ -40,11 +39,11 @@ const Chatting = (props) => {
     setTest(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTest(true);
   }, [test]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let data = rooms;
     let cnt = 0;
     for (let i = 0; i < data.length; i++) {
@@ -60,7 +59,7 @@ const Chatting = (props) => {
     setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??
   }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
   // console.log(rooms);
-  React.useEffect(() => {
+  useEffect(() => {
     setIs_Loading(true);
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
@@ -152,14 +151,12 @@ const Chatting = (props) => {
     <Permit>
       <ChattingWrap>
         <Grid is_container="is_container" _className="grid-border">
-
-          <div className="color-wrap background"/>
-    {is_loading === true && <Spinner />}
+          <div className="color-wrap background" />
+          {is_loading === true && <Spinner />}
           <div className="chatting-wrap">
             <div className="chatting-header">
               <div className="chatting-header-wrap">
                 <p className="header-title">채팅</p>
-                {/* <Grid _className="ct-wrap"> */}
                 <BiDotsVerticalRounded
                   onClick={ModalControl}
                   style={{
@@ -169,7 +166,6 @@ const Chatting = (props) => {
                   }}
                   className="point-icon"
                 />
-                {/* </Grid> */}
               </div>
               {is_open && (
                 <>
@@ -276,7 +272,7 @@ const ChattingWrap = styled.div`
     background-color: white;
     position: relative;
     padding-bottom: 50px;
-    .color-wrap{
+    .color-wrap {
       background-color: white;
       height: 100vh;
       width: 100%;
@@ -302,7 +298,6 @@ const ChattingWrap = styled.div`
           display: flex;
           justify-content: space-between;
           align-items: center;
-          /* position: relative; */
 
           .header-title {
             font-size: 20px;

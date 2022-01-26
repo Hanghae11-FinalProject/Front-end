@@ -4,6 +4,7 @@ import ChattingItem from "./components/ChattingItem";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Permit from "./shared/Permit";
+import Write from "./pages/Write";
 
 describe("LoginBtnRender", () => {
   it("should render LoginPage button", () => {

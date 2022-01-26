@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination, Navigation } from "swiper";
@@ -61,7 +61,7 @@ const EditPost = (items) => {
   ];
 
   // 모달 바깥을 click 했을 때 클릭 이벤트 발생 시키기 위한 useEffect
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("click", clickCloseModal);
     return () => {
       document.removeEventListener("click", clickCloseModal);
@@ -94,9 +94,6 @@ const EditPost = (items) => {
   // 내용 onChange 함수
   const changeContent = (e) => {
     setContent(e.target.value);
-    // console.log(myItem);
-    // console.log(exchangeItem);
-    // console.log(title);
   };
 
   // 교환할 물품 onChange 함수
@@ -115,7 +112,7 @@ const EditPost = (items) => {
   };
 
   // 수정하기 image preview 및 데이터 불러오기
-  React.useEffect(() => {
+  useEffect(() => {
     let editPre = [];
     for (let i = 0; i < editItems.images.length; i++) {
       editPre.push(editItems.images[i].imageUrl);
@@ -127,21 +124,6 @@ const EditPost = (items) => {
     setMyItem(editItems.myItem);
     setExchangeItem(editItems.exchangeItem);
     setCategory(editItems.categoryName);
-
-    // const GetHashContent = document.querySelector(".HashInputOuter"); //HashInputOuter클라스에서 입력하는 요소를 불러온다!
-    // const HashWrapInner = document.createElement("div"); // div 만들기
-    // HashWrapInner.className = "HashWrapInner";
-
-    // let editTag = [];
-    // if (is_edit) {
-    //   for (let i = 0; i < editItems.tags.length; i++) {
-    //     const tags = { tagName: editItems.tags[i].tagName };
-    //     HashWrapInner.innerHTML = "#" + editItems.tags[i].tagName;
-    //     GetHashContent?.appendChild(HashWrapInner);
-    //     editTag.push(tags);
-    //   } // console.log(hashArr); < 넣어지는거 확인함
-    //   setHashArr(...editTag);
-    // }
   }, []);
 
   // 해시태그 onKeyup 함수
@@ -155,7 +137,6 @@ const EditPost = (items) => {
       // 태그 클릭 시 태그 삭제
       HashWrapInner.addEventListener("click", () => {
         GetHashContent?.removeChild(HashWrapInner);
-        // console.log(HashWrapInner.innerHTML);
         setHashArr(hashArr.filter((tagName) => tagName)); // filter()는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환
       });
 
@@ -165,7 +146,7 @@ const EditPost = (items) => {
         if (hashArr.length === 5) {
           return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
         }
-        // console.log("엔터로 된거닝?", e.target.value);
+
         HashWrapInner.innerHTML = "#" + e.target.value;
         GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
         const tag = { tagName: tagName };
@@ -184,7 +165,6 @@ const EditPost = (items) => {
 
     HashWrapInner.addEventListener("click", () => {
       GetHashContent?.removeChild(HashWrapInner);
-      // console.log(HashWrapInner.innerHTML);
       setHashArr(hashArr.filter((tagName) => tagName)); // filter()는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환
     });
 
@@ -194,7 +174,7 @@ const EditPost = (items) => {
       if (hashArr.length === 5) {
         return; // 갯수 제한은 되지만 다시 하나를 지웠다가 추가하면 또 5개를 쓸 수 있음..ㅠ
       }
-      // console.log("엔터로 된거닝?", e.target.value);
+
       HashWrapInner.innerHTML = "#" + tagName;
       GetHashContent?.appendChild(HashWrapInner); // 옵셔널체이닝 Tip. 존재하지 않아도 괜찮은 대상(?.의 앞부분)에만 사용해야한다!
       const tag = { tagName: tagName };
@@ -206,7 +186,6 @@ const EditPost = (items) => {
 
   // 이미지, preview이미지 추가
   const addImage = (e) => {
-    // console.log(e.target.files);
     const nowSelectImgList = e.target.files; // 이미지파일 리스트 (object)
 
     if (images.length !== 0) {
@@ -215,7 +194,7 @@ const EditPost = (items) => {
       // !!!*** 이미지를 추가한 뒤 중간에 또 추가하면 갯수가 리셋되는거
       setImages(e.target.files); // axios통신용으로 따로 한번 저장 해주고!
     }
-    // console.log(images);
+
     const nowImgURLList = [...preImg]; // 현재의 preImg 복사
 
     for (let i = 0; i < nowSelectImgList.length; i++) {
@@ -282,12 +261,12 @@ const EditPost = (items) => {
   };
 
   // 카테고리 액티브
-  React.useEffect(() => {
+  useEffect(() => {
     checkActive();
   }, [category]);
 
   // 수정 페이지 처음 들어올때 액티브 함수 실행
-  React.useEffect(() => {
+  useEffect(() => {
     checkActive();
   }, []);
 

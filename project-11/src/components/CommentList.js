@@ -89,14 +89,6 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
     setIs_Name(false);
   };
 
-  useEffect(() => {
-    if (controlRpl) {
-      setControlRpl(false);
-    } else {
-      setControlRpl(true);
-    }
-  }, [is_name]);
-
   // 댓글 취소 (삭제아님)
   const cancleReply = () => {
     setIs_Name(false);

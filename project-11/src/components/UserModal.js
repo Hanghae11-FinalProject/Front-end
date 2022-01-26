@@ -88,7 +88,6 @@ const UserModal = (props) => {
   };
 
   // 프로필 클릭 이벤트
-
   useEffect(() => {
     const newList = icons.map((icon, i) => {
       const object = { icons: icon, active: false };

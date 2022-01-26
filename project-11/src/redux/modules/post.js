@@ -270,7 +270,6 @@ const del_comment = (commentid, postid, comcnt) => {
       })
       .then((res) => {
         //삭제되는 댓글 정보를 받는다.
-        // console.log("delete sucess", res);
         //받아오는 정보중 id값만을 이용한다
         dispatch(delComment(res.data));
         let newNum = comcnt - 1;
