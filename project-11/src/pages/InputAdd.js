@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
+
 import styled from "styled-components";
 
 import { axiosInstance } from "../shared/api";
@@ -10,7 +11,7 @@ import { getCookie } from "../shared/Cookie";
 const InputAdd = () => {
   const token = getCookie("Token");
   const history = useHistory();
-  const modalClose = React.useRef();
+  const modalClose = useRef();
   // disabled 활성화 여부
   const [active, setActive] = useState(true);
 
@@ -98,7 +99,6 @@ const InputAdd = () => {
             <span>주소</span>
           </div>
           <AddressBox>
-            {/* <div className="select-box-wrap"> */}
             <LocationWrap>
               <Grid _className={is_Open ? "active" : "default"}>
                 <div
@@ -166,7 +166,6 @@ const InputAdd = () => {
                 </>
               )}
             </LocationWrap>
-            {/* </div> */}
           </AddressBox>
           <button className="sign-btn" disabled={active} onClick={signUp}>
             가입하기

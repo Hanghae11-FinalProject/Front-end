@@ -24,7 +24,6 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
   const [is_name, setIs_Name] = useState(false);
   const [btnActive, setBtnActive] = useState(false);
   const [Newcomment, setNewComment] = useState();
-  const [controlRpl, setControlRpl] = useState(false);
   const commentData = comment;
   let nickChange = commentData.nickname;
 
@@ -35,6 +34,7 @@ const CommentList = ({ comment, postid, postuser, comcnt }) => {
       history.push("/");
     }
     if (is_name === false) {
+      // is_name은 대댓글의 id 존재유무
       setIs_Name(true);
     } else if (is_name === true) {
       setIs_Name(false);

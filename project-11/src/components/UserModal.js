@@ -11,21 +11,29 @@ import { getCookie } from "../shared/Cookie";
 const UserModal = (props) => {
   const dispatch = useDispatch();
   const { name, onCancel } = props;
+  const image = getCookie("Img");
+  const PrImg = decodeURIComponent(image);
+  const [Img, setImg] = useState(PrImg);
+
   const [editName, setEditName] = useState("");
   const [iconList, setIconList] = useState([]);
   const [iconState, setIconState] = useState([]);
   const [nickDoubleChk, setNickDoubleChk] = useState("");
   const [active, setActive] = useState(true);
-  const image = getCookie("Img");
-  const PrImg = decodeURIComponent(image);
-  const [Img, setImg] = useState(PrImg);
 
+  // 버튼 활성화, 비활성화
   const CheckActive = () => {
     iconState.length !== 0 ||
     (editName !== "" && nickDoubleChk === "사용 가능한 닉네임 입니다.")
       ? setActive(false)
       : setActive(true);
   };
+
+  useEffect(() => {
+    if (editName === name) {
+      setActive(false);
+    }
+  }, []);
 
   // 프로필 수정
   const EditProfile = () => {
@@ -42,12 +50,6 @@ const UserModal = (props) => {
     dispatch(postActions.editProfileDB(Img, editName)); // 수정된 값을 보내줘야한다.
     onCancel();
   };
-
-  useEffect(() => {
-    if (editName === name) {
-      setActive(false);
-    }
-  }, []);
 
   // 닉네임 중복확인
   const nicknameCheck = () => {
@@ -77,6 +79,7 @@ const UserModal = (props) => {
     }
   };
 
+  // 모달창 닫기
   const handleClose = () => {
     onCancel();
     const newList = icons.map((icon, i) => {
@@ -100,7 +103,7 @@ const UserModal = (props) => {
   // 의 active 반대로 바꾸고 -> !ic.active
   //  배열을 리턴 받아야한다. -> {}
 
-  //원본배열 작업 후 원본배열을 다시 받기
+  // 아이콘 원본배열 작업 후 원본배열을 다시 받기 -> 아이콘 하나하나 클릭했을때
   const handleClick = (i) => {
     const newList = iconList.map((ic, idx) => {
       if (i === idx) {
@@ -120,7 +123,6 @@ const UserModal = (props) => {
       }
     });
     setIconList(newList);
-
     const arr = newList.filter((item) => {
       return item.active === true;
     });
@@ -130,6 +132,7 @@ const UserModal = (props) => {
     }
   };
 
+  // 아이콘 클릭했을때 액티브 체크
   useEffect(() => {
     CheckActive();
   }, [handleClick]);

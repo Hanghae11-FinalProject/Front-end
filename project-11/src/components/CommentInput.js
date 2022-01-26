@@ -12,7 +12,7 @@ const CommentInput = ({ name, postid, commentid, comcnt }) => {
   const token = getCookie("Token");
   const dispatch = useDispatch();
   const [Newcomment, setNewComment] = useState();
-  const [replyId, setReplyId] = useState(commentid);
+  const [replyId, setReplyId] = useState(commentid); // 댓글의 ID
 
   //댓글 쓰기
   const writeComment = (e) => {

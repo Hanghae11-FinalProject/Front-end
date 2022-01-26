@@ -3,7 +3,10 @@ import Permit from "../shared/Permit";
 import ChattingItem from "../components/ChattingItem";
 import Nav from "../shared/Nav";
 import { Grid } from "../elements";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 123c9415b6c10b3ec6b773cdc1f57980eac3ab78
 import NoChattingList from "../components/NoChattingList";
 import Spinner from "../components/Spinner";
 
@@ -14,7 +17,7 @@ import { axiosInstance } from "../shared/api";
 import { getCookie } from "../shared/Cookie";
 import { useSelector } from "react-redux";
 
-const Chatting = (props) => {
+const Chatting = () => {
   const stompClient = useSelector((state) => state.chat.stompClient);
 
   const myUserId = getCookie("Id");
@@ -26,6 +29,8 @@ const Chatting = (props) => {
   const [is_every, setIs_Every] = useState(true); // 전체 클릭 감지
   const [is_ing, setIs_Ing] = useState(false); // 거래중 클릭 감지
   const [is_complete, setIs_Complete] = useState(false); // 거래완료 클릭 감지
+
+  // 모달창 버튼
   const [optionOne, setOptionOne] = useState(false);
   const [optionTwo, setOptionTwo] = useState(false);
   const [optionThree, setOptionThree] = useState(false);
@@ -45,28 +50,26 @@ const Chatting = (props) => {
 
   useEffect(() => {
     let data = rooms;
-    let cnt = 0;
     for (let i = 0; i < data.length; i++) {
       if (data[i].roomName === newMsgData.roomName) {
         data[i].notReadingMessageCount = data[i].notReadingMessageCount + 1;
         data[i].lastMessage.content = newMsgData.message;
         data[i].lastMessage.createdAt = newMsgData.createdAt;
       }
-      cnt = cnt + data[i].notReadingMessageCount;
     }
-    // console.log(cnt);
-    // dispatch(chatActions.getChat(cnt));
     setRooms(data); // 여기서 거래중 거래완료 따로 저장 안하면? 일단은 문제 없는듯??
   }, [newMsgData]); // 혹시라도 채팅방 들어갈때 문제생기면 여기부터 체크하기
   // console.log(rooms);
   useEffect(() => {
     setIs_Loading(true);
+    // 채팅 목록 받아오는 부분
     axiosInstance
       .get(`/api/room`, { headers: { Authorization: token } })
       .then((res) => {
         // console.log(res);
         setRooms(res.data);
         setIs_Loading(false);
+
         let ing = [];
         let com = [];
         for (let i = 0; i < res.data.length; i++) {
@@ -85,6 +88,7 @@ const Chatting = (props) => {
     stompClient.subscribe(`/sub/${myUserId}`, (data) => {
       const onMessage = JSON.parse(data.body);
       setNewMsgData(onMessage);
+      // 영빈님한테 질문
       axiosInstance
         .post(
           `/api/roomcount`,

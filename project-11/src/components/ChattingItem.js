@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { getCookie } from "../shared/Cookie";
@@ -6,7 +6,9 @@ import { getCookie } from "../shared/Cookie";
 const ChattingItem = (p) => {
   const stompClient = p.stompClient;
   const myUserId = getCookie("Id");
-  React.useEffect(() => {
+
+  // 부모 컴포넌트인 Chatting.js에서 랜더링 시켜주기 위한 useEffect
+  useEffect(() => {
     p.testOne();
   }, [p]);
   const roomData = p.roomData; // Chat.js에 채팅카운트 넘겨주기 위한 props

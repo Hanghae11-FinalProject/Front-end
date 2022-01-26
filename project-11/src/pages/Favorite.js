@@ -13,7 +13,8 @@ import Spinner from "../components/Spinner";
 
 const Favorite = () => {
   const token = getCookie("Token");
-  const [is_loading, setIs_loading] = React.useState(false);
+
+  const [is_loading, setIs_loading] = useState(false);
   const [favorite_list, setFavoriteList] = useState([]);
 
   const getFavorite = () => {
