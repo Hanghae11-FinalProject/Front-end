@@ -80,7 +80,7 @@ const Mypage = () => {
               </Button>
             </UserInfo>
 
-            {/* 프로필 수정 모달부분 */}
+            {/* 프로필 수정 모달부분. */}
             <Grid _className={shadowOpen ? "shadow-active" : "shadow"}>
               <UserModal onCancel={handleClose} name={name} />
             </Grid>
