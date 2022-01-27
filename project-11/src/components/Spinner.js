@@ -23,7 +23,7 @@ const Wrap = styled.div`
   height: 100vh;
   .spinners {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
