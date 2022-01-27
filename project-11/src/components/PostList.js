@@ -26,7 +26,7 @@ const PostList = ({ location, category, selected }) => {
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
 
-  // 스피너
+  // 스피너 및 게시물 없는거 감시 할 state
   const [is_loading, setIs_Loading] = useState(false);
 
   // api로 넘겨줘야 할 값들
@@ -48,12 +48,12 @@ const PostList = ({ location, category, selected }) => {
 
   // 게시물 불러오기 및 스피너 컨트롤
   useEffect(() => {
-    setIs_Loading(true);
     if (page !== 0) {
       is_select = false;
     }
-    dispatch(postActions.getPostAction(area, category, page, is_select));
-    setIs_Loading(false);
+    dispatch(
+      postActions.getPostAction(area, category, page, is_select, is_loading)
+    );
   }, [area, category, page]);
 
   //scroll event
@@ -85,13 +85,13 @@ const PostList = ({ location, category, selected }) => {
   return (
     <React.Fragment>
       <MainContainer>
-        {is_loading === true && post_data.posts.length === 0 && <Spinner />}
+        {is_loading === true && <Spinner />}
         <InfiniteScroll
           dataLength={post_data.posts.length} //This is important field to render the next data
           next={getData}
           hasMore={hasMore}
         >
-          {post_data.posts.length === 0 && is_loading === false ? (
+          {post_data.posts.length === 0 ? (
             <div className="no-post">
               <NoPost />
             </div>
@@ -129,6 +129,10 @@ const MainContainer = styled.div`
 
   .no-post {
     margin-top: -100px;
+  }
+
+  .display-none {
+    display: none;
   }
 `;
 
