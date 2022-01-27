@@ -21,7 +21,6 @@ const PostList = ({ location, category, selected }) => {
   const [area, setarea] = useState(location);
   const [cate, setcate] = useState(category);
   let is_select = selected;
-
   // 무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
   const [items, setItems] = useState([]);
@@ -85,13 +84,15 @@ const PostList = ({ location, category, selected }) => {
   return (
     <React.Fragment>
       <MainContainer>
-        {is_loading === true && post_data.posts.length === 0 && <Spinner />}
+        {post_data.posts.length === 0 && category === '' &&  
+        <div className="spinner"><Spinner /></div>
+        }
         <InfiniteScroll
           dataLength={post_data.posts.length} //This is important field to render the next data
           next={getData}
           hasMore={hasMore}
         >
-          {post_data.posts.length === 0 && is_loading === false ? (
+          {post_data.posts.length === 0 && is_loading === false && category !== '' ? (
             <div className="no-post">
               <NoPost />
             </div>
@@ -103,7 +104,9 @@ const PostList = ({ location, category, selected }) => {
                 })}
               </Grid>
             </>
-          )}
+          )}     
+          
+
         </InfiniteScroll>
       </MainContainer>
     </React.Fragment>
@@ -112,10 +115,11 @@ const PostList = ({ location, category, selected }) => {
 
 const MainContainer = styled.div`
   padding: 0 16px 60px 16px;
-  .spinner {
-    margin-top: -160px;
+  .spinner{
+    position: absolute;
+    top: 25%;
+    left: 50%;
   }
-
   .post-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

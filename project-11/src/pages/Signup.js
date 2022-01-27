@@ -588,6 +588,7 @@ const SignupWrap = styled.div`
       }
     }
   }
+}
 `;
 // 엑티브 노엑티브
 const LocationWrap = styled.div`
