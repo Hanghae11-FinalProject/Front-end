@@ -6,7 +6,7 @@
 <br></br>
 
 🏓 [사이트 바로가기](https://pingpong-market.shop/) <br/>
-💻 시연영상 보러가기
+💻 시연영상 보러가기(https://youtu.be/p68FdDAULAQ)
 
 <br></br>
 
