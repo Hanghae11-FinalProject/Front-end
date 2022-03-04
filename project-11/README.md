@@ -2,7 +2,7 @@
 
 현대인을 위한 물물교환 서비스 '핑퐁'
 <br></br>
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/ping.gif?resize=640%2C357&ssl=1" alt="front"  width="90%" />
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F7X7Hv%2Fbtrvaujbh9T%2FEElBhRwAkKUK1uPAt9GHT1%2Fimg.png" alt="front"  width="100%" />
 <br></br>
 
 🏓 [사이트 바로가기](https://pingpong-market.shop/) <br/>
@@ -121,7 +121,7 @@
 
 # User Flow Chart
 
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/userflow-1.png?resize=768%2C782&ssl=1" alt="flowchart" width="90%"/>
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdvBi62%2Fbtru3sHFXj8%2FsYKpO0r3xk7ilOjfxETJA0%2Fimg.png" alt="flowchart" width="90%"/>
 <br></br>
 <br></br>
 <br></br>
