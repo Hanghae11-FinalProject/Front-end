@@ -62,7 +62,7 @@
 
 # 프로젝트 구조
 
-<img src="https://i0.wp.com/www.midnightinsomewhere.com/wp-content/uploads/2022/01/KakaoTalk_20220122_160559834.jpg?resize=768%2C432&ssl=1" alt="architecture"  width="90%" />
+<img src="https://user-images.githubusercontent.com/25544668/150839035-c1d3a7d3-ca79-49fd-ba8c-c50079d29c5f.png" alt="architecture"  width="90%" />
 <br></br>
 <br></br>
 
